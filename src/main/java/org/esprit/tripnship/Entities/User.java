@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public sealed class User permits Client,Employee {
 
     private int idUser;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private Gender gender;
     private Role role;
     private String email;
@@ -15,10 +15,10 @@ public sealed class User permits Client,Employee {
     private LocalDateTime birthdayDate;
     private String phoneNumber;
 
-    public User(int idUser, String firstname, String lastname, Gender gender, Role role, String email, String password, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
+    public User(int idUser, String firstName, String lastName, Gender gender, Role role, String email, String password, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
         this.idUser = idUser;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.role = role;
         this.email = email;
@@ -28,13 +28,25 @@ public sealed class User permits Client,Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public User(String firstname, String lastname, Gender gender, Role role, String email, String password, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public User(String firstName, String lastName, Gender gender, Role role, String email, String password, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.role = role;
         this.email = email;
         this.password = password;
+        this.profilePhoto = profilePhoto;
+        this.birthdayDate = birthdayDate;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User(int idUser, String firstName, String lastName, Gender gender, Role role, String email, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
+        this.idUser = idUser;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.role = role;
+        this.email = email;
         this.profilePhoto = profilePhoto;
         this.birthdayDate = birthdayDate;
         this.phoneNumber = phoneNumber;
@@ -48,20 +60,20 @@ public sealed class User permits Client,Employee {
         this.idUser = idUser;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Gender getGender() {
@@ -124,8 +136,8 @@ public sealed class User permits Client,Employee {
     public String toString() {
         return
                 "idUser=" + idUser +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
+                ", firstname='" + firstName + '\'' +
+                ", lastname='" + lastName + '\'' +
                 ", gender=" + gender +
                 ", role=" + role +
                 ", email='" + email + '\'' +

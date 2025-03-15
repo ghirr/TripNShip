@@ -28,4 +28,8 @@ public class MyDataBase {
         return instance;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
 }

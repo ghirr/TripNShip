@@ -2,7 +2,7 @@ package org.esprit.tripnship.Entities;
 
 import java.time.LocalDateTime;
 
-public abstract sealed class Employee extends User permits TravelOrganizer,ShippingCoordinator,AccommodationSpecialist,TourCoordinator {
+public sealed class Employee extends User permits TravelOrganizer,ShippingCoordinator,AccommodationSpecialist,TourCoordinator {
 
     private String address;
     private double salary;

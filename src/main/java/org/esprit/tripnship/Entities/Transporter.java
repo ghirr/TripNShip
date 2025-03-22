@@ -1,6 +1,6 @@
-package com.esprit.models;
+package org.esprit.tripnship.Entities;
 
-public class Transporteur {
+public class Transporter {
 
     private int idTransporteur;
     private String nom;
@@ -11,7 +11,7 @@ public class Transporteur {
 
 
     // Constructeur avec tous les paramètres (idTransporteur, nom, typeTransport, téléphone, email, siteWeb)
-    public Transporteur(int idTransporteur, String nom, String typeTransport, String telephone, String email, String siteWeb) {
+    public Transporter(int idTransporteur, String nom, String typeTransport, String telephone, String email, String siteWeb) {
         this.idTransporteur = idTransporteur;
         this.nom = nom;
         this.typeTransport = typeTransport;
@@ -23,7 +23,7 @@ public class Transporteur {
     }
 
     // Constructeur sans idTransporteur (utile lors de l'ajout d'un nouveau transporteur)
-    public Transporteur(String nom, String typeTransport, String telephone, String email, String siteWeb) {
+    public Transporter(String nom, String typeTransport, String telephone, String email, String siteWeb) {
         this.nom = nom;
         this.typeTransport = typeTransport;
         this.telephone = telephone;

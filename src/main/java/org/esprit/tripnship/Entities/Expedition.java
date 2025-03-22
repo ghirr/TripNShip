@@ -1,8 +1,8 @@
-package com.esprit.models;
+package org.esprit.tripnship.Entities;
 
 import java.util.Date;
 
-public class expeditions {
+public class Expedition {
 
     private int idExpedition;
 
@@ -19,9 +19,9 @@ public class expeditions {
     private Date derniereMiseAJour;
 
     // Constructeur complet
-    public expeditions(int idExpedition, int idTransporteur, double poids, String typeColis,
-                       String statut, double fraisExpedition, Date dateEnvoi, Date dateEstimationLivraison,
-                       String villeDepart, String villeArrivee, String localisationActuelle) {
+    public Expedition(int idExpedition, int idTransporteur, double poids, String typeColis,
+                      String statut, double fraisExpedition, Date dateEnvoi, Date dateEstimationLivraison,
+                      String villeDepart, String villeArrivee, String localisationActuelle) {
         this.idExpedition = idExpedition;
         this.idTransporteur = idTransporteur;
         this.poids = poids;
@@ -37,9 +37,9 @@ public class expeditions {
     }
 
 
-    public expeditions(int idTransporteur, double poids, String typeColis, String statut,
-                       double fraisExpedition, Date dateEnvoi, Date dateEstimationLivraison,
-                       String villeDepart, String villeArrivee, String localisationActuelle) {
+    public Expedition(int idTransporteur, double poids, String typeColis, String statut,
+                      double fraisExpedition, Date dateEnvoi, Date dateEstimationLivraison,
+                      String villeDepart, String villeArrivee, String localisationActuelle) {
 
         this.idTransporteur = idTransporteur;
         this.poids = poids;

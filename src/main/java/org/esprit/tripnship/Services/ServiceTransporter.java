@@ -1,22 +1,23 @@
-package com.esprit.services;
+package org.esprit.tripnship.Services;
 
-import com.esprit.models.Transporteur;
-import com.esprit.utils.MyDataBase;
+import org.esprit.tripnship.Entities.Transporter;
+import org.esprit.tripnship.Services.IService;
+import org.esprit.tripnship.Utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceTransporteur implements IService<Transporteur> {
+public class ServiceTransporter implements IService<Transporter> {
 
     private Connection connection;
 
-    public ServiceTransporteur() {
+    public ServiceTransporter() {
         connection = MyDataBase.getInstance().getConnection();
     }
 
     @Override
-    public void ajouter(Transporteur transporteur) {
+    public void add(Transporter transporteur) {
         String req = "INSERT INTO transporteurs (nom, typeTransport, telephone, email, siteWeb) VALUES ('" +
                 transporteur.getNom() + "', '" +
                 transporteur.getTypeTransport() + "', '" +
@@ -33,7 +34,7 @@ public class ServiceTransporteur implements IService<Transporteur> {
     }
 
     @Override
-    public void modifier(Transporteur transporteur) {
+    public void update(Transporter transporteur) {
         String req = "UPDATE transporteurs SET nom='" + transporteur.getNom() +
                 "', typeTransport='" + transporteur.getTypeTransport() +
                 "', telephone='" + transporteur.getTelephone() +
@@ -50,7 +51,7 @@ public class ServiceTransporteur implements IService<Transporteur> {
     }
 
     @Override
-    public void supprimer(Transporteur transporteur) {
+    public void delete(Transporter transporteur) {
         String req = "DELETE FROM transporteurs WHERE idTransporteur=" + transporteur.getIdTransporteur();
         try {
             Statement st = connection.createStatement();
@@ -62,15 +63,15 @@ public class ServiceTransporteur implements IService<Transporteur> {
     }
 
     @Override
-    public List<Transporteur> recuperer() {
-        List<Transporteur> transporteurs = new ArrayList<>();
+    public List<Transporter> getAll() {
+        List<Transporter> transporteurs = new ArrayList<>();
 
         String req = "SELECT * FROM transporteurs";
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(req);
             while (rs.next()) {
-                transporteurs.add(new Transporteur(
+                transporteurs.add(new Transporter(
                         rs.getInt("idTransporteur"),
                         rs.getString("nom"),
                         rs.getString("typeTransport"),

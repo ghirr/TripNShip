@@ -1,13 +1,14 @@
-package com.esprit.services;
+package org.esprit.tripnship.Services;
 
-import com.esprit.models.expeditions;
-import com.esprit.utils.MyDataBase;
+import org.esprit.tripnship.Entities.Expedition;
+import org.esprit.tripnship.Services.IService;
+import org.esprit.tripnship.Utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceExpedition implements IService<expeditions> {
+public class ServiceExpedition implements IService<Expedition> {
 
     private Connection connection;
 
@@ -16,7 +17,7 @@ public class ServiceExpedition implements IService<expeditions> {
     }
 
     @Override
-    public void ajouter(expeditions expedition) {
+    public void add(Expedition expedition) {
         String req = "INSERT INTO expeditions (idTransporteur, poids, typeColis, statut, fraisExpedition, " +
                 "dateEnvoi, dateEstimationLivraison, villeDepart, villeArrivee, localisationActuelle) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -43,7 +44,7 @@ public class ServiceExpedition implements IService<expeditions> {
     }
 
     @Override
-    public void modifier(expeditions expedition) {
+    public void update(Expedition expedition) {
         String req = "UPDATE expeditions SET idTransporteur=?, poids=?, typeColis=?, statut=?, " +
                 "fraisExpedition=?, dateEnvoi=?, dateEstimationLivraison=?, villeDepart=?, villeArrivee=?, " +
                 "localisationActuelle=? WHERE idExpedition=?";
@@ -71,7 +72,7 @@ public class ServiceExpedition implements IService<expeditions> {
     }
 
     @Override
-    public void supprimer(expeditions expedition) {
+    public void delete(Expedition expedition) {
         String req = "DELETE FROM expeditions WHERE idExpedition=?";
 
         try (PreparedStatement pst = connection.prepareStatement(req)) {
@@ -87,13 +88,13 @@ public class ServiceExpedition implements IService<expeditions> {
     }
 
     @Override
-    public List<expeditions> recuperer() {
-        List<expeditions> expeditionsList = new ArrayList<>();
+    public List<Expedition> getAll() {
+        List<Expedition> expeditionsList = new ArrayList<>();
         String req = "SELECT * FROM expeditions";
 
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(req)) {
             while (rs.next()) {
-                expeditions expedition = new expeditions(
+                Expedition expedition = new Expedition(
                         rs.getInt("idExpedition"),
                         rs.getInt("idTransporteur"),
                         rs.getDouble("poids"),

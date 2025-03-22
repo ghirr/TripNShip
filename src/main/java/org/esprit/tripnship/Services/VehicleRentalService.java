@@ -2,6 +2,7 @@ package org.esprit.tripnship.Services;
 
 
 import org.esprit.tripnship.Entities.Status;
+import org.esprit.tripnship.Entities.StautCircuit;
 import org.esprit.tripnship.Entities.VehicleRental;
 import org.esprit.tripnship.Utils.MyDataBase;
 
@@ -78,7 +79,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
                         rs.getTimestamp("startDate").toLocalDateTime(),
                         rs.getTimestamp("endDate").toLocalDateTime(),
                         rs.getFloat("totalPrice"),
-                        Status.values()[rs.getInt("status")],
+                        StautCircuit.values()[rs.getInt("status")],
                         rs.getInt("idVehicle")
                 );
                 vehicleRentals.add(vehicleRental);

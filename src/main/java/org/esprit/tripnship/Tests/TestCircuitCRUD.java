@@ -44,8 +44,8 @@ public class TestCircuitCRUD {
         System.out.println("Test CREATE:");
 
         // Adding vehicle rentals with existing vehicles (idVehicle = 1 and 2)
-        VehicleRental rental1 = new VehicleRental(LocalDateTime.of(2025, 3, 22, 8, 0), LocalDateTime.of(2025, 3, 23, 8, 0), 150.0f, Status.Active, 48);  // Correct ID for vehicle
-        VehicleRental rental2 = new VehicleRental(LocalDateTime.of(2025, 4, 1, 10, 0), LocalDateTime.of(2025, 4, 2, 10, 0), 200.0f, Status.Completed, 49); // Correct ID for vehicle
+        VehicleRental rental1 = new VehicleRental(LocalDateTime.of(2025, 3, 22, 8, 0), LocalDateTime.of(2025, 3, 23, 8, 0), 150.0f, StautCircuit.Active, 48);  // Correct ID for vehicle
+        VehicleRental rental2 = new VehicleRental(LocalDateTime.of(2025, 4, 1, 10, 0), LocalDateTime.of(2025, 4, 2, 10, 0), 200.0f, StautCircuit.Completed, 49); // Correct ID for vehicle
 
         rentalService.add(rental1);
         rentalService.add(rental2);
@@ -56,7 +56,7 @@ public class TestCircuitCRUD {
         // --- Test UPDATE: Update vehicle rentals ---
         System.out.println("\nTest UPDATE:");
         rental1.setTotalPrice(180.0f);  // Updating the total price for rental1
-        rental2.setStatus(Status.Active);  // Updating the status for rental2
+        rental2.setStatus(StautCircuit.Active);  // Updating the status for rental2
 
         rentalService.update(rental1);
         rentalService.update(rental2);

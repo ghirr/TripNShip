@@ -9,10 +9,10 @@ public class VehicleRental {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private float totalPrice;
-    private Status status;
+    private StautCircuit status;
     private int idVehicle;
 
-    public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice, Status status, int idVehicle) {
+    public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit status, int idVehicle) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
@@ -21,7 +21,7 @@ public class VehicleRental {
     }
 
 
-    public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice, Status status, int idVehicle) {
+    public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit status, int idVehicle) {
         this.idRental = idRental;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -62,11 +62,11 @@ public class VehicleRental {
         this.totalPrice = totalPrice;
     }
 
-    public Status getStatus() {
+    public StautCircuit getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StautCircuit status) {
         this.status = status;
     }
 

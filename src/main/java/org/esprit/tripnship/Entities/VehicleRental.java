@@ -9,24 +9,24 @@ public class VehicleRental {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private float totalPrice;
-    private StautCircuit status;
+    private StautCircuit statusCircuit;
     private int idVehicle;
 
-    public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit status, int idVehicle) {
+    public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit statusCircuit, int idVehicle) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
-        this.status = status;
+        this.statusCircuit = statusCircuit;
         this.idVehicle = idVehicle;
     }
 
 
-    public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit status, int idVehicle) {
+    public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit statusCircuit, int idVehicle) {
         this.idRental = idRental;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
-        this.status = status;
+        this.statusCircuit = statusCircuit;
         this.idVehicle = idVehicle;
     }
 
@@ -63,11 +63,11 @@ public class VehicleRental {
     }
 
     public StautCircuit getStatus() {
-        return status;
+        return statusCircuit;
     }
 
     public void setStatus(StautCircuit status) {
-        this.status = status;
+        this.statusCircuit = status;
     }
 
     public int getIdVehicle() {
@@ -85,7 +85,7 @@ public class VehicleRental {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", totalPrice=" + totalPrice +
-                ", status=" + status +
+                ", statusCircuit=" + statusCircuit +
                 ", idVehicle=" + idVehicle +
                 '}';
     }

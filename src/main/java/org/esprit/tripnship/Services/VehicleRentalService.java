@@ -20,7 +20,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
 
     @Override
     public void add(VehicleRental vehicleRental) {
-        String req = "INSERT INTO vehiclerental (startDate, endDate, totalPrice, status, idVehicle) VALUES (?, ?, ?, ?, ?)";
+        String req = "INSERT INTO vehiclerental (startDate, endDate, totalPrice, statusCircuit, idVehicle) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(vehicleRental.getStartDate()));
@@ -37,7 +37,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
 
     @Override
     public void update(VehicleRental vehicleRental) {
-        String req = "UPDATE vehiclerental SET startDate=?, endDate=?, totalPrice=?, status=?, idVehicle=? WHERE idRental=?";
+        String req = "UPDATE vehiclerental SET startDate=?, endDate=?, totalPrice=?, statusCircuit=?, idVehicle=? WHERE idRental=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(vehicleRental.getStartDate()));
@@ -79,7 +79,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
                         rs.getTimestamp("startDate").toLocalDateTime(),
                         rs.getTimestamp("endDate").toLocalDateTime(),
                         rs.getFloat("totalPrice"),
-                        StautCircuit.values()[rs.getInt("status")],
+                        StautCircuit.values()[rs.getInt("statusCircuit")],
                         rs.getInt("idVehicle")
                 );
                 vehicleRentals.add(vehicleRental);

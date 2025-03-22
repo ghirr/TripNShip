@@ -1,6 +1,5 @@
 package org.esprit.tripnship.Entities;
 
 public enum Status {
-    Active,
-    Completed
+    CONFIRMED, CANCELED,PENDING;
 }

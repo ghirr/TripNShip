@@ -4,10 +4,7 @@ import org.esprit.tripnship.Entities.Status;
 import org.esprit.tripnship.Entities.Ticket;
 import org.esprit.tripnship.Utils.MyDataBase;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +17,15 @@ public class TicketService implements IService<Ticket>{
     }
 
     public void add(Ticket ticket) {
-        String req = "INSERT INTO Ticket (ticketId, planificationId, userId,status) VALUES (' "+ ticket.getTicketId()+"',' " + ticket.getPlanificationId()+"' ,' "+ticket.getUserId()+"','"+ticket.getStatus()+"')";
+        String req = "INSERT INTO ticket (ticketId, planificationId, userId,status) VALUES (?,?,?,?)";
 
         try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(req);
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setInt(1,ticket.getTicketId());
+            pst.setInt(2,ticket.getPlanificationId());
+            pst.setInt(3,ticket.getUserId());
+            pst.setString(4,ticket.getStatus().toString());
+            pst.executeUpdate();
             System.out.println("Ticket added successfully !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -33,10 +34,14 @@ public class TicketService implements IService<Ticket>{
 
     @Override
     public void update(Ticket ticket) {
-        String req = "UPDATE ticket SET userId='"+ticket.getUserId()+"', planificationId='"+ ticket.getPlanificationId()+"',status='"+ticket.getStatus()+"' WHERE ticketId="+ticket.getTicketId();
+        String req = "UPDATE ticket SET userId=?, "+ "planificationId=? ,"+ "status= ? ,"+ " WHERE ticketId= ?";
         try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(req);
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setInt(1,ticket.getUserId());
+            pst.setInt(2,ticket.getPlanificationId());
+            pst.setString(3,ticket.getStatus().toString());
+            pst.setInt(4,ticket.getTicketId());
+            pst.executeUpdate(req);
             System.out.println("Ticket updated successfully!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -47,10 +52,11 @@ public class TicketService implements IService<Ticket>{
 
     @Override
     public void delete(Ticket ticket) {
-        String req = "DELETE FROM ticket WHERE ticketId="+ticket.getTicketId();
+        String req = "DELETE FROM ticket WHERE ticketId=?";
         try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(req);
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setInt(1,ticket.getTicketId());
+            pst.executeUpdate(req);
             System.out.println("Ticket deleted successfully !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -65,8 +71,8 @@ public class TicketService implements IService<Ticket>{
 
             String req = "SELECT * FROM ticket";
             try {
-                Statement st = connection.createStatement();
-                ResultSet rs = st.executeQuery(req);
+                PreparedStatement pst = connection.prepareStatement(req);
+                ResultSet rs = pst.executeQuery(req);
                 while (rs.next()) {
                     tickets.add(new Ticket(rs.getInt("ticketId"), rs.getInt("userId"), rs.getInt("planificationId"), Status.valueOf(rs.getString("status"))));
                 }
@@ -76,7 +82,7 @@ public class TicketService implements IService<Ticket>{
 
             return tickets;
 
-       // return List.of();
+
     }
 
 

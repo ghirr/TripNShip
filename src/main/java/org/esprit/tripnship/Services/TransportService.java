@@ -18,14 +18,15 @@ public class TransportService implements IService<Transport>{
 
     @Override
     public void add(Transport transport) {
-        String req = "INSERT into transport into (transportId,transportation,companyName,companyPhone,companyEmail,companyWebsite) VALUES (?,?,?,?,?,?) ";
+        String req = "INSERT INTO transport (transportId,transportation,companyName,companyPhone,companyEmail,companyWebsite) VALUES (?,?,?,?,?,?) ";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setInt(1,transport.getTransportId());
             pst.setString(2,transport.getTransportation().toString());
             pst.setString(3,transport.getCompanyName());
             pst.setInt(4,transport.getCompanyPhone());
-            pst.setString(5,transport.getCompanyWebsite());
+            pst.setString(5,transport.getCompanyEmail());
+            pst.setString(6,transport.getCompanyWebsite());
             pst.executeUpdate();
             System.out.println("Transport added!!");
         }
@@ -80,7 +81,7 @@ public class TransportService implements IService<Transport>{
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                transports.add(new Transport(rs.getInt("transportId"), TypeTransport.valueOf(rs.getString("transportaion")), rs.getString("companyName"),rs.getInt("companyPhone"),rs.getString("companyEmail"),rs.getString("companyWebsite")));
+                transports.add(new Transport(rs.getInt("transportId"), TypeTransport.valueOf(rs.getString("transportation").toUpperCase()), rs.getString("companyName"),rs.getInt("companyPhone"),rs.getString("companyEmail"),rs.getString("companyWebsite")));
             }
         }
         catch (SQLException e){

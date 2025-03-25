@@ -1,16 +1,16 @@
 package org.esprit.tripnship.Entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Planification {
     private int planificationId;
-    private int itineraryID;
-    private Date departureDate;
-    private Date arrivalDate;
+    private int itineraryId;
+    private LocalDate departureDate;
+    private LocalDate arrivalDate;
 
-    public Planification(int planificationId, int itineraryID, Date departureDate, Date arrivalDate) {
+    public Planification(int planificationId, int itineraryId, LocalDate departureDate, LocalDate arrivalDate) {
         this.planificationId = planificationId;
-        this.itineraryID = itineraryID;
+        this.itineraryId = itineraryId;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
     }
@@ -23,27 +23,27 @@ public class Planification {
         this.planificationId = planificationId;
     }
 
-    public int getItineraryID() {
-        return itineraryID;
+    public int getItineraryId() {
+        return itineraryId;
     }
 
-    public void setItineraryID(int itineraryID) {
-        this.itineraryID = itineraryID;
+    public void setItineraryId(int itineraryId) {
+        this.itineraryId = itineraryId;
     }
 
-    public Date getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
-    public Date getArrivalDate() {
+    public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(LocalDate arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -51,7 +51,7 @@ public class Planification {
     public String toString() {
         return "Planification{" +
                 "planificationId=" + planificationId +
-                ", itineraryID=" + itineraryID +
+                ", itineraryId=" + itineraryId +
                 ", departureDate=" + departureDate +
                 ", arrivalDate=" + arrivalDate +
                 '}';

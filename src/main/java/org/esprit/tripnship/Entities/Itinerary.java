@@ -4,15 +4,15 @@ import java.time.Duration;
 
 public class Itinerary {
     private int itineraryId;
-    private int transportID;
+    private int transportId;
     private String departureLocation;
     private String arrivalLocation;
-    private Duration duration;
+    private String duration;
     private double price;
 
-    public Itinerary(int itiniraryId, int transportID, String departureLocation, String arrivalLocation, Duration duration, double price) {
-        this.itineraryId = itiniraryId;
-        this.transportID = transportID;
+    public Itinerary(int itineraryId, int transportId, String departureLocation, String arrivalLocation, String duration, double price) {
+        this.itineraryId = itineraryId;
+        this.transportId = transportId;
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.duration = duration;
@@ -24,7 +24,7 @@ public class Itinerary {
     }
 
     public int getTransportID() {
-        return transportID;
+        return transportId;
     }
 
     public String getDepartureLocation() {
@@ -35,7 +35,7 @@ public class Itinerary {
         return arrivalLocation;
     }
 
-    public Duration getDuration() {
+    public String getDuration() {
         return duration;
     }
 
@@ -47,8 +47,8 @@ public class Itinerary {
         this.itineraryId = itineraryId;
     }
 
-    public void setTransportID(int transportID) {
-        this.transportID = transportID;
+    public void setTransportID(int transportId) {
+        this.transportId = transportId;
     }
 
     public void setDepartureLocation(String departureLocation) {
@@ -59,7 +59,7 @@ public class Itinerary {
         this.arrivalLocation = arrivalLocation;
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -71,7 +71,7 @@ public class Itinerary {
     public String toString() {
         return "Itinerary{" +
                 "itineraryId=" + itineraryId +
-                ", transportID=" + transportID +
+                ", transportID=" + transportId +
                 ", departureLocation='" + departureLocation + '\'' +
                 ", arrivalLocation='" + arrivalLocation + '\'' +
                 ", duration=" + duration +

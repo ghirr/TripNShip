@@ -1,4 +1,4 @@
-package org.esprit.tripnship.Services;
+package org.Esprit.TripNShip.Services;
 
 import java.util.List;
 

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane style="-fx-background-color: #111827; -fx-pref-width: 100%; -fx-pref-height: 100%;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.LoginController">
+<StackPane style="-fx-background-color: #111827; -fx-pref-width: 100%; -fx-pref-height: 100%;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.LoginController">
 
     <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" spacing="10">
         <StackPane>
@@ -59,7 +59,7 @@
                 </VBox>
 
                 <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea);                         -fx-text-fill: white; -fx-font-size: 18px;                         -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300;                         -fx-cursor: hand;" text="Login" />
-            <Button fx:id="resetButton1" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Login using Google">
+            <Button fx:id="googleLogin" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Login using Google" onAction="#handleGoogleLogin">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>

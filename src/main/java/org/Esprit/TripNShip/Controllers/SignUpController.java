@@ -2,6 +2,9 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,7 +13,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import org.Esprit.TripNShip.Utils.Shared;
+
+import java.io.IOException;
 
 public class SignUpController {
 
@@ -136,5 +142,19 @@ public class SignUpController {
         }
 
         return Math.min(5, strength);
+    }
+
+    public void handleGoogleSignUp(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login_with_google.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/GoogleLogo.png")));
+            stage.setTitle("SignUp with Google");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

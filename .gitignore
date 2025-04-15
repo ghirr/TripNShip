@@ -30,3 +30,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+tokens
+src/main/resources/credentials.json

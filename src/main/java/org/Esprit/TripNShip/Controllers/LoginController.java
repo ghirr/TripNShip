@@ -1,17 +1,26 @@
 package org.Esprit.TripNShip.Controllers;
 
+import com.google.api.client.auth.oauth2.Credential;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AuthService;
+import org.Esprit.TripNShip.Services.GoogleOAuthService;
 import org.Esprit.TripNShip.Utils.Shared;
+
+import java.io.IOException;
 
 public class LoginController {
     @FXML
@@ -81,6 +90,20 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Problème de connexion à la base de données.");
+        }
+    }
+
+    public void handleGoogleLogin(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login_with_google.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/GoogleLogo.png")));
+            stage.setTitle("Login with Google");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

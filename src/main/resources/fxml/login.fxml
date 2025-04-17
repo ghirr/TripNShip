@@ -27,7 +27,7 @@
 
                 <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
                     <Label style="-fx-font-size: 16px; -fx-text-fill: #333;" text="Email" />
-                    <TextField fx:id="emailField" promptText="Email" style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8;                                       -fx-border-color: #ccc; -fx-border-radius: 8; -fx-pref-width: 300;" />
+                    <TextField fx:id="emailField" promptText="Email" style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8;-fx-border-color: #ccc; -fx-border-radius: 8; -fx-pref-width: 300;" />
                 </VBox>
 
                 <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">

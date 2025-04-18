@@ -221,3 +221,95 @@
 .status-cancelled {
     -fx-background-color: #e74c3c;
 }
+/* Status styles */
+.status-shipped {
+    -fx-background-color: #9b59b6; /* Purple for shipped */
+}
+
+/* Expedition Card hover effects and transitions */
+.expedition-card {
+    -fx-transition: -fx-effect 0.3s, -fx-background-color 0.3s, -fx-translate-y 0.2s;
+}
+
+.expedition-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(142,68,173,0.25), 12, 0, 0, 6);
+    -fx-background-color: derive(white, 2%);
+    -fx-translate-y: -2px;
+    -fx-cursor: hand;
+}
+
+.expedition-card-hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(142,68,173,0.25), 12, 0, 0, 6);
+    -fx-background-color: derive(white, 2%);
+    -fx-translate-y: -2px;
+}
+
+/* Error label style */
+.error-label {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+.tracking-list-view {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 5;
+}
+
+.tracking-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.tracking-entry {
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 1);
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-radius: 3px;
+}
+
+/* Status-based border colors for tracking entries */
+.tracking-entry .status-pending {
+    -fx-border-color: #f39c12;
+}
+
+.tracking-entry .status-shipped {
+    -fx-border-color: #9b59b6;
+}
+
+.tracking-entry .status-in-transit {
+    -fx-border-color: #3498db;
+}
+
+.tracking-entry .status-delivered {
+    -fx-border-color: #2ecc71;
+}
+
+.tracking-entry .status-cancelled {
+    -fx-border-color: #e74c3c;
+}
+
+.tracking-timestamp {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-accent-color;
+}
+
+.tracking-updater {
+    -fx-font-style: italic;
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-dark-gray;
+}
+
+.tracking-location {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray;
+    -fx-padding: 5 0 0 0;
+}
+
+/* Card enhancements for tracking view */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}

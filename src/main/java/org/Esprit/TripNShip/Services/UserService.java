@@ -305,4 +305,33 @@ public class UserService implements IService<User> {
             System.out.println(e.getMessage());
         }
     }
+    public List<Transporter> getAllTransporters() {
+        List<Transporter> transporters = new ArrayList<>();
+        String req = "SELECT * FROM user WHERE role = 'TRANSPORTER'";
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Transporter transporter = new Transporter(
+                        rs.getInt("idUser"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        Gender.valueOf(rs.getString("gender")),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("profilePhoto"),
+                        rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                        rs.getString("phoneNumber"),
+                        TransportType.valueOf(rs.getString("transportType")),
+                        rs.getString("website")
+                );
+                transporters.add(transporter);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching transporters: " + e.getMessage());
+        }
+
+        return transporters;
+    }
+
 }

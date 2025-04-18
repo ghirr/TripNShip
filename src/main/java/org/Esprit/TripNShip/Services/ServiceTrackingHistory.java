@@ -62,7 +62,7 @@ public class ServiceTrackingHistory {
                 );
 
                 TrackingHistory tracking = new TrackingHistory(
-                        rs.getInt("id"),
+                        rs.getInt("idTracking"),
                         new Expedition(expeditionId, null, 0, null, null, 0, null, null, null, null, null, null), // partial stub
                         PackageStatus.valueOf(rs.getString("status")),
                         rs.getString("locationNote"),

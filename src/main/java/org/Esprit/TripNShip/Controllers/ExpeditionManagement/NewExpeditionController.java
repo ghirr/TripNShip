@@ -169,31 +169,31 @@ public class NewExpeditionController implements Initializable {
     }
 
     private void loadTransporters() {
-        // In a real app, we would filter users to get only transporters
-        List<User> allUsers = userService.getAll();
-        List<Transporter> transporters = new ArrayList<>();
 
-        // Filter users to get only transporters
-        for (User user : allUsers) {
-            if (user instanceof Transporter) {
-                transporters.add((Transporter) user);
+            // Utiliser la méthode dédiée qui retourne uniquement les transporteurs
+            List<Transporter> transporters = userService.getAllTransporters();
+
+            // Si aucun transporteur trouvé, ajouter des données fictives
+            if (transporters.isEmpty()) {
+                transporters.add(new Transporter(
+                        1, "John", "Smith", Gender.HOMME, "john@example.com", "password",
+                        "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
+                        "123-456-7890", TransportType.DHL, "www.johnsmith.com"
+                ));
+                transporters.add(new Transporter(
+                        2, "Jane", "Doe", Gender.FEMME, "jane@example.com", "password",
+                        "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
+                        "987-654-3210", TransportType.FEDEX, "www.janedoe.com"
+                ));
             }
-        }
 
-        // If no transporters found in database, use dummy data
-        if (transporters.isEmpty()) {
-            // Dummy transporter data
-            transporters.add(new Transporter(
-                    1, "John", "Smith", Gender.HOMME, "john@example.com", "password",
-                    "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
-                    "123-456-7890", TransportType.DHL, "www.johnsmith.com"
-            ));
-            transporters.add(new Transporter(
-                    2, "Jane", "Doe", Gender.FEMME, "jane@example.com", "password",
-                    "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
-                    "987-654-3210", TransportType.FEDEX, "www.janedoe.com"
-            ));
-        }
+            // Tu peux ensuite utiliser cette liste comme tu le faisais avant
+            // Exemple :
+            for (Transporter t : transporters) {
+                System.out.println("Transporter: " + t.getFirstName() + " " + t.getLastName());
+            }
+
+
 
         transporterCombo.setItems(FXCollections.observableArrayList(transporters));
 

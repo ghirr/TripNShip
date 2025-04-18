@@ -5,7 +5,7 @@ import java.util.Date;
 public class Expedition {
 
     private int expeditionId;
-    private int carrierId;
+    private Transporter transporter;
     private double weight;
     private PackageType packageType;
     private PackageStatus packageStatus;
@@ -18,12 +18,12 @@ public class Expedition {
     private Date lastUpdated;
 
     // Full constructor
-    public Expedition(int expeditionId, int carrierId, double weight, PackageType packageType,
+    public Expedition(int expeditionId, Transporter transporter, double weight, PackageType packageType,
                       PackageStatus packageStatus, double shippingCost, Date sendDate,
                       Date estimatedDeliveryDate, String departureCity, String arrivalCity,
                       String currentLocation, Date lastUpdated) {
         this.expeditionId = expeditionId;
-        this.carrierId = carrierId;
+        this.transporter = transporter;
         this.weight = weight;
         this.packageType = packageType;
         this.packageStatus = packageStatus;
@@ -37,10 +37,10 @@ public class Expedition {
     }
 
     // Constructor without ID
-    public Expedition(int carrierId, double weight, PackageType packageType, PackageStatus packageStatus,
+    public Expedition(Transporter transporter, double weight, PackageType packageType, PackageStatus packageStatus,
                       double shippingCost, Date sendDate, Date estimatedDeliveryDate,
                       String departureCity, String arrivalCity, String currentLocation) {
-        this.carrierId = carrierId;
+        this.transporter = transporter;
         this.weight = weight;
         this.packageType = packageType;
         this.packageStatus = packageStatus;
@@ -61,12 +61,12 @@ public class Expedition {
         this.expeditionId = expeditionId;
     }
 
-    public int getCarrierId() {
-        return carrierId;
+    public Transporter getTransporter() {
+        return transporter;
     }
 
-    public void setCarrierId(int carrierId) {
-        this.carrierId = carrierId;
+    public void setTransporter(Transporter transporter) {
+        this.transporter = transporter;
     }
 
     public double getWeight() {
@@ -153,7 +153,7 @@ public class Expedition {
     public String toString() {
         return "Expedition{" +
                 "expeditionId=" + expeditionId +
-                ", carrierId=" + carrierId +
+                ", transporter=" + (transporter != null ? transporter.getIdUser() : "null") +
                 ", weight=" + weight +
                 ", packageType=" + packageType +
                 ", packageStatus=" + packageStatus +

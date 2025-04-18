@@ -1,46 +1,82 @@
 package org.Esprit.TripNShip.Tests;
 
-
-
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.ServiceExpedition;
 import org.Esprit.TripNShip.Services.ServiceTransporter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public class TestExpeditionCRUD {
+
     public static void main(String[] args) {
-        // Create transporter service
         ServiceTransporter transporterService = new ServiceTransporter();
 
-        // Add new transporters using enum TransportType
-        transporterService.add(new Transporter("La Poste", TransportType.LA_POSTE, "0123456789", "contact@laposte.fr", "https://www.laposte.fr"));
-        transporterService.add(new Transporter("DHL Express", TransportType.DHL, "0987654321", "contact@dhl.com", "https://www.dhl.com"));
+        // 1. Add new transporters
+        Transporter transporter1 = new Transporter(
+                "Jean",
+                "Dupont",
+                Gender.HOMME,
+                "laposte@example.com",
+                "1234",
+                "profile1.png",
+                LocalDateTime.of(1985, 5, 20, 0, 0),
+                "0123456789",
+                TransportType.LA_POSTE,
+                "https://www.laposte.fr"
+        );
 
-        // Update transporter (example: ID = 1)
-        Transporter transporterToModify = new Transporter(1, "La Poste", TransportType.LA_POSTE, "0000000000", "contact@laposte.com", "https://www.laposte.com");
+        transporterService.add(transporter1);
+
+        Transporter transporter2 = new Transporter(
+                "Marie",
+                "Curie",
+                Gender.FEMME,
+                "dhl@example.com",
+                "abcd",
+                "profile2.png",
+                LocalDateTime.of(1990, 3, 10, 0, 0),
+                "0987654321",
+                TransportType.DHL,
+                "https://www.dhl.com"
+        );
+
+        transporterService.add(transporter2);
+
+        // 2. Retrieve all transporters to use real IDs
+        List<Transporter> allTransporters = transporterService.getAll();
+        if (allTransporters.size() < 2) {
+            System.out.println("Error: Not enough transporters found for testing.");
+            return;
+        }
+
+        // 3. Update transporter
+        Transporter transporterToModify = allTransporters.get(0);
+        transporterToModify.setPhoneNumber("0000000000");
+        transporterToModify.setEmail("updated@laposte.com");
         transporterService.update(transporterToModify);
 
-        // Delete transporter (example: ID = 1)
-        Transporter transporterToDelete = new Transporter(1, "Placeholder", TransportType.DHL, "", "", "");
+        // 4. Delete a transporter
+        Transporter transporterToDelete = allTransporters.get(1);
         transporterService.delete(transporterToDelete);
 
-        // Display all transporters
-        System.out.println("List of transporters after operations:");
+        // 5. Display current transporters
+        System.out.println("\nList of transporters:");
         for (Transporter t : transporterService.getAll()) {
             System.out.println(t);
         }
 
-        // ////////////////////////////////////////////
+        // /////////////////////////////////////////
         ServiceExpedition expeditionService = new ServiceExpedition();
 
-        // Add a new expedition
+        // 6. Add a new expedition
         System.out.println("\nAdding a new expedition...");
-        Expedition expedition1 = new Expedition(
-                2,
+        Transporter assignedTransporter = transporterService.getAll().get(0); // get remaining transporter
+        Expedition expedition = new Expedition(
+                assignedTransporter,
                 5.5,
-                PackageType.PARCEL,
+                PackageType.DOCUMENT,
                 PackageStatus.PENDING,
                 20.0,
                 new Date(),
@@ -49,17 +85,17 @@ public class TestExpeditionCRUD {
                 "Marseille",
                 "Warehouse"
         );
-        expedition1.setLastUpdated(new Date());
-        expeditionService.add(expedition1);
+        expedition.setLastUpdated(new Date());
+        expeditionService.add(expedition);
 
-        // Retrieve all expeditions
+        // 7. Retrieve and show all expeditions
         List<Expedition> expeditions = expeditionService.getAll();
-        System.out.println("\nExpeditions retrieved from database:");
+        System.out.println("\nExpeditions retrieved:");
         for (Expedition exp : expeditions) {
             System.out.println(exp);
         }
 
-        // Modify expedition
+        // 8. Update expedition status
         if (!expeditions.isEmpty()) {
             Expedition expeditionToModify = expeditions.get(0);
             expeditionToModify.setPackageStatus(PackageStatus.SHIPPED);
@@ -68,14 +104,14 @@ public class TestExpeditionCRUD {
             System.out.println("\nExpedition updated!");
         }
 
-        // Delete expedition
+        // 9. Delete expedition
         if (!expeditions.isEmpty()) {
             Expedition expeditionToDelete = expeditions.get(0);
             expeditionService.delete(expeditionToDelete);
             System.out.println("\nExpedition deleted!");
         }
 
-        // Final list
+        // 10. Final list of expeditions
         expeditions = expeditionService.getAll();
         System.out.println("\nFinal list of expeditions:");
         for (Expedition exp : expeditions) {

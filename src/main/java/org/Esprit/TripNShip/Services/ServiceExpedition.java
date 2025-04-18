@@ -1,9 +1,6 @@
 package org.Esprit.TripNShip.Services;
 
-
-import org.Esprit.TripNShip.Entities.Expedition;
-import org.Esprit.TripNShip.Entities.PackageStatus;
-import org.Esprit.TripNShip.Entities.PackageType;
+import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
 import java.sql.*;
@@ -12,7 +9,7 @@ import java.util.List;
 
 public class ServiceExpedition implements IService<Expedition> {
 
-    private Connection connection;
+    private final Connection connection;
 
     public ServiceExpedition() {
         connection = MyDataBase.getInstance().getConnection();
@@ -25,7 +22,7 @@ public class ServiceExpedition implements IService<Expedition> {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, expedition.getCarrierId());
+            pst.setInt(1, expedition.getTransporter().getIdUser()); // Now transporter is a User
             pst.setDouble(2, expedition.getWeight());
             pst.setString(3, expedition.getPackageType().name());
             pst.setString(4, expedition.getPackageStatus().name());
@@ -37,10 +34,8 @@ public class ServiceExpedition implements IService<Expedition> {
             pst.setString(10, expedition.getCurrentLocation());
             pst.setDate(11, new Date(expedition.getLastUpdated().getTime()));
 
-            int rowsAffected = pst.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Expedition successfully added!");
-            }
+            pst.executeUpdate();
+            System.out.println("Expedition successfully added!");
         } catch (SQLException e) {
             System.out.println("Error while adding expedition: " + e.getMessage());
         }
@@ -53,7 +48,7 @@ public class ServiceExpedition implements IService<Expedition> {
                 "currentLocation=?, lastUpdated=? WHERE expeditionId=?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, expedition.getCarrierId());
+            pst.setInt(1, expedition.getTransporter().getIdUser());
             pst.setDouble(2, expedition.getWeight());
             pst.setString(3, expedition.getPackageType().name());
             pst.setString(4, expedition.getPackageStatus().name());
@@ -66,10 +61,8 @@ public class ServiceExpedition implements IService<Expedition> {
             pst.setDate(11, new Date(expedition.getLastUpdated().getTime()));
             pst.setInt(12, expedition.getExpeditionId());
 
-            int rowsAffected = pst.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Expedition successfully updated!");
-            }
+            pst.executeUpdate();
+            System.out.println("Expedition successfully updated!");
         } catch (SQLException e) {
             System.out.println("Error while updating expedition: " + e.getMessage());
         }
@@ -82,10 +75,8 @@ public class ServiceExpedition implements IService<Expedition> {
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, expedition.getExpeditionId());
 
-            int rowsAffected = pst.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Expedition successfully deleted!");
-            }
+            pst.executeUpdate();
+            System.out.println("Expedition successfully deleted!");
         } catch (SQLException e) {
             System.out.println("Error while deleting expedition: " + e.getMessage());
         }
@@ -94,13 +85,28 @@ public class ServiceExpedition implements IService<Expedition> {
     @Override
     public List<Expedition> getAll() {
         List<Expedition> expeditionList = new ArrayList<>();
-        String query = "SELECT * FROM expeditions";
+        String query = "SELECT e.*, u.firstName, u.lastName, u.gender, u.email, u.password, u.profilePhoto, u.birthdayDate, u.phoneNumber, u.transportType, u.website " +
+                "FROM expeditions e JOIN users u ON e.carrierId = u.idUser WHERE u.role = 'TRANSPORTER'";
 
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
+                Transporter transporter = new Transporter(
+                        rs.getInt("carrierId"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        Gender.valueOf(rs.getString("gender")),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("profilePhoto"),
+                        rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                        rs.getString("phoneNumber"),
+                        TransportType.valueOf(rs.getString("transportType")),
+                        rs.getString("website")
+                );
+
                 Expedition expedition = new Expedition(
                         rs.getInt("expeditionId"),
-                        rs.getInt("carrierId"),
+                        transporter,
                         rs.getDouble("weight"),
                         PackageType.valueOf(rs.getString("packageType").toUpperCase()),
                         PackageStatus.valueOf(rs.getString("packageStatus").toUpperCase()),
@@ -112,11 +118,13 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getString("currentLocation"),
                         rs.getDate("lastUpdated")
                 );
+
                 expeditionList.add(expedition);
             }
         } catch (SQLException e) {
             System.out.println("Error while retrieving expeditions: " + e.getMessage());
         }
+
         return expeditionList;
     }
 }

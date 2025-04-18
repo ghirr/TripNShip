@@ -27,6 +27,9 @@ public class UserService implements IService<User> {
         else if(user instanceof Client){
             this.addClient((Client) user);
         }
+        else if (user instanceof Transporter) {
+            addTransporter((Transporter) user);
+        }
     }
 
     @Override
@@ -36,6 +39,9 @@ public class UserService implements IService<User> {
         }
         else if(user instanceof Client){
             this.updateClient((Client) user);
+        }
+        else if (user instanceof Transporter) {
+            updateTransporter((Transporter) user);
         }
 
     }
@@ -69,6 +75,7 @@ public class UserService implements IService<User> {
                         rs.getString("email"),rs.getString("profilePhoto"),
                         rs.getDate("birthdayDate").toLocalDate().atStartOfDay(),
                         rs.getString("phoneNumber")));
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -122,6 +129,26 @@ public class UserService implements IService<User> {
             ps.setString(12,employee.getHireDate().toString());
             ps.executeUpdate();
             System.out.println("Employee ajoutée !");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private void addTransporter(Transporter transporter) {
+        String req = "INSERT INTO user (firstName, lastName, gender, role, email, password, profilePhoto, birthdayDate, phoneNumber, transportType, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            ps.setString(1, transporter.getFirstName());
+            ps.setString(2, transporter.getLastName());
+            ps.setString(3, transporter.getGender().name());
+            ps.setString(4, transporter.getRole().name());
+            ps.setString(5, transporter.getEmail());
+            ps.setString(6, transporter.getPassword());
+            ps.setString(7, transporter.getProfilePhoto());
+            ps.setString(8, transporter.getBirthdayDate().toString());
+            ps.setString(9, transporter.getPhoneNumber());
+            ps.setString(10, transporter.getTransportType().name());
+            ps.setString(11, transporter.getWebsite());
+            ps.executeUpdate();
+            System.out.println("Transporter added!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -191,6 +218,27 @@ public class UserService implements IService<User> {
             ps.setInt(13,employee.getIdUser());
             ps.executeUpdate();
             System.out.println("Employee updated !");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private void updateTransporter(Transporter transporter) {
+        String req = "UPDATE user SET firstName=?, lastName=?, gender=?, role=?, email=?, password=?, profilePhoto=?, birthdayDate=?, phoneNumber=?, transportType=?, website=? WHERE id=?";
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            ps.setString(1, transporter.getFirstName());
+            ps.setString(2, transporter.getLastName());
+            ps.setString(3, transporter.getGender().name());
+            ps.setString(4, transporter.getRole().name());
+            ps.setString(5, transporter.getEmail());
+            ps.setString(6, transporter.getPassword());
+            ps.setString(7, transporter.getProfilePhoto());
+            ps.setString(8, transporter.getBirthdayDate().toString());
+            ps.setString(9, transporter.getPhoneNumber());
+            ps.setString(10, transporter.getTransportType().name());
+            ps.setString(11, transporter.getWebsite());
+            ps.setInt(12, transporter.getIdUser());
+            ps.executeUpdate();
+            System.out.println("Transporter updated!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

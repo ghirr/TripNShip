@@ -1,45 +1,31 @@
 package org.Esprit.TripNShip.Entities;
 
-public class Transporter {
+import org.Esprit.TripNShip.Entities.Gender;
+import org.Esprit.TripNShip.Entities.Role;
+import org.Esprit.TripNShip.Entities.TransportType;
+import org.Esprit.TripNShip.Entities.User;
 
-    private int transporterId;
-    private String name;
+import java.time.LocalDateTime;
+
+public final class Transporter extends User {
+
     private TransportType transportType;
-    private String phone;
-    private String email;
     private String website;
 
-    public Transporter(int transporterId, String name, TransportType transportType, String phone, String email, String website) {
-        this.transporterId = transporterId;
-        this.name = name;
+    public Transporter(int idUser, String firstName, String lastName, Gender gender, String email, String password,
+                       String profilePhoto, LocalDateTime birthdayDate, String phoneNumber,
+                       TransportType transportType, String website) {
+        super(idUser, firstName, lastName, gender, Role.TRANSPORTER, email, password, profilePhoto, birthdayDate, phoneNumber);
         this.transportType = transportType;
-        this.phone = phone;
-        this.email = email;
         this.website = website;
     }
 
-    public Transporter(String name, TransportType transportType, String phone, String email, String website) {
-        this.name = name;
+    public Transporter(String firstName, String lastName, Gender gender, String email, String password,
+                       String profilePhoto, LocalDateTime birthdayDate, String phoneNumber,
+                       TransportType transportType, String website) {
+        super(firstName, lastName, gender, Role.TRANSPORTER, email, password, profilePhoto, birthdayDate, phoneNumber);
         this.transportType = transportType;
-        this.phone = phone;
-        this.email = email;
         this.website = website;
-    }
-
-    public int getTransporterId() {
-        return transporterId;
-    }
-
-    public void setTransporterId(int transporterId) {
-        this.transporterId = transporterId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public TransportType getTransportType() {
@@ -48,22 +34,6 @@ public class Transporter {
 
     public void setTransportType(TransportType transportType) {
         this.transportType = transportType;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getWebsite() {
@@ -77,11 +47,16 @@ public class Transporter {
     @Override
     public String toString() {
         return "Transporter{" +
-                "transporterId=" + transporterId +
-                ", name='" + name + '\'' +
+                "idUser=" + getIdUser() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", gender=" + getGender() +
+                ", role=" + getRole() +
+                ", email='" + getEmail() + '\'' +
+                ", profilePhoto='" + getProfilePhoto() + '\'' +
+                ", birthdayDate=" + getBirthdayDate() +
+                ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", transportType=" + transportType +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
                 ", website='" + website + '\'' +
                 '}';
     }

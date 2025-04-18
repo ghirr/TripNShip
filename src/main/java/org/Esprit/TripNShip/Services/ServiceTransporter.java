@@ -1,18 +1,16 @@
 package org.Esprit.TripNShip.Services;
 
-
-
-import org.Esprit.TripNShip.Entities.TransportType;
-import org.Esprit.TripNShip.Entities.Transporter;
+import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceTransporter implements IService<Transporter> {
 
-    private Connection connection;
+    private final Connection connection;
 
     public ServiceTransporter() {
         connection = MyDataBase.getInstance().getConnection();
@@ -20,14 +18,22 @@ public class ServiceTransporter implements IService<Transporter> {
 
     @Override
     public void add(Transporter transporter) {
-        String query = "INSERT INTO transporters (name, transportType, phone, email, website) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (firstName, lastName, gender, role, email, password, profilePhoto, birthdayDate, phoneNumber, transportType, website) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, transporter.getName());
-            pst.setString(2, transporter.getTransportType().name()); // enum to String
-            pst.setString(3, transporter.getPhone());
-            pst.setString(4, transporter.getEmail());
-            pst.setString(5, transporter.getWebsite());
+            pst.setString(1, transporter.getFirstName());
+            pst.setString(2, transporter.getLastName());
+            pst.setString(3, transporter.getGender().name());
+            pst.setString(4, Role.TRANSPORTER.name());
+            pst.setString(5, transporter.getEmail());
+            pst.setString(6, transporter.getPassword());
+            pst.setString(7, transporter.getProfilePhoto());
+            pst.setTimestamp(8, Timestamp.valueOf(transporter.getBirthdayDate()));
+            pst.setString(9, transporter.getPhoneNumber());
+            pst.setString(10, transporter.getTransportType().name());
+            pst.setString(11, transporter.getWebsite());
+
             pst.executeUpdate();
             System.out.println("Transporter added!");
         } catch (SQLException e) {
@@ -37,15 +43,21 @@ public class ServiceTransporter implements IService<Transporter> {
 
     @Override
     public void update(Transporter transporter) {
-        String query = "UPDATE transporters SET name = ?, transportType = ?, phone = ?, email = ?, website = ? WHERE transporterId = ?";
+        String query = "UPDATE users SET firstName = ?, lastName = ?, gender = ?, email = ?, password = ?, profilePhoto = ?, birthdayDate = ?, phoneNumber = ?, transportType = ?, website = ? WHERE idUser = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, transporter.getName());
-            pst.setString(2, transporter.getTransportType().name()); // enum to String
-            pst.setString(3, transporter.getPhone());
+            pst.setString(1, transporter.getFirstName());
+            pst.setString(2, transporter.getLastName());
+            pst.setString(3, transporter.getGender().name());
             pst.setString(4, transporter.getEmail());
-            pst.setString(5, transporter.getWebsite());
-            pst.setInt(6, transporter.getTransporterId());
+            pst.setString(5, transporter.getPassword());
+            pst.setString(6, transporter.getProfilePhoto());
+            pst.setTimestamp(7, Timestamp.valueOf(transporter.getBirthdayDate()));
+            pst.setString(8, transporter.getPhoneNumber());
+            pst.setString(9, transporter.getTransportType().name());
+            pst.setString(10, transporter.getWebsite());
+            pst.setInt(11, transporter.getIdUser());
+
             pst.executeUpdate();
             System.out.println("Transporter updated!");
         } catch (SQLException e) {
@@ -55,10 +67,11 @@ public class ServiceTransporter implements IService<Transporter> {
 
     @Override
     public void delete(Transporter transporter) {
-        String query = "DELETE FROM transporters WHERE transporterId = ?";
+        String query = "DELETE FROM users WHERE idUser = ? AND role = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, transporter.getTransporterId());
+            pst.setInt(1, transporter.getIdUser());
+            pst.setString(2, Role.TRANSPORTER.name());
             pst.executeUpdate();
             System.out.println("Transporter deleted!");
         } catch (SQLException e) {
@@ -69,16 +82,23 @@ public class ServiceTransporter implements IService<Transporter> {
     @Override
     public List<Transporter> getAll() {
         List<Transporter> transporters = new ArrayList<>();
-        String query = "SELECT * FROM transporters";
+        String query = "SELECT * FROM users WHERE role = 'TRANSPORTER'";
 
-        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+
             while (rs.next()) {
                 Transporter transporter = new Transporter(
-                        rs.getInt("transporterId"),
-                        rs.getString("name"),
-                        TransportType.valueOf(rs.getString("transportType").toUpperCase()), // string to enum
-                        rs.getString("phone"),
+                        rs.getInt("idUser"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        Gender.valueOf(rs.getString("gender")),
                         rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("profilePhoto"),
+                        rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                        rs.getString("phoneNumber"),
+                        TransportType.valueOf(rs.getString("transportType")),
                         rs.getString("website")
                 );
                 transporters.add(transporter);

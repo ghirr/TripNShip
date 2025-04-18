@@ -80,17 +80,62 @@ public class ServiceExpedition implements IService<Expedition> {
 
     @Override
     public void delete(Expedition expedition) {
+
+    }
+
+    public boolean update1(Expedition expedition) {
+        String query = "UPDATE expeditions SET " +
+                "clientId = ?, transporterId = ?, weight = ?, packageType = ?, " +
+                "packageStatus = ?, shippingCost = ?, sendDate = ?, estimatedDeliveryDate = ?, " +
+                "departureCity = ?, arrivalCity = ?, currentLocation = ?, lastUpdated = ? " +
+                "WHERE idExpedition = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, expedition.getClient().getIdUser());
+            pst.setInt(2, expedition.getTransporter().getIdUser());
+            pst.setDouble(3, expedition.getWeight());
+            pst.setString(4, expedition.getPackageType().toString());
+            pst.setString(5, expedition.getPackageStatus().toString());
+            pst.setDouble(6, expedition.getShippingCost());
+            pst.setDate(7, new java.sql.Date(expedition.getSendDate().getTime()));
+            pst.setDate(8, new java.sql.Date(expedition.getEstimatedDeliveryDate().getTime()));
+            pst.setString(9, expedition.getDepartureCity());
+            pst.setString(10, expedition.getArrivalCity());
+            pst.setString(11, expedition.getCurrentLocation());
+            pst.setDate(12, new java.sql.Date(expedition.getLastUpdated().getTime())); // Set lastUpdated to current date
+            pst.setInt(13, expedition.getExpeditionId());
+
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error while updating expedition: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean delete1(Expedition expedition) {
         String query = "DELETE FROM expeditions WHERE idExpedition=?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, expedition.getExpeditionId());
+            int affectedRows = pst.executeUpdate();
 
-            pst.executeUpdate();
-            System.out.println("Expedition successfully deleted!");
+            if (affectedRows > 0) {
+                System.out.println("Expedition successfully deleted!");
+                return true;
+            } else {
+                System.out.println("No expedition found with the given ID.");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Error while deleting expedition: " + e.getMessage());
+            return false;
         }
     }
+
 
     @Override
     public List<Expedition> getAll() {

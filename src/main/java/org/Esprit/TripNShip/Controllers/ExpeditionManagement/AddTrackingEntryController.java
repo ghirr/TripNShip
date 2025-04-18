@@ -50,6 +50,7 @@ public class AddTrackingEntryController implements Initializable {
     private ServiceExpedition expeditionService;
     private ServiceTrackingHistory trackingService;
     private TransporterExpeditionsController parentController;
+    private Runnable refreshCallback;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -136,6 +137,12 @@ public class AddTrackingEntryController implements Initializable {
             if (parentController != null) {
                 parentController.refreshExpeditions();
             }
+            // After successful save
+            if (refreshCallback != null) {
+                refreshCallback.run();
+            }
+
+            closeWindow();
 
             closeWindow();
 
@@ -172,5 +179,8 @@ public class AddTrackingEntryController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    public void setCallback(Runnable refreshCallback) {
+        this.refreshCallback = refreshCallback;
     }
 }

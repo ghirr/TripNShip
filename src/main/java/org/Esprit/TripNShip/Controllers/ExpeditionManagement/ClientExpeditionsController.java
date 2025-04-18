@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ClientExpeditionsController implements Initializable {
@@ -134,21 +135,47 @@ public class ClientExpeditionsController implements Initializable {
 
         // Create buttons
         HBox buttons = new HBox();
-        buttons.setSpacing(15);
+        buttons.setSpacing(10);
         buttons.setAlignment(Pos.CENTER_RIGHT);
         buttons.setPadding(new Insets(12, 0, 0, 0));
 
+        // View details button
         Button viewDetailsBtn = new Button("Details");
-        viewDetailsBtn.setPrefWidth(100);
+        viewDetailsBtn.setPrefWidth(90);
         viewDetailsBtn.getStyleClass().addAll("primary-button");
         viewDetailsBtn.setOnAction(event -> handleViewExpedition(expedition));
 
+        // Track history button
         Button trackHistoryBtn = new Button("Track");
-        trackHistoryBtn.setPrefWidth(100);
+        trackHistoryBtn.setPrefWidth(90);
         trackHistoryBtn.getStyleClass().addAll("secondary-button");
         trackHistoryBtn.setOnAction(event -> handleTrackHistory(expedition));
 
-        buttons.getChildren().addAll(viewDetailsBtn, trackHistoryBtn);
+        // Edit button (only available for PENDING expeditions)
+        Button editBtn = new Button("Edit");
+        editBtn.setPrefWidth(90);
+        editBtn.getStyleClass().addAll("neutral-button");
+        editBtn.setOnAction(event -> handleEditExpedition(expedition));
+
+        // Disable edit button if expedition is not in PENDING state
+        if (expedition.getPackageStatus() != PackageStatus.PENDING) {
+            editBtn.setDisable(true);
+            editBtn.setTooltip(new Tooltip("Only PENDING expeditions can be edited"));
+        }
+
+        // Delete button
+        Button deleteBtn = new Button("Delete");
+        deleteBtn.setPrefWidth(90);
+        deleteBtn.getStyleClass().addAll("danger-button");
+        deleteBtn.setOnAction(event -> handleDeleteExpedition(expedition));
+
+        // Disable delete button if expedition is not in PENDING state
+        if (expedition.getPackageStatus() != PackageStatus.PENDING) {
+            deleteBtn.setDisable(true);
+            deleteBtn.setTooltip(new Tooltip("Only PENDING expeditions can be deleted"));
+        }
+
+        buttons.getChildren().addAll(viewDetailsBtn, trackHistoryBtn, editBtn, deleteBtn);
 
         // Add all components to the card
         card.getChildren().addAll(header, content, buttons);
@@ -164,6 +191,8 @@ public class ClientExpeditionsController implements Initializable {
         switch (status) {
             case PENDING:
                 return "status-pending";
+            case SHIPPED:
+                return "status-shipped";
             case IN_TRANSIT:
                 return "status-in-transit";
             case DELIVERED:
@@ -174,8 +203,6 @@ public class ClientExpeditionsController implements Initializable {
                 return "status-pending";
         }
     }
-
-    // In ClientExpeditionsController.java, update the handleNewExpedition method
 
     private void handleNewExpedition() {
         try {
@@ -255,6 +282,62 @@ public class ClientExpeditionsController implements Initializable {
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Could not open tracking history: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void handleEditExpedition(Expedition expedition) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/EditExpedition.fxml"));
+            Parent root = loader.load();
+
+            EditExpeditionController controller = loader.getController();
+            controller.setExpedition(expedition);
+            controller.setParentController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Expedition");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not open edit expedition form: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void handleDeleteExpedition(Expedition expedition) {
+        // Confirm deletion with dialog
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Confirm Deletion");
+        confirmDialog.setHeaderText("Delete Expedition #" + expedition.getExpeditionId() + "?");
+        confirmDialog.setContentText("Are you sure you want to delete this expedition? This action cannot be undone.");
+
+        ButtonType deleteButton = new ButtonType("Delete", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirmDialog.getButtonTypes().setAll(deleteButton, cancelButton);
+
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+
+        if (result.isPresent() && result.get() == deleteButton) {
+            try {
+                // Delete the expedition
+                boolean deleted = expeditionService.delete1(expedition);
+
+                if (deleted) {
+                    showAlert(Alert.AlertType.INFORMATION, "Expedition Deleted",
+                            "Expedition #" + expedition.getExpeditionId() + " has been deleted successfully.");
+
+                    // Refresh expeditions list
+                    loadExpeditions();
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Deletion Failed",
+                            "Could not delete expedition. Please try again.");
+                }
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Deletion Error",
+                        "An error occurred while deleting the expedition: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 

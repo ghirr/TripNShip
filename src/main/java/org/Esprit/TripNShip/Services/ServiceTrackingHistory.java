@@ -79,4 +79,43 @@ public class ServiceTrackingHistory {
 
         return list;
     }
+    public boolean updateTrackingEntry(TrackingHistory tracking) {
+        String query = "UPDATE tracking_history SET status = ?, locationNote = ? WHERE idTracking = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, tracking.getStatus().name());
+            pst.setString(2, tracking.getLocationNote());
+            pst.setInt(3, tracking.getId());
+
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error while updating tracking entry: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteTrackingEntry(int trackingId) {
+        String query = "DELETE FROM tracking_history WHERE idTracking = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, trackingId);
+
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error while deleting tracking entry: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Utility method to get a complete expedition object for a tracking entry
+    public Expedition getExpeditionForTracking(int expeditionId) {
+        ServiceExpedition expeditionService = new ServiceExpedition();
+        return expeditionService.getById(expeditionId);
+    }
 }

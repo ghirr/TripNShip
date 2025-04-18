@@ -200,12 +200,17 @@ public class TransporterExpeditionsController implements Initializable {
         addTrackingBtn.getStyleClass().addAll("secondary-button");
         addTrackingBtn.setOnAction(event -> handleAddTracking(expedition));
 
+        Button manageTrackingBtn = new Button("Manage Tracking");
+        manageTrackingBtn.setPrefWidth(120);
+        manageTrackingBtn.getStyleClass().addAll("neutral-button");
+        manageTrackingBtn.setOnAction(event -> handleViewTrackingHistory(expedition));
+
         Button viewDetailsBtn = new Button("Details");
         viewDetailsBtn.setPrefWidth(100);
         viewDetailsBtn.getStyleClass().addAll("neutral-button");
         viewDetailsBtn.setOnAction(event -> handleViewExpedition(expedition));
 
-        buttons.getChildren().addAll(updateStatusBtn, addTrackingBtn, viewDetailsBtn);
+        buttons.getChildren().addAll(updateStatusBtn, addTrackingBtn, manageTrackingBtn, viewDetailsBtn);
 
         // Add all components to the card
         card.getChildren().addAll(header, content, buttons);
@@ -280,6 +285,30 @@ public class TransporterExpeditionsController implements Initializable {
             stage.show();
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Could not open tracking entry form: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void handleViewTrackingHistory(Expedition expedition) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/ManageTrackingHistory.fxml"));
+            Parent root = loader.load();
+
+            ManageTrackingHistoryController controller = loader.getController();
+
+            // Get the current transporter
+            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
+
+            controller.setExpedition(expedition);
+            controller.setTransporter(transporter);
+            controller.setParentController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Manage Tracking History - Expedition #" + expedition.getExpeditionId());
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not open tracking history manager: " + e.getMessage());
             e.printStackTrace();
         }
     }

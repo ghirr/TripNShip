@@ -87,8 +87,19 @@ public class TrackingHistoryController implements Initializable {
         fromCityLabel.setText(expedition.getDepartureCity());
         toCityLabel.setText(expedition.getArrivalCity());
         currentLocationLabel.setText(expedition.getCurrentLocation());
-        sentDateLabel.setText(dateFormat.format(expedition.getSendDate()));
-        deliveryDateLabel.setText(dateFormat.format(expedition.getEstimatedDeliveryDate()));
+
+        // Safely format dates
+        if (expedition.getSendDate() != null) {
+            sentDateLabel.setText(dateFormat.format(expedition.getSendDate()));
+        } else {
+            sentDateLabel.setText("Not set");
+        }
+
+        if (expedition.getEstimatedDeliveryDate() != null) {
+            deliveryDateLabel.setText(dateFormat.format(expedition.getEstimatedDeliveryDate()));
+        } else {
+            deliveryDateLabel.setText("Not set");
+        }
 
         // Style the status label based on current status
         statusLabel.getStyleClass().clear();
@@ -97,7 +108,6 @@ public class TrackingHistoryController implements Initializable {
         // Load tracking data
         loadTrackingData();
     }
-
     private void loadTrackingData() {
         if (expedition != null) {
             List<TrackingHistory> trackingList = trackingService.getTrackingByExpedition(expedition.getExpeditionId());

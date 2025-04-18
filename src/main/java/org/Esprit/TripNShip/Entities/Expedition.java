@@ -5,6 +5,7 @@ import java.util.Date;
 public class Expedition {
 
     private int expeditionId;
+    private Client client;         // Added client field
     private Transporter transporter;
     private double weight;
     private PackageType packageType;
@@ -17,7 +18,62 @@ public class Expedition {
     private String currentLocation;
     private Date lastUpdated;
 
-    // Full constructor
+    // Full constructor with client
+    public Expedition(int expeditionId, Client client, Transporter transporter, double weight, PackageType packageType,
+                      PackageStatus packageStatus, double shippingCost, Date sendDate,
+                      Date estimatedDeliveryDate, String departureCity, String arrivalCity,
+                      String currentLocation, Date lastUpdated) {
+        this.expeditionId = expeditionId;
+        this.client = client;
+        this.transporter = transporter;
+        this.weight = weight;
+        this.packageType = packageType;
+        this.packageStatus = packageStatus;
+        this.shippingCost = shippingCost;
+        this.sendDate = sendDate;
+        this.estimatedDeliveryDate = estimatedDeliveryDate;
+        this.departureCity = departureCity;
+        this.arrivalCity = arrivalCity;
+        this.currentLocation = currentLocation;
+        this.lastUpdated = lastUpdated;
+    }
+
+    // Constructor without ID but with client
+    public Expedition(Client client, Transporter transporter, double weight, PackageType packageType,
+                      PackageStatus packageStatus, double shippingCost, Date sendDate, Date estimatedDeliveryDate,
+                      String departureCity, String arrivalCity, String currentLocation, Date lastUpdated) {
+        this.client = client;
+        this.transporter = transporter;
+        this.weight = weight;
+        this.packageType = packageType;
+        this.packageStatus = packageStatus;
+        this.shippingCost = shippingCost;
+        this.sendDate = sendDate;
+        this.estimatedDeliveryDate = estimatedDeliveryDate;
+        this.departureCity = departureCity;
+        this.arrivalCity = arrivalCity;
+        this.currentLocation = currentLocation;
+        this.lastUpdated = lastUpdated;
+    }
+
+    // Constructor where transporter can be assigned later
+    public Expedition(Client client, double weight, PackageType packageType, PackageStatus packageStatus,
+                      double shippingCost, Date sendDate, Date estimatedDeliveryDate,
+                      String departureCity, String arrivalCity, String currentLocation, Date lastUpdated) {
+        this.client = client;
+        this.weight = weight;
+        this.packageType = packageType;
+        this.packageStatus = packageStatus;
+        this.shippingCost = shippingCost;
+        this.sendDate = sendDate;
+        this.estimatedDeliveryDate = estimatedDeliveryDate;
+        this.departureCity = departureCity;
+        this.arrivalCity = arrivalCity;
+        this.currentLocation = currentLocation;
+        this.lastUpdated = lastUpdated;
+    }
+
+    // For backward compatibility - you can remove if no longer needed
     public Expedition(int expeditionId, Transporter transporter, double weight, PackageType packageType,
                       PackageStatus packageStatus, double shippingCost, Date sendDate,
                       Date estimatedDeliveryDate, String departureCity, String arrivalCity,
@@ -36,7 +92,7 @@ public class Expedition {
         this.lastUpdated = lastUpdated;
     }
 
-    // Constructor without ID
+    // For backward compatibility - you can remove if no longer needed
     public Expedition(Transporter transporter, double weight, PackageType packageType, PackageStatus packageStatus,
                       double shippingCost, Date sendDate, Date estimatedDeliveryDate,
                       String departureCity, String arrivalCity, String currentLocation) {
@@ -59,6 +115,14 @@ public class Expedition {
 
     public void setExpeditionId(int expeditionId) {
         this.expeditionId = expeditionId;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Transporter getTransporter() {
@@ -153,6 +217,7 @@ public class Expedition {
     public String toString() {
         return "Expedition{" +
                 "expeditionId=" + expeditionId +
+                ", client=" + (client != null ? client.getIdUser() : "null") +
                 ", transporter=" + (transporter != null ? transporter.getIdUser() : "null") +
                 ", weight=" + weight +
                 ", packageType=" + packageType +

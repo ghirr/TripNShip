@@ -1,0 +1,223 @@
+/* Main Colors */
+.root {
+    -fx-primary-color: #8e44ad; /* Purple */
+    -fx-secondary-color: #3498db; /* Light Blue */
+    -fx-accent-color: #2c3e50; /* Dark Blue for contrast */
+    -fx-light-gray: #ecf0f1;
+    -fx-medium-gray: #bdc3c7;
+    -fx-dark-gray: #7f8c8d;
+    -fx-error-color: #e74c3c; /* Red for error messages */
+}
+
+/* Header Styles */
+.header-container {
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 15px;
+    -fx-alignment: center;
+}
+
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Card Styles */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-padding: 20px;
+    -fx-transition: -fx-effect 0.3s;
+}
+
+.card-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent-color;
+}
+
+.card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray;
+}
+
+.card-content {
+    -fx-padding: 15px 0;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 18px;
+    -fx-cursor: hand;
+    -fx-transition: -fx-background-color 0.2s;
+}
+
+.primary-button {
+    -fx-background-color: -fx-primary-color;
+}
+
+.primary-button:hover {
+    -fx-background-color: derive(-fx-primary-color, -15%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
+}
+
+.secondary-button {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.secondary-button:hover {
+    -fx-background-color: derive(-fx-secondary-color, -15%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
+}
+
+.danger-button {
+    -fx-background-color: #e74c3c;
+}
+
+.danger-button:hover {
+    -fx-background-color: derive(#e74c3c, -15%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
+}
+
+.neutral-button {
+    -fx-background-color: -fx-dark-gray;
+}
+
+.neutral-button:hover {
+    -fx-background-color: derive(-fx-dark-gray, -15%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
+}
+
+/* Table Styles */
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -fx-light-gray;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-row-cell {
+    -fx-cell-size: 45px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-light-gray;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.table-row-cell:even {
+    -fx-background-color: white;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+/* Input Field Styles */
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: -fx-light-gray;
+    -fx-background-radius: 5px;
+    -fx-border-color: -fx-medium-gray;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: -fx-secondary-color;
+    -fx-border-width: 2px;
+}
+
+/* Error label style for validation feedback */
+.error-label {
+    -fx-text-fill: -fx-error-color;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-padding: 0 0 0 5px;
+    -fx-wrap-text: true;
+}
+
+/* Logo Container */
+.logo-container {
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    -fx-background-color: #f5f6fa;
+    -fx-padding: 20px;
+}
+
+.expedition-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 4);
+    -fx-padding: 18px;
+    -fx-spacing: 15px;
+    -fx-transition: -fx-effect 0.3s, -fx-background-color 0.3s, -fx-translate-y 0.2s;
+}
+
+/* Add hover effect for expedition cards */
+.expedition-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(142,68,173,0.25), 12, 0, 0, 6);
+    -fx-background-color: derive(white, 2%);
+    -fx-translate-y: -2px;
+    -fx-cursor: hand;
+}
+.expedition-card-hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(142,68,173,0.25), 12, 0, 0, 6);
+    -fx-background-color: derive(white, 2%);
+    -fx-translate-y: -2px;
+    -fx-cursor: hand;
+}
+.expedition-card-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent-color;
+}
+
+.expedition-card-content {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray;
+    -fx-spacing: 8px; /* Added spacing between content items */
+}
+
+.expedition-status {
+    -fx-padding: 6px 12px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.status-pending {
+    -fx-background-color: #f39c12;
+}
+
+.status-in-transit {
+    -fx-background-color: #3498db;
+}
+
+.status-delivered {
+    -fx-background-color: #2ecc71;
+}
+
+.status-cancelled {
+    -fx-background-color: #e74c3c;
+}

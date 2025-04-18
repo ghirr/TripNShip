@@ -49,7 +49,7 @@ public class UserService implements IService<User> {
     @Override
     public void delete(User user) {
 
-    String req = "DELETE FROM user WHERE id=?";
+    String req = "DELETE FROM user WHERE idUser=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setInt(1, user.getIdUser());
@@ -70,7 +70,7 @@ public class UserService implements IService<User> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getInt("id"), rs.getString("firstName"), rs.getString("lastName"),
+                users.add(new User(rs.getInt("idUser"), rs.getString("firstName"), rs.getString("lastName"),
                                     Gender.valueOf(rs.getString("gender")), Role.valueOf(rs.getString("role")),
                         rs.getString("email"),rs.getString("profilePhoto"),
                         rs.getDate("birthdayDate").toLocalDate().atStartOfDay(),
@@ -106,6 +106,68 @@ public class UserService implements IService<User> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+
+    public User getById(int id) {
+        String req = "SELECT * FROM user WHERE idUser = ?";  // Note: using idUser, not id
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String role = rs.getString("role");
+
+                if ("CLIENT".equals(role)) {
+                    // Return a Client object
+                    return new Client(
+                            rs.getInt("idUser"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            Gender.valueOf(rs.getString("gender")),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("profilePhoto"),
+                            rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                            rs.getString("phoneNumber")
+                    );
+                } else if ("TRANSPORTER".equals(role)) {
+                    // Return a Transporter object
+                    return new Transporter(
+                            rs.getInt("idUser"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            Gender.valueOf(rs.getString("gender")),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("profilePhoto"),
+                            rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                            rs.getString("phoneNumber"),
+                            TransportType.valueOf(rs.getString("transportType")),
+                            rs.getString("website")
+                    );
+                } else {
+                    // For any other role, return a base User object
+                    return new User(
+                            rs.getInt("idUser"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            Gender.valueOf(rs.getString("gender")),
+                            Role.valueOf(rs.getString("role")),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("profilePhoto"),
+                            rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                            rs.getString("phoneNumber")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getById: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void addEmployee(Employee employee) {
@@ -166,7 +228,7 @@ public class UserService implements IService<User> {
                     "profilePhoto = ?, " +
                     "birthdayDate = ?, " +
                     "phoneNumber = ? " +
-                    "WHERE id = ?";
+                    "WHERE idUser = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, client.getFirstName());
@@ -200,7 +262,7 @@ public class UserService implements IService<User> {
                 "address = ? ," +
                 "salary = ? ," +
                 "hireDate = ? "+
-                "WHERE id = ?";
+                "WHERE idUser = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, employee.getFirstName());
@@ -223,7 +285,7 @@ public class UserService implements IService<User> {
         }
     }
     private void updateTransporter(Transporter transporter) {
-        String req = "UPDATE user SET firstName=?, lastName=?, gender=?, role=?, email=?, password=?, profilePhoto=?, birthdayDate=?, phoneNumber=?, transportType=?, website=? WHERE id=?";
+        String req = "UPDATE user SET firstName=?, lastName=?, gender=?, role=?, email=?, password=?, profilePhoto=?, birthdayDate=?, phoneNumber=?, transportType=?, website=? WHERE idUser=?";
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setString(1, transporter.getFirstName());
             ps.setString(2, transporter.getLastName());

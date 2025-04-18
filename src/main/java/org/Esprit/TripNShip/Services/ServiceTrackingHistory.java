@@ -38,7 +38,7 @@ public class ServiceTrackingHistory {
         List<TrackingHistory> list = new ArrayList<>();
         String query = "SELECT th.*, u.firstName, u.lastName, u.gender, u.email, u.password, u.profilePhoto, u.birthdayDate, u.phoneNumber, u.transportType, u.website " +
                 "FROM tracking_history th " +
-                "JOIN users u ON th.updatedBy = u.idUser " +
+                "JOIN user u ON th.updatedBy = u.idUser " +
                 "WHERE th.expeditionId = ? " +
                 "ORDER BY th.timestamp ASC";
 

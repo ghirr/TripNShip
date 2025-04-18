@@ -313,3 +313,77 @@
     -fx-background-radius: 8px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
+/* Admin TableView styling */
+.expedition-table {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+}
+
+.expedition-table .column-header-background {
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 0.5em;
+}
+
+.expedition-table .column-header, .expedition-table .filler {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.expedition-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 5px;
+}
+
+.expedition-table .table-row-cell {
+    -fx-cell-size: 45px;
+    -fx-background-color: -fx-table-cell-border-color, white;
+    -fx-border-width: 0;
+}
+
+.expedition-table .table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #f9f9f9;
+}
+
+.expedition-table .table-row-cell:selected {
+    -fx-background-color: derive(-fx-primary-color, 80%);
+}
+
+.expedition-table .table-row-cell:hover {
+    -fx-background-color: derive(-fx-primary-color, 90%);
+}
+
+.expedition-table .table-cell {
+    -fx-padding: 5px;
+    -fx-border-width: 0;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Filter controls */
+.filter-box {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}
+
+/* Admin status bar */
+.status-bar {
+    -fx-background-color: white;
+    -fx-padding: 5px 10px;
+    -fx-border-width: 1px 0 0 0;
+    -fx-border-color: #e0e0e0;
+}
+
+.status-label {
+    -fx-text-fill: -fx-dark-gray;
+    -fx-font-size: 12px;
+}
+
+.timestamp-label {
+    -fx-text-fill: -fx-dark-gray;
+    -fx-font-size: 12px;
+    -fx-alignment: CENTER_RIGHT;
+}

@@ -1,7 +1,6 @@
 package org.Esprit.TripNShip.Services;
 
 
-import org.Esprit.TripNShip.Entities.Type;
 import org.Esprit.TripNShip.Entities.Vehicle;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
@@ -83,14 +82,7 @@ public class VehicleService implements IService<Vehicle> {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Vehicle vehicle = new Vehicle(
-                        rs.getInt("idVehicle"),
-                        rs.getString("brand"),
-                        rs.getString("model"),
-                        rs.getString("licensePlate"),
-                        rs.getFloat("dailyPrice"),
-                        rs.getBoolean("availability"),
-                        Type.values()[rs.getInt("type")],
-                        rs.getInt("idAgency")
+                        rs.getInt("idVehicle")
                 );
                 vehicles.add(vehicle);
             }

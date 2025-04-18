@@ -29,6 +29,9 @@ public class RentalAgency {
         this.vehicles = vehicles;
     }
 
+    public RentalAgency() {
+
+    }
 
 
     public int getIdAgency() {

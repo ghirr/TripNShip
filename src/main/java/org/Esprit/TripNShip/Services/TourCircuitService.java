@@ -1,6 +1,5 @@
 package org.Esprit.TripNShip.Services;
 
-import org.Esprit.TripNShip.Entities.GuideIncluded;
 import org.Esprit.TripNShip.Entities.TourCircuit;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
@@ -30,7 +29,7 @@ public class TourCircuitService implements IService<TourCircuit> {
             pst.setFloat(3, tourCircuit.getPriceCircuit());
             pst.setString(4, tourCircuit.getDuration());
             pst.setString(5, tourCircuit.getDestination());
-            pst.setInt(6, tourCircuit.getGuideIncluded().ordinal());
+            pst.setBoolean(6, tourCircuit.getGuideIncluded());
             pst.executeUpdate();
             System.out.println("Tour circuit added!");
         } catch (SQLException e) {
@@ -48,7 +47,7 @@ public class TourCircuitService implements IService<TourCircuit> {
             pst.setFloat(3, tourCircuit.getPriceCircuit());
             pst.setString(4, tourCircuit.getDuration());
             pst.setString(5, tourCircuit.getDestination());
-            pst.setInt(6, tourCircuit.getGuideIncluded().ordinal());
+            pst.setBoolean(6, tourCircuit.getGuideIncluded());
             pst.setInt(7, tourCircuit.getIdCircuit());
             pst.executeUpdate();
             System.out.println("Tour circuit updated!");
@@ -85,7 +84,7 @@ public class TourCircuitService implements IService<TourCircuit> {
                         rs.getFloat("priceCircuit"),
                         rs.getString("duration"),
                         rs.getString("destination"),
-                        GuideIncluded.values()[rs.getInt("guideIncluded")],
+                        rs.getBoolean("guideIncluded"),
                         new ArrayList<>()
                 );
                 tourCircuits.add(tourCircuit);

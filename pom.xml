@@ -45,7 +45,7 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>
-                       org.Esprit.TripNShip.Tests.MainFXLogin
+                       org.Esprit.TripNShip.Tests.MainFXCircuit
                     </mainClass>
                 </configuration>
             </plugin>

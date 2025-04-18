@@ -28,7 +28,7 @@ public class Vehicle {
         this.idAgency = idAgency;
     }
 
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, int idAgency) {
+    public Vehicle(int idVehicle) {
         this.idVehicle = idVehicle;
         this.brand = brand;
         this.model = model;

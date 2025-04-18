@@ -1,9 +1,7 @@
 package org.Esprit.TripNShip.Services;
 
-import org.Esprit.TripNShip.Entities.CircuitBooking;
-import org.Esprit.TripNShip.Entities.StatusBooking;
+import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
-
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,29 +17,30 @@ public class CircuitBookingService implements IService<CircuitBooking> {
 
     @Override
     public void add(CircuitBooking circuitBooking) {
-        String req = "INSERT INTO circuitbooking (bookingDate, statusBooking, idCircuit) VALUES (?, ?, ?)";
+        String req = "INSERT INTO circuitbooking (bookingDate, statusBooking, idUser, idCircuit) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(circuitBooking.getBookingDate()));
             pst.setInt(2, circuitBooking.getStatusBooking().ordinal());
-            pst.setInt(3, circuitBooking.getIdCircuit());
+            pst.setInt(3, circuitBooking.getUser().getIdUser());
+            pst.setInt(4, circuitBooking.getTourCircuit().getIdCircuit());
             pst.executeUpdate();
             System.out.println("Circuit Booking added!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
     public void update(CircuitBooking circuitBooking) {
-        String req = "UPDATE circuitbooking SET bookingDate=?, statusBooking=?, idCircuit=? WHERE idBooking=?";
+        String req = "UPDATE circuitbooking SET bookingDate=?, statusBooking=?, idUser=?, idCircuit=? WHERE idBooking=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(circuitBooking.getBookingDate()));
             pst.setInt(2, circuitBooking.getStatusBooking().ordinal());
-            pst.setInt(3, circuitBooking.getIdCircuit());
-            pst.setInt(4, circuitBooking.getIdBooking());
+            pst.setInt(3, circuitBooking.getUser().getIdUser());
+            pst.setInt(4, circuitBooking.getTourCircuit().getIdCircuit());
+            pst.setInt(5, circuitBooking.getIdBooking());
             pst.executeUpdate();
             System.out.println("Circuit Booking updated!");
         } catch (SQLException e) {
@@ -70,11 +69,15 @@ public class CircuitBookingService implements IService<CircuitBooking> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
+                User user = new User(rs.getInt("idUser"), null, null, null, null, null, null, null, null);
+                TourCircuit circuit = new TourCircuit(rs.getInt("idCircuit"), null, null, 0f, null, null, null, null);
+
                 CircuitBooking circuitBooking = new CircuitBooking(
                         rs.getInt("idBooking"),
                         rs.getTimestamp("bookingDate").toLocalDateTime(),
                         StatusBooking.values()[rs.getInt("statusBooking")],
-                        rs.getInt("idCircuit")
+                        user,
+                        circuit
                 );
                 circuitBookings.add(circuitBooking);
             }

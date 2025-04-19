@@ -7,8 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static org.Esprit.TripNShip.Utils.Shared.getEnumOrNull;
 
 
 public class UserService implements IService<User> {
@@ -64,10 +68,19 @@ public class UserService implements IService<User> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getInt("id"), rs.getString("firstName"), rs.getString("lastName"),
-                                    Gender.valueOf(rs.getString("gender")), Role.valueOf(rs.getString("role")),
-                        rs.getString("email"),rs.getString("profilePhoto"),
-                        rs.getDate("birthdayDate").toLocalDate().atStartOfDay(),
+                LocalDateTime birthDateTime = null;
+                Date birthDate = rs.getDate("birthDayDate");
+                if (birthDate != null) {
+                    birthDateTime = rs.getDate("birthDayDate").toLocalDate().atStartOfDay();
+                }
+                users.add(new User(rs.getInt("id"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
+                        getEnumOrNull(Role.class, rs.getString("role")),
+                        rs.getString("email"),
+                        rs.getString("profilePhoto"),
+                        birthDateTime,
                         rs.getString("phoneNumber")));
             }
         } catch (SQLException e) {

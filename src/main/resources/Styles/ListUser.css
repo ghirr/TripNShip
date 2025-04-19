@@ -1,0 +1,98 @@
+/* Base styles for the application */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* Modern table styling */
+.modern-table {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 5px;
+}
+
+.modern-table .column-header-background {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-padding: 5px 0;
+}
+
+.modern-table .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10px;
+}
+
+.modern-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 5px 0;
+}
+
+.modern-table .table-row-cell:odd {
+    -fx-background-color: #f9fbff;
+}
+
+.modern-table .table-row-cell:hover {
+    -fx-background-color: #eef5ff;
+}
+
+.modern-table .table-row-cell:selected {
+    -fx-background-color: #e0ecff;
+    -fx-text-fill: #0047AB;
+}
+
+/* Styled pagination for JavaFX's Pagination control */
+.styled-pagination {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.styled-pagination .pagination-control {
+    -fx-background-color: transparent;
+}
+
+.styled-pagination .pagination-control .button {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 5;
+    -fx-padding: 5px;
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+}
+
+.styled-pagination .pagination-control .button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.styled-pagination .pagination-control .number-button {
+    -fx-background-color: #f0f5ff;
+    -fx-background-radius: 5;
+    -fx-text-fill: #4d4d4d;
+    -fx-font-weight: bold;
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+}
+
+.styled-pagination .pagination-control .number-button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.styled-pagination .pagination-control .number-button:selected {
+    -fx-background-color: #4da6ff;
+    -fx-text-fill: white;
+}
+
+/* Button styling */
+.button {
+    -fx-cursor: hand;
+}
+
+/* Search field styling */
+.text-field {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}

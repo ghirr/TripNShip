@@ -80,13 +80,24 @@ public sealed class User permits Client,Employee {
         this.role = role;
     }
 
-    public User(String firstName, String lastName, Role role, String email, String profilePhoto) {
+    public User(int idUser,String firstName, String lastName, Role role, String email, String profilePhoto) {
+        this.idUser = idUser;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.email = email;
         this.profilePhoto = profilePhoto;
     }
+
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = Role.CLIENT;
+        this.email = email;
+        this.password = password;
+    }
+
+
 
     public int getIdUser() {
         return idUser;
@@ -190,5 +201,21 @@ public sealed class User permits Client,Employee {
                 ", birthdayDate=" + birthdayDate +
                 ", phoneNumber='" + phoneNumber
                 ;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(this == obj)
+            return true;
+        if(this.getClass() != obj.getClass())
+            return false;
+        final User user = (User) obj;
+        if(this.idUser != user.getIdUser())
+            return false;
+        if(!this.email.equals(user.getEmail()))
+            return false;
+        return true;
     }
 }

@@ -34,6 +34,10 @@ public class VehicleRental {
         this.user = user;
     }
 
+    public VehicleRental() {
+
+    }
+
     public int getIdRental() {
         return idRental;
     }
@@ -101,5 +105,10 @@ public class VehicleRental {
                 ", vehicle=" + vehicle +
                 ", user=" + user +
                 '}';
+    }
+
+
+    public int getIdAgency() {
+        return 0;
     }
 }

@@ -28,8 +28,8 @@ public class TestCircuitCRUD {
         agencyService.add(agency3);
 
         // === Créer des véhicules ===
-        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, 4);
-        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, 6);
+        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency2);
+        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency3);
 
         vehicleService.add(vehicle1);
         vehicleService.add(vehicle2);

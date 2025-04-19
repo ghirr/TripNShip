@@ -18,10 +18,10 @@ public class MainFXCircuit extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddRentalAgency.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 800, 600);
-        stage.setTitle("Add Rental Agency");
+        stage.setTitle("Add circuit");
         stage.setScene(scene);
         stage.show();
     }

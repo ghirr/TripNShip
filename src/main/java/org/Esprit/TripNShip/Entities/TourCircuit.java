@@ -37,6 +37,10 @@ public class TourCircuit {
         this.circuitList = circuitList;
     }
 
+    public TourCircuit() {
+
+    }
+
     public int getIdCircuit() {
         return idCircuit;
     }

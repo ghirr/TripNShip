@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.RoomController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+        <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="400" spacing="10.0"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;
+                             -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
+                    <!-- Logo -->
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../images/logo.png" />
+                    </ImageView>
+
+                    <!-- Title -->
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Room" />
+
+                    <!-- Form -->
+                    <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+
+                        <!-- Type Room -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Type Room" />
+                        <ChoiceBox fx:id="typeRoomChoiceBox" prefHeight="31.0" prefWidth="215.0"
+                                   style="-fx-font-size: 14px; -fx-background-radius: 8;
+                                          -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <!-- Room Name -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Room Name" />
+                        <TextField fx:id="nameRoomField" promptText="Room Name"
+                                   style="-fx-font-size: 14px; -fx-padding: 10;
+                                          -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <!-- Type Accommodation -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Type Accommodation" />
+                        <ChoiceBox fx:id="typeAccommodationChoiceBox" prefHeight="31.0" prefWidth="215.0"
+                                   style="-fx-font-size: 14px; -fx-background-radius: 8;
+                                          -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <!-- Name Accommodation -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Name Accommodation" />
+                        <ChoiceBox fx:id="nameAccommodationChoiceBox" prefHeight="31.0" prefWidth="215.0"
+                                   style="-fx-font-size: 14px; -fx-background-radius: 8;
+                                          -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <!-- Price -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Price" />
+                        <HBox spacing="5">
+                            <TextField fx:id="priceField" promptText="Price"
+                                       style="-fx-font-size: 14px; -fx-padding: 10;
+                                              -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="DT" />
+                        </HBox>
+
+                    </VBox>
+
+                    <!-- Add Room Button -->
+                    <Button fx:id="addRoomButton"
+                            style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea);
+                                   -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12;
+                                   -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;"
+                            text="Add Room" />
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets top="20" bottom="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

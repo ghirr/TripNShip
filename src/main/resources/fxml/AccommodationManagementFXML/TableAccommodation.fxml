@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.util.Callback?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.Esprit.TripNShip.Controllers.TableAccommodationController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="900" spacing="10"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../images/logo.png" />
+                    </ImageView>
+                    <Label prefHeight="40.0" prefWidth="298.0"
+                           style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;"
+                           text="Accommodations List" />
+                    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+                        <Label style="-fx-text-fill: #222;" text="Show" />
+                        <ComboBox fx:id="entriesComboBox" prefWidth="60">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="5" />
+                                    <String fx:value="10" />
+                                    <String fx:value="25" />
+                                    <String fx:value="50" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Label style="-fx-text-fill: #222;" text="entries" />
+                        <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+                        <StackPane>
+                            <TextField fx:id="searchField" promptText="Search..."
+                                       style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8; -fx-border-color: #ccc; -fx-pref-width: 200; -fx-font-size: 12px;" />
+                        </StackPane>
+                        <!-- Bouton d'ajout -->
+                        <Button fx:id="addButton"
+                                onAction="#handleAddButton"
+                                style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;"
+                                text="Add">
+                            <graphic>
+                                <ImageView fitHeight="18" fitWidth="18">
+                                    <Image url="@../../images/icons8-plus-24.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <!-- Bouton d'export -->
+                        <Button fx:id="exportExcelButton"
+                                style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;"
+                                text="Export">
+                            <graphic>
+                                <ImageView fitHeight="18" fitWidth="18">
+                                    <Image url="@../../images/icons8-plus-24.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <!-- TableView -->
+                    <TableView fx:id="accommodationTable" prefWidth="850"
+                               style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                        <columns>
+                            <TableColumn fx:id="typeColumn" prefWidth="150" text="Type">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="type" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="nameColumn" prefWidth="150" text="Name">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="name" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="addressColumn" prefWidth="200" text="Address">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="address" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="priceColumn" prefWidth="100" text="Price per Night">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="priceNight" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="capacityColumn" prefWidth="100" text="Capacity">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="capacity" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <!-- Colonne Actions avec boutons modifier/supprimer -->
+                            <TableColumn fx:id="actionColumn" prefWidth="150" text="Actions">
+                            </TableColumn>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

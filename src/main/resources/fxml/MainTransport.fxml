@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.MainTransportController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+        <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="400" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/logo.png" />
+                    </ImageView>
+                    <Label alignment="CENTER" prefHeight="107.0" prefWidth="280.0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Main Transport Page" />
+
+                    <Button fx:id="transportButton" onAction="#toTransport" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Transport" />
+               <Button fx:id="itineraryButton" onAction="#toItinerary" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Itinerary" />
+               <Button fx:id="ticketButton" onAction="#toTicket" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Ticket" />
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

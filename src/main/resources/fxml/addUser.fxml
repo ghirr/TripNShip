@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@../Styles/AddUser.css">
+    <children>
+        <VBox spacing="20" alignment="CENTER" prefWidth="600" prefHeight="500"
+              AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+
+            <!-- Bouton de fermeture en haut à droite -->
+            <HBox alignment="TOP_RIGHT">
+                <Button fx:id="closeButton" text="✖"
+                        style="-fx-background-color: transparent; -fx-font-size: 30px;" />
+            </HBox>
+
+            <!-- Titre -->
+            <Label text="Ajouter Employé" style="-fx-font-size: 35px; -fx-font-weight: bold;" />
+
+            <!-- Message de succès -->
+            <HBox fx:id="successMessageBox" spacing="10" alignment="CENTER_LEFT"
+                  styleClass="success-box" visible="false">
+                <ImageView fitWidth="40" fitHeight="40">
+                    <image>
+                        <Image url="@../images/success.png"/>
+                    </image>
+                </ImageView>
+                <Label fx:id="successMessageLabel" text="Employé ajouté avec succès !"
+                       styleClass="success-message"/>
+                <Region /> <!-- Ceci pousse le bouton à droite -->
+                <Button fx:id="closeSuccessButton" text="✖"
+                        styleClass="close-success-btn" AnchorPane.topAnchor="5" AnchorPane.rightAnchor="500"/>
+            </HBox>
+
+            <!-- Espacement -->
+            <Region prefHeight="40" VBox.vgrow="NEVER"/>
+
+            <!-- Formulaire -->
+            <GridPane hgap="15" vgap="10">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10" />
+                </padding>
+
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" prefWidth="100"/>
+                    <ColumnConstraints hgrow="ALWAYS" prefWidth="200"/>
+                    <ColumnConstraints halignment="RIGHT" prefWidth="100"/>
+                    <ColumnConstraints hgrow="ALWAYS" prefWidth="200"/>
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
+
+                <children>
+                    <!-- Prénom et Nom -->
+                    <Label text="Prénom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="firstNameField" promptText="Entrer prénom ici" prefWidth="200"
+                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label fx:id="firstNameErrorLabel" text="" visible="false"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"
+                           style="-fx-text-fill: red;"/>
+
+                    <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                    <TextField fx:id="lastNameField" promptText="Entrer nom ici" prefWidth="200"
+                               GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                    <Label fx:id="lastNameErrorLabel" text="" visible="false"
+                           GridPane.rowIndex="1" GridPane.columnIndex="3"
+                           style="-fx-text-fill: red;"/>
+
+                    <!-- Email et Rôle -->
+                    <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="emailField" promptText="Entrer email ici" prefWidth="200"
+                               GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <Label fx:id="emailErrorLabel" text="" visible="false"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"
+                           style="-fx-text-fill: red;"/>
+
+                    <Label text="Rôle:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                    <ComboBox fx:id="roleComboBox" prefWidth="200"
+                              GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+                </children>
+            </GridPane>
+
+            <!-- Bouton Valider -->
+            <Button fx:id="submitButton" text="Valider"
+                    prefWidth="200" styleClass="gradient-button"/>
+        </VBox>
+    </children>
+</AnchorPane>

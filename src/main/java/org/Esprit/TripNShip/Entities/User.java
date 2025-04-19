@@ -202,4 +202,20 @@ public sealed class User permits Client,Employee {
                 ", phoneNumber='" + phoneNumber
                 ;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(this == obj)
+            return true;
+        if(this.getClass() != obj.getClass())
+            return false;
+        final User user = (User) obj;
+        if(this.idUser != user.getIdUser())
+            return false;
+        if(!this.email.equals(user.getEmail()))
+            return false;
+        return true;
+    }
 }

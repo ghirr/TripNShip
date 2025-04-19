@@ -7,13 +7,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 public class Shared {
 
@@ -55,6 +59,21 @@ public class Shared {
         // The OK button will already be styled by the CSS
 
         alert.showAndWait();
+    }
+
+    public static Optional<ButtonType> deletePopUP(String title){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(title);
+        alert.getDialogPane().getStylesheets().add(Shared.class.getResource("/Styles/styleDeleteAlert.css").toExternalForm());
+        ImageView image = new ImageView(new Image(Shared.class.getResourceAsStream("/images/dangerIcon.png")));
+        image.setFitHeight(30);
+        image.setFitWidth(30);
+        alert.setGraphic(image);
+        // Set custom icon
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.getIcons().add(new Image(Shared.class.getResourceAsStream("/images/deleteIcon.png")));
+        return alert.showAndWait();
     }
 
     public static <T extends Enum<T>> T getEnumOrNull(Class<T> enumType, String value) {

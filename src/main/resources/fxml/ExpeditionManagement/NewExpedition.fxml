@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="800.0" styleClass="dashboard-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.NewExpeditionController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="header-container">
+                    <children>
+                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-container">
+                            <image>
+                                <Image url="@/images/logo.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets right="15.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Label styleClass="header-label" text="Create New Expedition" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="card" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="card-title" text="Expedition Details">
+                            <VBox.margin>
+                                <Insets bottom="25.0" />
+                            </VBox.margin>
+                        </Label>
+                        <GridPane hgap="15.0" vgap="8.0" VBox.vgrow="ALWAYS">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="180.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label styleClass="card-subtitle" text="Weight (kg):" GridPane.halignment="RIGHT">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="weightField" promptText="Enter weight in kg" GridPane.columnIndex="1" />
+                                <Label fx:id="weightErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                <Label styleClass="card-subtitle" text="Package Type:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <ComboBox fx:id="packageTypeCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select package type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label fx:id="packageTypeErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                                <Label styleClass="card-subtitle" text="Departure City:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="departureCityField" promptText="Enter departure city" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Label fx:id="departureCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                                <Label styleClass="card-subtitle" text="Arrival City:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="arrivalCityField" promptText="Enter arrival city" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <Label fx:id="arrivalCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                                <Label styleClass="card-subtitle" text="Send Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <DatePicker fx:id="sendDatePicker" prefHeight="40.0" prefWidth="414.0" promptText="Select send date" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                <Label fx:id="sendDateErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+                                <Label styleClass="card-subtitle" text="Transporter:" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <ComboBox fx:id="transporterCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select a transporter" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                <Label fx:id="transporterErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                            </children>
+                        </GridPane>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                    </padding>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </VBox.margin>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+            </padding>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="80.0" spacing="40.0" style="-fx-background-color: white;">
+            <children>
+                <Button fx:id="createBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="primary-button" text="Create Expedition">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="cancelBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="danger-button" text="Cancel">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </HBox>
+    </bottom>
+</BorderPane>

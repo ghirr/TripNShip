@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;

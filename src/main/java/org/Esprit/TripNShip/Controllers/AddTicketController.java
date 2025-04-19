@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
 
@@ -35,6 +36,8 @@ public class AddTicketController {
         alert.setTitle("SA7it");
         alert.setContentText("Ticket Added !");
         alert.show();
+        Stage stage = (Stage) ticketIdField.getScene().getWindow();
+        stage.close();
     }
 
 

@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -18,6 +15,7 @@ import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ItineraryController {
 
@@ -30,6 +28,7 @@ public class ItineraryController {
     @FXML private TableColumn<String, Itinerary> durationColumn;
     @FXML private TableColumn<Itinerary, Void> actionsColumn;
     private ObservableList<Itinerary> itineraryList = FXCollections.observableArrayList();
+    @FXML Button addItineraryButton;
     ItineraryService is = new ItineraryService();
 
     @FXML
@@ -41,7 +40,7 @@ public class ItineraryController {
         arrivalLocationColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalLocation"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
-        // Charger tous les tickets depuis le service
+        // Charger tous les tickets depuis le service dans l'observableList
         itineraryList.addAll(is.getAll());
 
         // Afficher dans la TableView
@@ -93,11 +92,17 @@ public class ItineraryController {
         }
     }
     private void handleDelete(Itinerary itinerary) {
-        is.delete(itinerary); // appelle ta vraie méthode
-        itineraryTable.getItems().remove(itinerary); // met à jour la table
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText("Are you sure you want to delete this itinerary");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            is.delete(itinerary);
+            itineraryTable.getItems().remove(itinerary);
+        }
+
     }
-
-
 
     private void handleEdit(Itinerary itinerary) {
         try {

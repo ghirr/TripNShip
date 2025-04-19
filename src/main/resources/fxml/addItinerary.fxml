@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +15,6 @@
         <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
             <StackPane style="-fx-padding: 20;">
                 <VBox alignment="CENTER" maxWidth="400" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
-               <Hyperlink prefHeight="11.0" onAction="#toMain" prefWidth="308.0" text="Back To Main" />
                     <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../images/logo.png" />
                     </ImageView>

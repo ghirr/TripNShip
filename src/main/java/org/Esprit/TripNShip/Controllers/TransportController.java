@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -19,6 +16,7 @@ import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 public class TransportController {
@@ -47,10 +45,8 @@ public class TransportController {
         companyWebsiteColumn.setCellValueFactory(new PropertyValueFactory<>("companyWebsite"));
         companyEmailColumn.setCellValueFactory(new PropertyValueFactory<>("companyEmail"));
 
-        // Charger tous les tickets depuis le service
         transportList.addAll(ts.getAll());
 
-        // Afficher dans la TableView
        transportTable.setItems(transportList);
 
         addActionsToTable();
@@ -99,11 +95,17 @@ public class TransportController {
         }
     }
     private void handleDelete(Transport transport) {
-        ts.delete(transport); // appelle ta vraie méthode
-        transportTable.getItems().remove(transport); // met à jour la table
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText("Are you sure you want to delete this transport");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ts.delete(transport);
+            transportTable.getItems().remove(transport);
+        }
+
     }
-
-
 
     private void handleEdit(Transport transport) {
         try {

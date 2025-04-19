@@ -30,7 +30,7 @@ public class AddItineraryController {
         is.add(new Itinerary(itineraryIdField.getText(), transportIdField.getText(),departureLocationField.getText(), arrivalLocationField.getText(),durationField.getText()));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("SA7it");
+        alert.setTitle("Add Itinerary");
         alert.setContentText("itinerary Added !");
         alert.show();
         Stage stage = (Stage) itineraryIdField.getScene().getWindow();

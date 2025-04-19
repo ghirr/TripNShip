@@ -30,8 +30,6 @@ public class ListViewCircuitBookingController {
     @FXML private TableView<CircuitBooking> circuitBookingTable;
     @FXML private TableColumn<CircuitBooking, String> dateColumn;
     @FXML private TableColumn<CircuitBooking, String> statusColumn;
-    @FXML private TableColumn<CircuitBooking, String> tourColumn;
-    @FXML private TableColumn<CircuitBooking, String> clientColumn;
     @FXML private TableColumn<CircuitBooking, Void> actionColumn;
 
     private final CircuitBookingService bookingService = new CircuitBookingService();
@@ -40,7 +38,7 @@ public class ListViewCircuitBookingController {
 
     @FXML
     public void initialize() {
-        // Configuration des colonnes
+
         configureColumns();
 
         // Chargement des données
@@ -68,15 +66,7 @@ public class ListViewCircuitBookingController {
             return new javafx.beans.property.SimpleStringProperty(status != null ? status.toString() : "");
         });
 
-        tourColumn.setCellValueFactory(cellData -> {
-            TourCircuit tour = cellData.getValue().getTourCircuit();
-            return new javafx.beans.property.SimpleStringProperty(tour != null ? tour.getNameCircuit() : "");
-        });
 
-        clientColumn.setCellValueFactory(cellData -> {
-            User user = cellData.getValue().getUser();
-            return new javafx.beans.property.SimpleStringProperty(user != null ? user.getFirstName() : "");
-        });
 
         setupActionColumn();
     }
@@ -111,8 +101,13 @@ public class ListViewCircuitBookingController {
     }
 
     private void loadBookings() {
+        // 1. Récupération des données depuis la base
         List<CircuitBooking> bookings = bookingService.getAll();
+
+        // 2. Mise à jour de la liste observable
         bookingList.setAll(bookings);
+
+        // 3. Affichage des données dans la table
         circuitBookingTable.setItems(bookingList);
     }
 

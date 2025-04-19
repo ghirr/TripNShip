@@ -81,8 +81,6 @@ public class VehicleService implements IService<Vehicle> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                RentalAgency agency = new RentalAgency(rs.getInt("idAgency"), rs.getString("nameAgency"), null, null, 0f, null);
-
 
                 Vehicle vehicle = new Vehicle(
                         rs.getInt("idVehicle"),
@@ -91,8 +89,7 @@ public class VehicleService implements IService<Vehicle> {
                         rs.getString("licensePlate"),
                         rs.getFloat("dailyPrice"),
                         rs.getBoolean("availability"),
-                        Type.values()[rs.getInt("type")],
-                        agency
+                        Type.values()[rs.getInt("type")]
                 );
 
                 vehicles.add(vehicle);

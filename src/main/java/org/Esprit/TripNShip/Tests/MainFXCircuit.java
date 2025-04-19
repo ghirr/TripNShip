@@ -18,7 +18,7 @@ public class MainFXCircuit extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/TourCircuitListView.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 800, 600);
         stage.setTitle("Add circuit");

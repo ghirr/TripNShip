@@ -42,6 +42,9 @@ public class Vehicle {
     public Vehicle(int idVehicle) {
     }
 
+    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type) {
+    }
+
     public int getIdVehicle() {
         return idVehicle;
     }

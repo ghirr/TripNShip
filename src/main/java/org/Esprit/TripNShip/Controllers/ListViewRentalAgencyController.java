@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.CircuitBooking;
 import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Services.RentalAgencyService;
 
@@ -29,7 +30,7 @@ public class ListViewRentalAgencyController {
     @FXML private TableColumn<RentalAgency, String> nameColumn;
     @FXML private TableColumn<RentalAgency, String> addressColumn;
     @FXML private TableColumn<RentalAgency, String> contactColumn;
-    @FXML private TableColumn<RentalAgency, Float> ratingColumn; // Changé de Double à Float
+    @FXML private TableColumn<RentalAgency, Float> ratingColumn;
     @FXML private TableColumn<RentalAgency, Void> actionColumn;
 
     private final RentalAgencyService rentalAgencyService = new RentalAgencyService();
@@ -41,7 +42,7 @@ public class ListViewRentalAgencyController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nameAgency"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("addressAgency"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactAgency"));
-        ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating")); // Notez "rating" et non "note"
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
         // Chargement des données
         loadAgenciesFromDatabase();
@@ -68,6 +69,7 @@ public class ListViewRentalAgencyController {
         agencyList.setAll(agencies);
         agencyTable.setItems(agencyList);
     }
+
 
     private void filterAgencies(String searchText) {
         if (searchText == null || searchText.isEmpty()) {
@@ -102,9 +104,9 @@ public class ListViewRentalAgencyController {
 
                 deleteButton.setOnAction(event -> {
                     RentalAgency agency = getTableView().getItems().get(getIndex());
-                    rentalAgencyService.delete(agency);
-                    loadAgenciesFromDatabase();
+                    handleDeleteAgency(agency);
                 });
+
             }
 
             @Override
@@ -116,9 +118,39 @@ public class ListViewRentalAgencyController {
     }
 
 
-
     private void handleEditAgency(RentalAgency agency) {
-        // Implémentez l'édition d'une agence existante
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateRentalAgency.fxml"));
+            Parent root = loader.load();
+
+            UpdateRentalAgencyController controller = loader.getController();
+
+            controller.setAgencyData(agency);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Modifier Agence de Location");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void handleDeleteAgency(RentalAgency agency) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Delete Agency");
+        alert.setContentText("Are you sure you want to delete this agency?");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                rentalAgencyService.delete(agency);
+                loadAgenciesFromDatabase();
+            }
+        });
     }
 
     private void handleExportExcel() {
@@ -134,11 +166,10 @@ public class ListViewRentalAgencyController {
             Stage stage = new Stage();
             stage.setTitle("Add Rental Agency");
 
-            // Si tu veux une fenêtre modale (bloque la fenêtre parent jusqu'à fermeture)
             stage.initModality(Modality.APPLICATION_MODAL);
 
             stage.setScene(new Scene(root));
-            stage.showAndWait(); // Utilise show() si tu ne veux pas que ça bloque
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

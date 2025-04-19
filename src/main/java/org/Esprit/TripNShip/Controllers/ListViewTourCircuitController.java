@@ -145,11 +145,11 @@ public class ListViewTourCircuitController {
 
     private void handleEditCircuit(TourCircuit circuit) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Esprit/TripNShip/Views/EditTourCircuitForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateTourCircuit.fxml"));
             Parent root = loader.load();
 
-           // EditTourCircuitController controller = loader.getController();
-           // controller.setTourCircuit(circuit);
+
+
 
             Stage stage = new Stage();
             stage.setTitle("Edit Tour Circuit");

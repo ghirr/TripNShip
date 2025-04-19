@@ -73,16 +73,6 @@
                                     <PropertyValueFactory property="status" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="tourColumn" text="Tour Circuit" prefWidth="150">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="tour" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="clientColumn" text="Client" prefWidth="200">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="user.firstName" />
-                                </cellValueFactory>
-                            </TableColumn>
                             <TableColumn fx:id="actionColumn" text="Actions" prefWidth="120" />
                         </columns>
                     </TableView>

@@ -6,13 +6,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AddRentalAgencyController">
+<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.UpdateTourCircuitController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
             <StackPane style="-fx-padding: 20;">
                 <VBox alignment="CENTER" maxWidth="400" spacing="10.0"
                       style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;
-                             -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                             -fx-border-color: #9333ea; -fx-border-width: 2; -fx-border-radius: 10;">
 
                     <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../../images/logo.png" />
@@ -30,14 +30,14 @@
                         <Label text="Description" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                         <TextArea fx:id="descriptionArea" promptText="Enter description" wrapText="true"
                                   style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
-                                         -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                         -fx-pref-width: 300; -fx-pref-height: 100; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <Label text="Price" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                        <Label text="Price (€)" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                         <TextField fx:id="priceField" promptText="Enter price"
                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
                                           -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <Label text="Duration" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                        <Label text="Duration (days)" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                         <TextField fx:id="durationField" promptText="e.g. 3 days"
                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
                                           -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
@@ -47,13 +47,15 @@
                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
                                           -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <Label text="Guide Included?" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <CheckBox fx:id="guideCheckBox" text="Yes"
-                                  style="-fx-font-size: 14px; -fx-padding: 5; -fx-background-radius: 8;" />
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="Guide Included?" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                            <CheckBox fx:id="guideCheckBox" text="Yes"
+                                      style="-fx-font-size: 14px; -fx-padding: 5; -fx-background-radius: 8;" />
+                        </HBox>
 
                     </VBox>
 
-                    <Button fx:id="addCircuitButton" text="Update Circuit"
+                    <Button fx:id="updateCircuitButton" text="Update Circuit" onAction="#handleUpdateAction"
                             style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea);
                                    -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12;
                                    -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" />

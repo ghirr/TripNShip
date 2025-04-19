@@ -7,9 +7,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AddRentalAgencyController">
+<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ListViewVehicleController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
             <StackPane style="-fx-padding: 20;">
@@ -66,41 +65,12 @@
                     <!-- TableView Vehicle -->
                     <TableView fx:id="vehicleTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>
-                            <TableColumn fx:id="brandColumn" text="Brand" prefWidth="100">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="brand" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="modelColumn" text="Model" prefWidth="100">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="model" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="licensePlateColumn" text="License Plate" prefWidth="130">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="licensePlate" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="dailyPriceColumn" text="Daily Price" prefWidth="100">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="dailyPrice" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="availabilityColumn" text="Available" prefWidth="80">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="availability" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="typeColumn" text="Type" prefWidth="100">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="type" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="agencyColumn" text="Agency" prefWidth="120">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="agency.name" />
-                                </cellValueFactory>
-                            </TableColumn>
+                            <TableColumn fx:id="brandColumn" text="Brand" prefWidth="100" />
+                            <TableColumn fx:id="modelColumn" text="Model" prefWidth="100" />
+                            <TableColumn fx:id="licensePlateColumn" text="License Plate" prefWidth="130" />
+                            <TableColumn fx:id="dailyPriceColumn" text="Daily Price" prefWidth="100" />
+                            <TableColumn fx:id="availabilityColumn" text="Available" prefWidth="80" />
+                            <TableColumn fx:id="typeColumn" text="Type" prefWidth="100" />
                             <TableColumn fx:id="actionColumn" text="Actions" prefWidth="120" />
                         </columns>
                     </TableView>

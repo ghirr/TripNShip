@@ -37,7 +37,7 @@ public class AddCircuitBookingController {
 
     @FXML
     private void initialize() {
-        // Charger les statuts dans la ComboBox
+        // Charger les statuts
         statusComboBox.getItems().addAll(StatusBooking.values());
 
         // Charger les users
@@ -62,7 +62,7 @@ public class AddCircuitBookingController {
         });
         tourCircuitComboBox.setButtonCell(tourCircuitComboBox.getCellFactory().call(null));
 
-        // Action bouton
+
         addBookingButton.setOnAction(event -> addCircuitBooking());
     }
 

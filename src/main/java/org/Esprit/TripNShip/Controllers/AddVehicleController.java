@@ -46,7 +46,7 @@ public class AddVehicleController {
         // Charger les agences
         agencyComboBox.getItems().addAll(rentalAgencyService.getAll());
 
-        // Afficher le nom d’agence dans le ComboBox
+        // Afficher le nom d’agence
         agencyComboBox.setCellFactory(lv -> new ListCell<RentalAgency>() {
             @Override
             protected void updateItem(RentalAgency agency, boolean empty) {

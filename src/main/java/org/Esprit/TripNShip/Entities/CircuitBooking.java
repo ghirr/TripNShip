@@ -13,13 +13,6 @@ public class CircuitBooking {
     public CircuitBooking() {
 
     }
-    public CircuitBooking(LocalDateTime bookingDate, StatusBooking statusBooking, User user, TourCircuit tourCircuit) {
-        this.bookingDate = bookingDate;
-        this.statusBooking = statusBooking;
-        this.user = user;
-        this.tourCircuit = tourCircuit;
-    }
-
     public CircuitBooking(int idBooking, LocalDateTime bookingDate, StatusBooking statusBooking, User user, TourCircuit tourCircuit) {
         this.idBooking = idBooking;
         this.bookingDate = bookingDate;
@@ -27,6 +20,16 @@ public class CircuitBooking {
         this.user = user;
         this.tourCircuit = tourCircuit;
     }
+
+    public CircuitBooking(int idBooking, LocalDateTime bookingDate, StatusBooking statusBooking) {
+        this.idBooking = idBooking;
+        this.bookingDate = bookingDate;
+        this.statusBooking = statusBooking;
+
+    }
+
+
+
 
     public int getIdBooking() {
         return idBooking;

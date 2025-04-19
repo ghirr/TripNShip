@@ -1,10 +1,9 @@
 package org.Esprit.TripNShip.Services;
 
-
+import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Entities.Type;
 import org.Esprit.TripNShip.Entities.Vehicle;
 import org.Esprit.TripNShip.Utils.MyDataBase;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,9 +20,9 @@ public class VehicleService implements IService<Vehicle> {
         connection = MyDataBase.getInstance().getConnection();
     }
 
-
     @Override
     public void add(Vehicle vehicle) {
+
         String req = "INSERT INTO vehicle (brand, model, licensePlate, dailyPrice, availability, type, idAgency) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
@@ -33,11 +32,11 @@ public class VehicleService implements IService<Vehicle> {
             pst.setFloat(4, vehicle.getDailyPrice());
             pst.setBoolean(5, vehicle.isAvailability());
             pst.setInt(6, vehicle.getType().ordinal());
-            pst.setInt(7, vehicle.getIdAgency());
+            pst.setInt(7, vehicle.getAgency().getIdAgency());
             pst.executeUpdate();
             System.out.println("Vehicle added!");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+                System.out.println("Add vehicle error: " + e.getMessage());
         }
     }
 
@@ -52,12 +51,12 @@ public class VehicleService implements IService<Vehicle> {
             pst.setFloat(4, vehicle.getDailyPrice());
             pst.setBoolean(5, vehicle.isAvailability());
             pst.setInt(6, vehicle.getType().ordinal());
-            pst.setInt(7, vehicle.getIdAgency());
+            pst.setInt(7, vehicle.getAgency().getIdAgency());
             pst.setInt(8, vehicle.getIdVehicle());
             pst.executeUpdate();
             System.out.println("Vehicle updated!");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Update vehicle error: " + e.getMessage());
         }
     }
 
@@ -70,7 +69,7 @@ public class VehicleService implements IService<Vehicle> {
             pst.executeUpdate();
             System.out.println("Vehicle deleted!");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Delete vehicle error: " + e.getMessage());
         }
     }
 
@@ -82,6 +81,9 @@ public class VehicleService implements IService<Vehicle> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
+                RentalAgency agency = new RentalAgency(rs.getInt("idAgency"), rs.getString("nameAgency"), null, null, 0f, null);
+
+
                 Vehicle vehicle = new Vehicle(
                         rs.getInt("idVehicle"),
                         rs.getString("brand"),
@@ -90,8 +92,9 @@ public class VehicleService implements IService<Vehicle> {
                         rs.getFloat("dailyPrice"),
                         rs.getBoolean("availability"),
                         Type.values()[rs.getInt("type")],
-                        rs.getInt("idAgency")
+                        agency
                 );
+
                 vehicles.add(vehicle);
             }
         } catch (SQLException e) {

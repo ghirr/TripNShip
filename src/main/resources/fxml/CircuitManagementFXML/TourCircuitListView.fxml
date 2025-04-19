@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<StackPane style="-fx-background-color: #111827;"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.Esprit.TripNShip.Controllers.ListViewTourCircuitController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="900" spacing="10"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../images/logo.png" />
+                    </ImageView>
+
+                    <Label text="Tour Circuits" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" />
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+                        <Label text="Show" style="-fx-text-fill: #222;" />
+                        <ComboBox fx:id="entriesComboBox" prefWidth="60">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="5" />
+                                    <String fx:value="10" />
+                                    <String fx:value="25" />
+                                    <String fx:value="50" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Label text="entries" style="-fx-text-fill: #222;" />
+
+                        <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+
+                        <StackPane>
+                            <TextField fx:id="searchField" promptText="Search..."
+                                       style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8; -fx-border-color: #ccc; -fx-pref-width: 200; -fx-font-size: 12px;" />
+                        </StackPane>
+
+                        <Button fx:id="addTourCircuitButton" text="Add"
+                                style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;">
+                            <graphic>
+                                <ImageView fitHeight="18" fitWidth="18">
+                                    <Image url="@../../images/icons8-plus-24.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="exportExcelButton" text="Export"
+                                style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;">
+                            <graphic>
+                                <ImageView fitHeight="18" fitWidth="18">
+                                    <Image url="@../../images/icons8-export-excel-24.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </HBox>
+
+                    <TableView fx:id="tourCircuitTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                        <columns>
+                            <TableColumn fx:id="titleColumn" text="Title" prefWidth="150">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="title" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="locationColumn" text="Location" prefWidth="150">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="location" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="priceColumn" text="Price (€)" prefWidth="100">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="price" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="durationColumn" text="Duration (Days)" prefWidth="100">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="duration" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="agencyColumn" text="Agency" prefWidth="150">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="agencyName" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="actionColumn" text="Actions" prefWidth="120" />
+                        </columns>
+                    </TableView>
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

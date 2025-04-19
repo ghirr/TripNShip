@@ -1,11 +1,9 @@
 package org.Esprit.TripNShip.Entities;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Vehicle {
-
 
     private int idVehicle;
     private String brand;
@@ -14,21 +12,9 @@ public class Vehicle {
     private float dailyPrice;
     private boolean availability;
     private Type type;
-    private int idAgency;
-    private List<VehicleRental> vehicleRentals;
+    private RentalAgency agency;
 
-
-    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, int idAgency) {
-        this.brand = brand;
-        this.model = model;
-        this.licensePlate = licensePlate;
-        this.dailyPrice = dailyPrice;
-        this.availability = availability;
-        this.type = type;
-        this.idAgency = idAgency;
-    }
-
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, int idAgency) {
+    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency agency) {
         this.idVehicle = idVehicle;
         this.brand = brand;
         this.model = model;
@@ -36,12 +22,25 @@ public class Vehicle {
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
-        this.idAgency = idAgency;
-        this.vehicleRentals = new ArrayList<>();
+        this.agency = agency;
     }
 
+    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency agency) {
+        this.brand = brand;
+        this.model = model;
+        this.licensePlate = licensePlate;
+        this.dailyPrice = dailyPrice;
+        this.availability = availability;
+        this.type = type;
+        this.agency = agency;
+    }
 
+    public Vehicle() {
+        
+    }
 
+    public Vehicle(int idVehicle) {
+    }
 
     public int getIdVehicle() {
         return idVehicle;
@@ -99,20 +98,12 @@ public class Vehicle {
         this.type = type;
     }
 
-    public int getIdAgency() {
-        return idAgency;
+    public RentalAgency getAgency() {
+        return agency;
     }
 
-    public void setIdAgency(int idAgency) {
-        this.idAgency = idAgency;
-    }
-
-    public List<VehicleRental> getVehicleRentals() {
-        return vehicleRentals;
-    }
-
-    public void setVehicleRentals(List<VehicleRental> vehicleRentals) {
-        this.vehicleRentals = vehicleRentals;
+    public void setAgency(RentalAgency agency) {
+        this.agency = agency;
     }
 
     @Override
@@ -125,8 +116,7 @@ public class Vehicle {
                 ", dailyPrice=" + dailyPrice +
                 ", availability=" + availability +
                 ", type=" + type +
-                ", idAgency=" + idAgency +
-                ", vehicleRentals=" + vehicleRentals +
+                ", agency=" + agency +
                 '}';
     }
 }

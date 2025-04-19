@@ -1,27 +1,31 @@
 package org.Esprit.TripNShip.Entities;
 
-
 import java.time.LocalDateTime;
-
 
 public class CircuitBooking {
 
     private int idBooking;
     private LocalDateTime bookingDate;
     private StatusBooking statusBooking;
-    private int idCircuit;
+    private User user;
+    private TourCircuit tourCircuit;
 
-    public CircuitBooking(LocalDateTime bookingDate, StatusBooking statusBooking, int idCircuit) {
+    public CircuitBooking() {
+
+    }
+    public CircuitBooking(LocalDateTime bookingDate, StatusBooking statusBooking, User user, TourCircuit tourCircuit) {
         this.bookingDate = bookingDate;
         this.statusBooking = statusBooking;
-        this.idCircuit = idCircuit;
+        this.user = user;
+        this.tourCircuit = tourCircuit;
     }
 
-    public CircuitBooking(int idBooking, LocalDateTime bookingDate, StatusBooking statusBooking, int idCircuit) {
+    public CircuitBooking(int idBooking, LocalDateTime bookingDate, StatusBooking statusBooking, User user, TourCircuit tourCircuit) {
         this.idBooking = idBooking;
         this.bookingDate = bookingDate;
         this.statusBooking = statusBooking;
-        this.idCircuit = idCircuit;
+        this.user = user;
+        this.tourCircuit = tourCircuit;
     }
 
     public int getIdBooking() {
@@ -48,12 +52,20 @@ public class CircuitBooking {
         this.statusBooking = statusBooking;
     }
 
-    public int getIdCircuit() {
-        return idCircuit;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdCircuit(int idCircuit) {
-        this.idCircuit = idCircuit;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public TourCircuit getTourCircuit() {
+        return tourCircuit;
+    }
+
+    public void setTourCircuit(TourCircuit tourCircuit) {
+        this.tourCircuit = tourCircuit;
     }
 
     @Override
@@ -62,7 +74,8 @@ public class CircuitBooking {
                 "idBooking=" + idBooking +
                 ", bookingDate=" + bookingDate +
                 ", statusBooking=" + statusBooking +
-                ", idCircuit=" + idCircuit +
+                ", user=" + user.getIdUser() +
+                ", tourCircuit=" + tourCircuit.getIdCircuit() +
                 '}';
     }
 }

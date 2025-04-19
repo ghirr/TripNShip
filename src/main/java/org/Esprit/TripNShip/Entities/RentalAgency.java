@@ -1,6 +1,8 @@
 package org.Esprit.TripNShip.Entities;
 
 
+import javafx.beans.value.ObservableValue;
+
 import java.util.List;
 
 public class RentalAgency {
@@ -29,6 +31,9 @@ public class RentalAgency {
         this.vehicles = vehicles;
     }
 
+    public RentalAgency() {
+
+    }
 
 
     public int getIdAgency() {
@@ -90,4 +95,5 @@ public class RentalAgency {
                 ", vehicles=" + vehicles +
                 '}';
     }
+
 }

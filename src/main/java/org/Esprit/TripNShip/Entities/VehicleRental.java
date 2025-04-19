@@ -2,7 +2,6 @@ package org.Esprit.TripNShip.Entities;
 
 import java.time.LocalDateTime;
 
-
 public class VehicleRental {
 
     private int idRental;
@@ -10,24 +9,33 @@ public class VehicleRental {
     private LocalDateTime endDate;
     private float totalPrice;
     private StautCircuit statusCircuit;
-    private int idVehicle;
+    private Vehicle vehicle;
+    private User user;
 
-    public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit statusCircuit, int idVehicle) {
+
+    public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
+                         StautCircuit statusCircuit, Vehicle vehicle, User user) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.statusCircuit = statusCircuit;
-        this.idVehicle = idVehicle;
+        this.vehicle = vehicle;
+        this.user = user;
     }
 
-
-    public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice, StautCircuit statusCircuit, int idVehicle) {
+    public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
+                         StautCircuit statusCircuit, Vehicle vehicle, User user) {
         this.idRental = idRental;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.statusCircuit = statusCircuit;
-        this.idVehicle = idVehicle;
+        this.vehicle = vehicle;
+        this.user = user;
+    }
+
+    public VehicleRental() {
+
     }
 
     public int getIdRental() {
@@ -70,12 +78,20 @@ public class VehicleRental {
         this.statusCircuit = status;
     }
 
-    public int getIdVehicle() {
-        return idVehicle;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setIdVehicle(int idVehicle) {
-        this.idVehicle = idVehicle;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -86,7 +102,13 @@ public class VehicleRental {
                 ", endDate=" + endDate +
                 ", totalPrice=" + totalPrice +
                 ", statusCircuit=" + statusCircuit +
-                ", idVehicle=" + idVehicle +
+                ", vehicle=" + vehicle +
+                ", user=" + user +
                 '}';
+    }
+
+
+    public int getIdAgency() {
+        return 0;
     }
 }

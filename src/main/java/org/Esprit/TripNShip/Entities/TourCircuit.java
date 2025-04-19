@@ -12,11 +12,11 @@ public class TourCircuit {
     private float priceCircuit;
     private String duration;
     private String destination;
-    private GuideIncluded guideIncluded;
+    private Boolean guideIncluded;
     private List<TourCircuit> circuitList;
 
 
-    public TourCircuit(int idCircuit, String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, GuideIncluded guideIncluded, List<TourCircuit> circuitList) {
+    public TourCircuit(int idCircuit, String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, Boolean guideIncluded, List<TourCircuit> circuitList) {
         this.idCircuit = idCircuit;
         this.nameCircuit = nameCircuit;
         this.descriptionCircuit = descriptionCircuit;
@@ -27,7 +27,7 @@ public class TourCircuit {
         this.circuitList = new ArrayList<>();
     }
 
-    public TourCircuit(String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, GuideIncluded guideIncluded, List<TourCircuit> circuitList) {
+    public TourCircuit(String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, Boolean guideIncluded, List<TourCircuit> circuitList) {
         this.nameCircuit = nameCircuit;
         this.descriptionCircuit = descriptionCircuit;
         this.priceCircuit = priceCircuit;
@@ -35,6 +35,10 @@ public class TourCircuit {
         this.destination = destination;
         this.guideIncluded = guideIncluded;
         this.circuitList = circuitList;
+    }
+
+    public TourCircuit() {
+
     }
 
     public int getIdCircuit() {
@@ -85,11 +89,11 @@ public class TourCircuit {
         this.destination = destination;
     }
 
-    public GuideIncluded getGuideIncluded() {
+    public Boolean getGuideIncluded() {
         return guideIncluded;
     }
 
-    public void setGuideIncluded(GuideIncluded guideIncluded) {
+    public void setGuideIncluded(Boolean guideIncluded) {
         this.guideIncluded = guideIncluded;
     }
 

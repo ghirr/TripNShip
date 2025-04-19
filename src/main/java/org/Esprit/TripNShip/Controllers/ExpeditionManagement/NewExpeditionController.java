@@ -176,14 +176,14 @@ public class NewExpeditionController implements Initializable {
             // Si aucun transporteur trouvé, ajouter des données fictives
             if (transporters.isEmpty()) {
                 transporters.add(new Transporter(
-                        1, "John", "Smith", Gender.HOMME, "john@example.com", "password",
+                        1, "John", "Smith", Gender.MALE, "john@example.com", "password",
                         "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
-                        "123-456-7890", TransportType.DHL, "www.johnsmith.com"
+                        "123-456-7890", ShippingType.DHL, "www.johnsmith.com"
                 ));
                 transporters.add(new Transporter(
-                        2, "Jane", "Doe", Gender.FEMME, "jane@example.com", "password",
+                        2, "Jane", "Doe", Gender.FEMALE, "jane@example.com", "password",
                         "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
-                        "987-654-3210", TransportType.FEDEX, "www.janedoe.com"
+                        "987-654-3210", ShippingType.FEDEX, "www.janedoe.com"
                 ));
             }
 

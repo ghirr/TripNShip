@@ -11,7 +11,7 @@ public class MainListUsersTest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addUser.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/listUsers.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

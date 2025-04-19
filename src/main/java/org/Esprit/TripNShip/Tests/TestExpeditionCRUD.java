@@ -17,13 +17,13 @@ public class TestExpeditionCRUD {
         Transporter transporter1 = new Transporter(
                 "Jean",
                 "Dupont",
-                Gender.HOMME,
+                Gender.MALE,
                 "laposte@example.com",
                 "1234",
                 "profile1.png",
                 LocalDateTime.of(1985, 5, 20, 0, 0),
                 "0123456789",
-                TransportType.LA_POSTE,
+                ShippingType.LA_POSTE,
                 "https://www.laposte.fr"
         );
 
@@ -32,13 +32,13 @@ public class TestExpeditionCRUD {
         Transporter transporter2 = new Transporter(
                 "Marie",
                 "Curie",
-                Gender.FEMME,
+                Gender.FEMALE,
                 "dhl@example.com",
                 "abcd",
                 "profile2.png",
                 LocalDateTime.of(1990, 3, 10, 0, 0),
                 "0987654321",
-                TransportType.DHL,
+                ShippingType.DHL,
                 "https://www.dhl.com"
         );
 

@@ -2,6 +2,7 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -132,9 +134,9 @@ public class ListUsersController {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colBirthDayDate.setCellValueFactory(new PropertyValueFactory<>("birthdayDate"));
 //        colHireDate.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
-        colRole.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(formatRole(cellData.getValue().getRole())));
+        colRole.setCellValueFactory(cellData -> new SimpleStringProperty(formatRole(cellData.getValue().getRole())));
         colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        colGender.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(formatGender(cellData.getValue().getGender())));
+        colGender.setCellValueFactory(cellData -> new SimpleStringProperty(formatGender(cellData.getValue().getGender())));
 //        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 //        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         setColActions();
@@ -165,7 +167,7 @@ public class ListUsersController {
             Rectangle overlay = new Rectangle();
             overlay.setWidth(primaryScene.getWidth());
             overlay.setHeight(primaryScene.getHeight());
-            overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4)); // Dark transparent gray
+            overlay.setFill(Color.rgb(0, 0, 0, 0.4)); // Dark transparent gray
 
             // Ensure overlay resizes with window
             primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
@@ -230,6 +232,7 @@ public class ListUsersController {
             case SHIPPING_COORDINATOR -> "Shipping Coordinator";
             case CLIENT -> "Client";
             case ADMIN -> "Admin";
+            case TRANSPORTER -> "Transporter";
         };
     }
 

@@ -18,7 +18,7 @@ public class AddTicketController {
     @FXML
     private TextField itineraryIdField;
     @FXML
-    private TextField userIdField;
+    private TextField userEmailField;
     @FXML
     private TextField departureDateField;
     @FXML
@@ -30,7 +30,7 @@ public class AddTicketController {
 
     public void addTicket(ActionEvent event) throws IOException {
         TicketService ts = new TicketService();
-        ts.add(new Ticket(Integer.parseInt(ticketIdField.getText()), itineraryIdField.getText(),Integer.parseInt(userIdField.getText()), LocalDate.parse(departureDateField.getText()),LocalDate.parse(arrivalDateField.getText()),Double.parseDouble(priceField.getText())));
+        ts.add(new Ticket(itineraryIdField.getText(),userEmailField.getText(), LocalDate.parse(departureDateField.getText()),LocalDate.parse(arrivalDateField.getText()),Double.parseDouble(priceField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("SA7it");

@@ -5,24 +5,22 @@ import java.time.LocalDate;
 public class Ticket {
     private int ticketId;
     private String itineraryId;
-    private int userId;
+    private String userEmail;
     private LocalDate departureDate;
     private LocalDate arrivalDate;
     private double price;
 
-    public Ticket(int ticketId, String itineraryId, int userId, LocalDate departureDate, LocalDate arrivalDate, double price) {
-        this.ticketId = ticketId;
+    public Ticket(String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
         this.itineraryId = itineraryId;
-        this.userId = userId;
+        this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
         this.price = price;
     }
 
-    public Ticket(int ticketId, String itineraryId, int userId, LocalDate departureDate, LocalDate arrivalDate) {
-        this.ticketId = ticketId;
+    public Ticket(String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
         this.itineraryId = itineraryId;
-        this.userId = userId;
+        this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
     }
@@ -43,12 +41,12 @@ public class Ticket {
         this.itineraryId = itineraryId;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public LocalDate getDepartureDate() {
@@ -80,7 +78,7 @@ public class Ticket {
         return "Ticket{" +
                 "ticketId=" + ticketId +
                 ", itineraryId='" + itineraryId + '\'' +
-                ", userId=" + userId +
+                ", userEmail=" + userEmail +
                 ", departureDate=" + departureDate +
                 ", arrivalDate=" + arrivalDate +
                 ", price=" + price +

@@ -47,7 +47,7 @@
                                     <PropertyValueFactory property="itineraryId" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="userIdColumn" prefWidth="90.0" text="User Id">
+                            <TableColumn fx:id="userIdColumn" prefWidth="90.0" text="User Email">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="userId" />
                                 </cellValueFactory>

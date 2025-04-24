@@ -21,14 +21,12 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Ticket" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
-                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Ticket ID" />
-                        <TextField fx:id="ticketIdField" maxWidth="Infinity" promptText="e.g Flight/Train number" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary ID" />
-                        <TextField fx:id="itineraryIdField" maxWidth="Infinity" promptText="eg TAR/AF/SNCFT/CTN" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="itineraryIdField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User ID" />
-                        <TextField fx:id="userIdField" maxWidth="Infinity" promptText="e.g TUN DJE" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User Email" />
+                        <TextField fx:id="userEmailField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Date" />
                         <TextField fx:id="departureDateField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

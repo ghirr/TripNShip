@@ -40,11 +40,6 @@
     -fx-background-color: #eef5ff;
 }
 
-.modern-table .table-row-cell:selected {
-    -fx-background-color: #e0ecff;
-    -fx-text-fill: #0047AB;
-}
-
 /* Styled pagination for JavaFX's Pagination control */
 .styled-pagination {
     -fx-padding: 0;

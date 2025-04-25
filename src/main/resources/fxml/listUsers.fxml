@@ -16,7 +16,7 @@
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0047AB;" text="Users List" />
                     <Pane HBox.hgrow="ALWAYS" />
-                    <Button onAction="#showAddEmployeePopup" style="-fx-background-color: linear-gradient(to right, #9966ff, #3366ff); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 10 20 10 20; -fx-cursor: hand; -fx-font-size: 15px;" text="+ Add Amployee" />
+                    <Button onAction="#showAddEmployeePopup" style="-fx-background-color: linear-gradient(to right, #9966ff, #3366ff); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 10 20 10 20; -fx-cursor: hand; -fx-font-size: 15px;" text="+ Add Employee" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10">

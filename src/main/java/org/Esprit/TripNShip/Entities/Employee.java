@@ -22,8 +22,28 @@ public sealed class Employee extends User permits TravelOrganizer,ShippingCoordi
         this.hireDate = hireDate;
     }
 
+    public Employee(String firstname, String lastname, Role role, String email, String address, String password,double salary) {
+        super(firstname, lastname, role, email,password);
+        this.address = address;
+        this.salary = salary;
+        this.hireDate = LocalDateTime.now();
+    }
+
+    public Employee(int idUser, String firstName, String lastName, Gender gender, Role role, String email, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber, String address, double salary, LocalDateTime hireDate) {
+        super(idUser, firstName, lastName, gender, role, email, profilePhoto, birthdayDate, phoneNumber);
+        this.address = address;
+        this.salary = salary;
+        this.hireDate = hireDate;
+    }
+
     public Employee(int idUser, String profilePhoto) {
         super(idUser, profilePhoto);
+    }
+
+    public Employee(int idUser, String firstName, String lastName, Role role, String email, String address, double salary) {
+        super(idUser, firstName, lastName, role, email);
+        this.address = address;
+        this.salary = salary;
     }
 
     public String getAddress() {

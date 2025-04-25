@@ -97,7 +97,33 @@ public sealed class User permits Client,Employee {
         this.password = password;
     }
 
+    public User(String firstName, String lastName, Role role, String email , String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+    }
 
+    public User(int idUser, String firstName, String lastName, Role role, String email, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber, Gender gender) {
+        this.idUser = idUser;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+        this.profilePhoto = profilePhoto;
+        this.birthdayDate = birthdayDate;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+    }
+
+    public User(int idUser, String firstName, String lastName, Role role, String email) {
+        this.idUser = idUser;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+    }
 
     public int getIdUser() {
         return idUser;

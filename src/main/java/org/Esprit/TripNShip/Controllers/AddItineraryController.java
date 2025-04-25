@@ -18,8 +18,8 @@ import java.io.IOException;
 
 public class AddItineraryController {
     @FXML
-    private TextField itineraryIdField;
-    @FXML private TextField transportIdField;
+    private TextField itineraryCodeField;
+    @FXML private TextField transporterReferenceField;
     @FXML private TextField departureLocationField;
     @FXML private TextField arrivalLocationField;
     @FXML private TextField durationField;
@@ -27,13 +27,13 @@ public class AddItineraryController {
 
     public void addItinerary(ActionEvent event) throws IOException {
         ItineraryService is = new ItineraryService();
-        is.add(new Itinerary(itineraryIdField.getText(), transportIdField.getText(),departureLocationField.getText(), arrivalLocationField.getText(),durationField.getText()));
+        is.add(new Itinerary(itineraryCodeField.getText(), transporterReferenceField.getText(),departureLocationField.getText(), arrivalLocationField.getText(),durationField.getText()));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Add Itinerary");
         alert.setContentText("itinerary Added !");
         alert.show();
-        Stage stage = (Stage) itineraryIdField.getScene().getWindow();
+        Stage stage = (Stage) itineraryCodeField.getScene().getWindow();
         stage.close();
     }
     public void toMain(ActionEvent event) throws IOException {

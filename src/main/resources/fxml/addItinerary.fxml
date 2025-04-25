@@ -21,11 +21,11 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Itinerary" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
-                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary ID" />
-                        <TextField fx:id="itineraryIdField" maxWidth="Infinity" promptText="e.g Flight/Train number" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary Code" />
+                        <TextField fx:id="itineraryCodeField" maxWidth="Infinity" promptText="e.g Flight/Train number" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transport ID" />
-                        <TextField fx:id="transportIdField" maxWidth="Infinity" promptText="eg TAR/AF/SNCFT/CTN" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transporter Reference" />
+                        <TextField fx:id="transporterReferenceField" maxWidth="Infinity" promptText="eg TAR/AF/SNCFT/CTN" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Location" />
                         <TextField fx:id="departureLocationField" maxWidth="Infinity" promptText="e.g TUN DJE" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

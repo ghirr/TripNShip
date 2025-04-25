@@ -49,6 +49,11 @@
                                     <PropertyValueFactory property="transportId" />
                                 </cellValueFactory>
                             </TableColumn>
+                     <TableColumn fx:id="transporterReferenceColumn" prefWidth="75.0" text="Transporter Reference" >
+                         <cellValueFactory>
+                             <PropertyValueFactory property="transporterReference" />
+                         </cellValueFactory>
+                     </TableColumn>
                             <TableColumn fx:id="transportationColumn" prefWidth="102.0" text="Transportation">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="transportation" />

@@ -21,9 +21,10 @@ import java.util.Optional;
 
 public class TransportController {
 
-    @FXML private Button addTicketButton;
+    @FXML private Button addTransportButton;
     @FXML private TableView<Transport> transportTable;
-    @FXML private TableColumn<String, Transport> transportIdColumn;
+    @FXML private TableColumn<Integer, Transport> transportIdColumn;
+    @FXML private TableColumn<String, Transport> transporterReferenceColumn;
     @FXML private TableColumn<TransportType, Transport> transportationColumn;
     @FXML private TableColumn<String, Transport> companyNameColumn;
     @FXML private TableColumn<Integer, Transport> companyPhoneColumn;
@@ -39,6 +40,7 @@ public class TransportController {
     public void initialize() {
         // Lier les colonnes aux attributs
         transportIdColumn.setCellValueFactory(new PropertyValueFactory<>("transportId"));
+        transporterReferenceColumn.setCellValueFactory(new PropertyValueFactory<>("transporterReference"));
         transportationColumn.setCellValueFactory(new PropertyValueFactory<>("transportation"));
         companyNameColumn.setCellValueFactory(new PropertyValueFactory<>("companyName"));
         companyPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("companyPhone"));

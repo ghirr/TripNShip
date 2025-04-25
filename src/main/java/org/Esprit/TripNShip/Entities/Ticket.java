@@ -18,6 +18,15 @@ public class Ticket {
         this.price = price;
     }
 
+    public Ticket(int ticketId, String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
+        this.ticketId = ticketId;
+        this.itineraryId = itineraryId;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.price = price;
+    }
+
     public Ticket(String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
         this.itineraryId = itineraryId;
         this.userEmail = userEmail;

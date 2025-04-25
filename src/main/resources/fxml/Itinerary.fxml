@@ -49,9 +49,14 @@
                                     <PropertyValueFactory property="itineraryId" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="transportIdColumn" prefWidth="200" text="transport Id">
+                     <TableColumn fx:id="itineraryCodeColumn" prefWidth="150" text="Itinerary Code">
+                        <cellValueFactory>
+                           <PropertyValueFactory property="itineraryCode" />
+                        </cellValueFactory>
+                     </TableColumn>
+                            <TableColumn fx:id="transporterReferenceColumn" prefWidth="200" text="Transporter Reference">
                                 <cellValueFactory>
-                                    <PropertyValueFactory property="transportId" />
+                                    <PropertyValueFactory property="transportReference" />
                                 </cellValueFactory>
                             </TableColumn>
                             <TableColumn fx:id="departureLocationColumn" prefWidth="150" text="Departure Location">

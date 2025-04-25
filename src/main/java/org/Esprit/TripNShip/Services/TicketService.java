@@ -71,7 +71,7 @@ public class TicketService implements IService<Ticket>{
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs= pst.executeQuery();
             while (rs.next()){
-                tickets.add(new Ticket(rs.getString("itineraryId"),rs.getString("userEmail"), rs.getDate("departureDate").toLocalDate(), rs.getDate("arrivalDate").toLocalDate(),rs.getDouble("price")));
+                tickets.add(new Ticket(rs.getInt("ticketId"),rs.getString("itineraryId"),rs.getString("userEmail"), rs.getDate("departureDate").toLocalDate(), rs.getDate("arrivalDate").toLocalDate(),rs.getDouble("price")));
             }
 
         } catch (Exception e) {

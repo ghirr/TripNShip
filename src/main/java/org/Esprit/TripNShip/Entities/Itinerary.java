@@ -1,26 +1,36 @@
 package org.Esprit.TripNShip.Entities;
 
 public class Itinerary {
-    private String itineraryId;
-    private String transportId;
+    private int itineraryId;
+    private String itineraryCode;
+    private String transporterReference;
     private String departureLocation;
     private String arrivalLocation;
     private String duration;
 
-    public Itinerary(String itineraryId, String transportId, String departureLocation, String arrivalLocation, String duration) {
-        this.itineraryId = itineraryId;
-        this.transportId = transportId;
+    public Itinerary(String itineraryCode, String transporterReference, String departureLocation, String arrivalLocation, String duration) {
+        this.itineraryCode = itineraryCode;
+        this.transporterReference = transporterReference;
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.duration = duration;
     }
 
-    public String getItineraryId() {
-        return itineraryId;
+    public Itinerary(int itineraryId, String itineraryCode, String transporterReference, String departureLocation, String arrivalLocation, String duration) {
+        this.itineraryId = itineraryId;
+        this.itineraryCode = itineraryCode;
+        this.transporterReference = transporterReference;
+        this.departureLocation = departureLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.duration = duration;
     }
 
-    public String getTransportId() {
-        return transportId;
+    public String getItineraryCode() {
+        return itineraryCode;
+    }
+
+    public String getTransporterReference() {
+        return transporterReference;
     }
 
     public String getDepartureLocation() {
@@ -35,12 +45,12 @@ public class Itinerary {
         return duration;
     }
 
-    public void setItineraryId(String itineraryId) {
-        this.itineraryId = itineraryId;
+    public void setItineraryCode(String itineraryCode) {
+        this.itineraryCode = this.itineraryCode;
     }
 
-    public void setTransportId(String transportId) {
-        this.transportId = transportId;
+    public void setTransporterReference(String transporterReference) {
+        this.transporterReference = transporterReference;
     }
 
     public void setDepartureLocation(String departureLocation) {
@@ -59,11 +69,20 @@ public class Itinerary {
     @Override
     public String toString() {
         return "Itinerary{" +
-                "itineraryId=" + itineraryId +
-                ", transportID=" + transportId +
+                "itineraryId=" + itineraryId+
+                "itineraryCode=" + itineraryCode +
+                ", transporterReference=" + transporterReference +
                 ", departureLocation='" + departureLocation + '\'' +
                 ", arrivalLocation='" + arrivalLocation + '\'' +
                 ", duration=" + duration +
                 '}';
+    }
+
+    public int getItineraryId() {
+        return itineraryId;
+    }
+
+    public void setItineraryId(int itineraryId) {
+        this.itineraryId = itineraryId;
     }
 }

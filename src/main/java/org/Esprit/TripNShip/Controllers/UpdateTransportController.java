@@ -10,14 +10,14 @@ import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
 
 public class UpdateTransportController {
-    @FXML
-    private TextField transportIdField;
+    @FXML private TextField transportIdField;
+    @FXML private TextField transporterReferenceField;
     @FXML private TextField transportationField;
     @FXML private TextField companyNameField;
     @FXML private TextField companyPhoneField;
     @FXML private TextField companyEmailField;
     @FXML private TextField companyWebsiteField;
-    @FXML private Button addTransportButton;
+    @FXML private Button updateTransportButton;
 
 
     private final TransportService ts = new TransportService();
@@ -25,7 +25,8 @@ public class UpdateTransportController {
 
     public void setTransport(Transport transport) {
         this.transport = transport;
-        transportIdField.setText(transport.getTransportId());
+        transportIdField.setText(Integer.toString(transport.getTransportId()));
+        transporterReferenceField.setText(transport.getTransporterReference());
         transportationField.setText(String.valueOf(transport.getTransportation()));
         companyNameField.setText(transport.getCompanyName());
         companyPhoneField.setText(Integer.toString(transport.getCompanyPhone()));
@@ -35,7 +36,8 @@ public class UpdateTransportController {
 
     @FXML
     private void saveTransport() {
-        transport.setTransportId(transportIdField.getText());
+        transport.setTransportId(Integer.parseInt(transportIdField.getText()));
+        transport.setTransporterReference(transporterReferenceField.getText());
         transport.setTransportation(TransportType.valueOf((transportationField.getText())));
         transport.setCompanyName(companyNameField.getText());
         transport.setCompanyPhone(Integer.parseInt((companyPhoneField.getText())));

@@ -9,8 +9,7 @@ public class ItineraryTest {
         Itinerary itnerary1 = new Itinerary("TUN01", "TAR", "TUN", "ORY", "2:15");
         is.add(itnerary1);
         Itinerary itnerary2 = new Itinerary("TUN02", "TAR", "ORY", "TUN", "2:00");
-        itnerary2.setItineraryId("AF01");
-        itnerary2.setTransportId("AIRFRANCE");
+        itnerary2.setTransporterReference("AIRFRANCE");
         is.update(itnerary2);
     }
 }

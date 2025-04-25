@@ -22,7 +22,8 @@ public class ItineraryController {
     @FXML
     private TableView<Itinerary> itineraryTable;
     @FXML private TableColumn<String, Itinerary> itineraryIdColumn;
-    @FXML private TableColumn<String, Itinerary> transportIdColumn;
+    @FXML private TableColumn<String, Itinerary> itineraryCodeColumn;
+    @FXML private TableColumn<String, Itinerary> transporterReferenceColumn;
     @FXML private TableColumn<String, Itinerary> departureLocationColumn;
     @FXML private TableColumn<String, Itinerary> arrivalLocationColumn;
     @FXML private TableColumn<String, Itinerary> durationColumn;
@@ -35,7 +36,8 @@ public class ItineraryController {
     public void initialize() {
         // Lier les colonnes aux attributs
         itineraryIdColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryId"));
-        transportIdColumn.setCellValueFactory(new PropertyValueFactory<>("transportId"));
+        itineraryCodeColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryCode"));
+        transporterReferenceColumn.setCellValueFactory(new PropertyValueFactory<>("transporterReference"));
         departureLocationColumn.setCellValueFactory(new PropertyValueFactory<>("departureLocation"));
         arrivalLocationColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalLocation"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));

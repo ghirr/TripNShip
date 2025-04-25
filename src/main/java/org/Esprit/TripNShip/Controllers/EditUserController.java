@@ -8,6 +8,7 @@ import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.UserService;
 import org.Esprit.TripNShip.Utils.EmailSender;
+import org.Esprit.TripNShip.Utils.Shared;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,76 +16,65 @@ import java.util.Map;
 import static org.Esprit.TripNShip.Utils.Shared.generateRandomPassword;
 import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
+public class EditUserController {
 
-public class AddUserController {
     @FXML
-    private TextField firstNameField, lastNameField, emailField, addressField,salaryField;
+    private TextField firstNameField, lastNameField, emailField, addressField, salaryField;
     @FXML
     private ComboBox<String> roleComboBox;
     @FXML
-    private Label firstNameErrorLabel, lastNameErrorLabel, emailErrorLabel, addressErrorLabel, salaryErrorLabel;
-
+    private Label firstNameErrorLabel, lastNameErrorLabel, emailErrorLabel,addressErrorLabel, salaryErrorLabel;
     @FXML
     private Button closeButton, submitButton;
 
-
-    private final UserService userService = new UserService();
+    private Employee currentUser;
     private final Map<String, Role> roleMap = new HashMap<>();
+    private final UserService userService = new UserService();
 
     @FXML
     private void initialize() {
+
         roleMap.put("Accommodation Specialist", Role.ACCOMMODATION_SPECIALIST);
         roleMap.put("Admin", Role.ADMIN);
         roleMap.put("Shipping Coordinator", Role.SHIPPING_COORDINATOR);
         roleMap.put("Tour Coordinator", Role.TOUR_COORDINATOR);
         roleMap.put("Travel Organizer", Role.TRAVEL_ORGANIZER);
         roleComboBox.getItems().addAll(roleMap.keySet());
-        roleComboBox.setValue("Accommodation Specialist");
 
         firstNameField.textProperty().addListener((observable, oldValue, newValue) -> validateRequiredField("firstName",firstNameField,firstNameErrorLabel));
         lastNameField.textProperty().addListener((observable, oldValue, newValue) -> validateRequiredField("lastName",lastNameField,lastNameErrorLabel));
         addressField.textProperty().addListener((observable, oldValue, newValue) -> validateRequiredField("adress", addressField, addressErrorLabel));
-        emailField.textProperty().addListener((observable, oldValue, newValue) -> validateEmail());
+        emailField.setDisable(true);
         salaryField.textProperty().addListener((observable, oldValue, newValue) -> validateSalary());
+
 
         closeButton.setOnAction(e -> {
             Stage stage = (Stage) closeButton.getScene().getWindow();
             stage.close();
         });
 
-        updateSubmitButtonState();
+
+//        updateSubmitButtonState();
     }
 
-    @FXML
-    private void handleSubmit() {
-        if (submitButton.isDisabled()) {
-            return;
+    public void setUserData(Employee user) {
+        if (user != null) {
+            this.currentUser =user;
+            firstNameField.setText(user.getFirstName());
+            lastNameField.setText(user.getLastName());
+            emailField.setText(user.getEmail());
+            if (user.getRole()!=Role.CLIENT){
+                addressField.setText(user.getAddress());
+                salaryField.setText(String.valueOf(user.getSalary()));
+            }
+            else{
+                addressField.setDisable(true);
+                salaryField.setDisable(true);
+                roleComboBox.setDisable(true);
+            }
+            roleComboBox.setValue(user.getRole().toString());
         }
-
-        String email = emailField.getText().trim();
-        if (userService.getUserByEmail(email)) {
-            showAlert(Alert.AlertType.ERROR, "Error", "This Email is already used !");
-            return;
-        }
-
-        String firstName = firstNameField.getText().trim();
-        String lastName = lastNameField.getText().trim();
-        Role role = roleMap.get(roleComboBox.getValue());
-        String address = addressField.getText().trim();
-        double salary = Double.parseDouble(salaryField.getText().trim());
-        String password = generateRandomPassword();
-
-        User newUser = new Employee(firstName,lastName,role,email,address,password,salary);
-        userService.add(newUser);
-        new Thread(() -> EmailSender.accountEmail(email, firstName + " " + lastName, password)).start();
-        ListUsersController.getInstance().reloadUserList();
-        ((Stage) submitButton.getScene().getWindow()).close();
-
-//              Shared.showAlert(Alert.AlertType.INFORMATION,"Sucess",firstName+" "+lastName+" user added");
-
-
     }
-
 
     private void validateRequiredField(String fieldName,TextField field,Label labelError) {
         String firstName = field.getText().trim();
@@ -96,14 +86,26 @@ public class AddUserController {
         updateSubmitButtonState();
     }
 
-    private void validateEmail() {
-        String email = emailField.getText().trim();
-        if (email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+$")) {
-            showError(emailField, emailErrorLabel, "❌ Email invalid !");
-        } else {
-            showSuccess(emailField, emailErrorLabel, "✅ Email valid !");
+       @FXML
+    private void handleSubmit() {
+        if (submitButton.isDisabled()) {
+            return;
         }
-        updateSubmitButtonState();
+
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        Role role = roleMap.get(roleComboBox.getValue());
+        if(role==null){
+            role = Role.valueOf(roleComboBox.getValue());
+        }
+        String address = addressField.getText().trim();
+        double salary = Double.parseDouble(salaryField.getText().trim());
+
+        User newUser = new Employee(this.currentUser.getIdUser(),firstName,lastName,role,this.currentUser.getEmail(),address,salary);
+        userService.update(newUser);
+           ListUsersController.getInstance().reloadUserList();
+        ((Stage) submitButton.getScene().getWindow()).close();
+
     }
 
     private void validateSalary() {
@@ -121,7 +123,6 @@ public class AddUserController {
     private void updateSubmitButtonState() {
         boolean isValid = firstNameErrorLabel.getText().contains("✅") &&
                 lastNameErrorLabel.getText().contains("✅") &&
-                emailErrorLabel.getText().contains("✅") &&
                 addressErrorLabel.getText().contains("✅") &&
                 salaryErrorLabel.getText().contains("✅");
 

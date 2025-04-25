@@ -17,9 +17,13 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.Optional;
 
 public class Shared {
+
+    private static final String CHARS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
     public static void switchScene(ActionEvent event, URL fxmlFile , String title) {
         try {
@@ -28,36 +32,26 @@ public class Shared {
             FXMLLoader loader = new FXMLLoader(fxmlFile);
             Parent root = loader.load();
             Scene scene = new Scene(root);
-//            primaryStage.setMaximized(true);
-//            primaryStage.setFullScreen(true);
             primaryStage.setMaximized(false);
             primaryStage.setScene(scene);
             primaryStage.setMaximized(true);
-//            primaryStage.setMaximized(true);
             primaryStage.setTitle(title);
-//            primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            //showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger la page : " + fxmlFile);
         }
     }
 
     public static void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
-        alert.setHeaderText(null); // Remove header text
+        alert.setHeaderText(null);
         alert.setContentText(message);
-
         // Apply CSS
         DialogPane dialogPane = alert.getDialogPane();
-//        dialogPane.getStylesheets().add(getClass().getResource("/Styles/custom-alert.css").toExternalForm());
-
         // Make window draggable
         alert.initStyle(StageStyle.TRANSPARENT);
-
         // The OK button will already be styled by the CSS
-
         alert.showAndWait();
     }
 
@@ -82,6 +76,16 @@ public class Shared {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+    public static String generateRandomPassword() {
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+        for (int i = 0; i < 15; i++) {
+            password.append(CHARS.charAt(random.nextInt(CHARS.length())));
+        }
+        return password.toString();
     }
 
 }

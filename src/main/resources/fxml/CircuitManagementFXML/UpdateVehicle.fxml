@@ -61,12 +61,6 @@
                             </VBox>
                         </HBox>
 
-                        <!-- Agency only -->
-                        <VBox spacing="5">
-                            <Label text="Agency" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                            <ComboBox fx:id="agencyComboBox" promptText="Select an Agency"
-                                      style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
-                        </VBox>
 
                     </VBox>
 

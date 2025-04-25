@@ -31,6 +31,9 @@ public class RentalAgency {
 
     }
 
+    public RentalAgency(int idAgency) {
+    }
+
 
     public int getIdAgency() {
         return idAgency;

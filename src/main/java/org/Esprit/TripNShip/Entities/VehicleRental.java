@@ -10,28 +10,27 @@ public class VehicleRental {
     private float totalPrice;
     private StautCircuit statusCircuit;
     private Vehicle vehicle;
-    private User user;
-
+    private RentalAgency rentalAgency;
 
     public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
-                         StautCircuit statusCircuit, Vehicle vehicle, User user) {
+                         StautCircuit statusCircuit, Vehicle vehicle, RentalAgency rentalAgency) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.statusCircuit = statusCircuit;
         this.vehicle = vehicle;
-        this.user = user;
+        this.rentalAgency = rentalAgency;
     }
 
     public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
-                         StautCircuit statusCircuit, Vehicle vehicle, User user) {
+                         StautCircuit statusCircuit, Vehicle vehicle, RentalAgency rentalAgency) {
         this.idRental = idRental;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.statusCircuit = statusCircuit;
         this.vehicle = vehicle;
-        this.user = user;
+        this.rentalAgency = rentalAgency;
     }
 
     public VehicleRental() {
@@ -70,14 +69,6 @@ public class VehicleRental {
         this.totalPrice = totalPrice;
     }
 
-    public StautCircuit getStatus() {
-        return statusCircuit;
-    }
-
-    public void setStatus(StautCircuit status) {
-        this.statusCircuit = status;
-    }
-
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -86,13 +77,23 @@ public class VehicleRental {
         this.vehicle = vehicle;
     }
 
-    public User getUser() {
-        return user;
+
+    public StautCircuit getStatusCircuit() {
+        return statusCircuit;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStatusCircuit(StautCircuit statusCircuit) {
+        this.statusCircuit = statusCircuit;
     }
+
+    public RentalAgency getRentalAgency() {
+        return rentalAgency;
+    }
+
+    public void setRentalAgency(RentalAgency rentalAgency) {
+        this.rentalAgency = rentalAgency;
+    }
+
 
     @Override
     public String toString() {
@@ -103,12 +104,7 @@ public class VehicleRental {
                 ", totalPrice=" + totalPrice +
                 ", statusCircuit=" + statusCircuit +
                 ", vehicle=" + vehicle +
-                ", user=" + user +
+                ", rentalAgency=" + rentalAgency +
                 '}';
-    }
-
-
-    public int getIdAgency() {
-        return 0;
     }
 }

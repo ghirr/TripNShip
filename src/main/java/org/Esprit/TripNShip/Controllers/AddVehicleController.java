@@ -2,11 +2,8 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.StringConverter;
-import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Entities.Type;
 import org.Esprit.TripNShip.Entities.Vehicle;
-import org.Esprit.TripNShip.Services.RentalAgencyService;
 import org.Esprit.TripNShip.Services.VehicleService;
 
 public class AddVehicleController {
@@ -29,39 +26,21 @@ public class AddVehicleController {
     @FXML
     private ComboBox<Type> typeVehicleComboBox;
 
-    @FXML
-    private ComboBox<RentalAgency> agencyComboBox;
+
 
     @FXML
     private Button addVehicleButton;
 
     private final VehicleService vehicleService = new VehicleService();
-    private final RentalAgencyService rentalAgencyService = new RentalAgencyService();
+
 
     @FXML
     private void initialize() {
         // Charger types de véhicules
         typeVehicleComboBox.getItems().addAll(Type.values());
 
-        // Charger les agences
-        agencyComboBox.getItems().addAll(rentalAgencyService.getAll());
 
-        // Afficher le nom d’agence
-        agencyComboBox.setCellFactory(lv -> new ListCell<RentalAgency>() {
-            @Override
-            protected void updateItem(RentalAgency agency, boolean empty) {
-                super.updateItem(agency, empty);
-                setText(empty || agency == null ? null : agency.getNameAgency());
-            }
-        });
 
-        agencyComboBox.setButtonCell(new ListCell<RentalAgency>() {
-            @Override
-            protected void updateItem(RentalAgency agency, boolean empty) {
-                super.updateItem(agency, empty);
-                setText(empty || agency == null ? null : agency.getNameAgency());
-            }
-        });
 
         // Action bouton
         addVehicleButton.setOnAction(event -> addVehicle());
@@ -74,11 +53,11 @@ public class AddVehicleController {
         String dailyPriceText = dailyPriceField.getText().trim();
         String availabilityText = availabilityField.getText().trim();
         Type type = typeVehicleComboBox.getValue();
-        RentalAgency selectedAgency = agencyComboBox.getValue();
+
 
         if (brand.isEmpty() || model.isEmpty() || licensePlate.isEmpty()
                 || dailyPriceText.isEmpty() || availabilityText.isEmpty()
-                || type == null || selectedAgency == null) {
+                || type == null ) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please fill in all fields.");
             return;
         }
@@ -94,7 +73,7 @@ public class AddVehicleController {
             vehicle.setDailyPrice(dailyPrice);
             vehicle.setAvailability(availability);
             vehicle.setType(type);
-            vehicle.setAgency(selectedAgency);
+
 
             vehicleService.add(vehicle);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Vehicle added successfully!");
@@ -113,7 +92,7 @@ public class AddVehicleController {
         dailyPriceField.clear();
         availabilityField.clear();
         typeVehicleComboBox.getSelectionModel().clearSelection();
-        agencyComboBox.getSelectionModel().clearSelection();
+
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

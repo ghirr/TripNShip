@@ -12,9 +12,9 @@ public class Vehicle {
     private float dailyPrice;
     private boolean availability;
     private Type type;
-    private RentalAgency agency;
 
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency agency) {
+
+    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type) {
         this.idVehicle = idVehicle;
         this.brand = brand;
         this.model = model;
@@ -22,17 +22,17 @@ public class Vehicle {
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
-        this.agency = agency;
+
     }
 
-    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency agency) {
+    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type) {
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
-        this.agency = agency;
+
     }
 
     public Vehicle() {
@@ -42,8 +42,7 @@ public class Vehicle {
     public Vehicle(int idVehicle) {
     }
 
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type) {
-    }
+
 
     public int getIdVehicle() {
         return idVehicle;
@@ -101,13 +100,7 @@ public class Vehicle {
         this.type = type;
     }
 
-    public RentalAgency getAgency() {
-        return agency;
-    }
 
-    public void setAgency(RentalAgency agency) {
-        this.agency = agency;
-    }
 
     @Override
     public String toString() {
@@ -119,7 +112,6 @@ public class Vehicle {
                 ", dailyPrice=" + dailyPrice +
                 ", availability=" + availability +
                 ", type=" + type +
-                ", agency=" + agency +
                 '}';
     }
 }

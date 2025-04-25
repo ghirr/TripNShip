@@ -193,7 +193,7 @@ public class ListViewVehicleController {
 
     private void handleAddVehicle() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Esprit/TripNShip/Views/AddVehicleForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddVehicle.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -212,11 +212,14 @@ public class ListViewVehicleController {
 
     private void handleEditVehicle(Vehicle vehicle) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Esprit/TripNShip/Views/EditVehicleForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateVehicle.fxml"));
             Parent root = loader.load();
 
-        //    UpdateVehicleController controller = loader.getController();
-          //  controller.setVehicle(vehicle);
+            // ✅ Récupérer le contrôleur
+            UpdateVehicleController controller = loader.getController();
+
+            // ✅ Passer les données du véhicule sélectionné
+            controller.setVehicleData(vehicle);
 
             Stage stage = new Stage();
             stage.setTitle("Edit Vehicle");
@@ -224,11 +227,14 @@ public class ListViewVehicleController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
+            // ✅ Recharger les données après modification
             loadVehiclesFromDatabase();
+
         } catch (IOException e) {
-            showAlert("Form Error", "Could not load the edit vehicle form: " + e.getMessage(), Alert.AlertType.ERROR);
+            showAlert("Error", "Could not load the vehicle edit form: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
 
     private void handleDeleteVehicle(Vehicle vehicle) {
         try {

@@ -81,9 +81,11 @@ public class ListViewCircuitBookingController {
                 editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 5;");
                 deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5;");
 
+
+
                 editButton.setOnAction(event -> {
                     CircuitBooking booking = getTableView().getItems().get(getIndex());
-
+                    handleEditBooking(booking);
                 });
 
                 deleteButton.setOnAction(event -> {
@@ -168,6 +170,30 @@ public class ListViewCircuitBookingController {
         }
     }
 
+    private void handleEditBooking(CircuitBooking booking) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateCircuitBooking.fxml"));
+            Parent root = loader.load();
+
+            // ✅ Récupérer le contrôleur
+            UpdateCircuitBookingController controller = loader.getController();
+
+            // ✅ Passer les données du booking sélectionné
+            controller.setBookingData(booking);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Circuit Booking");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // ✅ Recharger les données après modification
+            loadBookings();
+
+        } catch (IOException e) {
+            showAlert("Error", "Could not load the booking edit form: " + e.getMessage());
+        }
+    }
 
 
     private void handleDeleteBooking(CircuitBooking booking) {

@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Services;
 
 import org.Esprit.TripNShip.Entities.RentalAgency;
+import org.Esprit.TripNShip.Entities.StatusBooking;
 import org.Esprit.TripNShip.Entities.Type;
 import org.Esprit.TripNShip.Entities.Vehicle;
 import org.Esprit.TripNShip.Utils.MyDataBase;

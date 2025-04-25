@@ -38,16 +38,12 @@ public class ListViewVehicleRentalController {
 
         setupTableColumns();
 
-        // Load data
         loadVehicleRentals();
 
-        // Setup entries combo box
         setupEntriesComboBox();
 
-        // Setup search functionality
         setupSearchFilter();
 
-        // Setup action buttons
         setupActionButtons();
     }
 
@@ -85,7 +81,7 @@ public class ListViewVehicleRentalController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusCircuit"));
         vehicleColumn.setCellValueFactory(new PropertyValueFactory<>("vehicle"));
 
-        // Setup action column
+
         setupActionColumn();
     }
 
@@ -98,11 +94,11 @@ public class ListViewVehicleRentalController {
                             private final Button editButton = new Button("Edit");
                             private final Button deleteButton = new Button("Delete");
                             {
-                                // Style buttons
+
                                 editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white;");
                                 deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white;");
 
-                                // Set button actions
+
                                 editButton.setOnAction(event -> {
                                     VehicleRental rental = getTableView().getItems().get(getIndex());
                                     handleEditRental(rental);
@@ -132,13 +128,13 @@ public class ListViewVehicleRentalController {
     }
 
     private void loadVehicleRentals() {
-        // Clear existing data
+
         vehicleRentalList.clear();
 
-        // Fetch data from service
+
         vehicleRentalList.addAll(vehicleRentalService.getAll());
 
-        // Set data to table
+
         vehicleRentalTable.setItems(vehicleRentalList);
     }
 
@@ -147,7 +143,7 @@ public class ListViewVehicleRentalController {
         entriesComboBox.getSelectionModel().selectFirst();
 
         entriesComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            vehicleRentalTable.setPrefHeight(newVal * 30 + 100); // Adjust table height
+            vehicleRentalTable.setPrefHeight(newVal * 30 + 100);
         });
     }
 
@@ -188,12 +184,12 @@ public class ListViewVehicleRentalController {
     }
 
     private void handleAddRental() {
-        // Implement logic to open add rental dialog
+
         System.out.println("Add new vehicle rental");
     }
 
     private void handleEditRental(VehicleRental rental) {
-        // Implement logic to open edit dialog
+
         System.out.println("Edit rental: " + rental.getIdRental());
     }
 
@@ -203,21 +199,10 @@ public class ListViewVehicleRentalController {
         alert.setHeaderText("Delete Vehicle Rental");
         alert.setContentText("Are you sure you want to delete this rental?");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-              //  boolean success = vehicleRentalService.delete(rental.getIdRental());
-              //  if (success) {
-                //    vehicleRentalList.remove(rental);
-                  //  showAlert("Success", "Rental deleted successfully", Alert.AlertType.INFORMATION);
-               // } else {
-                 //   showAlert("Error", "Failed to delete rental", Alert.AlertType.ERROR);
-               // }
-            }
-        });
+
     }
 
     private void handleExportExcel() {
-        // Implement export to Excel functionality
         System.out.println("Export to Excel");
     }
 

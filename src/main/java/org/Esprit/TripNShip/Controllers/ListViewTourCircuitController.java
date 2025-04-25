@@ -148,8 +148,11 @@ public class ListViewTourCircuitController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateTourCircuit.fxml"));
             Parent root = loader.load();
 
+            // ✅ Récupérer le contrôleur
+            UpdateTourCircuitController controller = loader.getController();
 
-
+            // ✅ Passer les données du circuit sélectionné
+            controller.setCircuitData(circuit);
 
             Stage stage = new Stage();
             stage.setTitle("Edit Tour Circuit");
@@ -157,11 +160,14 @@ public class ListViewTourCircuitController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
+            // ✅ Recharger les données après modification
             loadCircuitsFromDatabase();
+
         } catch (IOException e) {
             showAlert("Error", "Could not load the edit form: " + e.getMessage());
         }
     }
+
 
     private void handleDeleteCircuit(TourCircuit circuit) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

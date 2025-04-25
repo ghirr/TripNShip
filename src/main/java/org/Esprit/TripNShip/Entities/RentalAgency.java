@@ -1,10 +1,6 @@
 package org.Esprit.TripNShip.Entities;
 
 
-import javafx.beans.value.ObservableValue;
-
-import java.util.List;
-
 public class RentalAgency {
 
 
@@ -13,7 +9,7 @@ public class RentalAgency {
     private String addressAgency;
     private String contactAgency;
     private float rating;
-    private List<Vehicle> vehicles;
+
 
     public RentalAgency(String nameAgency, String addressAgency, String contactAgency, float rating) {
         this.nameAgency = nameAgency;
@@ -22,13 +18,13 @@ public class RentalAgency {
         this.rating = rating;
 
     }
-    public RentalAgency(int idAgency, String nameAgency, String addressAgency, String contactAgency, float rating, List<Vehicle> vehicles) {
+    public RentalAgency(int idAgency, String nameAgency, String addressAgency, String contactAgency, float rating) {
         this.idAgency = idAgency;
         this.nameAgency = nameAgency;
         this.addressAgency = addressAgency;
         this.contactAgency = contactAgency;
         this.rating = rating;
-        this.vehicles = vehicles;
+
     }
 
     public RentalAgency() {
@@ -76,13 +72,7 @@ public class RentalAgency {
         this.rating = rating;
     }
 
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
 
-    public void setVehicles(List<Vehicle> vehicles) {
-        this.vehicles = vehicles;
-    }
 
     @Override
     public String toString() {
@@ -92,7 +82,6 @@ public class RentalAgency {
                 ", addressAgency='" + addressAgency + '\'' +
                 ", contactAgency='" + contactAgency + '\'' +
                 ", rating=" + rating +
-                ", vehicles=" + vehicles +
                 '}';
     }
 

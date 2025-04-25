@@ -18,7 +18,6 @@ public class UpdateTourCircuitController {
 
     private TourCircuitService tourCircuitService;
     private TourCircuit originalCircuit;
-    private TourCircuit modifiedCircuit;
 
     @FXML
     public void initialize() {
@@ -27,18 +26,7 @@ public class UpdateTourCircuitController {
 
     public void setCircuitData(TourCircuit circuit) {
         this.originalCircuit = circuit;
-        this.modifiedCircuit = new TourCircuit();
-
-        modifiedCircuit.setIdCircuit(originalCircuit.getIdCircuit());
-        modifiedCircuit.setNameCircuit(originalCircuit.getNameCircuit());
-        modifiedCircuit.setDescriptionCircuit(originalCircuit.getDescriptionCircuit());
-        modifiedCircuit.setPriceCircuit(originalCircuit.getPriceCircuit());
-        modifiedCircuit.setDuration(originalCircuit.getDuration());
-        modifiedCircuit.setDestination(originalCircuit.getDestination());
-        modifiedCircuit.setGuideIncluded(originalCircuit.getGuideIncluded());
-        modifiedCircuit.setCircuitList(originalCircuit.getCircuitList());
-
-        populateFields(modifiedCircuit);
+        populateFields(circuit);
     }
 
     private void populateFields(TourCircuit circuit) {
@@ -53,30 +41,23 @@ public class UpdateTourCircuitController {
     @FXML
     private void handleUpdateAction() {
         if (validateInput()) {
-            updateCircuit();
-            showSuccessAlert();
-            closeWindow();
+            // Mettre à jour les valeurs dans l'objet
+            originalCircuit.setNameCircuit(nameField.getText().trim());
+            originalCircuit.setDescriptionCircuit(descriptionArea.getText().trim());
+            originalCircuit.setPriceCircuit(Float.parseFloat(priceField.getText().trim()));
+            originalCircuit.setDuration(durationField.getText().trim());
+            originalCircuit.setDestination(destinationField.getText().trim());
+            originalCircuit.setGuideIncluded(guideCheckBox.isSelected());
+
+            // Appel du service sans récupérer de retour boolean
+            try {
+                tourCircuitService.update(originalCircuit); // suppose que cette méthode gère l'erreur si besoin
+                showSuccessAlert();
+                closeWindow();
+            } catch (Exception e) {
+                showAlert("Erreur", "Échec de la mise à jour", e.getMessage());
+            }
         }
-    }
-
-    private void updateCircuit() {
-        modifiedCircuit.setNameCircuit(nameField.getText().trim());
-        modifiedCircuit.setDescriptionCircuit(descriptionArea.getText().trim());
-        modifiedCircuit.setPriceCircuit(Float.parseFloat(priceField.getText().trim()));
-        modifiedCircuit.setDuration(durationField.getText().trim());
-        modifiedCircuit.setDestination(destinationField.getText().trim());
-        modifiedCircuit.setGuideIncluded(guideCheckBox.isSelected());
-
-        // Appel du service (ne retourne rien)
-        tourCircuitService.update(modifiedCircuit);
-
-        // Mise à jour de l'objet original
-        originalCircuit.setNameCircuit(modifiedCircuit.getNameCircuit());
-        originalCircuit.setDescriptionCircuit(modifiedCircuit.getDescriptionCircuit());
-        originalCircuit.setPriceCircuit(modifiedCircuit.getPriceCircuit());
-        originalCircuit.setDuration(modifiedCircuit.getDuration());
-        originalCircuit.setDestination(modifiedCircuit.getDestination());
-        originalCircuit.setGuideIncluded(modifiedCircuit.getGuideIncluded());
     }
 
     private boolean validateInput() {

@@ -14,7 +14,7 @@ public class UpdateTicketController {
     @FXML
     private TextField ticketIdField;
     @FXML
-    private TextField itineraryIdField;
+    private TextField itineraryCodeField;
     @FXML
     private TextField userEmailField;
     @FXML
@@ -31,7 +31,7 @@ public class UpdateTicketController {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
         ticketIdField.setText(String.valueOf(ticket.getTicketId()));
-        itineraryIdField.setText(ticket.getItineraryId());
+        itineraryCodeField.setText(ticket.getItineraryCode());
         userEmailField.setText(String.valueOf(ticket.getUserEmail()));
         departureDateField.setText(ticket.getDepartureDate().toString());
         arrivalDateField.setText(ticket.getArrivalDate().toString());
@@ -41,7 +41,7 @@ public class UpdateTicketController {
     @FXML
     private void saveTicket() {
         ticket.setTicketId(Integer.parseInt(ticketIdField.getText()));
-        ticket.setItineraryId(itineraryIdField.getText());
+        ticket.setItineraryCode(itineraryCodeField.getText());
         ticket.setUserEmail(userEmailField.getText());
         ticket.setDepartureDate(LocalDate.parse(departureDateField.getText()));
         ticket.setArrivalDate(LocalDate.parse(arrivalDateField.getText()));

@@ -21,9 +21,8 @@ import java.util.Optional;
 public class TicketController {
     @FXML private Button addTicketButton;
     @FXML private TableView<Ticket> ticketTable;
-    @FXML private TableColumn<Integer, Ticket> ticketIdColumn;
-    @FXML private TableColumn<String, Ticket> itineraryIdColumn;
-    @FXML private TableColumn<Integer, Ticket> userIdColumn;
+    @FXML private TableColumn<String, Ticket> itineraryCodeColumn;
+    @FXML private TableColumn<String, Ticket> userEmailColumn;
     @FXML private TableColumn<LocalDate, Ticket> departureDateColumn;
     @FXML private TableColumn<LocalDate, Ticket> arrivalDateColumn;
     @FXML private TableColumn<Double, Ticket> priceColumn;
@@ -36,9 +35,8 @@ public class TicketController {
     @FXML
     public void initialize() {
         // Lier les colonnes aux attributs
-        ticketIdColumn.setCellValueFactory(new PropertyValueFactory<>("ticketId"));
-        itineraryIdColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryId"));
-        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        itineraryCodeColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryCode"));
+        userEmailColumn.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
         departureDateColumn.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
         arrivalDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));

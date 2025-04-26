@@ -14,10 +14,10 @@ public class TicketService implements IService<Ticket>{
 
     @Override
     public void add(Ticket ticket) {
-        String req = "insert into ticket (itineraryId,userEmail,departureDate,arrivalDate,price) values (?,?,?,?,?) ";
+        String req = "insert into ticket (itineraryCode,userEmail,departureDate,arrivalDate,price) values (?,?,?,?,?) ";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
-            pst.setString(1, ticket.getItineraryId());
+            pst.setString(1, ticket.getItineraryCode());
             pst.setString(2,ticket.getUserEmail());
             pst.setDate(3, Date.valueOf(ticket.getDepartureDate()));
             pst.setDate(4,Date.valueOf(ticket.getArrivalDate()));
@@ -32,10 +32,10 @@ public class TicketService implements IService<Ticket>{
 
     @Override
     public void update(Ticket ticket) {
-        String req =" update ticket set itineraryId=?,userEmail=?,departureDate=?,arrivalDate=?,price=? where ticketId=?";
+        String req =" update ticket set itineraryCode=?,userEmail=?,departureDate=?,arrivalDate=?,price=? where ticketId=?";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
-            pst.setString(1, ticket.getItineraryId());
+            pst.setString(1, ticket.getItineraryCode());
             pst.setString(2,ticket.getUserEmail());
             pst.setDate(3,Date.valueOf(ticket.getDepartureDate()));
             pst.setDate(4,Date.valueOf(ticket.getArrivalDate()));
@@ -71,11 +71,11 @@ public class TicketService implements IService<Ticket>{
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs= pst.executeQuery();
             while (rs.next()){
-                tickets.add(new Ticket(rs.getInt("ticketId"),rs.getString("itineraryId"),rs.getString("userEmail"), rs.getDate("departureDate").toLocalDate(), rs.getDate("arrivalDate").toLocalDate(),rs.getDouble("price")));
+                tickets.add(new Ticket(rs.getInt("ticketId"),rs.getString("itineraryCode"),rs.getString("userEmail"), rs.getDate("departureDate").toLocalDate(), rs.getDate("arrivalDate").toLocalDate(),rs.getDouble("price")));
             }
 
         } catch (Exception e) {
-            System.out.println("Ticket deleted successfully!!");
+            System.out.println(e.getMessage());
         }
         return tickets;
     }

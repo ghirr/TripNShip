@@ -4,31 +4,31 @@ import java.time.LocalDate;
 
 public class Ticket {
     private int ticketId;
-    private String itineraryId;
+    private String itineraryCode;
     private String userEmail;
     private LocalDate departureDate;
     private LocalDate arrivalDate;
     private double price;
 
-    public Ticket(String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
-        this.itineraryId = itineraryId;
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
+        this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
         this.price = price;
     }
 
-    public Ticket(int ticketId, String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
         this.ticketId = ticketId;
-        this.itineraryId = itineraryId;
+        this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
         this.price = price;
     }
 
-    public Ticket(String itineraryId, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
-        this.itineraryId = itineraryId;
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
+        this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
@@ -42,12 +42,12 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public String getItineraryId() {
-        return itineraryId;
+    public String getItineraryCode() {
+        return itineraryCode;
     }
 
-    public void setItineraryId(String itineraryId) {
-        this.itineraryId = itineraryId;
+    public void setItineraryCode(String itineraryCode) {
+        this.itineraryCode = itineraryCode;
     }
 
     public String getUserEmail() {
@@ -86,7 +86,7 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "ticketId=" + ticketId +
-                ", itineraryId='" + itineraryId + '\'' +
+                ", itineraryCode='" + itineraryCode + '\'' +
                 ", userEmail=" + userEmail +
                 ", departureDate=" + departureDate +
                 ", arrivalDate=" + arrivalDate +

@@ -44,11 +44,6 @@
 
                     <TableView fx:id="itineraryTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>
-                            <TableColumn fx:id="itineraryIdColumn" prefWidth="150" text="Itinerary Id">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="itineraryId" />
-                                </cellValueFactory>
-                            </TableColumn>
                      <TableColumn fx:id="itineraryCodeColumn" prefWidth="150" text="Itinerary Code">
                         <cellValueFactory>
                            <PropertyValueFactory property="itineraryCode" />

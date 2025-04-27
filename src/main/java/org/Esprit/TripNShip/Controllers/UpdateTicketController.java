@@ -40,6 +40,8 @@ public class UpdateTicketController {
 
     @FXML
     private void saveTicket() {
+        if (!validInputs()) return;
+
         ticket.setTicketId(Integer.parseInt(ticketIdField.getText()));
         ticket.setItineraryCode(itineraryCodeField.getText());
         ticket.setUserEmail(userEmailField.getText());
@@ -57,5 +59,39 @@ public class UpdateTicketController {
         Stage stage = (Stage) ticketIdField.getScene().getWindow();
         stage.close();
     }
+    public boolean validInputs() {
+        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDateField.getText().isEmpty() || arrivalDateField.getText().isEmpty()||priceField.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
+            return false;
+
+        }
+
+        if (!userEmailField.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){
+            showAlert(Alert.AlertType.ERROR,"Email Error","Please give a valid email address");
+            return false;
+        }
+        try {
+            LocalDate.parse(departureDateField.getText());
+            LocalDate.parse(arrivalDateField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR,"Date Format Error","Please set the dates in the format YYYY-MM-DD");
+            return false;
+        }
+        try{
+            Double.parseDouble(priceField.getText());
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
+        }
+
+        return true;
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String message){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 }
 

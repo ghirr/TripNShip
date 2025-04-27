@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
@@ -30,6 +31,7 @@ public class TransportController {
     @FXML private TableColumn<String, Transport> companyWebsiteColumn;
     @FXML private TableColumn<String, Transport> companyEmailColumn;
     @FXML private TableColumn<Transport, Void> actionsColumn;
+    @FXML private TextField searchField;
 
 
     private ObservableList<Transport> transportList = FXCollections.observableArrayList();
@@ -50,6 +52,7 @@ public class TransportController {
        transportTable.setItems(transportList);
 
         addActionsToTable();
+        setupSearch();
     }
 
 
@@ -125,6 +128,26 @@ public class TransportController {
             e.printStackTrace();
         }
     }
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<Transport> filteredList = FXCollections.observableArrayList();
+
+            for (Transport transport : transportList) {
+                if (transport.getCompanyName().toLowerCase().contains(newValue.toLowerCase())) {
+                    filteredList.add(transport);
+                }
+            }
+
+            transportTable.setItems(filteredList);
+
+            // Si la barre est vide, on remet toute la liste
+            if (newValue.isEmpty()) {
+                transportTable.setItems(transportList);
+            }
+            addActionsToTable(); // pour remettre les boutons actions en place
+        });
+    }
+
 
 }
 

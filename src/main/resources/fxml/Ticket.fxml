@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -34,6 +35,8 @@
                         <Button fx:id="addTicketButton" onAction="#toAddTicket" prefHeight="27.0" prefWidth="97.0" style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;" text="Add" />
 
                     </HBox>
+                    <TextField fx:id="searchField" maxWidth="300.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Email or Departure Date..." translateX="-272.0" />
+
 
                     <TableView fx:id="ticketTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>

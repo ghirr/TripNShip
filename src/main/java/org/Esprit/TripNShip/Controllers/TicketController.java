@@ -27,6 +27,7 @@ public class TicketController {
     @FXML private TableColumn<LocalDate, Ticket> arrivalDateColumn;
     @FXML private TableColumn<Double, Ticket> priceColumn;
     @FXML private TableColumn<Ticket, Void> actionsColumn;
+    @FXML private TextField searchField;
 
 
     private ObservableList<Ticket> ticketList = FXCollections.observableArrayList();
@@ -46,6 +47,7 @@ public class TicketController {
         ticketTable.setItems(ticketList);
 
         addActionsToTable();
+        setupSearch();
 
     }
 
@@ -123,4 +125,30 @@ public class TicketController {
             e.printStackTrace();
         }
     }
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<Ticket> filteredList = FXCollections.observableArrayList();
+
+            for (Ticket ticket : ticketList) {
+                if (ticket.getUserEmail().toLowerCase().contains(newValue.toLowerCase()) ||
+                        ticket.getDepartureDate().toString().contains(newValue)) {
+                    filteredList.add(ticket);
+                }
+            }
+
+            ticketTable.setItems(filteredList);
+
+            // Si la barre est vide, on remet toute la liste
+            if (newValue.isEmpty()) {
+                ticketTable.setItems(ticketList);
+            }
+            addActionsToTable(); // pour remettre les boutons actions en place
+        });
+    }
+
+
+
 }
+
+
+

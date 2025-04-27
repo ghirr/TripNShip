@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
+import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.ItineraryService;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class ItineraryController {
     @FXML private TableColumn<Itinerary, Void> actionsColumn;
     private ObservableList<Itinerary> itineraryList = FXCollections.observableArrayList();
     @FXML Button addItineraryButton;
+    @FXML TextField searchField;
     ItineraryService is = new ItineraryService();
 
     @FXML
@@ -47,6 +49,7 @@ public class ItineraryController {
         itineraryTable.setItems(itineraryList);
 
         addActionsToTable();
+        setupSearch();
 
     }
 
@@ -121,6 +124,26 @@ public class ItineraryController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<Itinerary> filteredList = FXCollections.observableArrayList();
+
+            for (Itinerary itinerary : itineraryList) {
+                if (itinerary.getTransporterReference().toLowerCase().contains(newValue.toLowerCase()) ||
+                        itinerary.getDepartureLocation().toLowerCase().contains(newValue)||(itinerary.getArrivalLocation().toLowerCase().contains(newValue))) {
+                    filteredList.add(itinerary);
+                }
+            }
+
+            itineraryTable.setItems(filteredList);
+
+            // Si la barre est vide, on remet toute la liste
+            if (newValue.isEmpty()) {
+                itineraryTable.setItems(itineraryList);
+            }
+            addActionsToTable(); // pour remettre les boutons actions en place
+        });
     }
 
 }

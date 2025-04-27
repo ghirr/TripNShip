@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TextField?>
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ItineraryController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
@@ -41,6 +42,8 @@
                         </Button>
 
                     </HBox>
+                    <TextField fx:id="searchField" maxWidth="300.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Transporter Reference, Departure or Arrival Location..." translateX="-272.0" />
+
 
                     <TableView fx:id="itineraryTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>

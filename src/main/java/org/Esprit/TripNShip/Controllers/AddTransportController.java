@@ -32,6 +32,7 @@ public class AddTransportController implements Initializable {
     }
     @FXML
     void addTransport(ActionEvent event) throws IOException{
+        if (validInputs()==false) return;
         TransportService ts = new TransportService();
         ts.add(new Transport(transporterReferenceField.getText(),transportationComboBox.getValue(),companyNameField.getText(),Integer.parseInt(companyPhoneField.getText()),companyEmailField.getText(),companyWebsiteField.getText()));
 
@@ -41,6 +42,35 @@ public class AddTransportController implements Initializable {
         alert.show();
         Stage stage = (Stage) transporterReferenceField.getScene().getWindow();
         stage.close();
+    }
+    public boolean validInputs() {
+        try {
+            if (transporterReferenceField.getText().isEmpty() ||  transportationComboBox.getValue() == null || companyNameField.getText().isEmpty() || companyEmailField.getText().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
+                return false;
+            }
+        }
+        catch(NullPointerException e){
+            showAlert(Alert.AlertType.ERROR, "Error", "Some fields are empty");
+            return false;
+        }
+
+        if (!companyEmailField.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){
+            showAlert(Alert.AlertType.ERROR,"Email Error","Please give a valid email address");
+            return false;
+        }
+        if (!companyPhoneField.getText().matches("\\d{6,10}")){
+            showAlert(Alert.AlertType.ERROR,"Phone number Error","please give a valid phone number : between 6 and 10 numbers ");
+            return false;
+        }
+        return true;
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String message){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

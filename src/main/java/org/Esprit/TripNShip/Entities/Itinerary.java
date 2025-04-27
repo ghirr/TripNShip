@@ -46,7 +46,7 @@ public class Itinerary {
     }
 
     public void setItineraryCode(String itineraryCode) {
-        this.itineraryCode = this.itineraryCode;
+        this.itineraryCode = itineraryCode;
     }
 
     public void setTransporterReference(String transporterReference) {

@@ -9,26 +9,19 @@ import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
 
 public class UpdateItineraryController {
-    @FXML
-    private TextField itineraryIdField;
+
     @FXML private TextField itineraryCodeField;
-    @FXML
-    private TextField transporterReferenceField;
-    @FXML
-    private TextField departureLocationField;
-    @FXML
-    private TextField arrivalLocationField;
-    @FXML
-    private TextField durationField;
-    @FXML
-    Button updateItineraryButton;
+    @FXML    private TextField transporterReferenceField;
+    @FXML    private TextField departureLocationField;
+    @FXML    private TextField arrivalLocationField;
+    @FXML    private TextField durationField;
+    @FXML    Button updateItineraryButton;
 
     private final ItineraryService is = new ItineraryService();
     private Itinerary itinerary;
 
     public void setItinerary(Itinerary itinerary) {
         this.itinerary = itinerary;
-        itineraryIdField.setText(String.valueOf(itinerary.getItineraryId()));
         itineraryCodeField.setText(itinerary.getItineraryCode());
         transporterReferenceField.setText(itinerary.getTransporterReference());
         departureLocationField.setText(itinerary.getDepartureLocation());
@@ -38,6 +31,7 @@ public class UpdateItineraryController {
 
     @FXML
     private void saveItinerary() {
+        if(!validInputs()) return;
         itinerary.setItineraryCode(itineraryCodeField.getText());
         itinerary.setTransporterReference(transporterReferenceField.getText());
         itinerary.setDepartureLocation((departureLocationField.getText()));
@@ -52,7 +46,28 @@ public class UpdateItineraryController {
         alert.showAndWait();
 
         // Ferme la fenêtre
-        Stage stage = (Stage) itineraryIdField.getScene().getWindow();
+        Stage stage = (Stage) itineraryCodeField.getScene().getWindow();
         stage.close();
+    }
+    public boolean validInputs() {
+        if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
+            return false;
+
+        }
+
+        if (!durationField.getText().matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
+            showAlert(Alert.AlertType.ERROR, "Duration Error", "Please enter a valid duration in HH:MM format (00:00 to 23:59)");
+            return false;
+        }
+
+        return true;
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String message){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

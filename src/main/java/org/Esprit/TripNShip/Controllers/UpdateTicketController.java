@@ -7,7 +7,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
-
 import java.time.LocalDate;
 
 public class UpdateTicketController {

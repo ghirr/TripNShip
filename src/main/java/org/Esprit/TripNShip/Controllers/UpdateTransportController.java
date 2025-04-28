@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 

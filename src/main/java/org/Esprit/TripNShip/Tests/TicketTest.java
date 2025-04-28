@@ -2,7 +2,6 @@ package org.Esprit.TripNShip.Tests;
 
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
-
 import java.time.LocalDate;
 
 public class TicketTest {

@@ -12,8 +12,6 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
 import javafx.scene.Node;
-
-
 import java.io.IOException;
 
 public class AddItineraryController {

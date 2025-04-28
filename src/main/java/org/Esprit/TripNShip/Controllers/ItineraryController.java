@@ -12,9 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
-import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.ItineraryService;
-
 import java.io.IOException;
 import java.util.Optional;
 

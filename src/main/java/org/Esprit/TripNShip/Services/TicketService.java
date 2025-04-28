@@ -2,7 +2,6 @@ package org.Esprit.TripNShip.Services;
 
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Utils.MyDataBase;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

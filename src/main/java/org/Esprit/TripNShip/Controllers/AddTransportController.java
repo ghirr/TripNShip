@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 public class AddTransportController implements Initializable {
     @FXML private TextField transporterReferenceField;
     @FXML ComboBox<TransportType> transportationComboBox;
-
     @FXML private TextField companyNameField;
     @FXML private TextField companyPhoneField;
     @FXML private TextField companyEmailField;

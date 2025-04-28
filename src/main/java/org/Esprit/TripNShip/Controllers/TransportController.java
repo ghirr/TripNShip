@@ -32,6 +32,7 @@ public class TransportController {
     @FXML private TableColumn<String, Transport> companyEmailColumn;
     @FXML private TableColumn<Transport, Void> actionsColumn;
     @FXML private TextField searchField;
+    @FXML private ComboBox<TransportType> transportationFilterComboBox;
 
 
     private ObservableList<Transport> transportList = FXCollections.observableArrayList();
@@ -53,6 +54,11 @@ public class TransportController {
 
         addActionsToTable();
         setupSearch();
+
+        //pour le combobox : filtre par transportation type
+        transportationFilterComboBox.getItems().add(null); // Option "Tous"
+        transportationFilterComboBox.getItems().addAll(TransportType.values());
+        transportationFilterComboBox.setOnAction(event -> filterTransportList());
     }
 
 
@@ -146,6 +152,19 @@ public class TransportController {
             }
             addActionsToTable(); // pour remettre les boutons actions en place
         });
+    }
+    private void filterTransportList() {
+        TransportType selectedType = transportationFilterComboBox.getValue();
+        String searchKeyword = searchField.getText().toLowerCase();
+
+        ObservableList<Transport> filteredList = transportList.filtered(transport -> {
+            boolean matchesType = (selectedType == null || transport.getTransportation() == selectedType);
+            boolean matchesCompanyName = (searchKeyword.isEmpty() || transport.getCompanyName().toLowerCase().contains(searchKeyword));
+            return matchesType && matchesCompanyName;
+        });
+
+        transportTable.setItems(filteredList);
+        addActionsToTable();
     }
 
 

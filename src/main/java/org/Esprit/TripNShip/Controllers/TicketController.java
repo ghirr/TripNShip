@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;

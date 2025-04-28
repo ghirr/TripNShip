@@ -2,7 +2,6 @@ package org.Esprit.TripNShip.Services;
 
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Utils.MyDataBase;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

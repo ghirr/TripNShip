@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane style="-fx-background-color: #111827; -fx-pref-width: 600; -fx-pref-height: 800;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.SmsVerificationController">
+
+    <VBox alignment="CENTER" prefHeight="800.0" prefWidth="600.0" spacing="10">
+        <StackPane style="-fx-background-color: #111827;">
+            <VBox alignment="CENTER" maxHeight="700" maxWidth="400" prefHeight="600.0" prefWidth="400.0" spacing="15"
+                  style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;
+                         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 10);
+                         -fx-border-color: #9333ea; -fx-border-width: 5; -fx-border-radius: 10;">
+
+                <ImageView fitHeight="150" fitWidth="220" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/logo.png"/>
+                </ImageView>
+
+                <!-- Title -->
+                <Label fx:id="numberField" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #222;" />
+
+                <!-- SMS Code Input -->
+                <VBox alignment="CENTER_LEFT" spacing="8" maxWidth="300">
+                    <Label text="Verification Code" style="-fx-font-size: 16px; -fx-text-fill: #333;" />
+                    <TextField fx:id="smsCodeField" promptText="Enter code here"
+                               style="-fx-font-size: 18px; -fx-padding: 10; -fx-background-radius: 8;
+                                      -fx-border-color: #ccc; -fx-border-radius: 8; -fx-pref-width: 300; -fx-alignment: center;" />
+                    <Label fx:id="errorLabel" style="-fx-text-fill: red; -fx-font-size: 14px;" />
+                </VBox>
+
+                <!-- Verify Button -->
+                <Button fx:id="verifyButton" text="Verify Code" onAction="#verifyCode"
+                        style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea);
+                               -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10;
+                               -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" />
+
+                <!-- Resend Section -->
+                <VBox alignment="CENTER" spacing="5" maxWidth="300">
+                    <Label fx:id="resendLabel" text="Didn't receive the code?" style="-fx-font-size: 14px; -fx-text-fill: #555;" />
+                    <Button fx:id="resendButton" text="Resend Code in 60" onAction="#resendCode"
+                            disable="true"
+                            style="-fx-background-color: transparent; -fx-text-fill: #3b82f6;
+                                   -fx-font-size: 14px; -fx-underline: true; -fx-cursor: hand;" />
+
+                </VBox>
+
+                <!-- Back to log in -->
+                <Hyperlink fx:id="backToLogin" text="Back to Login" onAction="#switchToLogin"
+                           style="-fx-text-fill: #3b82f6; -fx-font-size: 14px; -fx-cursor: hand;" />
+            </VBox>
+        </StackPane>
+    </VBox>
+
+</StackPane>

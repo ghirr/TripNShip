@@ -42,6 +42,17 @@ public class Shared {
         }
     }
 
+    public static void switchScene(ActionEvent event, Parent root , String title) {
+            Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            primaryStage.setMaximized(false);
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.setTitle(title);
+            primaryStage.show();
+        
+    }
+
     public static void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

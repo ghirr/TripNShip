@@ -124,4 +124,39 @@ public class AuthService {
             System.out.println(e.getMessage());
         }
     }
+
+    public boolean verifiePhoneNumber(String phoneNumber) {
+        String query = "SELECT id FROM user WHERE phoneNumber = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(query)) {
+            pst.setString(1, phoneNumber);
+
+            ResultSet resultSet = pst.executeQuery();
+
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Si aucun utilisateur trouvé
+    }
+
+    public boolean updatePassword(String phoneNumber, String password) {
+        String query = "UPDATE user SET password = ? WHERE phoneNumber = ?";
+
+        password = BCrypt.hashpw(password, BCrypt.gensalt(10));
+
+        try (PreparedStatement pst = cnx.prepareStatement(query)) {
+            pst.setString(1, password);
+            pst.setString(2, phoneNumber);
+
+            pst.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
 }

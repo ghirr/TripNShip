@@ -3,10 +3,7 @@ package org.Esprit.TripNShip.Services;
 import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +19,18 @@ public class RentalAgencyService implements IService<RentalAgency> {
     public void add(RentalAgency rentalAgency) {
         String req = "INSERT INTO rentalagency(nameAgency, addressAgency, contactAgency, rating) VALUES (?, ?, ?, ?)";
         try {
-            PreparedStatement pst = connection.prepareStatement(req);
+            PreparedStatement pst = connection.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             pst.setFloat(4, rentalAgency.getRating());
             pst.setString(3, rentalAgency.getContactAgency());
             pst.setString(2, rentalAgency.getAddressAgency());
             pst.setString(1, rentalAgency.getNameAgency());
             pst.executeUpdate();
+            // 🔽 Récupération de l’ID généré
+            ResultSet res = pst.getGeneratedKeys();
+            if (res.next()) {
+                int generatedId = res.getInt(1);
+                rentalAgency.setIdAgency(generatedId); // Mise à jour de l'objet Java avec l'ID généré
+            }
             System.out.println("Rental Agency added !");
 
         }catch (SQLException e) {

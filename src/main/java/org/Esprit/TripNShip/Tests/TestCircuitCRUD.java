@@ -27,9 +27,13 @@ public class TestCircuitCRUD {
         agencyService.add(agency2);
         agencyService.add(agency3);
 
+        System.out.println("ID agence 1 : " + agency1.getIdAgency());
+
+
+ 
         // === Créer des véhicules ===
-        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency2);
-        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency3);
+        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency1);
+        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency1);
 
         vehicleService.add(vehicle1);
         vehicleService.add(vehicle2);
@@ -42,7 +46,7 @@ public class TestCircuitCRUD {
                 .orElse(null);
 
         // === Récupérer un utilisateur par ID depuis la liste ===
-        int desiredUserId = 8;
+        int desiredUserId = 6;
         User userFromDB = userService.getAll().stream()
                 .filter(u -> u.getIdUser() == desiredUserId)
                 .findFirst()

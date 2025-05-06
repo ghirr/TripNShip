@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Services;
 
 
+import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Entities.Type;
 import org.Esprit.TripNShip.Entities.Vehicle;
 import org.Esprit.TripNShip.Utils.MyDataBase;
@@ -24,7 +25,7 @@ public class VehicleService implements IService<Vehicle> {
     @Override
     public void add(Vehicle vehicle) {
 
-        String req = "INSERT INTO vehicle (brand, model, licensePlate, dailyPrice, availability, type) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO vehicle (brand, model, licensePlate, dailyPrice, availability, type, idAgency) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, vehicle.getBrand());
@@ -33,6 +34,7 @@ public class VehicleService implements IService<Vehicle> {
             pst.setFloat(4, vehicle.getDailyPrice());
             pst.setBoolean(5, vehicle.isAvailability());
             pst.setInt(6, vehicle.getType().ordinal());
+            pst.setInt(7, vehicle.getRentalAgency().getIdAgency());
             pst.executeUpdate();
             System.out.println("Vehicle added!");
         } catch (SQLException e) {
@@ -42,7 +44,7 @@ public class VehicleService implements IService<Vehicle> {
 
     @Override
     public void update(Vehicle vehicle) {
-        String req = "UPDATE vehicle SET brand=?, model=?, licensePlate=?, dailyPrice=?, availability=?, type=? WHERE idVehicle=?";
+        String req = "UPDATE vehicle SET brand=?, model=?, licensePlate=?, dailyPrice=?, availability=?, type=?, idAgency=? WHERE idVehicle=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, vehicle.getBrand());
@@ -51,7 +53,8 @@ public class VehicleService implements IService<Vehicle> {
             pst.setFloat(4, vehicle.getDailyPrice());
             pst.setBoolean(5, vehicle.isAvailability());
             pst.setInt(6, vehicle.getType().ordinal());
-            pst.setInt(7, vehicle.getIdVehicle());
+            pst.setInt(7, vehicle.getRentalAgency().getIdAgency());
+            pst.setInt(8, vehicle.getIdVehicle());
             pst.executeUpdate();
             System.out.println("Vehicle updated!");
         } catch (SQLException e) {
@@ -88,7 +91,8 @@ public class VehicleService implements IService<Vehicle> {
                         rs.getString("licensePlate"),
                         rs.getFloat("dailyPrice"),
                         rs.getBoolean("availability"),
-                        Type.values()[rs.getInt("type")]
+                        Type.values()[rs.getInt("type")],
+                        new RentalAgency(rs.getInt("idAgency"))
                 );
 
                 vehicles.add(vehicle);

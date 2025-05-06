@@ -28,8 +28,8 @@ public class TestCircuitCRUD {
         agencyService.add(agency3);
 
         // === Créer des véhicules ===
-        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car);
-        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car);
+        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency2);
+        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency3);
 
         vehicleService.add(vehicle1);
         vehicleService.add(vehicle2);
@@ -76,7 +76,7 @@ public class TestCircuitCRUD {
 
             // === Update Rentals ===
             rental1.setTotalPrice(180.0f);
-            rental2.setStatus(StautCircuit.Active);
+            rental2.setStatusCircuit(StautCircuit.Active);
 
             rentalService.update(rental1);
             rentalService.update(rental2);
@@ -96,7 +96,7 @@ public class TestCircuitCRUD {
 
         // === Créer un circuit touristique ===
         TourCircuit tourCircuit = new TourCircuit(0, "Andalusian Adventure", "Discover Spain's beauty",
-                1200.0f, "7 Days", "Spain", true, null);
+                1200.0f, "7 Days", "Spain", true);
         tourCircuitService.add(tourCircuit);
 
         // Récupérer le dernier ajouté

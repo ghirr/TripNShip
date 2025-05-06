@@ -1,225 +1,129 @@
 package org.Esprit.TripNShip.Controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
-import org.Esprit.TripNShip.Entities.StatusBooking;
-import org.Esprit.TripNShip.Entities.TourCircuit;
-import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.CircuitBookingService;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
+
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class ListViewCircuitBookingController {
+public class ListViewCircuitBookingController implements Initializable {
 
-    @FXML private ComboBox<String> entriesComboBox;
-    @FXML private TextField searchField;
-    @FXML private Button addTourCircuitButton;
-    @FXML private Button exportExcelButton;
     @FXML private TableView<CircuitBooking> circuitBookingTable;
     @FXML private TableColumn<CircuitBooking, String> dateColumn;
     @FXML private TableColumn<CircuitBooking, String> statusColumn;
-    @FXML private TableColumn<CircuitBooking, Void> actionColumn;
+    @FXML private TableColumn<CircuitBooking, String> circuitColumn;
+    @FXML private TableColumn<CircuitBooking, String> userColumn;
+    @FXML private TableColumn<CircuitBooking, Void> actionsColumn;
 
-    private final CircuitBookingService bookingService = new CircuitBookingService();
+    @FXML private Button addTourCircuitButton;
+    @FXML private Button exportExcelButton;
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> entriesComboBox;
+
     private final ObservableList<CircuitBooking> bookingList = FXCollections.observableArrayList();
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private final CircuitBookingService circuitBookingService = new CircuitBookingService();
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private int currentEntriesLimit = 10;
 
-    @FXML
-    public void initialize() {
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         configureColumns();
-
-        // Chargement des données
+        setupComboBox();
+        setupSearch();
+        setupButtons();
         loadBookings();
-
-        // Configuration du ComboBox
-        entriesComboBox.getSelectionModel().selectFirst();
-
-        // Configuration des boutons
-        addTourCircuitButton.setOnAction(event -> handleAddBooking());
-        exportExcelButton.setOnAction(event -> handleExportExcel());
-
-        // Configuration de la recherche
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookings(newValue));
     }
 
     private void configureColumns() {
-        dateColumn.setCellValueFactory(cellData -> {
-            LocalDateTime date = cellData.getValue().getBookingDate();
-            return new javafx.beans.property.SimpleStringProperty(date != null ? date.format(dateFormatter) : "");
-        });
-
-        statusColumn.setCellValueFactory(cellData -> {
-            StatusBooking status = cellData.getValue().getStatusBooking();
-            return new javafx.beans.property.SimpleStringProperty(status != null ? status.toString() : "");
-        });
-
-
-
-        setupActionColumn();
+        dateColumn.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getBookingDate().format(dateFormatter)
+        ));
+        statusColumn.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getStatusBooking().toString()
+        ));
+        circuitColumn.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getTourCircuit().getNameCircuit()
+        ));
+        userColumn.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getUser().getFirstName()
+        ));
+     //   setupActionColumn();
     }
 
-    private void setupActionColumn() {
-        actionColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button editButton = new Button("Edit");
-            private final Button deleteButton = new Button("Delete");
-            private final HBox buttonsContainer = new HBox(5, editButton, deleteButton);
+    private void setupComboBox() {
+        entriesComboBox.setItems(FXCollections.observableArrayList("5", "10", "25", "50"));
+        entriesComboBox.setValue("10");
+        entriesComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            currentEntriesLimit = Integer.parseInt(newVal);
+            filterBookings(searchField.getText());
+        });
+    }
+
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> filterBookings(newValue));
+    }
+
+    private void setupButtons() {
+        addTourCircuitButton.setOnAction(event -> handleAddBooking());
+        exportExcelButton.setOnAction(event -> handleExportExcel());
+    }
+
+    private void loadBookings() {
+        List<CircuitBooking> bookings = circuitBookingService.getAll();
+        bookingList.setAll(bookings);
+        filterBookings("");
+    }
+
+    private void filterBookings(String searchText) {
+        String lowerText = searchText.toLowerCase();
+        ObservableList<CircuitBooking> filtered = bookingList.filtered(booking ->
+                booking.getBookingDate().format(dateFormatter).toLowerCase().contains(lowerText) ||
+                        booking.getStatusBooking().toString().toLowerCase().contains(lowerText) ||
+                        booking.getTourCircuit().getNameCircuit().toLowerCase().contains(lowerText) ||
+                        booking.getUser().getFirstName().toLowerCase().contains(lowerText)
+        );
+        int limit = Math.min(currentEntriesLimit, filtered.size());
+        circuitBookingTable.setItems(FXCollections.observableArrayList(filtered.subList(0, limit)));
+    }
+
+  /*  private void setupActionColumn() {
+        actionsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Supprimer");
 
             {
-                editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 5;");
-                deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5;");
-
-
-
-                editButton.setOnAction(event -> {
-                    CircuitBooking booking = getTableView().getItems().get(getIndex());
-                    handleEditBooking(booking);
-                });
-
                 deleteButton.setOnAction(event -> {
                     CircuitBooking booking = getTableView().getItems().get(getIndex());
-                    handleDeleteBooking(booking);
+                    circuitBookingService.delete(booking.getIdBooking());
+                    loadBookings();
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : buttonsContainer);
-            }
-        });
-    }
-
-    private void loadBookings() {
-        // 1. Récupération des données depuis la base
-        List<CircuitBooking> bookings = bookingService.getAll();
-
-        // 2. Mise à jour de la liste observable
-        bookingList.setAll(bookings);
-
-        // 3. Affichage des données dans la table
-        circuitBookingTable.setItems(bookingList);
-    }
-
-    private void filterBookings(String searchText) {
-        if (searchText == null || searchText.isEmpty()) {
-            circuitBookingTable.setItems(bookingList);
-        } else {
-            ObservableList<CircuitBooking> filteredList = FXCollections.observableArrayList();
-            String searchLower = searchText.toLowerCase();
-
-            for (CircuitBooking booking : bookingList) {
-                if (matchesSearch(booking, searchLower)) {
-                    filteredList.add(booking);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
                 }
             }
-            circuitBookingTable.setItems(filteredList);
-        }
-    }
-
-    private boolean matchesSearch(CircuitBooking booking, String searchLower) {
-        if (booking.getBookingDate() != null &&
-                booking.getBookingDate().format(dateFormatter).toLowerCase().contains(searchLower)) {
-            return true;
-        }
-
-        if (booking.getStatusBooking() != null &&
-                booking.getStatusBooking().toString().toLowerCase().contains(searchLower)) {
-            return true;
-        }
-
-        if (booking.getTourCircuit() != null &&
-                booking.getTourCircuit().getNameCircuit().toLowerCase().contains(searchLower)) {
-            return true;
-        }
-
-        if (booking.getUser() != null &&
-                booking.getUser().getFirstName().toLowerCase().contains(searchLower)) {
-            return true;
-        }
-
-        return false;
-    }
+        });
+    } */
 
     private void handleAddBooking() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddCircuitBooking.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Add New Booking");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            loadBookings(); // Rafraîchir après fermeture
-        } catch (IOException e) {
-            showAlert("Error", "Could not load the booking form: " + e.getMessage());
-        }
-    }
-
-    private void handleEditBooking(CircuitBooking booking) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateCircuitBooking.fxml"));
-            Parent root = loader.load();
-
-            // ✅ Récupérer le contrôleur
-            UpdateCircuitBookingController controller = loader.getController();
-
-            // ✅ Passer les données du booking sélectionné
-            controller.setBookingData(booking);
-
-            Stage stage = new Stage();
-            stage.setTitle("Edit Circuit Booking");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            // ✅ Recharger les données après modification
-            loadBookings();
-
-        } catch (IOException e) {
-            showAlert("Error", "Could not load the booking edit form: " + e.getMessage());
-        }
-    }
-
-
-    private void handleDeleteBooking(CircuitBooking booking) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Delete Booking");
-        alert.setContentText("Are you sure you want to delete this booking?");
-
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                bookingService.delete(booking);
-                loadBookings();
-            }
-        });
+        // Redirection vers le formulaire d'ajout si nécessaire
     }
 
     private void handleExportExcel() {
-        // Implémentez l'export Excel ici
-        showAlert("Info", "Excel export functionality will be implemented here");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        // À implémenter : Exporter bookingList au format Excel
     }
 }

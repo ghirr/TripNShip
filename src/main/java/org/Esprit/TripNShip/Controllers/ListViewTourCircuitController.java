@@ -41,31 +41,31 @@ public class ListViewTourCircuitController {
 
     @FXML
     private void initialize() {
-        // Configuration des colonnes
+
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("nameCircuit"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("priceCircuit"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        agencyColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionCircuit")); // A adapter selon votre besoin
+        agencyColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionCircuit"));
 
-        // Chargement des données
+
         loadCircuitsFromDatabase();
 
-        // Configuration du ComboBox
+
         entriesComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            // Implémenter la pagination si nécessaire
+
         });
 
-        // Configuration des boutons
+
         addTourCircuitButton.setOnAction(event -> handleAddTourCircuit());
         exportExcelButton.setOnAction(event -> handleExportExcel());
 
-        // Configuration de la recherche
+
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filterCircuits(newValue);
         });
 
-        // Configuration de la colonne Actions
+
         setupActionButtons();
     }
 
@@ -130,12 +130,12 @@ public class ListViewTourCircuitController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            // Obtenir le contrôleur et configurer si nécessaire
+
             AddTourCircuitController controller = loader.getController();
 
             stage.showAndWait();
 
-            // Rafraîchir après fermeture
+
             loadCircuitsFromDatabase();
 
         } catch (IOException e) {
@@ -183,7 +183,7 @@ public class ListViewTourCircuitController {
     }
 
     private void handleExportExcel() {
-        // Implémentez l'export Excel ici
+
         showAlert("Info", "Excel export functionality will be implemented here");
     }
 

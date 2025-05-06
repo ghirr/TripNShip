@@ -162,7 +162,7 @@ public class ListViewVehicleRentalController {
                 if (rental.getVehicle().getModel().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                if (rental.getStatus().toString().toLowerCase().contains(lowerCaseFilter)) {
+                if (rental.getStatusCircuit().toString().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 if (String.valueOf(rental.getTotalPrice()).contains(lowerCaseFilter)) {

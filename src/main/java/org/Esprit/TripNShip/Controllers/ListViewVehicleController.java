@@ -171,7 +171,7 @@ public class ListViewVehicleController {
                     // Set button actions
                     editButton.setOnAction(event -> {
                         Vehicle vehicle = getTableView().getItems().get(getIndex());
-                       // handleEditVehicle(vehicle);
+                        handleEditVehicle(vehicle);
                     });
 
                     deleteButton.setOnAction(event -> {
@@ -210,7 +210,7 @@ public class ListViewVehicleController {
         }
     }
 
-   /* private void handleEditVehicle(Vehicle vehicle) {
+      private void handleEditVehicle(Vehicle vehicle) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateVehicle.fxml"));
             Parent root = loader.load();
@@ -234,7 +234,7 @@ public class ListViewVehicleController {
             showAlert("Error", "Could not load the vehicle edit form: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-*/
+
 
     private void handleDeleteVehicle(Vehicle vehicle) {
         try {

@@ -1,9 +1,6 @@
 package org.Esprit.TripNShip.Entities;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TourCircuit {
 
     private int idCircuit;
@@ -13,10 +10,10 @@ public class TourCircuit {
     private String duration;
     private String destination;
     private Boolean guideIncluded;
-    private List<TourCircuit> circuitList;
 
 
-    public TourCircuit(int idCircuit, String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, Boolean guideIncluded, List<TourCircuit> circuitList) {
+
+    public TourCircuit(int idCircuit, String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, Boolean guideIncluded) {
         this.idCircuit = idCircuit;
         this.nameCircuit = nameCircuit;
         this.descriptionCircuit = descriptionCircuit;
@@ -24,17 +21,15 @@ public class TourCircuit {
         this.duration = duration;
         this.destination = destination;
         this.guideIncluded = guideIncluded;
-        this.circuitList = new ArrayList<>();
     }
 
-    public TourCircuit(String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, Boolean guideIncluded, List<TourCircuit> circuitList) {
+    public TourCircuit(String nameCircuit, String descriptionCircuit, float priceCircuit, String duration, String destination, Boolean guideIncluded) {
         this.nameCircuit = nameCircuit;
         this.descriptionCircuit = descriptionCircuit;
         this.priceCircuit = priceCircuit;
         this.duration = duration;
         this.destination = destination;
         this.guideIncluded = guideIncluded;
-        this.circuitList = circuitList;
     }
 
     public TourCircuit() {
@@ -97,13 +92,6 @@ public class TourCircuit {
         this.guideIncluded = guideIncluded;
     }
 
-    public List<TourCircuit> getCircuitList() {
-        return circuitList;
-    }
-
-    public void setCircuitList(List<TourCircuit> circuitList) {
-        this.circuitList = circuitList;
-    }
 
     @Override
     public String toString() {
@@ -115,7 +103,6 @@ public class TourCircuit {
                 ", duration='" + duration + '\'' +
                 ", destination='" + destination + '\'' +
                 ", guideIncluded=" + guideIncluded +
-                ", circuitList=" + circuitList +
                 '}';
     }
 }

@@ -47,8 +47,8 @@
                         <ComboBox fx:id="vehicleComboBox" promptText="Select vehicle"
                                   style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <Label text="User" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <ComboBox fx:id="userComboBox" promptText="Select user"
+                        <Label text="Agency" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                        <ComboBox fx:id="agencyComboBox" promptText="Select user"
                                   style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                     </VBox>
 

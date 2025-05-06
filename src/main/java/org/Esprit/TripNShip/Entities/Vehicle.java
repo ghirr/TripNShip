@@ -12,9 +12,10 @@ public class Vehicle {
     private float dailyPrice;
     private boolean availability;
     private Type type;
+    private RentalAgency rentalAgency;
 
 
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type) {
+    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency) {
         this.idVehicle = idVehicle;
         this.brand = brand;
         this.model = model;
@@ -22,17 +23,18 @@ public class Vehicle {
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
+        this.rentalAgency = rentalAgency;
 
     }
 
-    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type) {
+    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency) {
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
-
+        this.rentalAgency = rentalAgency;
     }
 
     public Vehicle() {
@@ -100,7 +102,13 @@ public class Vehicle {
         this.type = type;
     }
 
+    public RentalAgency getRentalAgency() {
+        return rentalAgency;
+    }
 
+    public void setRentalAgency(RentalAgency rentalAgency) {
+        this.rentalAgency = rentalAgency;
+    }
 
     @Override
     public String toString() {
@@ -112,6 +120,7 @@ public class Vehicle {
                 ", dailyPrice=" + dailyPrice +
                 ", availability=" + availability +
                 ", type=" + type +
+                ", rentalAgency=" + rentalAgency +
                 '}';
     }
 }

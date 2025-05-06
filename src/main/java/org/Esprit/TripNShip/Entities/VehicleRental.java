@@ -10,27 +10,36 @@ public class VehicleRental {
     private float totalPrice;
     private StautCircuit statusCircuit;
     private Vehicle vehicle;
-    private RentalAgency rentalAgency;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
-                         StautCircuit statusCircuit, Vehicle vehicle, RentalAgency rentalAgency) {
+                         StautCircuit statusCircuit, Vehicle vehicle, User user) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.statusCircuit = statusCircuit;
         this.vehicle = vehicle;
-        this.rentalAgency = rentalAgency;
+        this.user = user;
     }
 
     public VehicleRental(int idRental, LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
-                         StautCircuit statusCircuit, Vehicle vehicle, RentalAgency rentalAgency) {
+                         StautCircuit statusCircuit, Vehicle vehicle, User user) {
         this.idRental = idRental;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.statusCircuit = statusCircuit;
         this.vehicle = vehicle;
-        this.rentalAgency = rentalAgency;
+        this.user = user;
+
     }
 
     public VehicleRental() {
@@ -86,14 +95,6 @@ public class VehicleRental {
         this.statusCircuit = statusCircuit;
     }
 
-    public RentalAgency getRentalAgency() {
-        return rentalAgency;
-    }
-
-    public void setRentalAgency(RentalAgency rentalAgency) {
-        this.rentalAgency = rentalAgency;
-    }
-
 
     @Override
     public String toString() {
@@ -104,7 +105,7 @@ public class VehicleRental {
                 ", totalPrice=" + totalPrice +
                 ", statusCircuit=" + statusCircuit +
                 ", vehicle=" + vehicle +
-                ", rentalAgency=" + rentalAgency +
+                ", user=" + user +
                 '}';
     }
 }

@@ -10,18 +10,14 @@ import java.util.List;
 public class VehicleRentalService implements IService<VehicleRental> {
 
     private final Connection connection;
-    private final VehicleService vehicleService;
-    private final RentalAgencyService rentalAgencyService;
 
     public VehicleRentalService() {
         connection = MyDataBase.getInstance().getConnection();
-        vehicleService = new VehicleService();
-        rentalAgencyService = new RentalAgencyService();
     }
 
     @Override
     public void add(VehicleRental vehicleRental) {
-        String req = "INSERT INTO vehiclerental (startDate, endDate, totalPrice, statusCircuit, idVehicle, idAgency) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO vehiclerental (startDate, endDate, totalPrice, statusCircuit, idVehicle, idUser) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(vehicleRental.getStartDate()));
@@ -29,7 +25,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
             pst.setFloat(3, vehicleRental.getTotalPrice());
             pst.setInt(4, vehicleRental.getStatusCircuit().ordinal());
             pst.setInt(5, vehicleRental.getVehicle().getIdVehicle());
-            pst.setInt(6, vehicleRental.getRentalAgency().getIdAgency());
+            pst.setInt(6, vehicleRental.getUser().getIdUser());
             pst.executeUpdate();
             System.out.println("Vehicle Rental added!");
         } catch (SQLException e) {
@@ -39,7 +35,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
 
     @Override
     public void update(VehicleRental vehicleRental) {
-        String req = "UPDATE vehiclerental SET startDate=?, endDate=?, totalPrice=?, statusCircuit=?, idVehicle=?, idAgency=? WHERE idRental=?";
+        String req = "UPDATE vehiclerental SET startDate=?, endDate=?, totalPrice=?, statusCircuit=?, idVehicle=?, idUser=? WHERE idRental=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(vehicleRental.getStartDate()));
@@ -47,7 +43,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
             pst.setFloat(3, vehicleRental.getTotalPrice());
             pst.setInt(4, vehicleRental.getStatusCircuit().ordinal());
             pst.setInt(5, vehicleRental.getVehicle().getIdVehicle());
-            pst.setInt(6, vehicleRental.getRentalAgency().getIdAgency());
+            pst.setInt(6, vehicleRental.getUser().getIdUser());
             pst.setInt(7, vehicleRental.getIdRental());
             pst.executeUpdate();
             System.out.println("Vehicle Rental updated!");
@@ -77,8 +73,6 @@ public class VehicleRentalService implements IService<VehicleRental> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Vehicle vehicle = new Vehicle(rs.getInt("idVehicle"));
-                RentalAgency rentalAgency = new RentalAgency(rs.getInt("idAgency"));
 
                 VehicleRental vehicleRental = new VehicleRental(
                         rs.getInt("idRental"),
@@ -86,8 +80,8 @@ public class VehicleRentalService implements IService<VehicleRental> {
                         rs.getTimestamp("endDate").toLocalDateTime(),
                         rs.getFloat("totalPrice"),
                         StautCircuit.values()[rs.getInt("statusCircuit")],
-                        vehicle,
-                        rentalAgency
+                        new Vehicle(rs.getInt("idVehicle")),
+                        new User(rs.getInt("idUser"))
 
                 );
                 vehicleRentals.add(vehicleRental);

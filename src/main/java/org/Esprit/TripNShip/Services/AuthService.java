@@ -19,47 +19,34 @@ import org.mindrot.jbcrypt.BCrypt;
 import static org.Esprit.TripNShip.Utils.Shared.getEnumOrNull;
 
 public class AuthService {
-    private Connection cnx = MyDataBase.getInstance().getConnection();
+    private final Connection cnx = MyDataBase.getInstance().getConnection();
 
     public User login(String email, String password) {
-        String query = "SELECT id, email, password, role,firstName,lastName,gender,profilePhoto,birthDayDate,phoneNumber FROM user WHERE email = ?";
+        String query = "SELECT id, password, role,firstName,lastName,profilePhoto FROM user WHERE email = ?";
         try (PreparedStatement pst = cnx.prepareStatement(query)) {
             pst.setString(1, email);
 
             ResultSet resultSet = pst.executeQuery();
 
             if (resultSet.next()) {
-
-                LocalDateTime birthDateTime = null;
-                Date birthDate = resultSet.getDate("birthDayDate");
-                if (birthDate != null) {
-                    birthDateTime = resultSet.getDate("birthDayDate").toLocalDate().atStartOfDay();
+                String passwordBD = resultSet.getString("password");
+                if (passwordBD == null || passwordBD.isEmpty() || !BCrypt.checkpw(password, passwordBD)) {
+                    return null;
                 }
 
-
-                User user = new User(
+                return new User(
                         resultSet.getInt("id"),
                         resultSet.getString("firstName"),
                         resultSet.getString("lastName"),
-                        getEnumOrNull(Gender.class, resultSet.getString("gender")),
                         getEnumOrNull(Role.class, resultSet.getString("role")),
-                        resultSet.getString("email"),
-                        resultSet.getString("profilePhoto"),
-                        birthDateTime,
-                        resultSet.getString("phoneNumber")// Convertit la chaîne de la BD en Role ENUM
+                        email,
+                        resultSet.getString("profilePhoto")
                 );
-                String passwordBD = resultSet.getString("password");
-                if (passwordBD == null || passwordBD.isEmpty()) {
-                    return null;
-                }
-                if(BCrypt.checkpw(password, passwordBD)) {
-                    return user;
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Si aucun utilisateur trouvé
+        return null;
     }
 
     public void signUp(Client client) {
@@ -89,7 +76,8 @@ public class AuthService {
             ResultSet resultSet = pst.executeQuery();
 
             if (resultSet.next()) {
-                User user = new User(
+
+                return new User(
                         resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
@@ -97,8 +85,6 @@ public class AuthService {
                         email,
                         resultSet.getString(5)
                 );
-
-                return user;
 
             }
         } catch (SQLException e) {

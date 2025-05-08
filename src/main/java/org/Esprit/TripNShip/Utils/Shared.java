@@ -1,17 +1,16 @@
 package org.Esprit.TripNShip.Utils;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -25,7 +24,7 @@ public class Shared {
     private static final String CHARS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
-    public static void switchScene(ActionEvent event, URL fxmlFile , String title) {
+    public static void switchScene(Event event, URL fxmlFile , String title) {
         try {
 
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -42,7 +41,7 @@ public class Shared {
         }
     }
 
-    public static void switchScene(ActionEvent event, Parent root , String title) {
+    public static void switchScene(Event event, Parent root , String title) {
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             primaryStage.setMaximized(false);
@@ -51,6 +50,23 @@ public class Shared {
             primaryStage.setTitle(title);
             primaryStage.show();
         
+    }
+
+    public static void switchScene(Button btn, URL fxmlFile , String title) {
+        try {
+
+            Stage primaryStage = (Stage)  btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(fxmlFile);
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setMaximized(false);
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.setTitle(title);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void showAlert(Alert.AlertType type, String title, String message) {

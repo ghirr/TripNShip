@@ -83,6 +83,13 @@ public sealed class User permits Client,Employee {
         this.role = role;
     }
 
+    public User(String firstName) {
+    }
+
+    public User() {
+
+    }
+
     public int getIdUser() {
         return idUser;
     }

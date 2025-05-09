@@ -64,22 +64,43 @@ public class CircuitBookingService implements IService<CircuitBooking> {
     @Override
     public List<CircuitBooking> getAll() {
         List<CircuitBooking> circuitBookings = new ArrayList<>();
-        String req = "SELECT * FROM circuitbooking";
+        String req = "SELECT cb.*, u.firstName, u.lastName, c.nameCircuit " +
+                "FROM circuitbooking cb " +
+                "JOIN user u ON cb.idUser = u.id " +
+                "JOIN tourcircuit c ON cb.idCircuit = c.idCircuit";
+
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
 
+            while (rs.next()) {
+                // Création du booking
                 CircuitBooking circuitBooking = new CircuitBooking(
                         rs.getInt("idBooking"),
                         rs.getTimestamp("bookingDate").toLocalDateTime(),
                         StatusBooking.values()[rs.getInt("statusBooking")]
                 );
+
+                // Création de l'utilisateur
+                User user = new User();
+                user.setIdUser(rs.getInt("idUser"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
+                circuitBooking.setUser(user);
+
+                // Création du circuit
+                TourCircuit circuit = new TourCircuit();
+                circuit.setIdCircuit(rs.getInt("idCircuit"));
+                circuit.setNameCircuit(rs.getString("nameCircuit"));
+                circuitBooking.setTourCircuit(circuit);
+
                 circuitBookings.add(circuitBooking);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return circuitBookings;
     }
+
 }

@@ -32,6 +32,10 @@ public class TourCircuit {
         this.guideIncluded = guideIncluded;
     }
 
+    public TourCircuit(String nameCircuit) {
+
+    }
+
     public TourCircuit() {
 
     }

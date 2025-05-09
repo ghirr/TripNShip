@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import org.Esprit.TripNShip.Entities.TourCircuit;
 import org.Esprit.TripNShip.Services.TourCircuitService;
 
+import java.util.ResourceBundle;
+
 public class AddTourCircuitController {
     @FXML
     private TextField nameField;
@@ -28,6 +30,7 @@ public class AddTourCircuitController {
     private Button addCircuitButton;
 
     private final TourCircuitService tourCircuitService = new TourCircuitService();
+    private ResourceBundle rs;
 
     @FXML
     private void initialize() {
@@ -49,8 +52,8 @@ public class AddTourCircuitController {
 
         try {
             float price = Float.parseFloat(priceText);
-
-            TourCircuit circuit = new TourCircuit();
+            
+            TourCircuit circuit = new TourCircuit(rs.getString("nameCircuit"));
             circuit.setNameCircuit(name);
             circuit.setDescriptionCircuit(description);
             circuit.setPriceCircuit(price);

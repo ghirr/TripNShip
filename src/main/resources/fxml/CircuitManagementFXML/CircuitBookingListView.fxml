@@ -14,18 +14,68 @@
     <VBox style="-fx-padding: 15;" alignment="CENTER">
         <HBox spacing="0" prefWidth="Infinity" VBox.vgrow="ALWAYS">
             <!-- Sidebar -->
-            <VBox spacing="20" alignment="TOP_CENTER" prefWidth="220"
-                  style="-fx-background-color: #2C3E50; -fx-padding: 20; -fx-background-radius: 15 0 0 15;">
-                <ImageView fitHeight="120" fitWidth="120" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0, 3);">
-                    <Image url="@../../images/logo.png" />
-                </ImageView>
-                <Button text="Dashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;" />
-                <Button text="Vehicle" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;" />
-                <Button text="Rental Agency" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;" />
-                <Button text="Vehicle Booking" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;" />
-                <Button text="Tour Circuit" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;" />
-                <Button text="Circuit Booking" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px;" />
+            <VBox spacing="10" alignment="TOP_LEFT" prefWidth="220"
+                  style="-fx-background-color: #3B4B9B; -fx-padding: 20;  -fx-background-radius: 15 0 0 15;">
+
+                <!-- Logo -->
+                <VBox spacing="10" alignment="TOP_CENTER" prefWidth="220"
+                      style="-fx-background-color: #3B4B9B; -fx-padding: 20px 0px 5px 0px;">
+
+                    <ImageView fitHeight="80" fitWidth="120">
+                        <Image url="@../../images/logo.png" />
+                    </ImageView>
+
+                    <!-- autres éléments -->
+                </VBox>
+
+                <!-- Section: Dashboard -->
+                <Label text="MENU" style="-fx-text-fill: #A0AEC0; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@../../images/icons8-dashboard-24.png"/>
+                    </ImageView>
+                    <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                </HBox>
+
+                <!-- Autres boutons -->
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@../../images/icons8-vehicle-50.png"/>
+                    </ImageView >
+                    <Label text="Vehicle" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@../../images/icons8-agency-96.png"/>
+                    </ImageView>
+                    <Label text="Rental Agency" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@../../images/icons8-car-rental-64.png"/>
+                    </ImageView>
+                    <Label text="Vehicle Booking" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@../../images/icons8-trekking-50 (1).png"/>
+                    </ImageView>
+                    <Label text="Tour Circuit" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@../../images/icons8-new-ticket-50.png"/>
+                    </ImageView>
+                    <Label text="Circuit Booking" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                </HBox>
+
+
             </VBox>
+
 
             <!-- Main Content -->
             <VBox spacing="0" HBox.hgrow="ALWAYS"
@@ -52,17 +102,40 @@
                                 <Label text="Circuit Bookings"
                                        style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3498DB;" />
                                 <Pane HBox.hgrow="ALWAYS" />
-                                <Button fx:id="addTourCircuitButton" text="+ Add Booking"
-                                        style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9); -fx-text-fill: white; -fx-font-weight: bold;
-                                               -fx-background-radius: 25; -fx-padding: 8 18 8 18; -fx-font-size: 14px;"
-                                        onAction="#showAddCircuitBookingPopup" />
+                                <Button fx:id="addTourCircuitButton" text="Add Booking"
+                                        onAction="#showAddCircuitBookingPopup"
+                                        style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
+               -fx-text-fill: white; -fx-font-weight: bold;
+               -fx-background-radius: 25; -fx-padding: 8 18 8 18;
+               -fx-font-size: 14px;">
+
+                                    <graphic>
+                                        <ImageView fitWidth="22" fitHeight="22">
+                                            <Image url="@../../images/icons8-plus-64 (1).png" />
+                                        </ImageView>
+                                    </graphic>
+
+                                </Button>
+
                             </HBox>
 
                             <!-- Search & Filters -->
                             <HBox alignment="CENTER_LEFT" spacing="10">
                                 <ComboBox fx:id="statusComboBox" onAction="#handleStatusFilter" />
-                                <Button fx:id="exportExcelButton" text="Export to Excel"
-                                        style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-background-radius: 10;" />
+                                <Button fx:id="exportExcelButton" text="Excel"
+                                        onAction="#showAddCircuitBookingPopup"
+                                        style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
+               -fx-text-fill: white; -fx-font-weight: bold;
+               -fx-background-radius: 25; -fx-padding: 4 14 4 14;
+               -fx-font-size: 12px;">
+
+                                    <graphic>
+                                        <ImageView fitWidth="20" fitHeight="20">
+                                            <Image url="@../../images/icons8-export-excel-50.png" />
+                                        </ImageView>
+                                    </graphic>
+
+                                </Button>
                             </HBox>
                         </VBox>
                     </top>
@@ -74,9 +147,9 @@
                                        style="-fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10;">
                                 <columns>
                                     <TableColumn fx:id="colBookingDate" prefWidth="120" text="Date" />
-                                    <TableColumn fx:id="colCustomerName" prefWidth="100" text="Status" />
-                                    <TableColumn fx:id="colTourName" prefWidth="180" text="User" />
-                                    <TableColumn fx:id="colBookingPrice" prefWidth="140" text="Tour Circuit" />
+                                    <TableColumn fx:id="colStatus" prefWidth="100" text="Status" />
+                                    <TableColumn fx:id="colCustomerName" prefWidth="180" text="User" />
+                                    <TableColumn fx:id="colTourName" prefWidth="140" text="Tour Circuit" />
                                     <TableColumn fx:id="colActions" text="Actions" />
                                 </columns>
                                 <columnResizePolicy>
@@ -86,6 +159,7 @@
                                     <String fx:value="modern-table" />
                                 </styleClass>
                             </TableView>
+
 
                             <!-- Pagination -->
                             <HBox alignment="CENTER" spacing="5">

@@ -23,6 +23,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
+import org.Esprit.TripNShip.Entities.StatusBooking;
+import org.Esprit.TripNShip.Entities.TourCircuit;
+import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.CircuitBookingService;
 import org.Esprit.TripNShip.Utils.Shared;
 
@@ -41,7 +44,7 @@ public class ListViewCircuitBookingController {
     @FXML
     private TableColumn<CircuitBooking, String> colTourName;
     @FXML
-    private TableColumn<CircuitBooking, Double> colBookingPrice;
+    private TableColumn<CircuitBooking, String> colStatus;
     @FXML
     private TableColumn<CircuitBooking, Void> colActions;
     @FXML
@@ -54,7 +57,6 @@ public class ListViewCircuitBookingController {
     private StackPane stackPane;
 
     private static ListViewCircuitBookingController instance;
-
     private ObservableList<CircuitBooking> circuitBookings = FXCollections.observableArrayList();
     private List<CircuitBooking> filteredCircuitBookings = new ArrayList<>();
 
@@ -74,19 +76,30 @@ public class ListViewCircuitBookingController {
     public void initialize() {
         circuitBookingService = new CircuitBookingService();
 
-        // Vérification que searchField n'est pas null
         if (searchField != null) {
             VBox.setMargin(searchField, new Insets(0, 0, 20, 0));
         }
+        circuitBookingTable.setRowFactory(tv -> {
+            TableRow<CircuitBooking> row = new TableRow<>();
+            row.setPrefHeight(40); // hauteur de 40px par ligne
+            return row;
+        });
 
-        statusComboBox.setItems(FXCollections.observableArrayList("EN_ATTENTE", "CONFIRMEE", "ANNULEE"));
-        statusComboBox.setValue("EN_ATTENTE"); // Valeur par défaut
+
+        statusComboBox.setItems(FXCollections.observableArrayList(
+                Arrays.stream(StatusBooking.values())
+                        .map(Enum::name)
+                        .collect(Collectors.toList())
+        ));
+        statusComboBox.setValue(StatusBooking.Confirmed.name());
 
         reloadCircuitBookingList();
         configureTable();
         pagination.setPageCount((int) Math.ceil((double) circuitBookings.size() / ROWS_PER_PAGE));
         pagination.setCurrentPageIndex(0);
+        pagination.setMaxPageIndicatorCount(3);
         pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> updateTable(newIndex.intValue()));
+
         pause = new PauseTransition(Duration.millis(100));
     }
 
@@ -106,9 +119,19 @@ public class ListViewCircuitBookingController {
 
     private void configureTable() {
         colBookingDate.setCellValueFactory(new PropertyValueFactory<>("bookingDate"));
-        colCustomerName.setCellValueFactory(new PropertyValueFactory<>("statusBooking"));
-        colTourName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        colBookingPrice.setCellValueFactory(new PropertyValueFactory<>("nameCircuit"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusBooking"));
+
+        colCustomerName.setCellValueFactory(cellData -> {
+            String fullName = cellData.getValue().getUser().getFirstName() + " " + cellData.getValue().getUser().getLastName();
+            return new SimpleObjectProperty<>(fullName);
+        });
+
+
+        colTourName.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getTourCircuit().getNameCircuit())
+        );
+
+
         setColActions();
         colActions.setSortable(false);
     }
@@ -217,40 +240,35 @@ public class ListViewCircuitBookingController {
     }
 
     private void setColActions() {
-        colActions.setCellFactory(param -> new TableCell<CircuitBooking, Void>() {
-            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/editIcon.png")));
-            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/deleteIcon.png")));
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-edit-64.png")));
+            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-delete-48.png")));
             private final HBox hbox = new HBox(10, editIcon, deleteIcon);
+
             {
                 editIcon.setFitWidth(30);
                 editIcon.setFitHeight(30);
                 deleteIcon.setFitWidth(30);
                 deleteIcon.setFitHeight(30);
 
-                // Appliquer un curseur "pointer" aux icônes
                 editIcon.setStyle("-fx-cursor: hand;");
                 deleteIcon.setStyle("-fx-cursor: hand;");
-
 
                 editIcon.setOnMouseClicked(event -> {
                     CircuitBooking booking = getTableView().getItems().get(getIndex());
                     if (booking != null) showEditPopup(booking);
                 });
+
                 deleteIcon.setOnMouseClicked(event -> {
                     CircuitBooking booking = getTableView().getItems().get(getIndex());
                     if (booking != null) confirmDelete(booking);
                 });
             }
 
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(new HBox(10, editIcon, deleteIcon));
-                }
+                setGraphic(empty ? null : hbox);
             }
         });
     }

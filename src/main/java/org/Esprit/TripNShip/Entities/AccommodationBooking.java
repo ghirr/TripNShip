@@ -3,47 +3,55 @@ package org.Esprit.TripNShip.Entities;
 import java.util.Date;
 
 public class AccommodationBooking {
+
     private int idBooking;
-    private int idUser;
-    private int roomId;
+    private User user;
+    private Room room;
     private Date startDate;
     private Date endDate;
     private BookingStatus status;
 
-    public AccommodationBooking() {
-    }
 
-    public AccommodationBooking(int idBooking, int idUser, int roomId, Date startDate, Date endDate, BookingStatus status) {
+    public AccommodationBooking(int idBooking, User user, Room room, Date startDate, Date endDate, BookingStatus status) {
         this.idBooking = idBooking;
-        this.idUser = idUser;
-        this.roomId = roomId;
+        this.user = user;
+        this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
     }
 
-    public int getIdReservation() {
+//    public AccommodationBooking(int idBooking, String emailUser, Room room, java.sql.Date startDate, java.sql.Date endDate, BookingStatus status) {
+//        this.idBooking = idBooking;
+//        this.user.setEmail(emailUser);
+//        this.room = room;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        this.status = status;
+//    }
+
+    public int getIdBooking() {
         return idBooking;
     }
 
-    public void setIdReservation(int idReservation) {
-        this.idBooking = idReservation;
+    public void setIdBooking(int idBooking) {
+        this.idBooking = idBooking;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public Date getStartDate() {
@@ -72,14 +80,15 @@ public class AccommodationBooking {
 
     @Override
     public String toString() {
-        return "AccommodationReservation{" +
-                "idReservation=" + idBooking +
-                ", idUser=" + idUser +
-                ", roomId=" + roomId +
+        return "AccommodationBooking{" +
+                "idBooking=" + idBooking +
+                ", idUser=" + user +
+                ", room=" + room +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", status=" + status +
                 '}';
     }
-}
 
+
+}

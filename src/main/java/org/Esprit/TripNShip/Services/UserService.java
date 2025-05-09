@@ -3,10 +3,8 @@ package org.Esprit.TripNShip.Services;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,4 +193,42 @@ public class UserService implements IService<User> {
             System.out.println(e.getMessage());
         }
     }
+
+    public User getUserByEmail(String email) {
+        User user = null;
+
+        String query = "SELECT * FROM User WHERE email = ?";  // Assurez-vous que la requête utilise le bon nom de colonne
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String genderStr = rs.getString("gender").toUpperCase();  // Convertir en majuscules
+                Gender gender = Gender.valueOf(genderStr);
+
+                Timestamp birthdayTimestamp = rs.getTimestamp("birthdayDate");
+                LocalDateTime birthdayDate = (birthdayTimestamp != null) ? birthdayTimestamp.toLocalDateTime() : null;
+
+                user = new User(
+                        rs.getInt("id"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        gender,
+                        Role.valueOf(rs.getString("role")),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("profilePhoto"),
+                        birthdayDate, // Utiliser la valeur vérifiée
+                        rs.getString("phoneNumber")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+
 }

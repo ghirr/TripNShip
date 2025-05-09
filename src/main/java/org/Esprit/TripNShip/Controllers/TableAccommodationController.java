@@ -22,6 +22,8 @@ import javafx.scene.control.TableView;
 import java.io.IOException;
 import java.util.List;
 
+
+
 public class TableAccommodationController {
 
     @FXML private ComboBox<String> entriesComboBox;
@@ -40,30 +42,33 @@ public class TableAccommodationController {
 
     private final AccommodationService accommodationService = new AccommodationService();
     private ObservableList<Accommodation> accommodationList = FXCollections.observableArrayList();
+    private static TableAccommodationController instance;
+
+    public TableAccommodationController(){
+        instance = this;
+    }
+    public static TableAccommodationController getInstance() {
+        return instance;
+    }
 
     @FXML
     private void initialize() {
-        // Vérifiez que la TableView est bien injectée
-        if (accommodationTable == null) {
-            System.out.println("accommodationTable is not initialized.");
-            return;
-        }
         // Lier les colonnes aux propriétés
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("priceNight"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 
         // Charger les données
         loadAccommodationsFromDatabase();
 
-
         // Configurer le ComboBox
         entriesComboBox.getItems().addAll("5", "10", "25", "50");
         entriesComboBox.getSelectionModel().selectFirst();
 
         // Configurer les boutons
-        //addButton.setOnAction(event -> openAddAccommodationForm());
+        addButton.setOnAction(event -> openAddAccommodationForm());
         exportExcelButton.setOnAction(event -> handleExportExcel());
 
         // Recherche dynamique
@@ -75,7 +80,7 @@ public class TableAccommodationController {
         setupActionButtons();
     }
 
-    private void loadAccommodationsFromDatabase() {
+    public void loadAccommodationsFromDatabase() {
         List<Accommodation> accommodations = accommodationService.getAll();
         accommodationList.setAll(accommodations);
         accommodationTable.setItems(accommodationList);
@@ -128,8 +133,29 @@ public class TableAccommodationController {
     }
 
     private void handleEditAccommodation(Accommodation accommodation) {
-        // TODO: Implémenter l’ouverture du formulaire de modification
-        System.out.println("Edit accommodation: " + accommodation.getName());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/EditAccommodation.fxml"));
+            Parent root = loader.load();
+
+            // Récupère le contrôleur
+            EditAccommodationController controller = loader.getController();
+            // Passe les données à modifier
+            controller.setAccommodation(accommodation); // à créer dans AccommodationController
+            // Recharge la table après modification
+            loadAccommodationsFromDatabase();
+
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Accommodation");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("❌ Erreur lors de l'ouverture du formulaire de modification : " + e.getMessage());
+        }
+
+
     }
 
     private void handleExportExcel() {
@@ -137,59 +163,42 @@ public class TableAccommodationController {
         System.out.println("Export to Excel triggered");
     }
 
-    @FXML
     private void openAddAccommodationForm() {
         try {
-            // Charger le fichier FXML pour le formulaire d'ajout d'hébergement
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/Accommodation.fxml"));
             Parent root = loader.load();
 
-            // Obtenir le contrôleur de ce formulaire
-            AccommodationController controller = loader.getController();
-
-            // Passer une référence de tableController au formulaire d'ajout (si nécessaire)
-            controller.setTableController(this);
-
-            // Créer une nouvelle fenêtre (Stage)
             Stage stage = new Stage();
-            stage.setTitle("Add");
+            stage.setTitle("Add Accommodation");
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
-            stage.show();
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("⚠️ Erreur lors du chargement de Accommodation.fxml : " + e.getMessage());
+        }
+    }
+
+
+
+    @FXML
+    private void handleAddButton(ActionEvent event) {
+        System.out.println("Add button clicked!");
+        try {
+            // Charge le fichier Accommodation.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagement/Accommodation.fxml"));
+            Parent root = loader.load();
+
+            // Création de la nouvelle fenêtre
+            Stage stage = new Stage();
+            stage.setTitle("Add Accommodation");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait(); // Ouvre la fenêtre en modal
 
         } catch (IOException e) {
-            e.printStackTrace();  // Gérer l'exception en affichant l'erreur
-        }
-
-    }
-
-
-
-
-    public void addAccommodation(Accommodation accommodation) {
-        accommodationList.add(accommodation);
-        loadAccommodationsFromDatabase();  // Recharger les données après ajout
-    }
-
-    public void updateAccommodation() {
-        loadAccommodationsFromDatabase();
-    }
-        @FXML
-        private void handleAddButton (ActionEvent event){
-            try {
-                // Charge le fichier Accommodation.fxml
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/Accommodation.fxml"));
-                Parent root = loader.load();
-
-                // Création de la nouvelle fenêtre
-                Stage stage = new Stage();
-                stage.setTitle("Add Accommodation");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setScene(new Scene(root));
-                stage.showAndWait(); // Ouvre la fenêtre en modal
-
-            } catch (IOException e) {
-                e.printStackTrace(); // Pour voir les erreurs en console
-            }
+            e.printStackTrace(); // Pour voir les erreurs en console
         }
     }
+}
 

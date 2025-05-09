@@ -3,16 +3,19 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.accommodationBookingController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AccommodationBookingController">
+
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
             <StackPane style="-fx-padding: 20;">
@@ -36,13 +39,21 @@
                         <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="End Date" />
                         <DatePicker fx:id="endDatePicker" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
 
-                        <!-- Room Selection -->
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Select Name Room" />
-                        <ChoiceBox fx:id="roomChoiceBox" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
-
                         <!-- Username input -->
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Username" />
-                        <TextField fx:id="usernameField" promptText="Enter Username" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Email" />
+                        <TextField fx:id="usernameField" promptText="Enter your Email" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+
+                        <!-- Type Room selection -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Select Type Room" />
+                        <ComboBox fx:id="comboTypeRoom" style="-fx-font-size: 14px; -fx-pref-width: 300;">
+                            <!-- You can dynamically populate the ComboBox with available room types in your controller -->
+                        </ComboBox>
+
+                        <!-- Room Name selection -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Select Room Name" />
+                        <ComboBox fx:id="comboRoom" style="-fx-font-size: 14px; -fx-pref-width: 300;">
+                            <!-- You can dynamically populate the ComboBox with available rooms in your controller -->
+                        </ComboBox>
 
                     </VBox>
 
@@ -55,4 +66,4 @@
             </padding>
         </VBox>
     </ScrollPane>
-</StackPane>
+</AnchorPane>

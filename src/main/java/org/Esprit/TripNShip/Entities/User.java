@@ -88,6 +88,7 @@ public sealed class User permits Client,Employee {
         this.profilePhoto = profilePhoto;
     }
 
+
     public int getIdUser() {
         return idUser;
     }

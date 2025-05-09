@@ -10,11 +10,6 @@ public class Accommodation {
     private String address;
     private float priceNight;
     private int capacity;
-
-
-
-
-
     private List<Integer> idRoom = new ArrayList<>();
 
     public Accommodation(int idAccommodation, TypeAccommodation type, String name, String address, float priceNight, int capacity) {
@@ -27,7 +22,6 @@ public class Accommodation {
     }
 
     public Accommodation() {
-
     }
 
     public int getIdAccommodation() {
@@ -42,7 +36,8 @@ public class Accommodation {
         return type;
     }
 
-    public void setTypeAccommodation(TypeAccommodation typeAccommodation) {
+    public void setType(TypeAccommodation type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -85,6 +80,7 @@ public class Accommodation {
         this.idRoom = idRoom;
     }
 
+
     @Override
     public String toString() {
         return "Accommodation{" +
@@ -98,4 +94,3 @@ public class Accommodation {
                 '}';
     }
 }
-

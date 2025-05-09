@@ -2,19 +2,25 @@ package org.Esprit.TripNShip.Entities;
 
 public class Room {
     private int idRoom;
-    private int idAccommodation;
+    private Accommodation accommodation; // Foreign key to Accommodation
     private TypeRoom type;
     private String nameRoom;
     private double price;
     private boolean availability;
 
-    public Room(int idRoom, int idAccommodation, TypeRoom type, String nameRoom, boolean availability, double price) {
+    public Room() {
+    }
+
+    public Room(int idRoom, Accommodation accommodation, TypeRoom type, String nameRoom, double price, boolean availability) {
         this.idRoom = idRoom;
-        this.idAccommodation = idAccommodation;
+        this.accommodation = accommodation;
         this.type = type;
         this.nameRoom = nameRoom;
-        this.availability = availability;
         this.price = price;
+        this.availability = availability;
+    }
+
+    public Room(int i, String s, TypeRoom typeRoom) {
     }
 
     public int getIdRoom() {
@@ -25,12 +31,12 @@ public class Room {
         this.idRoom = idRoom;
     }
 
-    public int getIdAccommodation() {
-        return idAccommodation;
+    public Accommodation getAccommodation() {
+        return accommodation;
     }
 
-    public void setIdAccommodation(int idAccommodation) {
-        this.idAccommodation = idAccommodation;
+    public void setAccommodation(Accommodation accommodation) {
+        this.accommodation = accommodation;
     }
 
     public TypeRoom getType() {
@@ -65,20 +71,30 @@ public class Room {
         this.availability = availability;
     }
 
+    // Getter pour le type d’hébergement
+    public TypeAccommodation getTypeAccommodation() {
+        if (accommodation != null) {
+            return accommodation.getType();
+        }
+        return null;
+    }
+
+    public String getAccommodationName() {
+        if (accommodation != null) {
+            return accommodation.getName(); // Récupérer le nom de l'hébergement depuis l'entité Accommodation
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Room{" +
                 "idRoom=" + idRoom +
-                ", idAccommodation=" + idAccommodation +
+                ", accommodation=" + accommodation +
                 ", type=" + type +
                 ", nameRoom='" + nameRoom + '\'' +
                 ", price=" + price +
                 ", availability=" + availability +
                 '}';
-    }
-
-    public TypeAccommodation getTypeAccommodation() {
-
-        return null;
     }
 }

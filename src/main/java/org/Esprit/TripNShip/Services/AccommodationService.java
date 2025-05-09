@@ -16,6 +16,7 @@ public class AccommodationService implements IService<Accommodation> {
     private final Connection connection;
 
     public AccommodationService() {
+
         connection = MyDataBase.getInstance().getConnection();
     }
 

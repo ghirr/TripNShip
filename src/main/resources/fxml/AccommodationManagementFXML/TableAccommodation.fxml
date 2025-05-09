@@ -10,8 +10,7 @@
 <?import java.lang.String?>
 <?import javafx.util.Callback?>
 
-<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="org.Esprit.TripNShip.Controllers.TableAccommodationController">
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.TableAccommodationController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
             <StackPane style="-fx-padding: 20;">

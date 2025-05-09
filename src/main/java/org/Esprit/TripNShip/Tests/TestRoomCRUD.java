@@ -1,65 +1,62 @@
 package org.Esprit.TripNShip.Tests;
 
+import org.Esprit.TripNShip.Entities.Accommodation;
 import org.Esprit.TripNShip.Entities.Room;
 import org.Esprit.TripNShip.Entities.TypeRoom;
+import org.Esprit.TripNShip.Services.AccommodationService;
+import org.Esprit.TripNShip.Services.RoomService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestRoomCRUD {
-
-    // Sample data storage
-    private static final List<Room> rooms = new ArrayList<>();
-
-
     public static void main(String[] args) {
-        // Test CRUD for Room
-        Room room1 = new Room(3, 7, TypeRoom.SINGLE, "Single101", true, 100.0);
-        Room room2 = new Room(4, 8, TypeRoom.DOUBLE, "Double201", true, 150.0);
-        Room room3 = new Room(5, 9, TypeRoom.SUITE, "Suite301", true, 200.0);
+        RoomService roomService = new RoomService();
+        AccommodationService accommodationService = new AccommodationService();
 
-        // Add rooms
-        addRoom(room1);
-        addRoom(room2);
-        addRoom(room3);
+        // Récupération de tous les hébergements pour lier les chambres
+        List<Accommodation> accommodations = accommodationService.getAll();
+        if (accommodations.size() < 3) {
+            System.out.println("⚠️ Veuillez insérer au moins 3 hébergements dans la base de données avant de tester les rooms.");
+            return;
+        }
+
+        Accommodation acc1 = accommodations.get(7); // Ex: Hotel
+        Accommodation acc2 = accommodations.get(8); // Ex: Guesthouse
+        Accommodation acc3 = accommodations.get(6); // Ex: Airbnb
+
+        // Création de rooms avec leurs hébergements respectifs
+        Room room1 = new Room(0, acc1, TypeRoom.SINGLE, "Single Room 101", 80.0, true);
+        Room room2 = new Room(0, acc2, TypeRoom.DOUBLE, "Double Room 102", 120.0, true);
+        Room room3 = new Room(0, acc3, TypeRoom.SUITE, "Suite 201", 250.0, false);
+
+        // Ajout des chambres
+        roomService.add(room1);
+        roomService.add(room2);
+        roomService.add(room3);
 
         System.out.println("📌 List of rooms after adding:");
-        rooms.forEach(System.out::println);
+        roomService.getAll().forEach(System.out::println);
 
-        // Update room1
-        room1.setPrice(120.0);
-        room1.setAvailability(false);
-        updateRoom(room1);
+        // Mettre à jour la première chambre
+        List<Room> allRooms = roomService.getAll();
+        if (!allRooms.isEmpty()) {
+            Room roomToUpdate = allRooms.get(0);
+            roomToUpdate.setNameRoom("Updated Single Room 101");
+            roomToUpdate.setPrice(90.0);
+            roomService.update(roomToUpdate);
+        }
 
         System.out.println("\n📌 List of rooms after update:");
-        rooms.forEach(System.out::println);
+        roomService.getAll().forEach(System.out::println);
 
-        // Delete room2
-        deleteRoom(room2);
+        // Suppression des deux dernières rooms
+        allRooms = roomService.getAll();
+        if (allRooms.size() > 2) {
+            roomService.delete(allRooms.get(1));
+            roomService.delete(allRooms.get(2));
+        }
 
         System.out.println("\n📌 List of rooms after deletion:");
-        rooms.forEach(System.out::println);
-    }
-
-    // Add a room
-    public static void addRoom(Room room) {
-        room.setIdRoom(rooms.size() + 1);  // Set unique ID (based on size of list)
-        rooms.add(room);
-    }
-
-    // Update a room
-    public static void updateRoom(Room room) {
-        for (int i = 0; i < rooms.size(); i++) {
-            if (rooms.get(i).getIdRoom() == room.getIdRoom()) {
-                rooms.set(i, room);  // Replace room with updated room
-                return;
-            }
-        }
-    }
-
-    // Delete a room
-    public static void deleteRoom(Room room) {
-        rooms.removeIf(r -> r.getIdRoom() == room.getIdRoom());  // Remove room by ID
+        roomService.getAll().forEach(System.out::println);
     }
 }
-

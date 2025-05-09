@@ -16,17 +16,18 @@ public class MainFXCircuit extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml"));
-     // FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AgencyListView.fxml"));
-    // FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/TourCircuitListView.fxml"));
-   //    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/VehicleListView.fxml"));
-      //  FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/VehicleRentalListView.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root, 800, 600);
-        stage.setTitle("Add circuit");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage stage) {
+        try {
+            // stage.getIcons().add(...); ← teste avec ou sans
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 800, 600);
+            stage.setTitle("Add circuit");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }

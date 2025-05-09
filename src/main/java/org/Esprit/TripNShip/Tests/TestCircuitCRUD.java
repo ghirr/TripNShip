@@ -30,7 +30,7 @@ public class TestCircuitCRUD {
         System.out.println("ID agence 1 : " + agency1.getIdAgency());
 
 
- 
+
         // === Créer des véhicules ===
         Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency1);
         Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency1);

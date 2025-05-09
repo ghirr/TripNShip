@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="dashboard-container" stylesheets="@../ExpeditionManagement/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.ClientExpeditionsController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="login-container" stylesheets="@../ExpeditionManagement/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.ClientExpeditionsController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="header-container" BorderPane.alignment="CENTER">
             <children>

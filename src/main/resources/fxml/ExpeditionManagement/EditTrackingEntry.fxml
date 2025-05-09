@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="450.0" prefWidth="550.0" styleClass="dashboard-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.EditTrackingEntryController">
+<BorderPane prefHeight="450.0" prefWidth="550.0" styleClass="login-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.EditTrackingEntryController">
     <top>
         <HBox alignment="CENTER" prefHeight="70.0" styleClass="header-container" BorderPane.alignment="CENTER">
             <children>

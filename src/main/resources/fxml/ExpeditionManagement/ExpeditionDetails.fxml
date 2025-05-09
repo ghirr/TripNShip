@@ -15,7 +15,7 @@
 
 <BorderPane prefHeight="650.0" prefWidth="600.0" stylesheets="@../ExpeditionManagement/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.ExpeditionDetailsController">
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="header-container" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="login-container" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-container">
                     <image>

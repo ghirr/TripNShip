@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="700.0" prefWidth="800.0" styleClass="dashboard-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.NewExpeditionController">
+<BorderPane prefHeight="700.0" prefWidth="800.0" styleClass="login-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.NewExpeditionController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>

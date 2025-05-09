@@ -15,24 +15,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.AdminExpeditionsController">
+<BorderPane prefHeight="800.0" prefWidth="1200.0" styleClass="login-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.AdminExpeditionsController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="header-container">
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="10.0" styleClass="header-container">
                     <children>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-container">
+                        <ImageView fitHeight="88.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-container">
                             <image>
                                 <Image url="@/images/logo.png" />
                             </image>
                             <HBox.margin>
-                                <Insets right="15.0" />
+                                <Insets left="20.0" right="10.0" />
                             </HBox.margin>
                         </ImageView>
                         <Label styleClass="header-label" text="TripNShip - Admin Dashboard" />
                     </children>
                     <padding>
-                        <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" right="20.0" top="10.0" />
                     </padding>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white;">

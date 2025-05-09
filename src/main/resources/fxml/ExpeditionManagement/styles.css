@@ -387,3 +387,101 @@
     -fx-font-size: 12px;
     -fx-alignment: CENTER_RIGHT;
 }
+.root {
+    -fx-primary-color: linear-gradient(to right, #4a90e2, #8e44ad);
+    -fx-secondary-color: #f5f6fa;
+    -fx-accent-color: #2c3e50;
+    -fx-light-gray: #f9f9f9;
+    -fx-medium-gray: #ccc;
+    -fx-dark-gray: #7f8c8d;
+    -fx-error-color: #e74c3c;
+}
+
+/* Login Container */
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 35px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0.3, 0, 10);
+}
+
+/* Logo */
+.logo-container {
+    -fx-alignment: center;
+    -fx-padding: 10 0 20 0;
+}
+
+/* Title */
+.login-title {
+    -fx-font-size: 24px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+/* Labels */
+
+
+/* Inputs */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 12;
+    -fx-font-size: 14px;
+}
+
+/* Primary Button */
+.primary-button {
+    -fx-background-color: linear-gradient(to right, #4a90e2, #8e44ad);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 0;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: linear-gradient(to right, #3a78c2, #732c8a);
+}
+
+/* Google Button */
+.google-button {
+    -fx-background-color: #f2f2f2;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 0;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-graphic-text-gap: 10px;
+    -fx-alignment: CENTER;
+}
+
+/* Links */
+.link-label {
+    -fx-text-fill: #4a90e2;
+    -fx-font-size: 13px;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+}
+
+/* Layout */
+.centered-container {
+    -fx-alignment: center;
+    -fx-spacing: 12px;
+    -fx-padding: 20px;
+}
+.login-container {
+    -fx-background-color: white;
+    -fx-border-color: #a259ff; /* Your purple shade */
+    -fx-border-width: 3px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+}
+

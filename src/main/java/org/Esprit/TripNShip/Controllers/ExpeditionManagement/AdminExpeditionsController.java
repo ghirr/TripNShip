@@ -37,7 +37,7 @@ public class AdminExpeditionsController implements Initializable {
     private TableView<Expedition> expeditionsTable;
 
     @FXML
-    private TableColumn<Expedition, Integer> idColumn;
+    private TableColumn<Expedition, String> idColumn;
 
     @FXML
     private TableColumn<Expedition, PackageStatus> statusColumn;
@@ -133,7 +133,8 @@ public class AdminExpeditionsController implements Initializable {
 
     private void setupTableColumns() {
         // Basic columns
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("expeditionId"));
+        idColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty("Expedition #" + cellData.getValue().getExpeditionId()));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("packageStatus"));
         packageTypeColumn.setCellValueFactory(new PropertyValueFactory<>("packageType"));
         weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));

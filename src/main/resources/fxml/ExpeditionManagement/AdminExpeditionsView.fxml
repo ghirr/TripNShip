@@ -77,7 +77,7 @@
     <center>
         <TableView fx:id="expeditionsTable" prefHeight="200.0" prefWidth="200.0" styleClass="expedition-table" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID" />
+                <TableColumn fx:id="idColumn" prefWidth="100.0" text="Expedition" />
                 <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" />
                 <TableColumn fx:id="clientColumn" prefWidth="150.0" text="Client" />
                 <TableColumn fx:id="transporterColumn" prefWidth="150.0" text="Transporter" />

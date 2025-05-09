@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="650.0" prefWidth="800.0" styleClass="dashboard-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.EditExpeditionController">
+<BorderPane prefHeight="650.0" prefWidth="800.0" styleClass="dashboard-container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.EditExpeditionController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
@@ -38,108 +39,112 @@
             </children>
         </VBox>
     </top>
+
     <center>
-        <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
-            <children>
-                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="card" VBox.vgrow="ALWAYS">
-                    <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                            <children>
-                                <Label styleClass="card-subtitle" text="Expedition ID:" />
-                                <Label fx:id="expeditionIdLabel" styleClass="card-title" text="#000" />
-                                <Label styleClass="card-subtitle" text="Status:">
-                                    <HBox.margin>
-                                        <Insets left="20.0" />
-                                    </HBox.margin>
-                                </Label>
-                                <Label fx:id="statusLabel" styleClass="expedition-status" text="PENDING" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </HBox>
-                        <Label styleClass="card-title" text="Expedition Details">
-                            <VBox.margin>
-                                <Insets bottom="25.0" />
-                            </VBox.margin>
-                        </Label>
-                        <GridPane hgap="15.0" vgap="8.0" VBox.vgrow="ALWAYS">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="180.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label styleClass="card-subtitle" text="Weight (kg):" GridPane.halignment="RIGHT" />
-                                <TextField fx:id="weightField" promptText="Enter weight in kg" GridPane.columnIndex="1" />
-                                <Label fx:id="weightErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color:transparent;" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" fillWidth="true" spacing="30.0">
+                <children>
+                    <VBox styleClass="card">
+                        <children>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <children>
+                                    <Label styleClass="card-subtitle" text="Expedition ID:" />
+                                    <Label fx:id="expeditionIdLabel" styleClass="card-title" text="#000" />
+                                    <Label styleClass="card-subtitle" text="Status:">
+                                        <HBox.margin>
+                                            <Insets left="20.0" />
+                                        </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="statusLabel" styleClass="expedition-status" text="PENDING" />
+                                </children>
+                                <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                </VBox.margin>
+                            </HBox>
+                            <Label styleClass="card-title" text="Expedition Details">
+                                <VBox.margin>
+                                    <Insets bottom="25.0" />
+                                </VBox.margin>
+                            </Label>
+                            <GridPane hgap="15.0" vgap="8.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="180.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints prefHeight="45.0" />
+                                    <RowConstraints prefHeight="25.0" />
+                                    <RowConstraints prefHeight="45.0" />
+                                    <RowConstraints prefHeight="25.0" />
+                                    <RowConstraints prefHeight="45.0" />
+                                    <RowConstraints prefHeight="25.0" />
+                                    <RowConstraints prefHeight="45.0" />
+                                    <RowConstraints prefHeight="25.0" />
+                                    <RowConstraints prefHeight="45.0" />
+                                    <RowConstraints prefHeight="25.0" />
+                                    <RowConstraints prefHeight="45.0" />
+                                    <RowConstraints prefHeight="25.0" />
+                                </rowConstraints>
+                                <children>
+                                    <Label text="Weight (kg):" GridPane.halignment="RIGHT" />
+                                    <TextField fx:id="weightField" promptText="Enter weight in kg" GridPane.columnIndex="1" />
+                                    <Label fx:id="weightErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                <Label styleClass="card-subtitle" text="Package Type:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="packageTypeCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select package type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <Label fx:id="packageTypeErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Package Type:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <ComboBox fx:id="packageTypeCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select package type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="packageTypeErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                                <Label styleClass="card-subtitle" text="Departure City:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                <TextField fx:id="departureCityField" promptText="Enter departure city" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <Label fx:id="departureCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label text="Departure City:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                    <TextField fx:id="departureCityField" promptText="Enter departure city" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label fx:id="departureCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                                <Label styleClass="card-subtitle" text="Arrival City:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                <TextField fx:id="arrivalCityField" promptText="Enter arrival city" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                <Label fx:id="arrivalCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <Label text="Arrival City:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                                    <TextField fx:id="arrivalCityField" promptText="Enter arrival city" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label fx:id="arrivalCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-                                <Label styleClass="card-subtitle" text="Send Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                                <DatePicker fx:id="sendDatePicker" prefHeight="40.0" prefWidth="414.0" promptText="Select send date" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                <Label fx:id="sendDateErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <Label text="Send Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                                    <DatePicker fx:id="sendDatePicker" prefHeight="40.0" prefWidth="414.0" promptText="Select send date" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <Label fx:id="sendDateErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 
-                                <Label styleClass="card-subtitle" text="Transporter:" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-                                <ComboBox fx:id="transporterCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select a transporter" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                                <Label fx:id="transporterErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                            </children>
-                        </GridPane>
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
-                    </padding>
-                    <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </VBox.margin>
-                </VBox>
+                                    <Label text="Transporter:" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+                                    <ComboBox fx:id="transporterCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select a transporter" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                    <Label fx:id="transporterErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                </children>
+                            </GridPane>
+                        </children>
+                        <padding>
+                            <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                        </padding>
+                        <VBox.margin>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </VBox.margin>
+                    </VBox>
 
-                <VBox styleClass="card">
-                    <children>
-                        <Label styleClass="card-subtitle" text="Note: You can only edit expeditions that are in PENDING status." />
-                        <Label styleClass="card-subtitle" text="Once an expedition has been processed by a transporter, it cannot be modified." />
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                    <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </VBox.margin>
-                </VBox>
-            </children>
-            <padding>
-                <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
-            </padding>
-        </VBox>
+                    <VBox styleClass="card">
+                        <children>
+                            <Label styleClass="card-subtitle" text="Note: You can only edit expeditions that are in PENDING status." />
+                            <Label styleClass="card-subtitle" text="Once an expedition has been processed by a transporter, it cannot be modified." />
+                        </children>
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                        <VBox.margin>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </VBox.margin>
+                    </VBox>
+                </children>
+                <padding>
+                    <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                </padding>
+            </VBox>
+        </ScrollPane>
     </center>
+
     <bottom>
         <HBox alignment="CENTER" prefHeight="80.0" spacing="40.0" style="-fx-background-color: white;">
             <children>
-                <Button fx:id="saveBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="primary-button" text="Save Changes" />
-                <Button fx:id="cancelBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="danger-button" text="Cancel" />
+                <Button fx:id="saveBtn" prefHeight="50.0" prefWidth="200.0" styleClass="primary-button" text="Save Changes" />
+                <Button fx:id="cancelBtn" prefHeight="50.0" prefWidth="150.0" styleClass="danger-button" text="Cancel" />
             </children>
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

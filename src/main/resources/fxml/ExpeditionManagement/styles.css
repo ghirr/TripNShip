@@ -11,7 +11,7 @@
 
 /* Header Styles */
 .header-container {
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color ;
     -fx-padding: 15px;
     -fx-alignment: center;
 }

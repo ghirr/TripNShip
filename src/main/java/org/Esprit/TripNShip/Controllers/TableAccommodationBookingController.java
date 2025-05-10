@@ -10,16 +10,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import org.Esprit.TripNShip.Entities.*;
+import org.Esprit.TripNShip.Entities.AccommodationBooking;
 import org.Esprit.TripNShip.Services.AccommodationBookingService;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TableAccommodationBookingController {
@@ -49,10 +48,10 @@ public class TableAccommodationBookingController {
     private TableColumn<AccommodationBooking, Void> actionColumn;
 
     @FXML
-    private TextField searchField;
+    private ComboBox<String> entriesComboBox;
 
     @FXML
-    private ComboBox<String> entriesComboBox;
+    private TextField searchField;
 
     @FXML
     private Button addBookingButton;
@@ -60,24 +59,24 @@ public class TableAccommodationBookingController {
     private final AccommodationBookingService bookingService = new AccommodationBookingService();
     private FilteredList<AccommodationBooking> filteredBookings;
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
 
     @FXML
     private void initialize() {
         loadBookings();
 
+        // Configurer les colonnes de la table
         startDateColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getStartDate() != null
-                        ? cellData.getValue().getStartDate().toString()
+                        ? FORMATTER.format(cellData.getValue().getStartDate())
                         : "")
         );
 
         endDateColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getEndDate() != null
-                        ? cellData.getValue().getEndDate().toString()
+                        ? FORMATTER.format(cellData.getValue().getEndDate())
                         : "")
         );
-
 
         emailColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(
@@ -99,8 +98,20 @@ public class TableAccommodationBookingController {
 
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        // Ajouter des options à la ComboBox pour filtrer par Type de Chambre
+        entriesComboBox.getItems().addAll("All", "SINGLE", "DOUBLE", "SUITE"); // Ajoutez l'option "All" pour afficher toutes les réservations
+        entriesComboBox.setValue("All"); // Valeur par défaut = "All"
+        entriesComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters();  // Appliquer les filtres
+        });
+
+        // Ajouter un événement de recherche
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters();  // Appliquer les filtres de recherche
+        });
+
+        // Ajouter des actions de table (Edit, Delete)
         addActionsToTable();
-        setupSearch();
     }
 
     private void loadBookings() {
@@ -109,17 +120,23 @@ public class TableAccommodationBookingController {
         bookingTable.setItems(filteredBookings);
     }
 
-    private void setupSearch() {
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredBookings.setPredicate(booking -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                return booking.getUser() != null && booking.getUser().getEmail().toLowerCase().contains(lowerCaseFilter)
-                        || booking.getRoom() != null && booking.getRoom().getNameRoom().toLowerCase().contains(lowerCaseFilter)
-                        || booking.getStatus().name().toLowerCase().contains(lowerCaseFilter);
-            });
+    private void applyFilters() {
+        String searchText = searchField.getText().toLowerCase();  // Récupérer le texte de recherche
+        String typeRoomFilter = entriesComboBox.getValue();  // Récupérer la valeur du filtre par type de chambre
+
+        // Appliquer les filtres
+        filteredBookings.setPredicate(booking -> {
+            // Filtrer par texte de recherche
+            boolean matchesSearch = (searchText.isEmpty() ||
+                    (booking.getUser() != null && booking.getUser().getEmail().toLowerCase().contains(searchText)) ||
+                    (booking.getRoom() != null && booking.getRoom().getNameRoom().toLowerCase().contains(searchText)) ||
+                    (booking.getStatus() != null && booking.getStatus().name().toLowerCase().contains(searchText)));
+
+            // Filtrer par type de chambre
+            boolean matchesTypeRoom = (typeRoomFilter.equals("All") ||
+                    (booking.getRoom() != null && booking.getRoom().getType().name().equalsIgnoreCase(typeRoomFilter)));
+
+            return matchesSearch && matchesTypeRoom;  // Appliquer les deux filtres
         });
     }
 
@@ -131,6 +148,7 @@ public class TableAccommodationBookingController {
             {
                 editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white;");
                 deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white;");
+
                 editButton.setOnAction(event -> {
                     AccommodationBooking booking = getTableView().getItems().get(getIndex());
                     handleEditAccommodationBooking(booking);
@@ -138,8 +156,7 @@ public class TableAccommodationBookingController {
 
                 deleteButton.setOnAction(event -> {
                     AccommodationBooking booking = getTableView().getItems().get(getIndex());
-                    bookingService.delete(booking);
-                    bookingTable.getItems().remove(booking);
+                    showDeleteConfirmation(booking);
                 });
             }
 
@@ -158,6 +175,20 @@ public class TableAccommodationBookingController {
         actionColumn.setCellFactory(cellFactory);
     }
 
+    private void showDeleteConfirmation(AccommodationBooking booking) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete this booking?");
+        alert.setContentText("This action cannot be undone.");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                bookingService.delete(booking);
+                loadBookings(); // Rafraîchir après suppression
+            }
+        });
+    }
+
     @FXML
     private void handleEditAccommodationBooking(AccommodationBooking selectedBooking) {
         try {
@@ -169,8 +200,10 @@ public class TableAccommodationBookingController {
 
             Stage stage = new Stage();
             stage.setTitle("Edit Accommodation Booking");
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
-            stage.show();
+            stage.showAndWait(); // wait until closed
+            loadBookings(); // Refresh table after edit
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,18 +211,17 @@ public class TableAccommodationBookingController {
 
     @FXML
     private void openAddBookingForm(ActionEvent event) {
-        // Code pour ouvrir le formulaire addBooking.fxml
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/AccommodationBooking.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Add Booking");
-            stage.show();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait(); // wait until closed
+            loadBookings(); // Refresh table after addition
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
-

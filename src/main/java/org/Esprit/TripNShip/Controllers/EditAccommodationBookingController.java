@@ -97,10 +97,8 @@ public class EditAccommodationBookingController {
     @FXML
     private void updateBooking() {
         String selectedRoomLabel = comboRoom.getValue();
-        System.out.println(selectedRoomLabel);
         LocalDate startDate = startDatePicker.getValue();
         LocalDate endDate = endDatePicker.getValue();
-
 
         if (selectedRoomLabel == null || startDate == null || endDate == null) {
             showAlert(Alert.AlertType.ERROR, "Veuillez remplir tous les champs.");
@@ -108,7 +106,7 @@ public class EditAccommodationBookingController {
         }
 
         Room selectedRoom = rooms.stream()
-                .filter(room -> (room.getNameRoom()).equals(selectedRoomLabel))
+                .filter(room -> room.getNameRoom().equals(selectedRoomLabel))
                 .findFirst()
                 .orElse(null);
 
@@ -117,16 +115,21 @@ public class EditAccommodationBookingController {
             return;
         }
 
-        // Mettre à jour la réservation
         booking.setRoom(selectedRoom);
         booking.setStartDate(Date.valueOf(startDate));
         booking.setEndDate(Date.valueOf(endDate));
         booking.setStatus(BookingStatus.PENDING);
 
+        // Mise à jour de la réservation
         bookingService.update(booking);
+
+        // Affichage de l'alerte de succès
         showAlert(Alert.AlertType.INFORMATION, "Réservation mise à jour avec succès.");
-        //closeWindow();
+
+
     }
+
+
 
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
@@ -134,8 +137,10 @@ public class EditAccommodationBookingController {
         alert.showAndWait();
     }
 
+
     private void closeWindow() {
-        Stage stage = (Stage) updateButton.getScene().getWindow();
+        // Ferme la fenêtre actuelle
+        Stage stage = (Stage) updateButton.getScene().getWindow(); // Utilise ton bouton "Update"
         stage.close();
     }
     private void updateRoomNamesByType(TypeRoom selectedType) {

@@ -39,7 +39,7 @@ public class UserService implements IService<User> {
     }
 
     @Override
-    public void delete(User user) {
+    public boolean delete(User user) {
 
     String req = "DELETE FROM user WHERE id=?";
         try {
@@ -50,6 +50,7 @@ public class UserService implements IService<User> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     @Override

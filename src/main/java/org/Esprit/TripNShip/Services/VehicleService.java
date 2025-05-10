@@ -62,7 +62,7 @@ public class VehicleService implements IService<Vehicle> {
     }
 
     @Override
-    public void delete(Vehicle vehicle) {
+    public boolean delete(Vehicle vehicle) {
         String req = "DELETE FROM vehicle WHERE idVehicle=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
@@ -72,6 +72,7 @@ public class VehicleService implements IService<Vehicle> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     @Override

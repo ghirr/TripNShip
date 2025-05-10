@@ -59,6 +59,7 @@ public class TableAccommodationBookingController {
     private final AccommodationBookingService bookingService = new AccommodationBookingService();
     private FilteredList<AccommodationBooking> filteredBookings;
 
+
     private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
 
     @FXML

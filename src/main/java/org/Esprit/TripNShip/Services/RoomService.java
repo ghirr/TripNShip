@@ -72,7 +72,7 @@ public class RoomService implements IService<Room> {
     }
 
     @Override
-    public void delete(Room room) {
+    public boolean delete(Room room) {
         String req = "DELETE FROM Room WHERE idRoom=?";
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setInt(1, room.getIdRoom());
@@ -81,42 +81,43 @@ public class RoomService implements IService<Room> {
         } catch (SQLException e) {
             System.out.println("Error while deleting room: " + e.getMessage());
         }
+        return false;
     }
 
-        @Override
-        public List<Room> getAll() {
-            List<Room> rooms = new ArrayList<>();
-            String req = "SELECT * FROM Room";
+    @Override
+    public List<Room> getAll() {
+        List<Room> rooms = new ArrayList<>();
+        String req = "SELECT * FROM Room";
 
-            try (PreparedStatement ps = connection.prepareStatement(req);
-                 ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = connection.prepareStatement(req);
+             ResultSet rs = ps.executeQuery()) {
 
-                while (rs.next()) {
-                    // Récupérer l'ID de l'Accommodation
-                    int idAccommodation = rs.getInt("idAccommodation");
+            while (rs.next()) {
+                // Récupérer l'ID de l'Accommodation
+                int idAccommodation = rs.getInt("idAccommodation");
 
-                    // Créer l'objet Accommodation (tu peux soit le récupérer dans une liste existante,
-                    // soit effectuer une autre requête pour récupérer l'Accommodation complet)
-                    Accommodation accommodation = getAccommodationById(idAccommodation);
-                    boolean availability = rs.getBoolean("availability");
+                // Créer l'objet Accommodation (tu peux soit le récupérer dans une liste existante,
+                // soit effectuer une autre requête pour récupérer l'Accommodation complet)
+                Accommodation accommodation = getAccommodationById(idAccommodation);
+                boolean availability = rs.getBoolean("availability");
 
-                    // Créer la Room
-                    Room room = new Room(
-                            rs.getInt("idRoom"),
-                            accommodation,
-                            TypeRoom.valueOf(rs.getString("type").toUpperCase()),
-                            rs.getString("nameRoom"),
-                            rs.getDouble("price"),
-                            availability
-                    );
-                    rooms.add(room);
-                }
-            } catch (SQLException e) {
-                System.out.println("Error while retrieving rooms: " + e.getMessage());
+                // Créer la Room
+                Room room = new Room(
+                        rs.getInt("idRoom"),
+                        accommodation,
+                        TypeRoom.valueOf(rs.getString("type").toUpperCase()),
+                        rs.getString("nameRoom"),
+                        rs.getDouble("price"),
+                        availability
+                );
+                rooms.add(room);
             }
-
-            return rooms;
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving rooms: " + e.getMessage());
         }
+
+        return rooms;
+    }
 
     private Accommodation getAccommodationById(int idAccommodation) {
         AccommodationService accommodationService = new AccommodationService();

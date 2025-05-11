@@ -8,20 +8,17 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class UpdateTicketController {
-    @FXML
-    private TextField ticketIdField;
-    @FXML
-    private TextField itineraryCodeField;
-    @FXML
-    private TextField userEmailField;
-    @FXML
-    private TextField departureDateField;
-    @FXML
-    private TextField arrivalDateField;
-    @FXML
-    private TextField priceField;
+    @FXML    private TextField ticketIdField;
+    @FXML    private TextField itineraryCodeField;
+    @FXML    private TextField userEmailField;
+    @FXML    private TextField departureDateField;
+    @FXML    private TextField arrivalDateField;
+    @FXML private TextField departureTimeField;
+    @FXML private TextField arrivalTimeField;
+    @FXML    private TextField priceField;
     @FXML private Button updateTicketButton;
 
     private final TicketService ts = new TicketService();
@@ -34,6 +31,8 @@ public class UpdateTicketController {
         userEmailField.setText(String.valueOf(ticket.getUserEmail()));
         departureDateField.setText(ticket.getDepartureDate().toString());
         arrivalDateField.setText(ticket.getArrivalDate().toString());
+        departureTimeField.setText(ticket.getDepartureTime().toString());
+        arrivalTimeField.setText(ticket.getArrivalTime().toString());
         priceField.setText(Double.toString((ticket.getPrice())));
     }
 
@@ -46,6 +45,8 @@ public class UpdateTicketController {
         ticket.setUserEmail(userEmailField.getText());
         ticket.setDepartureDate(LocalDate.parse(departureDateField.getText()));
         ticket.setArrivalDate(LocalDate.parse(arrivalDateField.getText()));
+        ticket.setDepartureTime(LocalTime.parse(departureTimeField.getText()));
+        ticket.setArrivalTime(LocalTime.parse(arrivalTimeField.getText()));
         ticket.setPrice(Double.parseDouble(priceField.getText()));
 
         ts.update(ticket);
@@ -59,7 +60,7 @@ public class UpdateTicketController {
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDateField.getText().isEmpty() || arrivalDateField.getText().isEmpty()||priceField.getText().isEmpty()) {
+        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDateField.getText().isEmpty() || arrivalDateField.getText().isEmpty()||departureTimeField.getText().isEmpty()||arrivalTimeField.getText().isEmpty()||priceField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -80,6 +81,14 @@ public class UpdateTicketController {
             Double.parseDouble(priceField.getText());
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
+            return false;
+        }
+        try {
+            LocalTime.parse(departureTimeField.getText());
+            LocalTime.parse(arrivalTimeField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR,"Time Format Error","Please set the time in the format HH:MM");
+            return false;
         }
 
         return true;

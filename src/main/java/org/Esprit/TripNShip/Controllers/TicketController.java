@@ -15,6 +15,7 @@ import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 public class TicketController {
@@ -24,6 +25,8 @@ public class TicketController {
     @FXML private TableColumn<String, Ticket> userEmailColumn;
     @FXML private TableColumn<LocalDate, Ticket> departureDateColumn;
     @FXML private TableColumn<LocalDate, Ticket> arrivalDateColumn;
+    @FXML private TableColumn<LocalTime,Ticket> departureTimeColumn;
+    @FXML private TableColumn<LocalTime,Ticket> arrivalTimeColumn;
     @FXML private TableColumn<Double, Ticket> priceColumn;
     @FXML private TableColumn<Ticket, Void> actionsColumn;
     @FXML private TextField searchField;
@@ -39,6 +42,8 @@ public class TicketController {
         userEmailColumn.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
         departureDateColumn.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
         arrivalDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
+        departureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
+        arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         ticketList.addAll(ts.getAll());

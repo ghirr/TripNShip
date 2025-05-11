@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Entities;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Ticket {
     private int ticketId;
@@ -8,6 +9,26 @@ public class Ticket {
     private String userEmail;
     private LocalDate departureDate;
     private LocalDate arrivalDate;
+    private LocalTime departureTime;
+    private LocalTime arrivalTime;
+
+    public LocalTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
     private double price;
 
     public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
@@ -32,6 +53,37 @@ public class Ticket {
         this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
+    }
+
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime, double price) {
+        this.ticketId = ticketId;
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.price = price;
+    }
+
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime, double price) {
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.price = price;
+    }
+
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalTime departureTime, LocalDate arrivalDate, LocalTime arrivalTime, double price) {
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.departureTime = departureTime;
+        this.arrivalDate = arrivalDate;
+        this.arrivalTime = arrivalTime;
+        this.price = price;
     }
 
     public int getTicketId() {
@@ -87,10 +139,13 @@ public class Ticket {
         return "Ticket{" +
                 "ticketId=" + ticketId +
                 ", itineraryCode='" + itineraryCode + '\'' +
-                ", userEmail=" + userEmail +
+                ", userEmail='" + userEmail + '\'' +
                 ", departureDate=" + departureDate +
                 ", arrivalDate=" + arrivalDate +
+                ", departureTime=" + departureTime +
+                ", arrivalTime=" + arrivalTime +
                 ", price=" + price +
                 '}';
     }
+
 }

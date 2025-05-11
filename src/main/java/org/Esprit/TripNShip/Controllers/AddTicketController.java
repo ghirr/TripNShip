@@ -10,26 +10,24 @@ import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.TicketService;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class AddTicketController {
 
-    @FXML
-    private TextField itineraryCodeField;
-    @FXML
-    private TextField userEmailField;
-    @FXML
-    private TextField departureDateField;
-    @FXML
-    private TextField arrivalDateField;
-    @FXML
-    private TextField priceField;
+    @FXML private TextField itineraryCodeField;
+    @FXML private TextField userEmailField;
+    @FXML private TextField departureDateField;
+    @FXML private TextField arrivalDateField;
+    @FXML private TextField priceField;
+    @FXML private TextField departureTimeField;
+    @FXML private TextField arrivalTimeField;
     @FXML private Button addTicketButton;
 
 
     public void addTicket(ActionEvent event) throws IOException {
         if(!validInputs()) return;
         TicketService ts = new TicketService();
-        ts.add(new Ticket(itineraryCodeField.getText(),userEmailField.getText(), LocalDate.parse(departureDateField.getText()),LocalDate.parse(arrivalDateField.getText()),Double.parseDouble(priceField.getText())));
+        ts.add(new Ticket(itineraryCodeField.getText(),userEmailField.getText(), LocalDate.parse(departureDateField.getText()),LocalDate.parse(arrivalDateField.getText()), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText()),Double.parseDouble(priceField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("SA7it");
@@ -56,10 +54,19 @@ public class AddTicketController {
             showAlert(Alert.AlertType.ERROR,"Date Format Error","Please set the dates in the format YYYY-MM-DD");
             return false;
         }
+
+        try {
+            LocalTime.parse(departureTimeField.getText());
+            LocalTime.parse(arrivalTimeField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Time Format Error", "Please set the time in the format HH:MM");
+            return false;
+        }
         try{
             Double.parseDouble(priceField.getText());
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
+            return false;
         }
 
         return true;

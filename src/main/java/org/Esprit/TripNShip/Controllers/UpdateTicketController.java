@@ -3,6 +3,7 @@ package org.Esprit.TripNShip.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
@@ -11,14 +12,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class UpdateTicketController {
-    @FXML    private TextField ticketIdField;
-    @FXML    private TextField itineraryCodeField;
-    @FXML    private TextField userEmailField;
-    @FXML    private TextField departureDateField;
-    @FXML    private TextField arrivalDateField;
+    @FXML private TextField itineraryCodeField;
+    @FXML private TextField userEmailField;
+    @FXML private DatePicker departureDatePicker;
+    @FXML private DatePicker arrivalDatePicker;
     @FXML private TextField departureTimeField;
     @FXML private TextField arrivalTimeField;
-    @FXML    private TextField priceField;
+    @FXML private TextField priceField;
     @FXML private Button updateTicketButton;
 
     private final TicketService ts = new TicketService();
@@ -26,11 +26,10 @@ public class UpdateTicketController {
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
-        ticketIdField.setText(String.valueOf(ticket.getTicketId()));
         itineraryCodeField.setText(ticket.getItineraryCode());
         userEmailField.setText(String.valueOf(ticket.getUserEmail()));
-        departureDateField.setText(ticket.getDepartureDate().toString());
-        arrivalDateField.setText(ticket.getArrivalDate().toString());
+        departureDatePicker.setValue(ticket.getDepartureDate());
+        arrivalDatePicker.setValue(ticket.getArrivalDate());
         departureTimeField.setText(ticket.getDepartureTime().toString());
         arrivalTimeField.setText(ticket.getArrivalTime().toString());
         priceField.setText(Double.toString((ticket.getPrice())));
@@ -40,11 +39,10 @@ public class UpdateTicketController {
     private void saveTicket() {
         if (!validInputs()) return;
 
-        ticket.setTicketId(Integer.parseInt(ticketIdField.getText()));
         ticket.setItineraryCode(itineraryCodeField.getText());
         ticket.setUserEmail(userEmailField.getText());
-        ticket.setDepartureDate(LocalDate.parse(departureDateField.getText()));
-        ticket.setArrivalDate(LocalDate.parse(arrivalDateField.getText()));
+        ticket.setDepartureDate(departureDatePicker.getValue());
+        ticket.setArrivalDate(arrivalDatePicker.getValue());
         ticket.setDepartureTime(LocalTime.parse(departureTimeField.getText()));
         ticket.setArrivalTime(LocalTime.parse(arrivalTimeField.getText()));
         ticket.setPrice(Double.parseDouble(priceField.getText()));
@@ -56,11 +54,11 @@ public class UpdateTicketController {
         alert.setContentText("Ticket updated successfully!");
         alert.showAndWait();
 
-        Stage stage = (Stage) ticketIdField.getScene().getWindow();
+        Stage stage = (Stage) userEmailField.getScene().getWindow();
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDateField.getText().isEmpty() || arrivalDateField.getText().isEmpty()||departureTimeField.getText().isEmpty()||arrivalTimeField.getText().isEmpty()||priceField.getText().isEmpty()) {
+        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() ==null || arrivalDatePicker.getValue()==null||departureTimeField.getText().isEmpty()||arrivalTimeField.getText().isEmpty()||priceField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -71,8 +69,8 @@ public class UpdateTicketController {
             return false;
         }
         try {
-            LocalDate.parse(departureDateField.getText());
-            LocalDate.parse(arrivalDateField.getText());
+            departureDatePicker.getValue();
+            arrivalDatePicker.getValue();
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR,"Date Format Error","Please set the dates in the format YYYY-MM-DD");
             return false;

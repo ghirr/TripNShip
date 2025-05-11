@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UpdateTransportController implements Initializable {
-    @FXML private TextField transportIdField;
     @FXML private TextField transporterReferenceField;
     @FXML private TextField companyNameField;
     @FXML private TextField companyPhoneField;
@@ -35,7 +34,6 @@ public class UpdateTransportController implements Initializable {
 
     public void setTransport(Transport transport) {
         this.transport = transport;
-        transportIdField.setText(Integer.toString(transport.getTransportId()));
         transporterReferenceField.setText(transport.getTransporterReference());
         transportationComboBox.setValue(transport.getTransportation());
         companyNameField.setText(transport.getCompanyName());
@@ -48,7 +46,6 @@ public class UpdateTransportController implements Initializable {
     private void saveTransport() {
         if  (validInputs()==false) return;
 
-        transport.setTransportId(Integer.parseInt(transportIdField.getText()));
         transport.setTransporterReference(transporterReferenceField.getText());
         transport.setTransportation(transportationComboBox.getValue());
         transport.setCompanyName(companyNameField.getText());
@@ -64,12 +61,12 @@ public class UpdateTransportController implements Initializable {
         alert.showAndWait();
 
         // Ferme la fenêtre
-        Stage stage = (Stage) transportIdField.getScene().getWindow();
+        Stage stage = (Stage) companyNameField.getScene().getWindow();
         stage.close();
     }
     public boolean validInputs() {
      try {
-         if (transporterReferenceField.getText().isEmpty() || transportIdField.getText().isEmpty() || transportationComboBox.getValue() == null || companyNameField.getText().isEmpty() || companyEmailField.getText().isEmpty()) {
+         if (transporterReferenceField.getText().isEmpty() || transportationComboBox.getValue() == null || companyNameField.getText().isEmpty() || companyEmailField.getText().isEmpty()) {
              showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
              return false;
          }

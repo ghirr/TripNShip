@@ -22,8 +22,7 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Update Transport" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
-                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transport ID" />
-                        <TextField fx:id="transportIdField" maxWidth="Infinity" promptText="Transport ID" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
                   <Label layoutX="10.0" layoutY="96.0" prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transporter Reference" />
                   <TextField fx:id="transporterReferenceField" layoutX="10.0" layoutY="160.0" maxWidth="Infinity" promptText="Transporter Reference" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 

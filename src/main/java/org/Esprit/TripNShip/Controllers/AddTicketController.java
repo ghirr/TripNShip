@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
@@ -16,8 +17,8 @@ public class AddTicketController {
 
     @FXML private TextField itineraryCodeField;
     @FXML private TextField userEmailField;
-    @FXML private TextField departureDateField;
-    @FXML private TextField arrivalDateField;
+    @FXML private DatePicker departureDatePicker;
+    @FXML private DatePicker arrivalDatePicker;
     @FXML private TextField priceField;
     @FXML private TextField departureTimeField;
     @FXML private TextField arrivalTimeField;
@@ -27,7 +28,7 @@ public class AddTicketController {
     public void addTicket(ActionEvent event) throws IOException {
         if(!validInputs()) return;
         TicketService ts = new TicketService();
-        ts.add(new Ticket(itineraryCodeField.getText(),userEmailField.getText(), LocalDate.parse(departureDateField.getText()),LocalDate.parse(arrivalDateField.getText()), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText()),Double.parseDouble(priceField.getText())));
+        ts.add(new Ticket(itineraryCodeField.getText(),userEmailField.getText(), departureDatePicker.getValue(),arrivalDatePicker.getValue(), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText()),Double.parseDouble(priceField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("SA7it");
@@ -37,7 +38,7 @@ public class AddTicketController {
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDateField.getText().isEmpty() || arrivalDateField.getText().isEmpty()||priceField.getText().isEmpty()) {
+        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() == null || arrivalDatePicker.getValue()==null||priceField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -48,8 +49,8 @@ public class AddTicketController {
             return false;
         }
         try {
-            LocalDate.parse(departureDateField.getText());
-            LocalDate.parse(arrivalDateField.getText());
+            departureDatePicker.getValue();
+            arrivalDatePicker.getValue();
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR,"Date Format Error","Please set the dates in the format YYYY-MM-DD");
             return false;

@@ -14,68 +14,7 @@
     <VBox style="-fx-padding: 15;" alignment="CENTER">
         <HBox spacing="0" prefWidth="Infinity" VBox.vgrow="ALWAYS">
             <!-- Sidebar -->
-            <VBox spacing="10" alignment="TOP_LEFT" prefWidth="220"
-                  style="-fx-background-color: #3B4B9B; -fx-padding: 20;  -fx-background-radius: 15 0 0 15;">
-
-                <!-- Logo -->
-                <VBox spacing="10" alignment="TOP_CENTER" prefWidth="220"
-                      style="-fx-background-color: #3B4B9B; -fx-padding: 20px 0px 5px 0px;">
-
-                    <ImageView fitHeight="80" fitWidth="120">
-                        <Image url="@../../images/logo.png" />
-                    </ImageView>
-
-                    <!-- autres éléments -->
-                </VBox>
-
-                <!-- Section: Dashboard -->
-                <Label text="MENU" style="-fx-text-fill: #A0AEC0; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
-                    <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@../../images/icons8-dashboard-24.png"/>
-                    </ImageView>
-                    <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
-                </HBox>
-
-                <!-- Autres boutons -->
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
-                    <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@../../images/icons8-vehicle-50.png"/>
-                    </ImageView >
-                    <Label text="Vehicle" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
-                </HBox>
-
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
-                    <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@../../images/icons8-agency-96.png"/>
-                    </ImageView>
-                    <Label text="Rental Agency" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
-                </HBox>
-
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
-                    <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@../../images/icons8-car-rental-64.png"/>
-                    </ImageView>
-                    <Label text="Vehicle Booking" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
-                </HBox>
-
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
-                    <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@../../images/icons8-trekking-50 (1).png"/>
-                    </ImageView>
-                    <Label text="Tour Circuit" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
-                </HBox>
-
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
-                    <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@../../images/icons8-new-ticket-50.png"/>
-                    </ImageView>
-                    <Label text="Circuit Booking" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
-                </HBox>
-
-
-            </VBox>
-
+            <fx:include source="sidebar.fxml"/>
 
             <!-- Main Content -->
             <VBox spacing="0" HBox.hgrow="ALWAYS"
@@ -102,7 +41,7 @@
                                 <Label text="Circuit Bookings"
                                        style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3498DB;" />
                                 <Pane HBox.hgrow="ALWAYS" />
-                                <Button fx:id="addTourCircuitButton" text="Add Booking"
+                                <Button fx:id="addTourCircuitButton" text="Booking"
                                         onAction="#showAddCircuitBookingPopup"
                                         style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
                -fx-text-fill: white; -fx-font-weight: bold;

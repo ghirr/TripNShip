@@ -24,7 +24,7 @@
                         </image>
                     </ImageView>
 
-                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Vehicle Rental" />
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Booking Vehicle" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
                         <Label text="Start Date" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
@@ -52,7 +52,7 @@
                                   style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                     </VBox>
 
-                    <Button fx:id="addRentalButton" text="Add Rental"
+                    <Button fx:id="addRentalButton" text="Book Vehicle"
                             style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" />
                 </VBox>
             </StackPane>

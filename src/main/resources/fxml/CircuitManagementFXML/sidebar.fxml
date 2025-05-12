@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox spacing="10" alignment="TOP_LEFT" prefWidth="220"
+      style="-fx-background-color: #3B4B9B; -fx-padding: 20;  -fx-background-radius: 15 0 0 15;"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.Esprit.TripNShip.Controllers.sidebarController">
+
+    <!-- Logo -->
+    <VBox spacing="10" alignment="TOP_CENTER" prefWidth="220"
+          style="-fx-background-color: #3B4B9B; -fx-padding: 20px 0px 5px 0px;">
+        <ImageView fitHeight="80" fitWidth="120">
+            <Image url="@../../images/logo.png" />
+        </ImageView>
+    </VBox>
+
+    <!-- Section: Dashboard -->
+    <Label text="MENU" style="-fx-text-fill: #A0AEC0; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+
+    <!-- Dashboard -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+        <ImageView fitWidth="20" fitHeight="20">
+            <Image url="@../../images/icons8-dashboard-24.png"/>
+        </ImageView>
+        <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <!-- Vehicle -->
+    <HBox fx:id="btnVehicle" onMouseClicked="#goToVehicle" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+        <ImageView fitWidth="20" fitHeight="20">
+            <Image url="@../../images/icons8-vehicle-50.png"/>
+        </ImageView>
+        <Label text="Vehicle" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <!-- Rental Agency -->
+    <HBox fx:id="btnAgency" onMouseClicked="#goToAgency" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+        <ImageView fitWidth="20" fitHeight="20">
+            <Image url="@../../images/icons8-agency-96.png"/>
+        </ImageView>
+        <Label text="Rental Agency" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <!-- Vehicle Booking -->
+    <HBox fx:id="btnVehicleRental" onMouseClicked="#goToVehicleRental" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+        <ImageView fitWidth="20" fitHeight="20">
+            <Image url="@../../images/icons8-car-rental-64.png"/>
+        </ImageView>
+        <Label text="Vehicle Booking" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <!-- Tour Circuit -->
+    <HBox fx:id="btnTour" onMouseClicked="#goToTour" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+        <ImageView fitWidth="20" fitHeight="20">
+            <Image url="@../../images/icons8-trekking-50 (1).png"/>
+        </ImageView>
+        <Label text="Tour Circuit" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    </HBox>
+
+    <!-- Circuit Booking -->
+    <HBox fx:id="btnCircuit" onMouseClicked="#goToCircuit" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+        <ImageView fitWidth="20" fitHeight="20">
+            <Image url="@../../images/icons8-new-ticket-50.png"/>
+        </ImageView>
+        <Label text="Circuit Booking" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+    </HBox>
+
+</VBox>

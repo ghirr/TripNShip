@@ -8,11 +8,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
+import org.Esprit.TripNShip.Services.TicketPDFGenerator;
 import org.Esprit.TripNShip.Services.TicketService;
+
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,11 +65,13 @@ public class TicketController {
         actionsColumn.setCellFactory(column -> new TableCell<>() {
             private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Delete");
-            private final HBox buttonBox = new HBox(5, editButton, deleteButton);
+            private final Button printButton = new Button("Print");
+            private final HBox buttonBox = new HBox(5, editButton, deleteButton,printButton);
 
             {
                 editButton.setStyle("-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 5;");
                 deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5;");
+                printButton.setStyle("-fx-background-color: #0000FF; -fx-text-fill: white; -fx-background-radius: 5;");
 
                 editButton.setOnAction(event -> {
                     Ticket ticket = getTableView().getItems().get(getIndex());
@@ -73,6 +81,11 @@ public class TicketController {
                 deleteButton.setOnAction(event -> {
                     Ticket ticket = getTableView().getItems().get(getIndex());
                     handleDelete(ticket);
+                });
+
+                printButton.setOnAction(event->{
+                    Ticket ticket = getTableView().getItems().get(getIndex());
+                    handlePrint(ticket);
                 });
             }
 
@@ -106,6 +119,35 @@ public class TicketController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ts.delete(ticket);
             ticketTable.getItems().remove(ticket); // pour la table
+        }
+    }
+
+    private void handlePrint(Ticket ticket) {
+        try {
+
+            String filename = "tickets/ticket_" + ticket.getTicketId() + ".pdf";
+            File file = new File(filename);
+
+            file.getParentFile().mkdirs();//pour creer le dossier
+
+            // Appel à ta classe de génération
+            TicketPDFGenerator.generatePDF(ticket, filename);
+            if (file.exists() && Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("PDF Generated");
+            alert.setHeaderText(null);
+            alert.setContentText("Ticket PDF saved as " + filename);
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not generate PDF");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 

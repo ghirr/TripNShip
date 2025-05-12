@@ -70,7 +70,7 @@
 
                      <TableColumn fx:id="priceColumn" prefWidth="85.0" text="Price">
                             <cellValueFactory>
-                                <PropertyValueFactory property="ticketId" />
+                                <PropertyValueFactory property="price" />
                             </cellValueFactory>
                         </TableColumn>
                             <TableColumn fx:id="actionsColumn" maxWidth="177.0" minWidth="79.0" prefWidth="127.0" text="Actions" />

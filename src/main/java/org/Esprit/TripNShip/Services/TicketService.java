@@ -28,7 +28,6 @@ public class TicketService implements IService<Ticket>{
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
@@ -49,7 +48,6 @@ public class TicketService implements IService<Ticket>{
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
@@ -63,9 +61,7 @@ public class TicketService implements IService<Ticket>{
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
-
     @Override
     public List<Ticket> getAll() {
         List<Ticket> tickets= new ArrayList<>();

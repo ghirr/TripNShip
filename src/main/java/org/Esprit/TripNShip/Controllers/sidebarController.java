@@ -14,35 +14,55 @@ import java.io.IOException;
 
 public class sidebarController {
 
-
     @FXML
-    public void goToVehicle(MouseEvent event) throws IOException {
-
-        Parent vehiclePage = FXMLLoader.load(getClass().getResource("/fxml/CircuitManagementFXML/VehicleListView.fxml"));
+    public void goToDashboard(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/Dashboard.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        stage.setScene(new Scene(vehiclePage));
-        stage.setTitle("Vehicle");
+        stage.setTitle("Dashboard");
+        stage.setScene(scene);
         stage.show();
     }
 
     @FXML
-    public void goToTour(MouseEvent event) throws IOException {
-        Parent tourPage = FXMLLoader.load(getClass().getResource("/fxml/CircuitManagementFXML/TourCircuitListView.fxml"));
+    public void goToVehicle(MouseEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/VehicleListView.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        stage.setScene(new Scene(tourPage));
+        stage.setTitle("Vehicle");
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    @FXML
+    public void goToTour(MouseEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/TourCircuitListView.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
         stage.setTitle("Tour Circuit");
+        stage.setScene(scene);
         stage.show();
     }
 
     @FXML
     public void goToCircuit(MouseEvent event) throws IOException {
-        Parent circuitPage = FXMLLoader.load(getClass().getResource("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        stage.setScene(new Scene(circuitPage));
         stage.setTitle("Circuit Booking");
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -51,8 +71,6 @@ public class sidebarController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AgencyListView.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 800, 600);
-
-        // Récupérer le Stage à partir de l'événement
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
         stage.setTitle("Rental Agency");
@@ -63,11 +81,14 @@ public class sidebarController {
 
     @FXML
     public void goToVehicleRental(MouseEvent event) throws IOException {
-        Parent rentalPage = FXMLLoader.load(getClass().getResource("/fxml/CircuitManagementFXML/VehicleRentalListView.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/VehicleRentalListView.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 800, 600);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        stage.setScene(new Scene(rentalPage));
         stage.setTitle("Vehicle Rental");
+        stage.setScene(scene);
         stage.show();
     }
     }

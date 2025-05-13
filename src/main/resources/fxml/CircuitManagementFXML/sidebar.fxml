@@ -23,7 +23,7 @@
     <Label text="MENU" style="-fx-text-fill: #A0AEC0; -fx-font-size: 10px; -fx-font-weight: bold;"/>
 
     <!-- Dashboard -->
-    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
+    <HBox  fx:id="btnDashboard"  onMouseClicked="#goToDashboard" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0;">
         <ImageView fitWidth="20" fitHeight="20">
             <Image url="@../../images/icons8-dashboard-24.png"/>
         </ImageView>

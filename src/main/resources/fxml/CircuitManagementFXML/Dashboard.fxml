@@ -120,6 +120,11 @@
                                       legendVisible="true"
                                       style="-fx-font-size: 13px;"
                                       prefHeight="300" prefWidth="600" />
+
+                            <!-- Ajout des éléments météo -->
+                            <Label fx:id="weatherLabel" text="Météo" />
+                            <Label fx:id="temperatureLabel" text="Température: N/A" />
+                            <Label fx:id="conditionLabel" text="Condition: N/A" />
                         </VBox>
                     </center>
                 </BorderPane>

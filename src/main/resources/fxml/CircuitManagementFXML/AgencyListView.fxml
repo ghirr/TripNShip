@@ -42,10 +42,10 @@
                     <top>
                         <VBox spacing="15" style="-fx-padding: 25px 30px 15px 30px;">
                             <HBox alignment="CENTER_LEFT" spacing="15">
-                                <Label text="Circuit Bookings"
+                                <Label text="Rental Agencies"
                                        style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3498DB;" />
                                 <Pane HBox.hgrow="ALWAYS" />
-                                <Button fx:id="addAgencyButton" text="Add Booking"
+                                <Button fx:id="addAgencyButton" text="Add Agency"
 
                                         style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
                -fx-text-fill: white; -fx-font-weight: bold;
@@ -62,25 +62,26 @@
 
                             </HBox>
 
+
                             <!-- Search & Filters -->
                             <HBox alignment="CENTER_LEFT" spacing="10">
 
-                                <TextField fx:id="searchField" promptText="Search" style="-fx-background-color: transparent; -fx-prompt-text-fill: #6c757d;" HBox.hgrow="ALWAYS" />
+                                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="300" spacing="10" style="-fx-background-color: #f0f5ff; -fx-background-radius: 30; -fx-padding: 5px; -fx-border-color: #e0e7ff; -fx-border-radius: 30; -fx-border-width: 1px;">
+                                    <padding>
+                                        <Insets bottom="8" left="20" right="8" top="8" />
+                                    </padding>
 
-                                <Button fx:id="exportExcelButton" text="Excel"
+                                    <TextField fx:id="searchField" promptText="Search" style="-fx-background-color: transparent; -fx-prompt-text-fill: #6c757d;" HBox.hgrow="ALWAYS" />
 
-                                        style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
-               -fx-text-fill: white; -fx-font-weight: bold;
-               -fx-background-radius: 25; -fx-padding: 4 14 4 14;
-               -fx-font-size: 12px;">
+                                    <Button fx:id="searchButton" onAction="#handleSearch" style="-fx-background-color: #4da6ff; -fx-background-radius: 50; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38;">
+                                        <graphic>
+                                            <ImageView fitHeight="18" fitWidth="18">
+                                                <Image url="@../../images/search.jpg" />
+                                            </ImageView>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
 
-                                    <graphic>
-                                        <ImageView fitWidth="20" fitHeight="20">
-                                            <Image url="@../../images/icons8-export-excel-50.png" />
-                                        </ImageView>
-                                    </graphic>
-
-                                </Button>
                             </HBox>
                         </VBox>
                     </top>

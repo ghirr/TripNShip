@@ -60,7 +60,7 @@ public class ListViewCircuitBookingController {
     private ObservableList<CircuitBooking> circuitBookings = FXCollections.observableArrayList();
     private List<CircuitBooking> filteredCircuitBookings = new ArrayList<>();
 
-    private static final int ROWS_PER_PAGE = 5;
+    private static final int ROWS_PER_PAGE = 7;
     private CircuitBookingService circuitBookingService;
     private PauseTransition pause;
 
@@ -81,17 +81,20 @@ public class ListViewCircuitBookingController {
         }
         circuitBookingTable.setRowFactory(tv -> {
             TableRow<CircuitBooking> row = new TableRow<>();
-            row.setPrefHeight(40); // hauteur de 40px par ligne
+            row.setPrefHeight(40);
             return row;
         });
 
 
-        statusComboBox.setItems(FXCollections.observableArrayList(
-                Arrays.stream(StatusBooking.values())
-                        .map(Enum::name)
-                        .collect(Collectors.toList())
-        ));
-        statusComboBox.setValue(StatusBooking.Confirmed.name());
+        List<String> statusOptions = new ArrayList<>();
+        statusOptions.add("Tous"); // Option pour afficher tous les statuts
+        statusOptions.addAll(Arrays.stream(StatusBooking.values())
+                .map(Enum::name)
+                .collect(Collectors.toList()));
+
+        statusComboBox.setItems(FXCollections.observableArrayList(statusOptions));
+        statusComboBox.setValue("Tous"); // Sélection par défaut : Tous
+
 
         reloadCircuitBookingList();
         configureTable();
@@ -227,16 +230,17 @@ public class ListViewCircuitBookingController {
     private void handleStatusFilter() {
         String selectedStatus = statusComboBox.getValue();
 
-        if (selectedStatus != null && !selectedStatus.isEmpty()) {
+        if (selectedStatus != null && !selectedStatus.isEmpty() && !selectedStatus.equalsIgnoreCase("Tous")) {
             filteredCircuitBookings = circuitBookings.stream()
                     .filter(c -> c.getStatusBooking().name().equalsIgnoreCase(selectedStatus))
                     .collect(Collectors.toList());
-            pagination.setPageCount((int) Math.ceil((double) filteredCircuitBookings.size() / ROWS_PER_PAGE));
-            updateTable(0);
-            pagination.setCurrentPageIndex(0);
         } else {
-            refreshCircuitBookingList();
+            filteredCircuitBookings = new ArrayList<>(circuitBookings); // Affiche tout
         }
+
+        pagination.setPageCount((int) Math.ceil((double) filteredCircuitBookings.size() / ROWS_PER_PAGE));
+        updateTable(0);
+        pagination.setCurrentPageIndex(0);
     }
 
     private void setColActions() {

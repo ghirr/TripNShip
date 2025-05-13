@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
@@ -20,29 +21,32 @@ import org.Esprit.TripNShip.Services.RentalAgencyService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListViewRentalAgencyController {
+
+    private static final int ROWS_PER_PAGE = 7;
 
     // UI Elements
     @FXML private ComboBox<String> entriesComboBox;
     @FXML private Region spacer;
     @FXML private TextField searchField;
     @FXML private Button addAgencyButton;
-    @FXML private Button exportExcelButton;
     @FXML private TableView<RentalAgency> agencyTable;
     @FXML private TableColumn<RentalAgency, String> nameColumn;
     @FXML private TableColumn<RentalAgency, String> addressColumn;
     @FXML private TableColumn<RentalAgency, String> contactColumn;
     @FXML private TableColumn<RentalAgency, Float> ratingColumn;
     @FXML private TableColumn<RentalAgency, Void> actionColumn;
+    @FXML private Pagination pagination;
 
     // Services
     private final RentalAgencyService rentalAgencyService = new RentalAgencyService();
 
     // Data
     private ObservableList<RentalAgency> agencyList = FXCollections.observableArrayList();
+    private List<RentalAgency> filteredAgency;
 
-    // Initialization
     @FXML
     private void initialize() {
         setupTableColumns();
@@ -50,6 +54,13 @@ public class ListViewRentalAgencyController {
         setupButtons();
         loadAgenciesFromDatabase();
         setupActionButtons();
+        setupPagination();
+
+        agencyTable.setRowFactory(tv -> {
+            TableRow<RentalAgency> row = new TableRow<>();
+            row.setPrefHeight(40);
+            return row;
+        });
     }
 
     // Table setup
@@ -63,36 +74,62 @@ public class ListViewRentalAgencyController {
     private void loadAgenciesFromDatabase() {
         List<RentalAgency> agencies = rentalAgencyService.getAll();
         agencyList.setAll(agencies);
-        agencyTable.setItems(agencyList);
+        filteredAgency = agencyList;
+        updateTable(0);
+        pagination.setPageCount((int) Math.ceil((double) filteredAgency.size() / ROWS_PER_PAGE));
     }
 
+    private void setupPagination() {
+        pagination.setPageFactory(this::createPage);
+    }
 
+    private VBox createPage(int pageIndex) {
+        updateTable(pageIndex);
+        return new VBox(agencyTable);
+    }
 
-    // Search field setup
+    private void updateTable(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredAgency.size());
+        agencyTable.setItems(FXCollections.observableArrayList(filteredAgency.subList(fromIndex, toIndex)));
+    }
+
+    // Search setup
     private void setupSearchField() {
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> filterAgencies(newValue));
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
-    private void filterAgencies(String searchText) {
-        if (searchText == null || searchText.isEmpty()) {
-            agencyTable.setItems(agencyList);
+    @FXML
+    private void handleSearch() {
+        String keyword = searchField.getText().toLowerCase();
+
+        if (!keyword.isEmpty()) {
+            filteredAgency = agencyList.stream()
+                    .filter(u ->
+                            u.getNameAgency().toLowerCase().contains(keyword)
+                                    || u.getContactAgency().toLowerCase().contains(keyword)
+                                    || u.getAddressAgency().toLowerCase().contains(keyword)
+                                    || String.valueOf(u.getRating()).toLowerCase().contains(keyword)
+                    )
+                    .collect(Collectors.toList());
         } else {
-            ObservableList<RentalAgency> filteredList = FXCollections.observableArrayList();
-            for (RentalAgency agency : agencyList) {
-                if (agency.getNameAgency().toLowerCase().contains(searchText.toLowerCase()) ||
-                        agency.getAddressAgency().toLowerCase().contains(searchText.toLowerCase()) ||
-                        agency.getContactAgency().toLowerCase().contains(searchText.toLowerCase())) {
-                    filteredList.add(agency);
-                }
-            }
-            agencyTable.setItems(filteredList);
+            filteredAgency = agencyList;
         }
+
+        pagination.setPageCount((int) Math.ceil((double) filteredAgency.size() / ROWS_PER_PAGE));
+        updateTable(0);
+        pagination.setCurrentPageIndex(0);
+    }
+
+    private void refreshUserList() {
+        loadAgenciesFromDatabase();
+        pagination.setCurrentPageIndex(0);
     }
 
     // Button setup
     private void setupButtons() {
         addAgencyButton.setOnAction(event -> openAddAgencyForm());
-        exportExcelButton.setOnAction(event -> handleExportExcel());
+
     }
 
     // Action buttons in table
@@ -130,7 +167,6 @@ public class ListViewRentalAgencyController {
         });
     }
 
-
     // CRUD Actions
     private void handleEditAgency(RentalAgency agency) {
         try {
@@ -146,7 +182,7 @@ public class ListViewRentalAgencyController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            loadAgenciesFromDatabase(); // Refresh
+            loadAgenciesFromDatabase();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,13 +213,11 @@ public class ListViewRentalAgencyController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            loadAgenciesFromDatabase(); // Refresh
+            loadAgenciesFromDatabase();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void handleExportExcel() {
-        // À implémenter
-    }
+
 }

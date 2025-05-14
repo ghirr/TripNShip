@@ -22,6 +22,8 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Transport" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+                        <Button fx:id="chooseLogoButton" text="Select Logo" onAction="#chooseLogo" />
+                        <Label fx:id="logoPathLabel" text="Aucun fichier choisi" />
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transporter Reference" />
                         <TextField fx:id="transporterReferenceField" maxWidth="Infinity" promptText="Transporter Reference" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 

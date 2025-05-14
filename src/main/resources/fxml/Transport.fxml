@@ -49,6 +49,11 @@
                     </HBox>
                     <TableView fx:id="transportTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>
+                            <TableColumn fx:id="logoColumn" text="Logo">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="logoPath" />
+                                </cellValueFactory>
+                            </TableColumn>
                      <TableColumn fx:id="transporterReferenceColumn" prefWidth="75.0" text="Transporter Reference">
                          <cellValueFactory>
                              <PropertyValueFactory property="transporterReference" />

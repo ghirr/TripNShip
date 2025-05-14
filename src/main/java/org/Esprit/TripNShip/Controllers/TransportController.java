@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
@@ -24,9 +26,10 @@ public class TransportController {
 
     @FXML private Button addTransportButton;
     @FXML private TableView<Transport> transportTable;
-    @FXML private TableColumn<String, Transport> transporterReferenceColumn;
-    @FXML private TableColumn<TransportType, Transport> transportationColumn;
-    @FXML private TableColumn<String, Transport> companyNameColumn;
+    @FXML private TableColumn<Transport, String> logoColumn;
+    @FXML private TableColumn<Transport, String> transporterReferenceColumn;
+    @FXML private TableColumn<Transport, String> transportationColumn;
+    @FXML private TableColumn<Transport, String> companyNameColumn;
     @FXML private TableColumn<Integer, Transport> companyPhoneColumn;
     @FXML private TableColumn<String, Transport> companyWebsiteColumn;
     @FXML private TableColumn<String, Transport> companyEmailColumn;
@@ -41,6 +44,30 @@ public class TransportController {
     @FXML
     public void initialize() {
         // Lier les colonnes aux attributs
+        logoColumn.setCellValueFactory(new PropertyValueFactory<>("logoPath"));
+        logoColumn.setCellFactory(column->new TableCell<>(){
+           private final ImageView imageView = new ImageView();
+            {
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                imageView.setPreserveRatio(true);
+            }
+            @Override
+            protected void updateItem(String path, boolean empty){
+                super.updateItem(path,empty);
+                if(empty || path==null||path.isEmpty()){
+                    setGraphic(null);
+                }
+                else{
+                    try{
+                        imageView.setImage(new Image("file:" + path));
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null);
+                    }
+                }
+            }
+                });
         transporterReferenceColumn.setCellValueFactory(new PropertyValueFactory<>("transporterReference"));
         transportationColumn.setCellValueFactory(new PropertyValueFactory<>("transportation"));
         companyNameColumn.setCellValueFactory(new PropertyValueFactory<>("companyName"));

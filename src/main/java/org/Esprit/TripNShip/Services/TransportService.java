@@ -17,15 +17,16 @@ public class TransportService implements IService<Transport>{
 
     @Override
     public void add(Transport transport) {
-        String req = "INSERT INTO transport (transporterReference,transportation,companyName,companyPhone,companyEmail,companyWebsite) VALUES (?,?,?,?,?,?) ";
+        String req = "INSERT INTO transport (logoPath,transporterReference,transportation,companyName,companyPhone,companyEmail,companyWebsite) VALUES (?,?,?,?,?,?,?) ";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
-            pst.setString(1, transport.getTransporterReference());
-            pst.setString(2,transport.getTransportation().toString());
-            pst.setString(3,transport.getCompanyName());
-            pst.setInt(4,transport.getCompanyPhone());
-            pst.setString(5,transport.getCompanyEmail());
-            pst.setString(6,transport.getCompanyWebsite());
+            pst.setString(1, transport.getLogoPath());
+            pst.setString(2, transport.getTransporterReference());
+            pst.setString(3,transport.getTransportation().toString());
+            pst.setString(4,transport.getCompanyName());
+            pst.setInt(5,transport.getCompanyPhone());
+            pst.setString(6,transport.getCompanyEmail());
+            pst.setString(7,transport.getCompanyWebsite());
             pst.executeUpdate();
             System.out.println("Transport added!!");
         }
@@ -81,7 +82,7 @@ public class TransportService implements IService<Transport>{
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                transports.add(new Transport(rs.getInt("transportId"),rs.getString("transporterReference"),TransportType.valueOf(rs.getString("transportation").toUpperCase()), rs.getString("companyName"),rs.getInt("companyPhone"),rs.getString("companyEmail"),rs.getString("companyWebsite")));
+                transports.add(new Transport(rs.getInt("transportId"),rs.getString("logoPath"),rs.getString("transporterReference"),TransportType.valueOf(rs.getString("transportation").toUpperCase()), rs.getString("companyName"),rs.getInt("companyPhone"),rs.getString("companyEmail"),rs.getString("companyWebsite")));
             }
         }
         catch (SQLException e){

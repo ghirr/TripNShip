@@ -7,11 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,7 +25,11 @@ public class AddTransportController implements Initializable {
     @FXML private TextField companyPhoneField;
     @FXML private TextField companyEmailField;
     @FXML private TextField companyWebsiteField;
+    @FXML private Button chooseLogoButton;
+    @FXML private Label logoPathLabel;
     @FXML private Button addTransportButton;
+
+    private String selectedLogoPath="";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -33,7 +39,7 @@ public class AddTransportController implements Initializable {
     void addTransport(ActionEvent event) throws IOException{
         if (validInputs()==false) return;
         TransportService ts = new TransportService();
-        ts.add(new Transport(transporterReferenceField.getText(),transportationComboBox.getValue(),companyNameField.getText(),Integer.parseInt(companyPhoneField.getText()),companyEmailField.getText(),companyWebsiteField.getText()));
+        ts.add(new Transport(selectedLogoPath,transporterReferenceField.getText(),transportationComboBox.getValue(),companyNameField.getText(),Integer.parseInt(companyPhoneField.getText()),companyEmailField.getText(),companyWebsiteField.getText()));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("SA7it");
@@ -70,6 +76,19 @@ public class AddTransportController implements Initializable {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    void chooseLogo(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select the transporter Logo");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            selectedLogoPath = file.getAbsolutePath();
+            logoPathLabel.setText(file.getName());
+        }
     }
 
 }

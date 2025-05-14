@@ -2,12 +2,34 @@ package org.Esprit.TripNShip.Entities;
 
 public class Transport {
     private int transportId;
+    private String logoPath;
     private String transporterReference;
     private TransportType transportation;
     private String companyName;
     private int companyPhone;
     private String companyEmail;
     private String companyWebsite;
+
+    public Transport(int transportId, String logoPath, String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
+        this.transportId = transportId;
+        this.logoPath = logoPath;
+        this.transporterReference = transporterReference;
+        this.transportation = transportation;
+        this.companyName = companyName;
+        this.companyPhone = companyPhone;
+        this.companyEmail = companyEmail;
+        this.companyWebsite = companyWebsite;
+    }
+
+    public Transport(String logoPath, String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
+        this.logoPath = logoPath;
+        this.transporterReference = transporterReference;
+        this.transportation = transportation;
+        this.companyName = companyName;
+        this.companyPhone = companyPhone;
+        this.companyEmail = companyEmail;
+        this.companyWebsite = companyWebsite;
+    }
 
     public Transport(String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
         this.transporterReference = transporterReference;
@@ -97,18 +119,6 @@ public class Transport {
         this.companyWebsite = companyWebsite;
     }
 
-    @Override
-    public String toString() {
-        return "Transport{" +
-                "transportId=" + transportId +
-                "transporterReference="+ transporterReference +
-                ", transportation=" + transportation +
-                ", companyName='" + companyName + '\'' +
-                ", companyPhone=" + companyPhone +
-                ", companyEmail='" + companyEmail + '\'' +
-                ", companyWebsite='" + companyWebsite + '\'' +
-                '}';
-    }
 
     public String getTransporterReference() {
         return transporterReference;
@@ -116,6 +126,28 @@ public class Transport {
 
     public void setTransporterReference(String transporterReference) {
         this.transporterReference = transporterReference;
+    }
+
+    public String getLogoPath() {
+        return logoPath;
+    }
+
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
+    }
+
+    @Override
+    public String toString() {
+        return "Transport{" +
+                "transportId=" + transportId +
+                ", transporterReference='" + transporterReference + '\'' +
+                ", transportation=" + transportation +
+                ", companyName='" + companyName + '\'' +
+                ", companyPhone=" + companyPhone +
+                ", companyEmail='" + companyEmail + '\'' +
+                ", companyWebsite='" + companyWebsite + '\'' +
+                ", logoPath='" + logoPath + '\'' +
+                '}';
     }
 }
 

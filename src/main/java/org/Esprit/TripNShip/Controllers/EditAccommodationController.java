@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Accommodation;
-import org.Esprit.TripNShip.Entities.AccommodationBooking;
 import org.Esprit.TripNShip.Entities.TypeAccommodation;
 import org.Esprit.TripNShip.Services.AccommodationService;
 
@@ -22,12 +21,11 @@ public class EditAccommodationController {
     private Accommodation accommodation;
     private final AccommodationService accommodationService = new AccommodationService();
 
-    private Runnable onAccommodationUpdated; // callback
-    private Stage stage; // to close the window
+    private Runnable onAccommodationUpdated;
+    private Stage stage;
 
     @FXML
     private void initialize() {
-        // Initialize ChoiceBox with possible accommodation types
         typeChoiceBox.setItems(FXCollections.observableArrayList("HOTEL", "AIRBNB", "GUESTHOUSE"));
     }
 
@@ -57,29 +55,72 @@ public class EditAccommodationController {
             return;
         }
 
+        // Lecture des valeurs
+        String name = nameField.getText().trim();
+        String address = addressField.getText().trim();
+        String typeValue = typeChoiceBox.getValue();
+        String priceText = priceField.getText().trim();
+        String capacityText = capacityField.getText().trim();
+
+        // Contrôle de validité des champs
+        if (name.isEmpty() || !name.matches("[a-zA-Z0-9\\s]+")) {
+            showAlert(Alert.AlertType.ERROR, "Please enter a valid name (letters and numbers only).");
+            return;
+        }
+
+        if (address.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Address cannot be empty.");
+            return;
+        }
+
+        if (typeValue == null || typeValue.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Please select a type of accommodation.");
+            return;
+        }
+
+        float price;
         try {
-            // Validate inputs before updating
-            if (nameField.getText().isEmpty() || addressField.getText().isEmpty() || priceField.getText().isEmpty() || capacityField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "All fields must be filled.");
+            price = Float.parseFloat(priceText);
+            if (price <= 0) {
+                showAlert(Alert.AlertType.ERROR, "Price must be a positive number.");
                 return;
             }
-
-            // Parse and set the new values for the accommodation
-            accommodation.setName(nameField.getText());
-            accommodation.setAddress(addressField.getText());
-            accommodation.setType(TypeAccommodation.valueOf(typeChoiceBox.getValue())); // Ensure value is valid
-            accommodation.setPriceNight(Float.parseFloat(priceField.getText()));
-            accommodation.setCapacity(Integer.parseInt(capacityField.getText()));
-
-            // Update the accommodation in the service layer
-            accommodationService.update(accommodation);
-
-            handleUpdate(); // Handle post-update actions
-
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Invalid number format for price or capacity.");
+            showAlert(Alert.AlertType.ERROR, "Please enter a valid price.");
+            return;
+        }
+
+        int capacity;
+        try {
+            capacity = Integer.parseInt(capacityText);
+            if (capacity <= 0) {
+                showAlert(Alert.AlertType.ERROR, "Capacity must be a positive integer.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Please enter a valid capacity.");
+            return;
+        }
+
+        TypeAccommodation typeEnum;
+        try {
+            typeEnum = TypeAccommodation.valueOf(typeValue);
         } catch (IllegalArgumentException e) {
             showAlert(Alert.AlertType.ERROR, "Invalid accommodation type selected.");
+            return;
+        }
+
+        // Mise à jour
+        try {
+            accommodation.setName(name);
+            accommodation.setAddress(address);
+            accommodation.setType(typeEnum);
+            accommodation.setPriceNight(price);
+            accommodation.setCapacity(capacity);
+
+            accommodationService.update(accommodation);
+            handleUpdate();
+
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error while updating accommodation.");
             e.printStackTrace();
@@ -87,36 +128,28 @@ public class EditAccommodationController {
     }
 
     private void handleUpdate() {
-        // Trigger the callback to notify parent controller of the update
         if (onAccommodationUpdated != null) {
             onAccommodationUpdated.run();
         }
 
-        // Show success message
         showAlert(Alert.AlertType.INFORMATION, "Accommodation updated successfully.");
 
-        // Close the window
         if (stage != null) {
             stage.close();
         } else {
-            closeWindow(); // fallback if stage not injected
+            closeWindow();
         }
     }
 
     private void closeWindow() {
-        // Close the window if stage was not injected
         ((Stage) priceField.getScene().getWindow()).close();
     }
 
     private void showAlert(Alert.AlertType alertType, String message) {
-        // Show alert with provided message
         Alert alert = new Alert(alertType);
         alert.setTitle("Accommodation");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    //public void setBookingToEdit(AccommodationBooking booking) {
-        // This method can be used if you need to edit booking info, but currently not implemented}
 }

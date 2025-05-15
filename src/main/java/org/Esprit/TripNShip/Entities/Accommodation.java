@@ -11,14 +11,16 @@ public class Accommodation {
     private float priceNight;
     private int capacity;
     private List<Integer> idRoom = new ArrayList<>();
+    private List<String> photos = new ArrayList<>(); // Liste de chemins d'images
 
-    public Accommodation(int idAccommodation, TypeAccommodation type, String name, String address, float priceNight, int capacity) {
+    public Accommodation(int idAccommodation, TypeAccommodation type, String name, String address, float priceNight, int capacity, List<String> photos) {
         this.idAccommodation = idAccommodation;
         this.type = type;
         this.name = name;
         this.address = address;
         this.priceNight = priceNight;
         this.capacity = capacity;
+        this.photos = photos;
     }
 
     public Accommodation() {
@@ -80,6 +82,13 @@ public class Accommodation {
         this.idRoom = idRoom;
     }
 
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
 
     @Override
     public String toString() {
@@ -91,6 +100,7 @@ public class Accommodation {
                 ", priceNight=" + priceNight +
                 ", capacity=" + capacity +
                 ", idRoom=" + idRoom +
+                ", photos=" + photos +
                 '}';
     }
 }

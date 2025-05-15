@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Accommodation;
 import org.Esprit.TripNShip.Entities.Room;
@@ -16,32 +15,17 @@ import java.util.List;
 
 public class RoomController {
 
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField priceField;
-
-    @FXML
-    private ChoiceBox<String> accommodationTypeChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> typeRoomChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> availabilityChoiceBox;
-
-    @FXML
-    private TableColumn<Room, String> colAccommodation;
-
-    @FXML
-    private Button addRoomButton;
+    @FXML private TextField nameField;
+    @FXML private TextField priceField;
+    @FXML private ChoiceBox<String> accommodationTypeChoiceBox;
+    @FXML private ChoiceBox<String> typeRoomChoiceBox;
+    @FXML private ChoiceBox<String> availabilityChoiceBox;
+    @FXML private Button addRoomButton;
 
     private Room room;
-
     private final RoomService roomService = new RoomService();
     private final AccommodationService accommodationService = new AccommodationService();
-    private List<Accommodation> accommodations; // Pour récupérer idAccommodation à partir du choix
+    private List<Accommodation> accommodations;
 
     public void setRoom(Room room) {
         this.room = room;
@@ -51,7 +35,6 @@ public class RoomController {
             typeRoomChoiceBox.setValue(room.getType().name());
             availabilityChoiceBox.setValue(room.isAvailability() ? "AVAILABLE" : "UNAVAILABLE");
 
-            // Sélectionner le bon hébergement
             Accommodation selectedAccommodation = accommodations.stream()
                     .filter(acc -> acc.getIdAccommodation() == room.getAccommodation().getIdAccommodation())
                     .findFirst()
@@ -66,41 +49,53 @@ public class RoomController {
 
     @FXML
     private void initialize() {
-        // Charger les hébergements
         accommodations = accommodationService.getAll();
-        //colAccommodation.setCellValueFactory(new PropertyValueFactory<>("accommodationType"));
-        //colAccommodation.setCellValueFactory(new PropertyValueFactory<>("accommodationName"));
 
-
-        // Remplir accommodationTypeChoiceBox
         accommodationTypeChoiceBox.setItems(FXCollections.observableArrayList(
                 accommodations.stream()
                         .map(acc -> acc.getType().name() + " - " + acc.getName())
                         .toList()
         ));
 
-        // Remplir typeRoomChoiceBox
         typeRoomChoiceBox.setItems(FXCollections.observableArrayList("SINGLE", "DOUBLE", "SUITE"));
         typeRoomChoiceBox.setValue("SINGLE");
 
-        // Remplir availabilityChoiceBox
         availabilityChoiceBox.setItems(FXCollections.observableArrayList("AVAILABLE", "UNAVAILABLE"));
         availabilityChoiceBox.setValue("AVAILABLE");
     }
 
-    private void closeWindow() {
-        ((Stage) priceField.getScene().getWindow()).close();
-    }
-
     @FXML
     public void saveRoom(ActionEvent actionEvent) {
-        String nameRoom = nameField.getText();
-        String typeRoomValue = typeRoomChoiceBox.getValue();
-        TypeRoom typeRoomEnum = TypeRoom.valueOf(typeRoomValue);
-        float price = Float.parseFloat(priceField.getText());
+        // Contrôle de saisie
+        if (nameField.getText().isEmpty() ||
+                priceField.getText().isEmpty() ||
+                typeRoomChoiceBox.getValue() == null ||
+                availabilityChoiceBox.getValue() == null ||
+                accommodationTypeChoiceBox.getValue() == null) {
+
+            showAlert(Alert.AlertType.ERROR, "All fields must be filled.");
+            return;
+        }
+
+        float price;
+        try {
+            price = Float.parseFloat(priceField.getText());
+            if (price < 0) throw new NumberFormatException(); // Optionnel
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Invalid number format for price.");
+            return;
+        }
+
+        TypeRoom typeRoomEnum;
+        try {
+            typeRoomEnum = TypeRoom.valueOf(typeRoomChoiceBox.getValue());
+        } catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Invalid room type selected.");
+            return;
+        }
+
         boolean availability = "AVAILABLE".equals(availabilityChoiceBox.getValue());
 
-        // Trouver l'Accommodation sélectionné
         String selectedAccommodationText = accommodationTypeChoiceBox.getValue();
         Accommodation selectedAccommodation = accommodations.stream()
                 .filter(acc -> (acc.getType().name() + " - " + acc.getName()).equals(selectedAccommodationText))
@@ -108,7 +103,7 @@ public class RoomController {
                 .orElse(null);
 
         if (selectedAccommodation == null) {
-            showErrorMessage("Please select a valid Accommodation.");
+            showAlert(Alert.AlertType.ERROR, "Please select a valid Accommodation.");
             return;
         }
 
@@ -116,35 +111,30 @@ public class RoomController {
             room = new Room();
         }
 
-        room.setNameRoom(nameRoom);
+        room.setNameRoom(nameField.getText());
         room.setType(typeRoomEnum);
         room.setPrice(price);
         room.setAvailability(availability);
         room.setAccommodation(selectedAccommodation);
 
-
         if (room.getIdRoom() == 0) {
             roomService.add(room);
-            showSuccessMessage("Room added successfully!");
+            showAlert(Alert.AlertType.INFORMATION, "Room added successfully!");
         } else {
             roomService.update(room);
-            showSuccessMessage("Room updated successfully!");
+            showAlert(Alert.AlertType.INFORMATION, "Room updated successfully!");
         }
 
         closeWindow();
     }
 
-    private void showSuccessMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void closeWindow() {
+        ((Stage) priceField.getScene().getWindow()).close();
     }
 
-    private void showErrorMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+    private void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Room");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

@@ -1,5 +1,8 @@
 package org.Esprit.TripNShip.Entities;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Room {
     private int idRoom;
     private Accommodation accommodation; // Foreign key to Accommodation
@@ -7,21 +10,27 @@ public class Room {
     private String nameRoom;
     private double price;
     private boolean availability;
+    private List<String> photosRoom; // ✅ Liste de photos
 
     public Room() {
+        photosRoom = new ArrayList<>();
     }
 
-    public Room(int idRoom, Accommodation accommodation, TypeRoom type, String nameRoom, double price, boolean availability) {
+    public Room(int idRoom, Accommodation accommodation, TypeRoom type, String nameRoom, double price, boolean availability, List<String> photosRoom) {
         this.idRoom = idRoom;
         this.accommodation = accommodation;
         this.type = type;
         this.nameRoom = nameRoom;
         this.price = price;
         this.availability = availability;
+        this.photosRoom = photosRoom != null ? photosRoom : new ArrayList<>();
     }
 
     public Room(int i, String s, TypeRoom typeRoom) {
+        this.photosRoom = new ArrayList<>();
     }
+
+    // getters & setters
 
     public int getIdRoom() {
         return idRoom;
@@ -71,6 +80,13 @@ public class Room {
         this.availability = availability;
     }
 
+    public List<String> getPhotosRoom() {
+        return photosRoom;
+    }
+
+    public void setPhotosRoom(List<String> photosRoom) {
+        this.photosRoom = photosRoom;
+    }
     // Getter pour le type d’hébergement
     public TypeAccommodation getTypeAccommodation() {
         if (accommodation != null) {
@@ -86,6 +102,9 @@ public class Room {
         return null;
     }
 
+
+    // les autres méthodes restent inchangées
+
     @Override
     public String toString() {
         return "Room{" +
@@ -95,6 +114,8 @@ public class Room {
                 ", nameRoom='" + nameRoom + '\'' +
                 ", price=" + price +
                 ", availability=" + availability +
+                ", photosRoom=" + photosRoom +
                 '}';
     }
+
 }

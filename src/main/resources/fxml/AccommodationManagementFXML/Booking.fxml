@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml" fx:controller="org.Esprit.TripNShip.Client.BookingController" fitToWidth="true">
+    <content>
+        <FlowPane fx:id="roomFlowPane" hgap="20" vgap="20" padding="20" />
+    </content>
+</ScrollPane>
+

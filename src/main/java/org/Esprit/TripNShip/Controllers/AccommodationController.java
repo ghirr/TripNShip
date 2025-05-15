@@ -36,7 +36,6 @@ public class AccommodationController {
 
     private final AccommodationService accommodationService = new AccommodationService();
 
-
     public void setAccommodation(Accommodation accommodation) {
         this.accommodation = accommodation;
         if (accommodation != null) {
@@ -59,13 +58,62 @@ public class AccommodationController {
     }
 
     public void saveAccommodation(ActionEvent actionEvent) {
-        String name = nameField.getText();
-        String address = addressField.getText();
+        // Récupération des champs
+        String name = nameField.getText().trim();
+        String address = addressField.getText().trim();
         String typeValue = typeChoiceBox.getValue();
-        TypeAccommodation typeEnum = TypeAccommodation.valueOf(typeValue);
-        float price = Float.parseFloat(priceField.getText());
-        int capacity = Integer.parseInt(capacityField.getText());
+        String priceText = priceField.getText().trim();
+        String capacityText = capacityField.getText().trim();
 
+        // Vérification des champs
+        if (name.isEmpty() || !name.matches("[a-zA-Z0-9\\s]+")) {
+            showError("Please enter a valid name (letters and numbers only).");
+            return;
+        }
+
+        if (address.isEmpty()) {
+            showError("Address cannot be empty.");
+            return;
+        }
+
+        if (typeValue == null || typeValue.isEmpty()) {
+            showError("Please select a type of accommodation.");
+            return;
+        }
+
+        float price;
+        try {
+            price = Float.parseFloat(priceText);
+            if (price <= 0) {
+                showError("Price must be a positive number.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showError("Please enter a valid price.");
+            return;
+        }
+
+        int capacity;
+        try {
+            capacity = Integer.parseInt(capacityText);
+            if (capacity <= 0) {
+                showError("Capacity must be a positive integer.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showError("Please enter a valid capacity.");
+            return;
+        }
+
+        TypeAccommodation typeEnum;
+        try {
+            typeEnum = TypeAccommodation.valueOf(typeValue);
+        } catch (IllegalArgumentException e) {
+            showError("Invalid accommodation type selected.");
+            return;
+        }
+
+        // Création ou mise à jour
         if (accommodation == null) {
             accommodation = new Accommodation();
         }
@@ -82,18 +130,25 @@ public class AccommodationController {
             showSuccessMessage("Accommodation added successfully!");
         } else {
             accommodationService.update(accommodation);
-//            tableController.updateAccommodation();
             showSuccessMessage("Accommodation updated successfully!");
         }
 
         closeWindow();
     }
 
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Invalid Input");
+        alert.setHeaderText("Input Validation Error");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     private void showSuccessMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setHeaderText(null);
-        alert.setContentText(message); // ici 'message' est bien défini comme paramètre
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

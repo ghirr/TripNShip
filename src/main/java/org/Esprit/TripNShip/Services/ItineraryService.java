@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItineraryService implements IService<Itinerary>{
+    private List<Itinerary> itineraries;
     private final Connection connection;
     public ItineraryService() { connection=MyDataBase.getInstance().getConnection();
     }
@@ -82,7 +83,27 @@ public class ItineraryService implements IService<Itinerary>{
             System.out.println(e.getMessage());
         }
         return itineraries;
+    }
 
-
+    public Itinerary getItineraryByCode(String code){
+        String req = "SELECT * FROM itinerary WHERE itineraryCode = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setString(1, code);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return new Itinerary(
+                        rs.getInt("itineraryId"),
+                        rs.getString("itineraryCode"),
+                        rs.getString("transporterReference"),
+                        rs.getString("departureLocation"),
+                        rs.getString("arrivalLocation"),
+                        rs.getString("duration")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

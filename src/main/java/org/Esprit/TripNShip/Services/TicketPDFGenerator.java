@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Services;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
+import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
 
 import java.io.FileOutputStream;
@@ -11,6 +12,8 @@ public class TicketPDFGenerator {
 
     public static void generatePDF(Ticket ticket, String outputPath) {
         Document document = new Document();
+        ItineraryService is = new ItineraryService();
+        Itinerary itinerary = is.getItineraryByCode(ticket.getItineraryCode());
 
         try {
             PdfWriter.getInstance(document, new FileOutputStream(outputPath));
@@ -18,7 +21,7 @@ public class TicketPDFGenerator {
 
             // Titre
             Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD);
-            Paragraph title = new Paragraph("Ticket de Réservation", titleFont);
+            Paragraph title = new Paragraph("Travel Ticket", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
             document.add(new Paragraph(" ")); // ligne vide
@@ -30,8 +33,10 @@ public class TicketPDFGenerator {
             // Contenu du ticket
             document.add(new Paragraph("Itinerary : " + ticket.getItineraryCode()));
             document.add(new Paragraph("Email : " + ticket.getUserEmail()));
+            document.add(new Paragraph("Departure Location : "+ (itinerary.getDepartureLocation())));
             document.add(new Paragraph("Departure Date : " + ticket.getDepartureDate().format(dateFormatter)));
-            document.add(new Paragraph("Departure Time: " + ticket.getDepartureTime().format(timeFormatter)));
+            document.add(new Paragraph("Departure Time : " + ticket.getDepartureTime().format(timeFormatter)));
+            document.add(new Paragraph("Arrival Location : "+itinerary.getArrivalLocation()));
             document.add(new Paragraph("Arrival Date : " + ticket.getArrivalDate().format(dateFormatter)));
             document.add(new Paragraph("Arrival Time : " + ticket.getArrivalTime().format(timeFormatter)));
             document.add(new Paragraph("Price : " + ticket.getPrice() + " TND"));

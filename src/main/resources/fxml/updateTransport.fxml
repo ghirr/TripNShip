@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -10,7 +11,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ComboBox?>
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.UpdateTransportController">
     <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
@@ -22,6 +22,9 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Update Transport" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+
+                        <Button fx:id="chooseLogoButton" onAction="#chooseLogo" text="Select Logo" />
+                        <Label fx:id="companyLogoPathLabel" style="-fx-font-size: 10; -fx-text-fill: #333;" text="No File Selected" />
 
                   <Label layoutX="10.0" layoutY="96.0" prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transporter Reference" />
                   <TextField fx:id="transporterReferenceField" layoutX="10.0" layoutY="160.0" maxWidth="Infinity" promptText="Transporter Reference" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

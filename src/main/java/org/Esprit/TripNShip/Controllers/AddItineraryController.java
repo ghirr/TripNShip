@@ -35,12 +35,7 @@ public class AddItineraryController {
         Stage stage = (Stage) itineraryCodeField.getScene().getWindow();
         stage.close();
     }
-    public void toMain(ActionEvent event) throws IOException {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainTransport.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-    }
+
     public boolean validInputs() {
                     if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");

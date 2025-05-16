@@ -38,16 +38,17 @@ public class TransportService implements IService<Transport>{
 
     @Override
     public void update(Transport transport) {
-        String req = "UPDATE transport set transporterReference=?,transportation=?,companyName= ?,companyPhone= ?,companyEmail= ?,companyWebsite =? WHERE transportId=?";
+        String req = "UPDATE transport set logoPath=?,transporterReference=?,transportation=?,companyName= ?,companyPhone= ?,companyEmail= ?,companyWebsite =? WHERE transportId=?";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
-            pst.setString(1, transport.getTransporterReference());
-            pst.setString(2,transport.getTransportation().toString());
-            pst.setString(3,transport.getCompanyName());
-            pst.setInt(4,transport.getCompanyPhone());
-            pst.setString(5,transport.getCompanyEmail());
-            pst.setString(6, transport.getCompanyWebsite());
-            pst.setInt(7,transport.getTransportId());
+            pst.setString(1, transport.getLogoPath());
+            pst.setString(2, transport.getTransporterReference());
+            pst.setString(3,transport.getTransportation().toString());
+            pst.setString(4,transport.getCompanyName());
+            pst.setInt(5,transport.getCompanyPhone());
+            pst.setString(6,transport.getCompanyEmail());
+            pst.setString(7, transport.getCompanyWebsite());
+            pst.setInt(8,transport.getTransportId());
             pst.executeUpdate();
             System.out.println("Transport Updated");
 

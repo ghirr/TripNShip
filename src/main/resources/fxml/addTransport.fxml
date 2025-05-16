@@ -2,9 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,8 +22,8 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Transport" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
-                        <Button fx:id="chooseLogoButton" text="Select Logo" onAction="#chooseLogo" />
-                        <Label fx:id="logoPathLabel" text="Aucun fichier choisi" />
+                        <Button fx:id="chooseLogoButton" onAction="#chooseLogo" text="Select Logo" />
+                        <Label fx:id="companyLogoPathLabel" style="-fx-font-size: 10; -fx-text-fill: #333;" text="No File Selected" />
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transporter Reference" />
                         <TextField fx:id="transporterReferenceField" maxWidth="Infinity" promptText="Transporter Reference" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 

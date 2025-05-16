@@ -26,7 +26,7 @@ public class AddTransportController implements Initializable {
     @FXML private TextField companyEmailField;
     @FXML private TextField companyWebsiteField;
     @FXML private Button chooseLogoButton;
-    @FXML private Label logoPathLabel;
+    @FXML private Label companyLogoPathLabel;
     @FXML private Button addTransportButton;
 
     private String selectedLogoPath="";
@@ -87,7 +87,7 @@ public class AddTransportController implements Initializable {
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             selectedLogoPath = file.getAbsolutePath();
-            logoPathLabel.setText(file.getName());
+            companyLogoPathLabel.setText(file.getName());
         }
     }
 

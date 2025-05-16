@@ -1,18 +1,18 @@
 package org.Esprit.TripNShip.Controllers;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java. io. File;
 
 public class UpdateTransportController implements Initializable {
     @FXML private TextField transporterReferenceField;
@@ -20,9 +20,12 @@ public class UpdateTransportController implements Initializable {
     @FXML private TextField companyPhoneField;
     @FXML private TextField companyEmailField;
     @FXML private TextField companyWebsiteField;
+    @FXML private Label companyLogoPathLabel;
+    @FXML private Button chooseLogoButton;
     @FXML private Button updateTransportButton;
-    @FXML
-    ComboBox<TransportType> transportationComboBox;
+    @FXML private ComboBox<TransportType> transportationComboBox;
+    private String selectedLogoPath ;  // chemin actuel ou nouveau
+
 
     public void initialize(URL location, ResourceBundle resources) {
         transportationComboBox.setItems(FXCollections.observableArrayList(TransportType.values()));
@@ -40,6 +43,8 @@ public class UpdateTransportController implements Initializable {
         companyPhoneField.setText(Integer.toString(transport.getCompanyPhone()));
         companyEmailField.setText(transport.getCompanyEmail());
         companyWebsiteField.setText(transport.getCompanyWebsite());
+        selectedLogoPath = transport.getLogoPath(); // le logo actuel
+        companyLogoPathLabel.setText(selectedLogoPath);
     }
 
     @FXML
@@ -52,6 +57,7 @@ public class UpdateTransportController implements Initializable {
         transport.setCompanyPhone(Integer.parseInt((companyPhoneField.getText())));
         transport.setCompanyEmail(companyEmailField.getText());
         transport.setCompanyWebsite(companyWebsiteField.getText());
+        transport.setLogoPath(selectedLogoPath);
 
         ts.update(transport);
 
@@ -92,5 +98,20 @@ public class UpdateTransportController implements Initializable {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    void chooseLogo(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select the transporter Logo");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            selectedLogoPath = file.getAbsolutePath();
+            companyLogoPathLabel.setText(file.getName());
+        }
+
     }
     }

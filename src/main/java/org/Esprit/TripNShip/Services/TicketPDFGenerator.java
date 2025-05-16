@@ -28,16 +28,16 @@ public class TicketPDFGenerator {
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
             // Contenu du ticket
-            document.add(new Paragraph("Itinéraire : " + ticket.getItineraryCode()));
-            document.add(new Paragraph("Email client : " + ticket.getUserEmail()));
-            document.add(new Paragraph("Date départ : " + ticket.getDepartureDate().format(dateFormatter)));
-            document.add(new Paragraph("Heure départ : " + ticket.getDepartureTime().format(timeFormatter)));
-            document.add(new Paragraph("Date arrivée : " + ticket.getArrivalDate().format(dateFormatter)));
-            document.add(new Paragraph("Heure arrivée : " + ticket.getArrivalTime().format(timeFormatter)));
-            document.add(new Paragraph("Prix : " + ticket.getPrice() + " TND"));
+            document.add(new Paragraph("Itinerary : " + ticket.getItineraryCode()));
+            document.add(new Paragraph("Email : " + ticket.getUserEmail()));
+            document.add(new Paragraph("Departure Date : " + ticket.getDepartureDate().format(dateFormatter)));
+            document.add(new Paragraph("Departure Time: " + ticket.getDepartureTime().format(timeFormatter)));
+            document.add(new Paragraph("Arrival Date : " + ticket.getArrivalDate().format(dateFormatter)));
+            document.add(new Paragraph("Arrival Time : " + ticket.getArrivalTime().format(timeFormatter)));
+            document.add(new Paragraph("Price : " + ticket.getPrice() + " TND"));
 
             document.add(new Paragraph(" "));
-            document.add(new Paragraph("Merci pour votre réservation !"));
+            document.add(new Paragraph("Travel Safe"));
 
         } catch (DocumentException | IOException e) {
             e.printStackTrace();

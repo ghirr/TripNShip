@@ -48,8 +48,8 @@ public class TransportController {
         logoColumn.setCellFactory(column->new TableCell<>(){
            private final ImageView imageView = new ImageView();
             {
-                imageView.setFitHeight(30);
-                imageView.setFitWidth(30);
+                imageView.setFitHeight(40);
+                imageView.setFitWidth(40);
                 imageView.setPreserveRatio(true);
             }
             @Override

@@ -14,15 +14,28 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
+
+import static com.google.common.io.Files.getFileExtension;
 
 public class Shared {
 
     private static final String CHARS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+
+    private static final String UPLOAD_DIR = "C:/xampp/htdocs/tripNship/";
+    private static final String BASE_URL = "http://localhost/tripNship/";
+    public static final String USERS_PATH = "Users/";
 
     public static void switchScene(Event event, URL fxmlFile , String title) {
         try {
@@ -113,6 +126,43 @@ public class Shared {
             password.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
         return password.toString();
+    }
+
+    public static String uploadProfilePhoto(File file , String dirName) {
+
+        UserSession currentUser = UserSession.getInstance();
+
+        String uploadDir = UPLOAD_DIR + dirName;
+
+        String originalName = file.getName();
+        String extension = "";
+
+        int dotIndex = originalName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < originalName.length() - 1) {
+            extension = originalName.substring(dotIndex); // Includes the dot (e.g., ".jpg")
+        }
+
+        // Create filename using first and last name
+        String fileName = currentUser.getUserFirstName() + currentUser.getUserLastName() +"_"+ System.currentTimeMillis()+extension;
+
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+
+        try {
+            Path destination = Paths.get(uploadDir + fileName);
+            Files.copy(file.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Generate and save URL to database
+
+        return BASE_URL + dirName + fileName;
     }
 
 }

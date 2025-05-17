@@ -26,6 +26,16 @@ public class AdminNavigation {
     public AnchorPane contentArea;
 
 
+    private static AdminNavigation instance;
+
+    public AdminNavigation() {
+        instance = this;
+    }
+
+    public static AdminNavigation getInstance(){
+        return instance;
+    }
+
 
     @FXML
     public void initialize() {
@@ -39,6 +49,7 @@ public class AdminNavigation {
             userIcon.setImage(new Image(currentUser.getUserProfilePhotoPath()));
             btnUserManagement.setOnAction(event -> {navigateToUserManagement();});
             navigateToUserManagement();
+            userIcon.setOnMouseClicked(event -> {navigateToProfile();});
         }
     }
 
@@ -60,6 +71,10 @@ public class AdminNavigation {
     }
 
     public void navigateToExpeditionManagement(ActionEvent actionEvent) {
+    }
+
+    public void navigateToProfile() {
+        loadView("/fxml/employeeProfile.fxml");
     }
 
     public void logout() {

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane styleClass="dialog-pane" stylesheets="@../Styles/stylesEditEmployeeProfile.css" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Esprit.TripNShip.Controllers.EditEmployeeProfileController">
+    <top>
+        <Label text="Edit Profile" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+            <padding>
+                <Insets bottom="15.0" top="15.0" />
+            </padding>
+        </Label>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="profileImageView" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
+                <Button fx:id="choosePhotoButton" mnemonicParsing="false" onAction="#handleChoosePhoto" text="Choose Photo" />
+                <GridPane hgap="10.0" vgap="15.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="First Name:" />
+                        <Label text="Last Name:" GridPane.rowIndex="1" />
+                        <Label text="Email:" GridPane.rowIndex="2" />
+                        <Label text="Role:" GridPane.rowIndex="3" />
+                        <Label text="Joining Date:" GridPane.rowIndex="4" />
+                        <Label text="Gender:" GridPane.rowIndex="5" />
+                        <Label text="Phone Number:" GridPane.rowIndex="6" />
+                        <Label text="Birthday Date:" GridPane.rowIndex="7" />
+                        <TextField fx:id="firstNameField" styleClass="non-editable-field" GridPane.columnIndex="1" />
+                        <TextField fx:id="lastNameField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="emailField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="roleField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="joiningDateField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <ComboBox fx:id="genderComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <DatePicker fx:id="birthdayDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    </children>
+                </GridPane>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+                <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+        </HBox>
+    </bottom>
+</BorderPane>

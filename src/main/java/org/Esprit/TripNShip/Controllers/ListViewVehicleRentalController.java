@@ -1,216 +1,239 @@
 package org.Esprit.TripNShip.Controllers;
 
+import javafx.animation.PauseTransition;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import org.Esprit.TripNShip.Entities.StautCircuit;
-import org.Esprit.TripNShip.Entities.Vehicle;
-import org.Esprit.TripNShip.Entities.VehicleRental;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.VehicleRentalService;
-import javafx.util.Callback;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.Esprit.TripNShip.Utils.Shared;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ListViewVehicleRentalController {
 
-    @FXML private ComboBox<Integer> entriesComboBox;
-    @FXML private TextField searchField;
-    @FXML private Button addVehicleRentalButton;
-    @FXML private Button exportExcelButton;
     @FXML private TableView<VehicleRental> vehicleRentalTable;
-    @FXML private TableColumn<VehicleRental, LocalDateTime> startDateColumn;
-    @FXML private TableColumn<VehicleRental, LocalDateTime> endDateColumn;
-    @FXML private TableColumn<VehicleRental, Float> priceColumn;
-    @FXML private TableColumn<VehicleRental, StautCircuit> statusColumn;
-    @FXML private TableColumn<VehicleRental, Vehicle> vehicleColumn;
-    @FXML private TableColumn<VehicleRental, Void> actionColumn;
+    @FXML private TableColumn<VehicleRental, String> colstartDate;
+    @FXML private TableColumn<VehicleRental, String> colendDate;
+    @FXML private TableColumn<VehicleRental, String> coltotalPrice;
+    @FXML private TableColumn<VehicleRental, String> colstatusCircuit;
+    @FXML private TableColumn<VehicleRental, String> colvehicle;
+    @FXML private TableColumn<VehicleRental, String> coluser;
+    @FXML private TableColumn<VehicleRental, Void> colActions;
+    @FXML private ComboBox<String> statusComboBox;
+    @FXML private TextField searchField;
+    @FXML private Pagination pagination;
+    @FXML private StackPane stackPane;
 
-    private ObservableList<VehicleRental> vehicleRentalList = FXCollections.observableArrayList();
-    private VehicleRentalService vehicleRentalService = new VehicleRentalService();
+    private static ListViewVehicleRentalController instance;
+    private final ObservableList<VehicleRental> vehicleRentals = FXCollections.observableArrayList();
+    private List<VehicleRental> filteredVehicleRentals = new ArrayList<>();
+    private static final int ROWS_PER_PAGE = 6;
+    private VehicleRentalService vehicleRentalService;
+    private PauseTransition pause;
+
+    public ListViewVehicleRentalController() {
+        instance = this;
+    }
+
+    public static ListViewVehicleRentalController getInstance() {
+        return instance;
+    }
 
     @FXML
     public void initialize() {
+        vehicleRentalService = new VehicleRentalService();
 
-        setupTableColumns();
+        if (searchField != null) {
+            VBox.setMargin(searchField, new Insets(0, 0, 20, 0));
+        }
 
-        loadVehicleRentals();
+        vehicleRentalTable.setRowFactory(tv -> {
+            TableRow<VehicleRental> row = new TableRow<>();
+            row.setPrefHeight(40);
+            return row;
+        });
 
-        setupEntriesComboBox();
+        List<String> statusOptions = new ArrayList<>();
+        statusOptions.add("All");
+        statusOptions.addAll(Arrays.stream(StautCircuit.values())
+                .map(Enum::name)
+                .collect(Collectors.toList()));
+        statusComboBox.setItems(FXCollections.observableArrayList(statusOptions));
+        statusComboBox.setValue("All");
 
-        setupSearchFilter();
+        loadVehicleRental();
+        configureTable();
 
-        setupActionButtons();
+        pagination.setMaxPageIndicatorCount(3);
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> updateTable(newIndex.intValue()));
+
+        pause = new PauseTransition(Duration.millis(100));
     }
 
-    private void setupTableColumns() {
-        // Configure date formatting
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private void loadVehicleRental() {
+        List<VehicleRental> vehicleRentalList = vehicleRentalService.getAll();
+        vehicleRentals.setAll(vehicleRentalList);
+        filteredVehicleRentals = new ArrayList<>(vehicleRentals);
+        pagination.setPageCount((int) Math.ceil((double) filteredVehicleRentals.size() / ROWS_PER_PAGE));
+        updateTable(0);
+    }
 
-        startDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        startDateColumn.setCellFactory(column -> new TableCell<>() {
+    private void configureTable() {
+        colstartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        colendDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        coltotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        colstatusCircuit.setCellValueFactory(new PropertyValueFactory<>("statusCircuit"));
+
+        colvehicle.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getVehicle().getBrand())
+        );
+
+        coluser.setCellValueFactory(cellData -> {
+            String fullName = cellData.getValue().getUser().getFirstName() + " " + cellData.getValue().getUser().getLastName();
+            return new SimpleObjectProperty<>(fullName);
+        });
+
+        setColActions();
+        colActions.setSortable(false);
+    }
+
+    private void updateTable(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredVehicleRentals.size());
+        List<VehicleRental> pageItems = filteredVehicleRentals.subList(fromIndex, toIndex);
+        vehicleRentalTable.setItems(FXCollections.observableArrayList(pageItems));
+    }
+
+    private void refreshVehicleRentalList() {
+        filteredVehicleRentals = new ArrayList<>(vehicleRentals);
+        pagination.setPageCount((int) Math.ceil((double) filteredVehicleRentals.size() / ROWS_PER_PAGE));
+        updateTable(pagination.getCurrentPageIndex());
+    }
+
+    private void confirmDelete(VehicleRental vehicleRental) {
+        Optional<ButtonType> result = Shared.deletePopUP("Are you sure to delete this booking?");
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            vehicleRentalService.delete(vehicleRental);
+            vehicleRentals.remove(vehicleRental);
+            refreshVehicleRentalList();
+        }
+    }
+
+    @FXML
+    private void showAddVehicleRentalPopup() {
+        showPopup("/fxml/CircuitManagementFXML/AddVehicleRental.fxml", null);
+    }
+
+    @FXML
+    private void showEditPopup(VehicleRental vehicleRental) {
+        showPopup("/fxml/CircuitManagementFXML/UpdateVehicleRental.fxml", vehicleRental);
+        refreshVehicleRentalList();
+    }
+
+    private void showPopup(String fxmlPath, VehicleRental vehicleRental) {
+        try {
+            Stage primaryStage = (Stage) stackPane.getScene().getWindow();
+            Scene primaryScene = primaryStage.getScene();
+
+            Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
+            overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
+
+            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
+            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
+
+            Pane rootPane = (Pane) primaryScene.getRoot();
+            rootPane.getChildren().add(overlay);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            if (vehicleRental != null) {
+                UpdateVehicleRentalController controller = loader.getController();
+                controller.setVehicleRental(vehicleRental);
+            }
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(new Scene(root));
+
+            stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleStatusFilter() {
+        String selectedStatus = statusComboBox.getValue();
+
+        if (selectedStatus != null && !selectedStatus.equalsIgnoreCase("All")) {
+            filteredVehicleRentals = vehicleRentals.stream()
+                    .filter(vr -> vr.getStatusCircuit().name().equalsIgnoreCase(selectedStatus))
+                    .collect(Collectors.toList());
+        } else {
+            filteredVehicleRentals = new ArrayList<>(vehicleRentals);
+        }
+
+        pagination.setPageCount((int) Math.ceil((double) filteredVehicleRentals.size() / ROWS_PER_PAGE));
+        updateTable(0);
+        pagination.setCurrentPageIndex(0);
+    }
+
+    private void setColActions() {
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-edit-64.png")));
+            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-delete-48.png")));
+            private final HBox hbox = new HBox(10, editIcon, deleteIcon);
+
+            {
+                editIcon.setFitWidth(30);
+                editIcon.setFitHeight(30);
+                deleteIcon.setFitWidth(30);
+                deleteIcon.setFitHeight(30);
+
+                editIcon.setStyle("-fx-cursor: hand;");
+                deleteIcon.setStyle("-fx-cursor: hand;");
+
+                editIcon.setOnMouseClicked(event -> {
+                    VehicleRental vehicleRental = getTableView().getItems().get(getIndex());
+                    if (vehicleRental != null) showEditPopup(vehicleRental);
+                });
+
+                deleteIcon.setOnMouseClicked(event -> {
+                    VehicleRental vehicleRental = getTableView().getItems().get(getIndex());
+                    if (vehicleRental != null) confirmDelete(vehicleRental);
+                });
+            }
+
             @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
+            protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.format(formatter));
-                }
+                setGraphic(empty ? null : hbox);
             }
         });
-
-        endDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        endDateColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.format(formatter));
-                }
-            }
-        });
-
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusCircuit"));
-        vehicleColumn.setCellValueFactory(new PropertyValueFactory<>("vehicle"));
-
-
-        setupActionColumn();
-    }
-
-    private void setupActionColumn() {
-        Callback<TableColumn<VehicleRental, Void>, TableCell<VehicleRental, Void>> cellFactory =
-                new Callback<>() {
-                    @Override
-                    public TableCell<VehicleRental, Void> call(final TableColumn<VehicleRental, Void> param) {
-                        return new TableCell<>() {
-                            private final Button editButton = new Button("Edit");
-                            private final Button deleteButton = new Button("Delete");
-                            {
-
-                                editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white;");
-                                deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white;");
-
-
-                                editButton.setOnAction(event -> {
-                                    VehicleRental rental = getTableView().getItems().get(getIndex());
-                                    handleEditRental(rental);
-                                });
-
-                                deleteButton.setOnAction(event -> {
-                                    VehicleRental rental = getTableView().getItems().get(getIndex());
-                                    handleDeleteRental(rental);
-                                });
-                            }
-
-                            @Override
-                            protected void updateItem(Void item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                } else {
-                                    HBox buttons = new HBox(5, editButton, deleteButton);
-                                    setGraphic(buttons);
-                                }
-                            }
-                        };
-                    }
-                };
-
-        actionColumn.setCellFactory(cellFactory);
-    }
-
-    private void loadVehicleRentals() {
-
-        vehicleRentalList.clear();
-
-
-        vehicleRentalList.addAll(vehicleRentalService.getAll());
-
-
-        vehicleRentalTable.setItems(vehicleRentalList);
-    }
-
-    private void setupEntriesComboBox() {
-        entriesComboBox.getItems().addAll(10, 25, 50, 100);
-        entriesComboBox.getSelectionModel().selectFirst();
-
-        entriesComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            vehicleRentalTable.setPrefHeight(newVal * 30 + 100);
-        });
-    }
-
-    private void setupSearchFilter() {
-        FilteredList<VehicleRental> filteredData = new FilteredList<>(vehicleRentalList, p -> true);
-
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(rental -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                // Check all fields for match
-                if (rental.getVehicle().getModel().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                if (rental.getStatusCircuit().toString().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                if (String.valueOf(rental.getTotalPrice()).contains(lowerCaseFilter)) {
-                    return true;
-                }
-
-                return false;
-            });
-        });
-
-        SortedList<VehicleRental> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(vehicleRentalTable.comparatorProperty());
-        vehicleRentalTable.setItems(sortedData);
-    }
-
-    private void setupActionButtons() {
-        addVehicleRentalButton.setOnAction(event -> handleAddRental());
-        exportExcelButton.setOnAction(event -> handleExportExcel());
-    }
-
-    private void handleAddRental() {
-
-        System.out.println("Add new vehicle rental");
-    }
-
-    private void handleEditRental(VehicleRental rental) {
-
-        System.out.println("Edit rental: " + rental.getIdRental());
-    }
-
-    private void handleDeleteRental(VehicleRental rental) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Delete Vehicle Rental");
-        alert.setContentText("Are you sure you want to delete this rental?");
-
-
-    }
-
-    private void handleExportExcel() {
-        System.out.println("Export to Excel");
-    }
-
-    private void showAlert(String title, String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

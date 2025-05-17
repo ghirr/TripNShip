@@ -14,7 +14,11 @@
     <VBox style="-fx-padding: 15;" alignment="CENTER">
         <HBox spacing="0" prefWidth="Infinity" VBox.vgrow="ALWAYS">
             <!-- Sidebar -->
+
+
             <fx:include source="sidebar.fxml"/>
+
+
 
             <!-- Main Content -->
             <VBox spacing="0" HBox.hgrow="ALWAYS"
@@ -38,11 +42,11 @@
                     <top>
                         <VBox spacing="15" style="-fx-padding: 25px 30px 15px 30px;">
                             <HBox alignment="CENTER_LEFT" spacing="15">
-                                <Label text="Circuit Bookings"
+                                <Label text="Tour circuits"
                                        style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3498DB;" />
                                 <Pane HBox.hgrow="ALWAYS" />
-                                <Button fx:id="addTourCircuitButton" text="Add Tour Circuit"
-                                        onAction="#showAddCircuitBookingPopup"
+                                <Button fx:id="addTourButton" text="Add Tour Circuit"
+
                                         style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
                -fx-text-fill: white; -fx-font-weight: bold;
                -fx-background-radius: 25; -fx-padding: 8 18 8 18;
@@ -58,10 +62,25 @@
 
                             </HBox>
 
+
                             <!-- Search & Filters -->
                             <HBox alignment="CENTER_LEFT" spacing="10">
-                                <ComboBox fx:id="statusComboBox" onAction="#handleStatusFilter" />
 
+                                <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="300" spacing="10" style="-fx-background-color: #f0f5ff; -fx-background-radius: 30; -fx-padding: 5px; -fx-border-color: #e0e7ff; -fx-border-radius: 30; -fx-border-width: 1px;">
+                                    <padding>
+                                        <Insets bottom="8" left="20" right="8" top="8" />
+                                    </padding>
+
+                                    <TextField fx:id="searchField" promptText="Search" style="-fx-background-color: transparent; -fx-prompt-text-fill: #6c757d;" HBox.hgrow="ALWAYS" />
+
+                                    <Button fx:id="searchButton" onAction="#handleSearch" style="-fx-background-color: #4da6ff; -fx-background-radius: 50; -fx-min-width: 38; -fx-min-height: 38; -fx-max-width: 38; -fx-max-height: 38;">
+                                        <graphic>
+                                            <ImageView fitHeight="18" fitWidth="18">
+                                                <Image url="@../../images/search.jpg" />
+                                            </ImageView>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
 
                             </HBox>
                         </VBox>
@@ -70,14 +89,16 @@
                     <!-- Table + Pagination -->
                     <center>
                         <VBox spacing="25" style="-fx-padding: 0 40px 30px 30px;">
-                            <TableView fx:id="circuitBookingTable" VBox.vgrow="ALWAYS"
+                            <TableView fx:id="tourTable" VBox.vgrow="ALWAYS"
                                        style="-fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10;">
                                 <columns>
-                                    <TableColumn fx:id="colBookingDate" prefWidth="120" text="Date" />
-                                    <TableColumn fx:id="colStatus" prefWidth="100" text="Status" />
-                                    <TableColumn fx:id="colCustomerName" prefWidth="180" text="User" />
-                                    <TableColumn fx:id="colTourName" prefWidth="140" text="Tour Circuit" />
-                                    <TableColumn fx:id="colActions" text="Actions" />
+                                    <TableColumn fx:id="nameCircuitColumn" prefWidth="120" text="Name" />
+                                    <TableColumn fx:id="descriptionCircuitColumn" prefWidth="100" text="Description" />
+                                    <TableColumn fx:id="priceCircuitColumn" prefWidth="180" text="Price" />
+                                    <TableColumn fx:id="durationColumn" prefWidth="140" text="Duration" />
+                                    <TableColumn fx:id="destinationColumn" prefWidth="140" text="Destination" />
+                                    <TableColumn fx:id="guideIncludedColumn" prefWidth="140" text="Guide Included" />
+                                    <TableColumn fx:id="actionColumn" text="Actions" />
                                 </columns>
                                 <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

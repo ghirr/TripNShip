@@ -1,272 +1,305 @@
 package org.Esprit.TripNShip.Controllers;
 
+import javafx.animation.PauseTransition;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.Esprit.TripNShip.Entities.Vehicle;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import javafx.util.StringConverter;
+import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.VehicleService;
+import org.Esprit.TripNShip.Utils.Shared;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ListViewVehicleController {
 
-    @FXML private ComboBox<String> entriesComboBox;
-    @FXML private TextField searchField;
-    @FXML private Button addVehicleButton;
-    @FXML private Button exportExcelButton;
-    @FXML private TableView<Vehicle> vehicleTable;
-    @FXML private TableColumn<Vehicle, String> brandColumn;
-    @FXML private TableColumn<Vehicle, String> modelColumn;
-    @FXML private TableColumn<Vehicle, String> licensePlateColumn;
-    @FXML private TableColumn<Vehicle, Float> dailyPriceColumn;
-    @FXML private TableColumn<Vehicle, Boolean> availabilityColumn;
-    @FXML private TableColumn<Vehicle, String> typeColumn;
-    @FXML private TableColumn<Vehicle, Void> actionColumn;
-
-    private final VehicleService vehicleService = new VehicleService();
-    private ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
+    @FXML
+    private TableView<Vehicle> vehicleTable;
+    @FXML
+    private TableColumn<Vehicle, String> colbrand;
+    @FXML
+    private TableColumn<Vehicle, String> colmodel;
+    @FXML
+    private TableColumn<Vehicle, String> collicensePlate;
+    @FXML
+    private TableColumn<Vehicle, Float> coldailyPrice;
+    @FXML
+    private TableColumn<Vehicle, Boolean> colavailability;
+    @FXML
+    private TableColumn<Vehicle, Type> coltype;
+    @FXML
+    private TableColumn<Vehicle, String> colrentalAgency;
+    @FXML
+    private TableColumn<Vehicle, Void> colActions;
+    @FXML
+    private ComboBox<Type> statusComboBox;
 
     @FXML
-    private void initialize() {
-        try {
-            // First verify all FXML components are injected
-            if (entriesComboBox == null || searchField == null || vehicleTable == null) {
-                throw new IllegalStateException("FXML injection failed - critical components are null");
+    private TextField searchField;
+    @FXML
+    private Pagination pagination;
+    @FXML
+    private StackPane stackPane;
+
+    private static ListViewVehicleController instance;
+    private ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
+    private List<Vehicle> filteredVehicles = new ArrayList<>();
+    private static final int ROWS_PER_PAGE = 6;
+    private VehicleService vehicleService;
+    private PauseTransition pause;
+
+    public ListViewVehicleController() {
+        instance = this;
+    }
+
+    public static ListViewVehicleController getInstance() {
+        return instance;
+    }
+
+    @FXML
+    public void initialize() {
+        vehicleService = new VehicleService();
+
+        if (searchField != null) {
+            VBox.setMargin(searchField, new Insets(0, 0, 20, 0));
+        }
+
+        vehicleTable.setRowFactory(tv -> {
+            TableRow<Vehicle> row = new TableRow<>();
+            row.setPrefHeight(40);
+            return row;
+        });
+
+        // Setup ComboBox with enum Type + "All" option as null
+        List<Type> typeOptions = new ArrayList<>();
+        typeOptions.add(null); // represents "All"
+        typeOptions.addAll(Arrays.asList(Type.values()));
+        statusComboBox.setItems(FXCollections.observableArrayList(typeOptions));
+        statusComboBox.setValue(null); // default "All"
+
+        statusComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Type type) {
+                return type == null ? "All" : type.name();
             }
 
-            // Initialize combo box items first
-            entriesComboBox.setItems(FXCollections.observableArrayList("5", "10", "25", "50"));
-
-            // Then setup the rest of the components
-            setupTableColumns();
-            loadVehiclesFromDatabase();
-            setupEntriesComboBox();
-            setupSearch();
-            setupActionButtons();
-
-            // Set button actions
-            addVehicleButton.setOnAction(event -> handleAddVehicle());
-            exportExcelButton.setOnAction(event -> handleExportExcel());
-
-        } catch (Exception e) {
-            showAlert("Initialization Error", "Failed to initialize controller: " + e.getMessage(), Alert.AlertType.ERROR);
-            e.printStackTrace();
-        }
-    }
-
-    private void setupTableColumns() {
-        try {
-            brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
-            modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
-            licensePlateColumn.setCellValueFactory(new PropertyValueFactory<>("licensePlate"));
-            dailyPriceColumn.setCellValueFactory(new PropertyValueFactory<>("dailyPrice"));
-            availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("availability"));
-            typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-
-            // Format columns
-            dailyPriceColumn.setCellFactory(column -> new TableCell<Vehicle, Float>() {
-                @Override
-                protected void updateItem(Float price, boolean empty) {
-                    super.updateItem(price, empty);
-                    setText(empty || price == null ? null : String.format("$%.2f", price));
-                }
-            });
-
-            availabilityColumn.setCellFactory(column -> new TableCell<Vehicle, Boolean>() {
-                @Override
-                protected void updateItem(Boolean available, boolean empty) {
-                    super.updateItem(available, empty);
-                    setText(empty || available == null ? null : available ? "Yes" : "No");
-                }
-            });
-        } catch (Exception e) {
-            showAlert("Table Error", "Failed to setup table columns: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-
-    private void loadVehiclesFromDatabase() {
-        try {
-            List<Vehicle> vehicles = vehicleService.getAll();
-            vehicleList.setAll(vehicles);
-            vehicleTable.setItems(vehicleList);
-        } catch (Exception e) {
-            showAlert("Data Error", "Failed to load vehicles: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-
-    private void setupEntriesComboBox() {
-        try {
-            entriesComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-                if (newVal != null && vehicleList != null) {
-                    try {
-                        int entries = Integer.parseInt(newVal);
-                        vehicleTable.setItems((ObservableList<Vehicle>) vehicleList.subList(0, Math.min(entries, vehicleList.size())));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Invalid number format in combo box: " + newVal);
-                    }
-                }
-            });
-
-            // Set default selection only if items exist
-            if (!entriesComboBox.getItems().isEmpty()) {
-                entriesComboBox.getSelectionModel().selectFirst();
+            @Override
+            public Type fromString(String string) {
+                return "All".equals(string) ? null : Type.valueOf(string);
             }
-        } catch (Exception e) {
-            showAlert("Combo Box Error", "Failed to setup entries combo box: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
+        });
 
-    private void setupSearch() {
+        statusComboBox.valueProperty().addListener((obs, oldVal, newVal) -> handleSearch());
+
+        reloadVehicleList();
+        configureTable();
+
+        pagination.setMaxPageIndicatorCount(3);
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> updateTable(newIndex.intValue()));
+
+        pause = new PauseTransition(Duration.millis(100));
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterVehicles(newValue);
+            pause.setOnFinished(event -> handleSearch());
+            pause.playFromStart();
         });
     }
 
-    private void filterVehicles(String searchText) {
-        try {
-            if (searchText == null || searchText.isEmpty()) {
-                vehicleTable.setItems(vehicleList);
-            } else {
-                ObservableList<Vehicle> filteredList = FXCollections.observableArrayList();
-                String lowerCaseFilter = searchText.toLowerCase();
+    private void loadVehicles() {
+        List<Vehicle> vehicleList = vehicleService.getAll();
+        vehicles.setAll(vehicleList);
+    }
 
-                for (Vehicle vehicle : vehicleList) {
-                    if ((vehicle.getBrand() != null && vehicle.getBrand().toLowerCase().contains(lowerCaseFilter)) ||
-                            (vehicle.getModel() != null && vehicle.getModel().toLowerCase().contains(lowerCaseFilter)) ||
-                            (vehicle.getLicensePlate() != null && vehicle.getLicensePlate().toLowerCase().contains(lowerCaseFilter)) ||
-                            (vehicle.getType() != null && vehicle.getType().toString().toLowerCase().contains(lowerCaseFilter)) ||
-                            String.valueOf(vehicle.getDailyPrice()).contains(searchText)) {
-                        filteredList.add(vehicle);
-                    }
-                }
-                vehicleTable.setItems(filteredList);
-            }
-        } catch (Exception e) {
-            showAlert("Filter Error", "Failed to filter vehicles: " + e.getMessage(), Alert.AlertType.ERROR);
+    private void confirmDelete(Vehicle vehicle) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure to delete this vehicle?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            vehicleService.delete(vehicle);
+            vehicles.remove(vehicle);
+            refreshVehicleList();
         }
     }
 
-    private void setupActionButtons() {
-        try {
-            actionColumn.setCellFactory(param -> new TableCell<>() {
-                private final Button editButton = new Button("Edit");
-                private final Button deleteButton = new Button("Delete");
-                private final HBox buttonsContainer = new HBox(5, editButton, deleteButton);
+    private void configureTable() {
+        colbrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        colmodel.setCellValueFactory(new PropertyValueFactory<>("model"));
+        collicensePlate.setCellValueFactory(new PropertyValueFactory<>("licensePlate"));
+        coldailyPrice.setCellValueFactory(new PropertyValueFactory<>("dailyPrice"));
+        colavailability.setCellValueFactory(new PropertyValueFactory<>("availability"));
+        coltype.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-                {
-                    // Style buttons
-                    editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 5;");
-                    deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5;");
+        colrentalAgency.setCellValueFactory(cellData -> {
+            String rentalAgencyName = cellData.getValue().getRentalAgency().getNameAgency();
+            return new SimpleObjectProperty<>(rentalAgencyName);
+        });
 
-                    // Set button actions
-                    editButton.setOnAction(event -> {
-                        Vehicle vehicle = getTableView().getItems().get(getIndex());
-                        handleEditVehicle(vehicle);
-                    });
-
-                    deleteButton.setOnAction(event -> {
-                        Vehicle vehicle = getTableView().getItems().get(getIndex());
-                        handleDeleteVehicle(vehicle);
-                    });
-                }
-
-                @Override
-                protected void updateItem(Void item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setGraphic(empty ? null : buttonsContainer);
-                }
-            });
-        } catch (Exception e) {
-            showAlert("Action Error", "Failed to setup action buttons: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
+        setColActions();
+        colActions.setSortable(false);
     }
 
-    private void handleAddVehicle() {
+    private void updateTable(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredVehicles.size());
+
+        List<Vehicle> pageItems = filteredVehicles.isEmpty() ?
+                Collections.emptyList() : filteredVehicles.subList(fromIndex, toIndex);
+
+        vehicleTable.setItems(FXCollections.observableArrayList(pageItems));
+        setColActions();
+    }
+
+    @FXML
+    private void showAddVehiclePopup() {
         try {
+            Stage primaryStage = (Stage) stackPane.getScene().getWindow();
+            Scene primaryScene = primaryStage.getScene();
+
+            Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
+            overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
+
+            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
+            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
+
+            Pane rootPane = (Pane) primaryScene.getRoot();
+            rootPane.getChildren().add(overlay);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddVehicle.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Add New Vehicle");
-            stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(new Scene(root));
+
+            stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
+
             stage.showAndWait();
-
-            // Refresh after closing
-            loadVehiclesFromDatabase();
-
+            refreshVehicleList();
         } catch (IOException e) {
-            showAlert("Form Error", "Could not load the add vehicle form: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
-      private void handleEditVehicle(Vehicle vehicle) {
+    @FXML
+    private void showEditPopup(Vehicle vehicle) {
         try {
+            Stage primaryStage = (Stage) stackPane.getScene().getWindow();
+            Scene primaryScene = primaryStage.getScene();
+
+            Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
+            overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
+
+            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
+            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
+
+            Pane rootPane = (Pane) primaryScene.getRoot();
+            rootPane.getChildren().add(overlay);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateVehicle.fxml"));
             Parent root = loader.load();
-
-            // ✅ Récupérer le contrôleur
             UpdateVehicleController controller = loader.getController();
-
-            // ✅ Passer les données du véhicule sélectionné
             controller.setVehicleData(vehicle);
 
             Stage stage = new Stage();
-            stage.setTitle("Edit Vehicle");
-            stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(new Scene(root));
+
+            stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
+
             stage.showAndWait();
-
-            // ✅ Recharger les données après modification
-            loadVehiclesFromDatabase();
-
+            refreshVehicleList();
         } catch (IOException e) {
-            showAlert("Error", "Could not load the vehicle edit form: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
 
-    private void handleDeleteVehicle(Vehicle vehicle) {
-        try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("Delete Vehicle");
-            alert.setContentText("Are you sure you want to delete " + vehicle.getBrand() + " " + vehicle.getModel() + "?");
+    private void refreshVehicleList() {
+        filteredVehicles = new ArrayList<>(vehicles);
+        pagination.setPageCount((int) Math.ceil((double) filteredVehicles.size() / ROWS_PER_PAGE));
+        updateTable(pagination.getCurrentPageIndex());
+    }
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                vehicleService.delete(vehicle);
-                loadVehiclesFromDatabase();
+    public void reloadVehicleList() {
+        loadVehicles();
+        handleSearch(); // recharge avec filtre et recherche
+    }
+
+    private void handleSearch() {
+        String keyword = searchField.getText().trim().toLowerCase();
+        Type selectedType = statusComboBox.getValue();
+
+        filteredVehicles = vehicles.stream()
+                .filter(v -> (v.getBrand().toLowerCase().contains(keyword)
+                        || v.getModel().toLowerCase().contains(keyword)
+                        || v.getLicensePlate().toLowerCase().contains(keyword))
+                        && (selectedType == null || v.getType() == selectedType))
+                .collect(Collectors.toList());
+
+        pagination.setPageCount((int) Math.ceil((double) filteredVehicles.size() / ROWS_PER_PAGE));
+        updateTable(0);
+        pagination.setCurrentPageIndex(0);
+    }
+
+    private void setColActions() {
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-edit-64.png")));
+            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-delete-48.png")));
+            private final HBox hbox = new HBox(10, editIcon, deleteIcon);
+
+            {
+                editIcon.setFitWidth(30);
+                editIcon.setFitHeight(30);
+                deleteIcon.setFitWidth(30);
+                deleteIcon.setFitHeight(30);
+
+                editIcon.setStyle("-fx-cursor: hand;");
+                deleteIcon.setStyle("-fx-cursor: hand;");
+
+                editIcon.setOnMouseClicked(event -> {
+                    Vehicle vehicle = getTableView().getItems().get(getIndex());
+                    if (vehicle != null) showEditPopup(vehicle);
+                });
+
+                deleteIcon.setOnMouseClicked(event -> {
+                    Vehicle vehicle = getTableView().getItems().get(getIndex());
+                    if (vehicle != null) confirmDelete(vehicle);
+                });
             }
-        } catch (Exception e) {
-            showAlert("Deletion Error", "Failed to delete vehicle: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
 
-    private void handleExportExcel() {
-        try {
-            // Implement actual Excel export logic here
-            showAlert("Info", "Excel export functionality will be implemented here", Alert.AlertType.INFORMATION);
-        } catch (Exception e) {
-            showAlert("Export Error", "Failed to export data: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-
-    private void showAlert(String title, String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(hbox);
+                }
+            }
+        });
     }
 }

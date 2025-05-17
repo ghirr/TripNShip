@@ -61,20 +61,7 @@
                             <!-- Search & Filters -->
                             <HBox alignment="CENTER_LEFT" spacing="10">
                                 <ComboBox fx:id="statusComboBox" onAction="#handleStatusFilter" />
-                                <Button fx:id="exportExcelButton" text="Excel"
-                                        onAction="#showAddCircuitBookingPopup"
-                                        style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
-               -fx-text-fill: white; -fx-font-weight: bold;
-               -fx-background-radius: 25; -fx-padding: 4 14 4 14;
-               -fx-font-size: 12px;">
 
-                                    <graphic>
-                                        <ImageView fitWidth="20" fitHeight="20">
-                                            <Image url="@../../images/icons8-export-excel-50.png" />
-                                        </ImageView>
-                                    </graphic>
-
-                                </Button>
                             </HBox>
                         </VBox>
                     </top>
@@ -82,7 +69,7 @@
                     <!-- Table + Pagination -->
                     <center>
                         <VBox spacing="25" style="-fx-padding: 0 40px 30px 30px;">
-                            <TableView fx:id="circuitBookingTable" VBox.vgrow="ALWAYS"
+                            <TableView fx:id="vehicleTable" VBox.vgrow="ALWAYS"
                                        style="-fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10;">
                                 <columns>
                                     <TableColumn fx:id="colBookingDate" prefWidth="120" text="Date" />

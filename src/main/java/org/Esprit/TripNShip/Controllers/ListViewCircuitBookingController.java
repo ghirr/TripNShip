@@ -93,7 +93,7 @@ public class ListViewCircuitBookingController {
                 .collect(Collectors.toList()));
 
         statusComboBox.setItems(FXCollections.observableArrayList(statusOptions));
-        statusComboBox.setValue("Tous"); // Sélection par défaut : Tous
+        statusComboBox.setValue("All");
 
 
         reloadCircuitBookingList();

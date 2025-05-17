@@ -80,6 +80,7 @@ public class ListViewRentalAgencyController {
     }
 
     private void setupPagination() {
+        pagination.setMaxPageIndicatorCount(3);
         pagination.setPageFactory(this::createPage);
     }
 

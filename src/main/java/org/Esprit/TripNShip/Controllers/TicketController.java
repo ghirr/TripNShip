@@ -14,9 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Ticket;
-import org.Esprit.TripNShip.Services.TicketPDFGenerator;
 import org.Esprit.TripNShip.Services.TicketService;
-
+import org.Esprit.TripNShip.Utils.TicketPDFGenerator;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;

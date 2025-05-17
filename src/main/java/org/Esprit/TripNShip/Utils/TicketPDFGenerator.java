@@ -1,4 +1,4 @@
-package org.Esprit.TripNShip.Services;
+package org.Esprit.TripNShip.Utils;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import org.Esprit.TripNShip.Entities.Itinerary;

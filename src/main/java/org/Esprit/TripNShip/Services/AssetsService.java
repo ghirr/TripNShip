@@ -65,7 +65,7 @@ public class AssetsService implements IService<Asset> {
     }
 
     @Override
-    public boolean delete(Asset asset) {
+    public void delete(Asset asset) {
         String req = "DELETE FROM asset WHERE idAsset=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
@@ -75,8 +75,6 @@ public class AssetsService implements IService<Asset> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
-        return false;
     }
 
     @Override

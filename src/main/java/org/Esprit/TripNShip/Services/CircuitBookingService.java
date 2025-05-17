@@ -50,7 +50,7 @@ public class CircuitBookingService implements IService<CircuitBooking> {
     }
 
     @Override
-    public boolean delete(CircuitBooking circuitBooking) {
+    public void delete(CircuitBooking circuitBooking) {
         String req = "DELETE FROM circuitbooking WHERE idBooking=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
@@ -60,7 +60,6 @@ public class CircuitBookingService implements IService<CircuitBooking> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
     }
 
     @Override

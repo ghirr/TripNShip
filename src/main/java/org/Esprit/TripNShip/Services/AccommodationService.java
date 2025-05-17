@@ -70,16 +70,14 @@ public class AccommodationService implements IService<Accommodation> {
     }
 
     @Override
-    public boolean delete(Accommodation accommodation) {
+    public void delete(Accommodation accommodation) {
         String req = "DELETE FROM Accommodation WHERE idAccommodation=?";
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setInt(1, accommodation.getIdAccommodation());
             ps.executeUpdate();
             System.out.println("✅ Accommodation deleted!");
-            return true;
         } catch (SQLException e) {
             System.out.println("❌ Error while deleting accommodation: " + e.getMessage());
-            return false;
         }
     }
 

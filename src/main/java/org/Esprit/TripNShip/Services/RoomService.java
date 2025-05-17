@@ -69,17 +69,15 @@ public class RoomService implements IService<Room> {
     }
 
     @Override
-    public boolean delete(Room room) {
+    public void delete(Room room) {
         String req = "DELETE FROM Room WHERE idRoom=?";
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setInt(1, room.getIdRoom());
             ps.executeUpdate();
             System.out.println("✅ Room deleted!");
-            return true;
         } catch (SQLException e) {
             System.out.println("❌ Error while deleting room: " + e.getMessage());
         }
-        return false;
     }
 
     @Override

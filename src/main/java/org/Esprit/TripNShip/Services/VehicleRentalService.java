@@ -54,7 +54,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
     }
 
     @Override
-    public boolean delete(VehicleRental vehicleRental) {
+    public void delete(VehicleRental vehicleRental) {
         String req = "DELETE FROM vehiclerental WHERE idRental=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
@@ -64,7 +64,6 @@ public class VehicleRentalService implements IService<VehicleRental> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
     }
 
     @Override

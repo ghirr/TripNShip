@@ -48,8 +48,8 @@ public class LoginWithGoogleController {
                                 String firstname = userInfo.optString("given_name");
                                 String lastname = userInfo.optString("family_name");
                                 String picture = userInfo.optString("picture");
-
-                                user = new Client(firstname,lastname , email, picture);
+                                System.out.println(picture);
+                                user = new Client(1,firstname,lastname , email, picture);
                                 authService.signUpGoogle((Client) user);
                                 System.out.println(user.getEmail());
                             }

@@ -1,0 +1,102 @@
+.root {
+    -fx-background-color: #f8f9fa;
+    -fx-font-family: "Arial";
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.text-field, .combo-box {
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #007bff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,123,255,0.2), 5, 0, 0, 0);
+}
+
+.button {
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+#closeButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+}
+
+#closeButton:hover {
+    -fx-text-fill: darkred;
+}
+
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+
+.text-field-error {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.text-field-valid {
+    -fx-text-fill: green;
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.gradient-button {
+    -fx-background-color: linear-gradient(from 55% 0% to 100% 100%, #FF8800 0%, #FFAA33 55%, #FF8800 90%);
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 136, 0, 0.5), 10, 0, 0, 5);
+}
+
+.gradient-button:hover {
+    -fx-background-color: linear-gradient(from 55% 0% to 100% 100%, #FFAA33 0%, #FF8800 55%, #FFAA33 90%);
+}
+
+.gradient-button:pressed {
+    -fx-background-color: linear-gradient(from 55% 0% to 100% 100%, #CC6600 0%, #DD7722 55%, #CC6600 90%);
+    -fx-effect: dropshadow(three-pass-box, rgba(216, 95, 19, 0.35), 5, 0, 0, 3);
+}
+
+.success-box {
+    -fx-background-color: #E6F9E6;
+    -fx-border-color: #5CB85C;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
+}
+
+.success-message {
+    -fx-text-fill: #3C763D;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.close-success-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3C763D;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.close-success-btn:hover {
+    -fx-text-fill: red;
+}

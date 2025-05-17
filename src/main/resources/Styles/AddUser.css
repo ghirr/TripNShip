@@ -1,0 +1,163 @@
+.root {
+    -fx-background-color: #f8f9fa;
+    -fx-font-family: "Arial";
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.text-field, .combo-box {
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #007bff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,123,255,0.2), 5, 0, 0, 0);
+}
+
+.button {
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+
+
+#closeButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+}
+
+#closeButton:hover {
+    -fx-text-fill: darkred;
+}
+/* Bordure rouge pour les champs avec erreur */
+#firstNameErrorLabel {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+#lastNameErrorLabel{
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+#emailErrorLabel{
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+/* Bordure verte pour les champs valides */
+.valid {
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+#validationMessage {
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+/* Style pour les labels d'erreur */
+.label-error {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+
+/* Bordure rouge pour les champs invalides */
+.text-field-error {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+/* Bordure verte pour les champs valides */
+.text-field-valid {
+    -fx-text-fill: green;
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+.gradient-button {
+    -fx-background-color: linear-gradient(from 55% 0% to 100% 100%, #0055FF 0%, #0099FF 55%, #0055FF 90%);
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(three-pass-box, rgba(71, 184, 255, 0.5), 10, 0, 0, 5);
+}
+
+/* Effet au survol */
+.gradient-button:hover {
+    -fx-background-color: linear-gradient(from 55% 0% to 100% 100%, #0099FF 0%, #0055FF 55%, #0099FF 90%);
+}
+
+/* Effet quand le bouton est enfoncé */
+.gradient-button:pressed {
+    -fx-background-color: linear-gradient(from 55% 0% to 100% 100%, #0044CC 0%, #0077DD 55%, #0044CC 90%);
+    -fx-effect: dropshadow(three-pass-box, rgba(19, 95, 216, 0.35), 5, 0, 0, 3);
+}
+
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+
+
+.success-box {
+    -fx-background-color: #E6F9E6;
+    -fx-border-color: #5CB85C;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
+}
+
+.success-message {
+    -fx-text-fill: #3C763D;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.close-success-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3C763D;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+.close-success-btn:hover {
+    -fx-text-fill: red;
+}
+
+.toggle-button {
+    -fx-background-color: #f87171; /* Rouge initial */
+    -fx-background-radius: 50%;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-text-fill: black;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-padding: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-border-color: transparent;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #10b981; /* Vert quand activé */
+}
+

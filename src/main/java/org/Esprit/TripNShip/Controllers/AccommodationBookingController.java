@@ -136,7 +136,7 @@ public class AccommodationBookingController {
         }
 
         if (booking == null) {
-            User defaultUser = userService.getUserByEmail(email);
+            User defaultUser = new User(1,"Ahmed","hhhh",Role.CLIENT,"islemghariani.dev@gmail.com");
             booking = new AccommodationBooking(
                     0,
                     defaultUser,

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Esprit.TripNShip.Controllers.EditUserController"
+            stylesheets="@../Styles/EditUser.css">
+    <HBox alignment="TOP_RIGHT" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="10">
+        <Button fx:id="closeButton" text="✖"
+                style="-fx-background-color: transparent; -fx-font-size: 28px; -fx-text-fill: red; -fx-cursor: hand;"
+        />
+    </HBox>
+    <VBox alignment="CENTER" prefHeight="500" prefWidth="600" spacing="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.topAnchor="60">
+        <Label text="Edit Employee" style="-fx-font-size: 35px; -fx-font-weight: bold;"/>
+        <Region prefHeight="40" VBox.vgrow="NEVER"/>
+
+        <!-- Formulaire -->
+        <GridPane hgap="15" vgap="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" prefWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" prefWidth="200"/>
+                <ColumnConstraints halignment="RIGHT" prefWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS" prefWidth="200"/>
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
+
+            <!-- Prénom et Nom -->
+            <Label text="Prénom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="firstNameField" promptText="Modifier prénom" prefWidth="200"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label fx:id="firstNameErrorLabel" text="" visible="false"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"
+                   style="-fx-text-fill: red;"/>
+
+            <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+            <TextField fx:id="lastNameField" promptText="Modifier nom" prefWidth="200"
+                       GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+            <Label fx:id="lastNameErrorLabel" text="" visible="false"
+                   GridPane.rowIndex="1" GridPane.columnIndex="3"
+                   style="-fx-text-fill: red;"/>
+
+            <!-- Email et Rôle -->
+            <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="emailField" promptText="Modifier email" prefWidth="200"
+                       GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="emailErrorLabel" text="" visible="false"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"
+                   style="-fx-text-fill: red;"/>
+
+            <Label text="Rôle:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+            <ComboBox fx:id="roleComboBox" prefWidth="200"
+                      GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+
+            <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="addressField" promptText="Enter address" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label fx:id="addressErrorLabel" style="-fx-text-fill: red;" visible="false" GridPane.columnIndex="1"
+                   GridPane.rowIndex="5"/>
+
+            <Label text="Salary:" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+            <TextField fx:id="salaryField" promptText="Enter salary" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+            <Label fx:id="salaryErrorLabel" style="-fx-text-fill: red;" visible="false" GridPane.columnIndex="3"
+                   GridPane.rowIndex="5"/>
+        </GridPane>
+
+        <!-- Bouton Valider -->
+        <Button fx:id="submitButton" text="Edit"
+                onAction="#handleSubmit"
+                prefWidth="200" styleClass="gradient-button"/>
+    </VBox>
+</AnchorPane>

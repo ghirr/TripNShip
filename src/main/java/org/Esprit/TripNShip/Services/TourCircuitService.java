@@ -58,7 +58,7 @@ public class TourCircuitService implements IService<TourCircuit> {
     }
 
     @Override
-    public boolean delete(TourCircuit tourCircuit) {
+    public void delete(TourCircuit tourCircuit) {
         String req = "DELETE FROM tourcircuit WHERE idCircuit=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
@@ -68,7 +68,6 @@ public class TourCircuitService implements IService<TourCircuit> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
     }
 
     @Override

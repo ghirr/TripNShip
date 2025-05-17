@@ -23,8 +23,6 @@ import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 public class SignUpController {
 
     public TextField firstNameField,lastNameField,emailField;
-    @FXML
-    private Button togglePasswordButton;
 
     @FXML
     private ImageView eyeIcon;
@@ -170,7 +168,7 @@ public class SignUpController {
         String lastName = lastNameField.getText().trim();
 
         if(email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() ) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tous les champs.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Please fill all fields !");
             return;
         }
 
@@ -183,7 +181,7 @@ public class SignUpController {
         authService.signUp(new Client(firstName, lastName,email , password));
         User user = authService.login(email,password);
         System.out.println(user.getEmail());
-        showAlert(Alert.AlertType.CONFIRMATION,"Sucess","Sign Up correct");
+        showAlert(Alert.AlertType.CONFIRMATION,"Success","Sign Up correct");
 
     }
 }

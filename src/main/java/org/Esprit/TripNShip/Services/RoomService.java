@@ -6,22 +6,20 @@ import org.Esprit.TripNShip.Entities.TypeRoom;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RoomService implements IService<Room> {
 
     private final Connection connection;
-    private final Gson gson;
 
     public RoomService() {
         connection = MyDataBase.getInstance().getConnection();
-        gson = new Gson();
     }
 
     @Override
@@ -33,10 +31,7 @@ public class RoomService implements IService<Room> {
             ps.setString(3, room.getNameRoom());
             ps.setDouble(4, room.getPrice());
             ps.setBoolean(5, room.isAvailability());
-
-            // Sérialiser la liste de photos en JSON
-            String photosJson = gson.toJson(room.getPhotosRoom());
-            ps.setString(6, photosJson);
+            ps.setString(6, room.getPhotosRoom());
 
             ps.executeUpdate();
             System.out.println("✅ Room added!");
@@ -57,9 +52,7 @@ public class RoomService implements IService<Room> {
             ps.setString(3, room.getNameRoom());
             ps.setDouble(4, room.getPrice());
             ps.setBoolean(5, room.isAvailability());
-
-            String photosJson = gson.toJson(room.getPhotosRoom());
-            ps.setString(6, photosJson);
+            ps.setString(6, room.getPhotosRoom());
 
             ps.setInt(7, room.getIdRoom());
 
@@ -93,6 +86,8 @@ public class RoomService implements IService<Room> {
     public List<Room> getAll() {
         List<Room> rooms = new ArrayList<>();
         String req = "SELECT * FROM Room";
+        String folderPath = "C:\\Users\\YJAZIRI\\Desktop\\AllRoomImage";
+        String baseUrl = "http://localhost/tripnship/roomImages/";
 
         try (PreparedStatement ps = connection.prepareStatement(req);
              ResultSet rs = ps.executeQuery()) {
@@ -102,12 +97,6 @@ public class RoomService implements IService<Room> {
                 Accommodation accommodation = getAccommodationById(idAccommodation);
                 boolean availability = rs.getBoolean("availability");
 
-                // Désérialiser la liste JSON de photos
-                String photosJson = rs.getString("photosRoom");
-                Type listType = new TypeToken<List<String>>() {}.getType();
-                List<String> photosRoom = gson.fromJson(photosJson, listType);
-                if (photosRoom == null) photosRoom = new ArrayList<>();
-
                 Room room = new Room(
                         rs.getInt("idRoom"),
                         accommodation,
@@ -115,17 +104,18 @@ public class RoomService implements IService<Room> {
                         rs.getString("nameRoom"),
                         rs.getDouble("price"),
                         availability,
-                        photosRoom
+                        rs.getString("photosRoom")// photosRoom vide pour l'instant
                 );
+
                 rooms.add(room);
             }
+
         } catch (SQLException e) {
             System.out.println("❌ Error while retrieving rooms: " + e.getMessage());
         }
 
         return rooms;
     }
-
     private Accommodation getAccommodationById(int idAccommodation) {
         AccommodationService accommodationService = new AccommodationService();
         List<Accommodation> accommodations = accommodationService.getAll();
@@ -137,43 +127,28 @@ public class RoomService implements IService<Room> {
         return null;
     }
 
-    // ✅ Méthode pour récupérer les chemins des photos à partir d’un dossier
-    public List<String> getPhotosFromFolder(String folderPath) {
-        List<String> photos = new ArrayList<>();
+    private String findMatchingImageFileName(String roomName, String folderPath) {
         File folder = new File(folderPath);
+        if (!folder.exists() || !folder.isDirectory()) return null;
 
-        if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("❌ Le dossier spécifié n'existe pas ou n'est pas un dossier : " + folderPath);
-            return photos;
-        }
+        File[] files = folder.listFiles((dir, name) -> {
+            String lower = name.toLowerCase();
+            return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png")
+                    || lower.endsWith(".bmp") || lower.endsWith(".gif");
+        });
 
-        File[] files = folder.listFiles();
-        if (files == null) {
-            System.out.println("❌ Impossible de lire le contenu du dossier : " + folderPath);
-            return photos;
-        }
-
-        for (File file : files) {
-            if (file.isFile() && isImageFile(file.getName())) {
-                photos.add(file.getAbsolutePath());
+        if (files != null) {
+            for (File file : files) {
+                String fileNameWithoutExtension = file.getName().replaceFirst("[.][^.]+$", "");
+                if (fileNameWithoutExtension.equalsIgnoreCase(roomName)) {
+                    return file.getName();
+                }
             }
         }
 
-        return photos;
+        return null;
     }
 
-    private boolean isImageFile(String fileName) {
-        String name = fileName.toLowerCase();
-        return name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg")
-                || name.endsWith(".gif") || name.endsWith(".bmp");
-    }
 
-//    // ✅ Méthode pour récupérer les photos depuis les 3 dossiers en même temps
-//    public List<String> getAllPhotosFromDefinedFolders() {
-//        List<String> allPhotos = new ArrayList<>();
-//        allPhotos.addAll(getPhotosFromFolder("C:\\Users\\YJAZIRI\\Desktop\\ho"));
-//        allPhotos.addAll(getPhotosFromFolder("C:\\Users\\YJAZIRI\\Desktop\\AR"));
-//        allPhotos.addAll(getPhotosFromFolder("C:\\Users\\YJAZIRI\\Desktop\\GU"));
-//        return allPhotos;
-//    }
+
 }

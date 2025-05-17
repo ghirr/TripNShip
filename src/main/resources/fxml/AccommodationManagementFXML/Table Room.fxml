@@ -46,6 +46,10 @@
 
                 <TableView fx:id="roomTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                     <columns>
+
+                        <!-- Nouvelle colonne pour afficher la photo -->
+                        <TableColumn fx:id="photoColumn" prefWidth="100" text="Photo" />
+
                         <TableColumn fx:id="typeColumn" prefWidth="95.19998663663864" text="Room Type">
                             <cellValueFactory>
                                 <PropertyValueFactory property="type" />
@@ -57,7 +61,6 @@
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="accommodationColumn" prefWidth="132.7999725341797" text="Accommodation Type" />
-
                         <TableColumn fx:id="accommodationNameColumn" prefWidth="165.60006713867188" text="Accommodation Name" />
                         <TableColumn fx:id="priceColumn" prefWidth="72.79998779296875" text="Price">
                             <cellValueFactory>
@@ -72,6 +75,7 @@
                         <TableColumn fx:id="actionsColumn" prefWidth="167.2000732421875" text="Action" />
                     </columns>
                 </TableView>
+
                 <!-- Pagination -->
                 <Pagination fx:id="pagination" currentPageIndex="0" pageCount="1" style="-fx-padding: 10;" />
             </VBox>

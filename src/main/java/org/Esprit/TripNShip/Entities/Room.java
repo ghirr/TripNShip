@@ -10,27 +10,35 @@ public class Room {
     private String nameRoom;
     private double price;
     private boolean availability;
-    private List<String> photosRoom; // ✅ Liste de photos
+    private String photosRoom; // Liste des chemins ou URLs des photos
 
-    public Room() {
-        photosRoom = new ArrayList<>();
-    }
+//    public Room() {
+//        this.photosRoom = new ArrayList<>();
+//    }
 
-    public Room(int idRoom, Accommodation accommodation, TypeRoom type, String nameRoom, double price, boolean availability, List<String> photosRoom) {
+    public Room(int idRoom, Accommodation accommodation, TypeRoom type, String nameRoom, double price, boolean availability, String photosRoom) {
         this.idRoom = idRoom;
         this.accommodation = accommodation;
         this.type = type;
         this.nameRoom = nameRoom;
         this.price = price;
         this.availability = availability;
-        this.photosRoom = photosRoom != null ? photosRoom : new ArrayList<>();
+        this.photosRoom = photosRoom;
     }
 
-    public Room(int i, String s, TypeRoom typeRoom) {
-        this.photosRoom = new ArrayList<>();
+    public Room() {
+
     }
 
-    // getters & setters
+//    // Constructeur simplifié (optionnel)
+//    public Room(int idRoom, String nameRoom, TypeRoom typeRoom) {
+//        this.idRoom = idRoom;
+//        this.nameRoom = nameRoom;
+//        this.type = typeRoom;
+//        this.photosRoom = new ArrayList<>();
+//    }
+
+    // Getters et setters
 
     public int getIdRoom() {
         return idRoom;
@@ -80,14 +88,15 @@ public class Room {
         this.availability = availability;
     }
 
-    public List<String> getPhotosRoom() {
+    public String getPhotosRoom() {
         return photosRoom;
     }
 
-    public void setPhotosRoom(List<String> photosRoom) {
-        this.photosRoom = photosRoom;
+    public void setPhotosRoom(String photosRoom) {
+        this.photosRoom = photosRoom ;
     }
-    // Getter pour le type d’hébergement
+
+    // Getter pour le type d’hébergement (de l’accommodation)
     public TypeAccommodation getTypeAccommodation() {
         if (accommodation != null) {
             return accommodation.getType();
@@ -95,15 +104,13 @@ public class Room {
         return null;
     }
 
+    // Getter pour le nom de l’hébergement (de l’accommodation)
     public String getAccommodationName() {
         if (accommodation != null) {
-            return accommodation.getName(); // Récupérer le nom de l'hébergement depuis l'entité Accommodation
+            return accommodation.getName();
         }
         return null;
     }
-
-
-    // les autres méthodes restent inchangées
 
     @Override
     public String toString() {
@@ -117,5 +124,4 @@ public class Room {
                 ", photosRoom=" + photosRoom +
                 '}';
     }
-
 }

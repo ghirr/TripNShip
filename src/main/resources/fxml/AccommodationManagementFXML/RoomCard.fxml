@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane prefHeight="378.0" prefWidth="320.0"
+            style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 0, 3);"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Esprit.TripNShip.Controllers.RoomCardController">
+    <VBox layoutX="23.0" prefHeight="342.0" prefWidth="342.0" spacing="12">
+        <ImageView fx:id="roomImageView" fitHeight="143.0" fitWidth="318.0" preserveRatio="true" style="-fx-background-color: #e5e7eb; -fx-background-radius: 12;" />
+        <Label fx:id="roomNameLabel" style="-fx-font-size: 16px; -fx-font-weight: bold ;" />
+        <Label fx:id="roomPriceLabel" style="-fx-font-size: 16px; -fx-text-fill: #6b7280;" />
+
+        <HBox prefHeight="112.0" prefWidth="342.0" spacing="20" style="-fx-padding: 60 0 0 0;">
+            <Button fx:id="detailButton" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 18; -fx-background-radius: 10;" text="Detail" />
+            <Button fx:id="bookingButton" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 18; -fx-background-radius: 10;" text="Booking" />
+            <Button fx:id="editBookingButton" style="-fx-background-color: #f59e0b; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 18; -fx-background-radius: 10;" text="Edit Booking" />
+        </HBox>
+    </VBox>
+</AnchorPane>

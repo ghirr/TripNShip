@@ -154,4 +154,7 @@ public class EditAccommodationBookingController {
         comboRoom.setItems(FXCollections.observableArrayList(roomNames));
         comboRoom.setValue(null);
     }
+
+    public void setRoom(Room room) {
+    }
 }

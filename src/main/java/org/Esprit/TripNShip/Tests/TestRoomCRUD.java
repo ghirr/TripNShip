@@ -7,9 +7,9 @@ import org.Esprit.TripNShip.Services.AccommodationService;
 import org.Esprit.TripNShip.Services.RoomService;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.*;
 
 public class TestRoomCRUD {
 
@@ -17,30 +17,48 @@ public class TestRoomCRUD {
         RoomService roomService = new RoomService();
         AccommodationService accommodationService = new AccommodationService();
 
-        // Récupération de tous les hébergements pour lier les chambres
+        String sourceFolder = "C:\\Users\\YJAZIRI\\Desktop\\AllRoomImage";
+        String xamppFolder = "C:\\xampp\\htdocs\\tripnship\\roomImages";
+        String baseUrl = "http://localhost/tripnship/roomImages";
+
+        // 🔄 Étape 1 : Copier les images et créer une map nom → URL
+        Map<String, String> roomPhotoMap = uploadImagesToXamppMap(sourceFolder, xamppFolder, baseUrl);
+
+        if (roomPhotoMap.size() < 6) {
+            System.out.println("⚠️ Pas assez d'images disponibles. Veuillez en ajouter dans le dossier : " + sourceFolder);
+            return;
+        }
+
+        // 🔄 Étape 2 : Récupérer les hébergements
         List<Accommodation> accommodations = accommodationService.getAll();
         if (accommodations.size() < 9) {
             System.out.println("⚠️ Veuillez insérer au moins 9 hébergements dans la base de données.");
             return;
         }
 
-        // Récupérer des chemins de photos
-        List<String> photos = getPhotoPathsFromFolders();
+        Accommodation accommodation7 = findAccommodationById(accommodations, 7);
+        Accommodation accommodation5 = findAccommodationById(accommodations, 5);
 
-        // Création de chambres avec hébergements et photos
-        Room room1 = new Room(0, accommodations.get(7), TypeRoom.SINGLE, "Single Room 101", 80.0, true, photos);
-        Room room2 = new Room(0, accommodations.get(8), TypeRoom.DOUBLE, "Double Room 102", 120.0, true, photos);
-        Room room3 = new Room(0, accommodations.get(6), TypeRoom.SUITE, "Suite 201", 250.0, false, photos);
+        if (accommodation7 == null || accommodation5 == null) {
+            System.out.println("❌ Hébergement 5 ou 7 introuvable.");
+            return;
+        }
 
-        // ➕ Ajout des rooms
-        roomService.add(room1);
-        roomService.add(room2);
-        roomService.add(room3);
+        // 🔄 Étape 3 : Création des objets Room
+        List<Room> rooms = List.of(
 
-        System.out.println("📌 List of rooms after adding:");
+        );
+
+
+        // 🔄 Étape 4 : Ajout dans la base
+        for (Room room : rooms) {
+            roomService.add(room);
+        }
+
+        System.out.println("📌 Liste des chambres après ajout :");
         roomService.getAll().forEach(System.out::println);
 
-        // ✏️ Mise à jour de la première chambre
+        // 🔄 Étape 5 : Mise à jour
         List<Room> allRooms = roomService.getAll();
         if (!allRooms.isEmpty()) {
             Room roomToUpdate = allRooms.get(0);
@@ -49,48 +67,74 @@ public class TestRoomCRUD {
             roomService.update(roomToUpdate);
         }
 
-        System.out.println("\n📌 List of rooms after update:");
+        System.out.println("\n📌 Liste des chambres après mise à jour :");
         roomService.getAll().forEach(System.out::println);
 
-        // ❌ Suppression des deux dernières
+        // 🔄 Étape 6 : Suppression
         allRooms = roomService.getAll();
         if (allRooms.size() > 2) {
-            roomService.delete(allRooms.get(1));
             roomService.delete(allRooms.get(2));
+            roomService.delete(allRooms.get(1));
         }
 
-        System.out.println("\n📌 List of rooms after deletion:");
+        System.out.println("\n📌 Liste des chambres après suppression :");
         roomService.getAll().forEach(System.out::println);
     }
 
-    // ✅ Récupère les chemins d'images valides depuis les dossiers spécifiés
-    private static List<String> getPhotoPathsFromFolders() {
-        List<String> folders = Arrays.asList(
-                "C:\\Users\\YJAZIRI\\Desktop\\ho",
-                "C:\\Users\\YJAZIRI\\Desktop\\AR",
-                "C:\\Users\\YJAZIRI\\Desktop\\GU"
+    // 🔧 Méthode utilitaire pour copier les images et générer une map nom → URL
+    private static Map<String, String> uploadImagesToXamppMap(String sourceFolder, String xamppFolder, String baseUrl) {
+        Map<String, String> imageMap = new HashMap<>();
+
+        File srcDir = new File(sourceFolder);
+        File destDir = new File(xamppFolder);
+
+        if (!destDir.exists()) {
+            destDir.mkdirs();
+        }
+
+        File[] images = srcDir.listFiles((dir, name) ->
+                name.toLowerCase().endsWith(".jpg") ||
+                        name.toLowerCase().endsWith(".jpeg") ||
+                        name.toLowerCase().endsWith(".png")
         );
 
-        List<String> photoPaths = new ArrayList<>();
+        if (images == null || images.length == 0) {
+            System.out.println("⚠️ Aucun fichier image trouvé dans le dossier source.");
+            return imageMap;
+        }
 
-        for (String folderPath : folders) {
-            File folder = new File(folderPath);
-            if (folder.exists() && folder.isDirectory()) {
-                File[] imageFiles = folder.listFiles((dir, name) ->
-                        name.toLowerCase().endsWith(".jpg") ||
-                                name.toLowerCase().endsWith(".jpeg") ||
-                                name.toLowerCase().endsWith(".png")
-                );
-                if (imageFiles != null) {
-                    for (File image : imageFiles) {
-                        photoPaths.add(image.getAbsolutePath());
-                    }
-                }
-            } else {
-                System.out.println("⚠️ Dossier introuvable : " + folderPath);
+        for (File image : images) {
+            try {
+                Path sourcePath = image.toPath();
+                Path destinationPath = Paths.get(destDir.getAbsolutePath(), image.getName());
+                Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
+                String nameWithoutExt = image.getName().replaceFirst("[.][^.]+$", ""); // retire l'extension
+                String imageUrl = baseUrl + "/" + image.getName();
+                imageMap.put(nameWithoutExt, imageUrl);
+            } catch (IOException e) {
+                System.err.println("❌ Erreur de copie pour : " + image.getName() + " -> " + e.getMessage());
             }
         }
 
-        return photoPaths;
+        return imageMap;
+    }
+
+    // 🔧 Méthode utilitaire pour retrouver une accommodation par ID
+    private static Accommodation findAccommodationById(List<Accommodation> list, int id) {
+        return list.stream()
+                .filter(a -> a.getIdAccommodation() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // 🔧 Méthode utilitaire pour récupérer une photo ou une liste vide
+    private static List<String> getPhotoList(Map<String, String> photoMap, String roomName) {
+        String url = photoMap.get(roomName);
+        if (url == null) {
+            System.out.println("⚠️ Image manquante pour : " + roomName);
+            return Collections.emptyList();
+        }
+        return List.of(url);
     }
 }

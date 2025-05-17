@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class ListViewRentalAgencyController {
 
-    private static final int ROWS_PER_PAGE = 7;
+    private static final int ROWS_PER_PAGE = 6;
 
     // UI Elements
     @FXML private ComboBox<String> entriesComboBox;

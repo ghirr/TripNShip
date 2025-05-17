@@ -60,7 +60,18 @@
 
                             <!-- Search & Filters -->
                             <HBox alignment="CENTER_LEFT" spacing="10">
-                                <ComboBox fx:id="statusComboBox" onAction="#handleStatusFilter" />
+
+                                <ComboBox fx:id="statusComboBox"
+                                          onAction="#handleStatusFilter"
+                                          prefHeight="50"
+                                          style="-fx-background-color: #f0f5ff;
+                 -fx-border-color: #e0e7ff;
+                 -fx-border-radius: 30;
+                 -fx-background-radius: 30;
+                 -fx-padding: 5 10 5 10;
+                 -fx-font-size: 13px;
+                 -fx-text-fill: #333;" />
+
 
                             </HBox>
                         </VBox>
@@ -69,7 +80,7 @@
                     <!-- Table + Pagination -->
                     <center>
                         <VBox spacing="25" style="-fx-padding: 0 40px 30px 30px;">
-                            <TableView fx:id="vehicleTable" VBox.vgrow="ALWAYS"
+                            <TableView fx:id="circuitBookingTable" VBox.vgrow="ALWAYS"
                                        style="-fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10;">
                                 <columns>
                                     <TableColumn fx:id="colBookingDate" prefWidth="120" text="Date" />

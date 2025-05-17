@@ -60,7 +60,7 @@ public class ListViewCircuitBookingController {
     private ObservableList<CircuitBooking> circuitBookings = FXCollections.observableArrayList();
     private List<CircuitBooking> filteredCircuitBookings = new ArrayList<>();
 
-    private static final int ROWS_PER_PAGE = 7;
+    private static final int ROWS_PER_PAGE = 6;
     private CircuitBookingService circuitBookingService;
     private PauseTransition pause;
 

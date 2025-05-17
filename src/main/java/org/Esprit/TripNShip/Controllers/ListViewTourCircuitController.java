@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class ListViewTourCircuitController {
 
-    private static final int ROWS_PER_PAGE = 7;
+    private static final int ROWS_PER_PAGE = 6;
 
     @FXML private ComboBox<String> entriesComboBox;
     @FXML private Region spacer;

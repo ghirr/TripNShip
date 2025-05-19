@@ -13,7 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
+import org.Esprit.TripNShip.Services.ItineraryService;
 import org.Esprit.TripNShip.Services.TicketService;
 import org.Esprit.TripNShip.Utils.TicketPDFGenerator;
 import java.awt.*;
@@ -39,6 +41,7 @@ public class TicketController {
 
     private ObservableList<Ticket> ticketList = FXCollections.observableArrayList();
     TicketService ts = new TicketService();
+    ItineraryService is = new ItineraryService();
 
     @FXML
     public void initialize() {
@@ -65,7 +68,8 @@ public class TicketController {
             private final Button editButton = new Button("Edit");
             private final Button deleteButton = new Button("Delete");
             private final Button printButton = new Button("Print");
-            private final HBox buttonBox = new HBox(5, editButton, deleteButton,printButton);
+            private final Button viewMapButton = new Button("View");
+            private final HBox buttonBox = new HBox(5, editButton, deleteButton,printButton,viewMapButton);
 
             {
                 editButton.setStyle("-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 5;");
@@ -86,6 +90,30 @@ public class TicketController {
                     Ticket ticket = getTableView().getItems().get(getIndex());
                     handlePrint(ticket);
                 });
+
+                viewMapButton.setOnAction(event -> {
+                    Ticket ticket = getTableView().getItems().get(getIndex());
+                    Itinerary itinerary = is.getItineraryByCode(ticket.getItineraryCode());
+
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/mapView.fxml"));
+                        Parent root = loader.load();
+
+                        MapController controller = loader.getController();
+
+                        // Utiliser les vraies villes depuis l'itinéraire
+                        String departure = itinerary.getDepartureLocation();
+                        String arrival = itinerary.getArrivalLocation();
+                        controller.displayRoute(departure, arrival);
+
+                        Stage mapStage = new Stage();
+                        mapStage.setTitle("Visualisation de l'itinéraire");
+                        mapStage.setScene(new Scene(root));
+                        mapStage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
 
             @Override
@@ -99,6 +127,39 @@ public class TicketController {
             }
         });
     }
+    private String generateHTML(String coord1, String coord2) {
+        return """
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+              <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            </head>
+            <body>
+              <div id="map" style="width: 100%; height: 100vh;"></div>
+              <script>
+                var map = L.map('map').setView([%s], 6);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  maxZoom: 19,
+                  attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                var point1 = [%s];
+                var point2 = [%s];
+
+                L.marker(point1).addTo(map).bindPopup("Départ").openPopup();
+                L.marker(point2).addTo(map).bindPopup("Arrivée");
+
+                var polyline = L.polyline([point1, point2], {color: 'blue'}).addTo(map);
+                map.fitBounds(polyline.getBounds());
+              </script>
+            </body>
+            </html>
+            """.formatted(coord1, coord1, coord2);
+    }
+
 
     public void toAddTicket(ActionEvent event) throws IOException {
         {

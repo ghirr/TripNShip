@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.web.WebView?>
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.TicketController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
@@ -77,6 +78,8 @@
 
                         </columns>
                     </TableView>
+                    <WebView fx:id="mapWebView" prefHeight="400.0" prefWidth="850.0" />
+
                 </VBox>
             </StackPane>
             <padding>

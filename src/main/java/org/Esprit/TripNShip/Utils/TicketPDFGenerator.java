@@ -3,6 +3,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
+import org.Esprit.TripNShip.Services.ItineraryService;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

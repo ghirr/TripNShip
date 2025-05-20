@@ -1,0 +1,56 @@
+.text-field {
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #444;
+}
+
+.weather-container {
+    -fx-background-color: linear-gradient(to bottom, #bbdefb, #e3f2fd);
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.5, 0, 2);
+}
+
+.weather-title {
+    -fx-font-size: 20px;
+    -fx-text-fill: #1565c0;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+.weather-info {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333;
+}
+
+.city-input {
+    -fx-background-radius: 8;
+    -fx-padding: 5 10;
+    -fx-font-size: 14px;
+}
+
+.fetch-button {
+    -fx-background-color: #1565c0;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.fetch-button:hover {
+    -fx-background-color: #0d47a1;
+}

@@ -9,6 +9,7 @@
 
 <StackPane fx:id="stackPane" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.Esprit.TripNShip.Controllers.DashboardController"
+           stylesheets="@../../Styles/weatherAPIStyle.css"
            style="-fx-background-color: #f0f2f5;">
 
     <VBox style="-fx-padding: 15;" alignment="CENTER">
@@ -113,18 +114,59 @@
 
                             </HBox>
 
-                            <!-- Pie Chart Section -->
-                            <PieChart fx:id="bookingPieChart"
-                                      title="Répartition des réservations"
-                                      labelsVisible="true"
-                                      legendVisible="true"
-                                      style="-fx-font-size: 13px;"
-                                      prefHeight="300" prefWidth="600" />
+                            <!-- Bloc météo amélioré -->
+                            <VBox spacing="10" alignment="CENTER"
+                                  style="-fx-background-color: linear-gradient(to bottom, #90caf9, #e3f2fd);
+             -fx-padding: 25 30;
+             -fx-background-radius: 15;
+             -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 15, 0, 0, 5);
+             -fx-border-radius: 15;
+             -fx-border-color: #42a5f5;
+             -fx-border-width: 2;">
 
-                            <!-- Ajout des éléments météo -->
-                            <Label fx:id="weatherLabel" text="Météo" />
-                            <Label fx:id="temperatureLabel" text="Température: N/A" />
-                            <Label fx:id="conditionLabel" text="Condition: N/A" />
+                                <Label text="🌤️ Current Weather"
+                                       style="-fx-font-size: 22px;
+                  -fx-text-fill: #0d47a1;
+                  -fx-font-weight: 700;
+                  -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.15) , 2, 0, 1, 1);" />
+
+                                <!-- Affichage météo auto via IP/localisation -->
+                                <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
+                                    <ImageView fx:id="weatherIcon" fitWidth="80" fitHeight="80"
+                                               style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 2);" />
+                                    <Label fx:id="weatherLabel" wrapText="true"
+                                           style="-fx-font-size: 18px;
+                      -fx-text-fill: #1e272e;
+                      -fx-font-weight: 600;" />
+                                </HBox>
+
+                                <!-- Barre de recherche par ville -->
+                                <HBox spacing="12" alignment="CENTER" style="-fx-padding: 8 0;">
+                                    <TextField fx:id="cityTextField" promptText="Entrez une ville"
+                                               style="-fx-background-radius: 15;
+                          -fx-background-color: white;
+                          -fx-border-radius: 15;
+                          -fx-border-color: #90caf9;
+                          -fx-border-width: 1.5;
+                          -fx-padding: 8 15;
+                          -fx-font-size: 16px;" />
+                                    <Button fx:id="fetchButton" text="Search" onAction="#fetchWeatherByCity"
+                                            style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
+                       -fx-text-fill: white;
+                       -fx-font-weight: 700;
+                       -fx-background-radius: 15;
+                       -fx-padding: 8 20;
+                       -fx-cursor: hand;
+                       -fx-effect: dropshadow(gaussian, rgba(30,136,229,0.6), 8, 0, 0, 3);"
+                    />
+                                </HBox>
+
+                            </VBox>
+
+
+
+
+
                         </VBox>
                     </center>
                 </BorderPane>

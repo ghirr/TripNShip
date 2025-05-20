@@ -2,19 +2,22 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
+import org.Esprit.TripNShip.Services.ItineraryService;
 import org.Esprit.TripNShip.Services.TicketService;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class AddTicketController {
+public class AddTicketController implements Initializable {
 
-    @FXML private TextField itineraryCodeField;
+    @FXML private ComboBox<String> itineraryCodeComboBox;
     @FXML private TextField userEmailField;
     @FXML private DatePicker departureDatePicker;
     @FXML private DatePicker arrivalDatePicker;
@@ -23,21 +26,29 @@ public class AddTicketController {
     @FXML private TextField arrivalTimeField;
     @FXML private Button addTicketButton;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ItineraryService is = new ItineraryService();
+        List<Itinerary> itineraries = is.getAll();
+        for (Itinerary i : itineraries) {
+            itineraryCodeComboBox.getItems().add(i.getItineraryCode());
+        }
+    }
 
     public void addTicket(ActionEvent event) throws IOException {
         if(!validInputs()) return;
         TicketService ts = new TicketService();
-        ts.add(new Ticket(itineraryCodeField.getText(),userEmailField.getText(), departureDatePicker.getValue(),arrivalDatePicker.getValue(), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText()),Double.parseDouble(priceField.getText())));
+        ts.add(new Ticket(itineraryCodeComboBox.getValue(),userEmailField.getText(), departureDatePicker.getValue(),arrivalDatePicker.getValue(), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText()),Double.parseDouble(priceField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("SA7it");
         alert.setContentText("Ticket Added !");
         alert.show();
-        Stage stage = (Stage) itineraryCodeField.getScene().getWindow();
+        Stage stage = (Stage) itineraryCodeComboBox.getScene().getWindow();
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeField.getText().isEmpty() ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() == null || arrivalDatePicker.getValue()==null||priceField.getText().isEmpty()) {
+        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() == null || arrivalDatePicker.getValue()==null||priceField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 

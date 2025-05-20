@@ -129,19 +129,17 @@ public class ListViewVehicleController {
         vehicles.setAll(vehicleList);
     }
 
-    private void confirmDelete(Vehicle vehicle) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Delete");
-        alert.setHeaderText(null);
-        alert.setContentText("Are you sure to delete this vehicle?");
-        Optional<ButtonType> result = alert.showAndWait();
 
+
+    private void confirmDelete(Vehicle vehicle) {
+        Optional<ButtonType> result = Shared.deletePopUP("Are you sure to delete this booking?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             vehicleService.delete(vehicle);
             vehicles.remove(vehicle);
             refreshVehicleList();
         }
     }
+
 
     private void configureTable() {
         colbrand.setCellValueFactory(new PropertyValueFactory<>("brand"));

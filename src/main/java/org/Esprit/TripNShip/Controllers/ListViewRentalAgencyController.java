@@ -18,9 +18,11 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
 import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Services.RentalAgencyService;
+import org.Esprit.TripNShip.Utils.Shared;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ListViewRentalAgencyController {
@@ -189,19 +191,17 @@ public class ListViewRentalAgencyController {
         }
     }
 
-    private void handleDeleteAgency(RentalAgency agency) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText("Suppression d'agence");
-        alert.setContentText("Êtes-vous sûr de vouloir supprimer cette agence ?");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                rentalAgencyService.delete(agency);
-                loadAgenciesFromDatabase();
-            }
-        });
+
+    private void handleDeleteAgency(RentalAgency agency) {
+        Optional<ButtonType> result = Shared.deletePopUP("Are you sure to delete this booking?");
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            rentalAgencyService.delete(agency);
+            agencyList.remove(agency);
+            loadAgenciesFromDatabase();
+        }
     }
+
 
     private void openAddAgencyForm() {
         try {

@@ -131,6 +131,8 @@ public class ListViewVehicleRentalController {
         updateTable(pagination.getCurrentPageIndex());
     }
 
+
+
     private void confirmDelete(VehicleRental vehicleRental) {
         Optional<ButtonType> result = Shared.deletePopUP("Are you sure to delete this booking?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -139,7 +141,6 @@ public class ListViewVehicleRentalController {
             refreshVehicleRentalList();
         }
     }
-
     @FXML
     private void showAddVehicleRentalPopup() {
         showPopup("/fxml/CircuitManagementFXML/AddVehicleRental.fxml", null);

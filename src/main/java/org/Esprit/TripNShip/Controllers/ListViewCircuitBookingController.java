@@ -28,10 +28,30 @@ import org.Esprit.TripNShip.Entities.TourCircuit;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.CircuitBookingService;
 import org.Esprit.TripNShip.Utils.Shared;
-
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
+import java.awt.Desktop;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class ListViewCircuitBookingController {
 
@@ -243,20 +263,77 @@ public class ListViewCircuitBookingController {
         pagination.setCurrentPageIndex(0);
     }
 
+    public void generatePdf(CircuitBooking booking) {
+        try {
+            String userHome = System.getProperty("user.home");
+            Path downloadsPath = Paths.get(userHome, "Downloads");
+
+            if (!Files.exists(downloadsPath)) {
+                Files.createDirectories(downloadsPath);
+            }
+
+            String fileName = "circuit_booking_" + booking.getIdBooking() + ".pdf";
+            Path pdfPath = downloadsPath.resolve(fileName);
+
+            // Génération PDF avec iText
+            PdfWriter writer = new PdfWriter(pdfPath.toString());
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("Circuit Booking ID: " + booking.getIdBooking()));
+            document.add(new Paragraph("Customer: " + booking.getUser().getFirstName() + " " + booking.getUser().getLastName()));
+            document.add(new Paragraph("Tour: " + booking.getTourCircuit().getNameCircuit()));
+            document.add(new Paragraph("Booking Date: " + booking.getBookingDate()));
+            document.add(new Paragraph("Status: " + booking.getStatusBooking()));
+
+            document.close();
+
+            System.out.println("PDF generated at: " + pdfPath.toString());
+
+            // Afficher une popup de confirmation sur le thread JavaFX
+            Platform.runLater(() -> {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("PDF généré");
+                alert.setHeaderText(null);
+                alert.setContentText("Le PDF a été généré dans le dossier Téléchargements.");
+                alert.showAndWait();
+            });
+
+            // Ouvrir automatiquement le PDF avec l'application par défaut (desktop)
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.open(pdfPath.toFile());
+                } catch (IOException e) {
+                    System.err.println("Impossible d'ouvrir le PDF automatiquement.");
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setColActions() {
         colActions.setCellFactory(param -> new TableCell<>() {
             private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-edit-64.png")));
             private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-delete-48.png")));
-            private final HBox hbox = new HBox(10, editIcon, deleteIcon);
+            private final ImageView pdfIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-export-pdf-30.png")));
+
+            private final HBox hbox = new HBox(10, editIcon, deleteIcon, pdfIcon);
 
             {
                 editIcon.setFitWidth(30);
                 editIcon.setFitHeight(30);
                 deleteIcon.setFitWidth(30);
                 deleteIcon.setFitHeight(30);
+                pdfIcon.setFitWidth(30);
+                pdfIcon.setFitHeight(30);
 
                 editIcon.setStyle("-fx-cursor: hand;");
                 deleteIcon.setStyle("-fx-cursor: hand;");
+                pdfIcon.setStyle("-fx-cursor: hand;");
 
                 editIcon.setOnMouseClicked(event -> {
                     CircuitBooking booking = getTableView().getItems().get(getIndex());
@@ -266,6 +343,13 @@ public class ListViewCircuitBookingController {
                 deleteIcon.setOnMouseClicked(event -> {
                     CircuitBooking booking = getTableView().getItems().get(getIndex());
                     if (booking != null) confirmDelete(booking);
+                });
+
+                pdfIcon.setOnMouseClicked(event -> {
+                    CircuitBooking booking = getTableView().getItems().get(getIndex());
+                    if (booking != null) {
+                        generatePdf(booking);
+                    }
                 });
             }
 

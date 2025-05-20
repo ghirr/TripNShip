@@ -19,8 +19,11 @@ import java.time.format.DateTimeFormatter;
 
 public class TicketPDFGenerator {
 
-    public static void generatePDF(Ticket ticket, String outputPath) {
+    public static void generatePDF(Ticket ticket, String outputPath) throws IOException {
         Document document = new Document();
+        Image logo = Image.getInstance("src/main/resources/images/logo.png");
+        logo.scaleToFit(300,300);
+        logo.setAlignment(Element.ALIGN_CENTER);
         ItineraryService is = new ItineraryService();
         Itinerary itinerary = is.getItineraryByCode(ticket.getItineraryCode());
         String uniqueData = "Ticket"+ticket.getTicketId()+"-"+System.currentTimeMillis();
@@ -30,6 +33,7 @@ public class TicketPDFGenerator {
             document.open();
 
             // Titre
+            document.add(logo);
             Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD);
             Paragraph title = new Paragraph("Travel Ticket", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
@@ -53,9 +57,10 @@ public class TicketPDFGenerator {
 
             document.add(new Paragraph(" "));
             document.add(new Paragraph(" "));
-            document.add(generateQRCodeImage(uniqueData)); // pour
-            document.add(new Paragraph("Travel Safe"));
-
+            document.add(generateQRCodeImage(uniqueData));
+            Paragraph footer = new Paragraph("Travel Safe");// pour
+            footer.setAlignment(Element.ALIGN_CENTER);
+            document.add(footer);
         } catch (DocumentException | IOException | WriterException e) {
             e.printStackTrace();
         } finally {

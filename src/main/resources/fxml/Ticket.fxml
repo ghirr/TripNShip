@@ -14,8 +14,8 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.web.WebView?>
+
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.TicketController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
@@ -41,40 +41,40 @@
 
                     <TableView fx:id="ticketTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>
-                            <TableColumn fx:id="itineraryCodeColumn" prefWidth="109.0" text="Itinerary Code">
+                            <TableColumn fx:id="itineraryCodeColumn" prefWidth="75.0" text="Itinerary Code">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="itineraryCode" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="userEmailColumn" prefWidth="219.0" text="User Email">
+                            <TableColumn fx:id="userEmailColumn" prefWidth="125.0" text="User Email">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="userEmail" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="departureDateColumn" prefWidth="109.0" text="Departure Date">
+                            <TableColumn fx:id="departureDateColumn" prefWidth="91.0" text="Departure Date">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="departureDate" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="arrivalDateColumn" prefWidth="97.0" text="Arrival Date" />
-                            <TableColumn fx:id="departureTimeColumn" prefWidth="100.0" text="Departure Time">
+                            <TableColumn fx:id="arrivalDateColumn" prefWidth="93.0" text="Arrival Date" />
+                            <TableColumn fx:id="departureTimeColumn" prefWidth="76.0" text="Departure Time">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="departureTime" />
                                 </cellValueFactory>
                             </TableColumn>
 
-                            <TableColumn fx:id="arrivalTimeColumn" prefWidth="133.0" text="Arrival Time">
+                            <TableColumn fx:id="arrivalTimeColumn" prefWidth="82.0" text="Arrival Time">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="arrivalTime" />
                                 </cellValueFactory>
                             </TableColumn>
 
-                     <TableColumn fx:id="priceColumn" prefWidth="85.0" text="Price">
+                     <TableColumn fx:id="priceColumn" prefWidth="101.0" text="Price">
                             <cellValueFactory>
                                 <PropertyValueFactory property="price" />
                             </cellValueFactory>
                         </TableColumn>
-                            <TableColumn fx:id="actionsColumn" maxWidth="177.0" minWidth="79.0" prefWidth="127.0" text="Actions" />
+                            <TableColumn fx:id="actionsColumn" maxWidth="391.0" minWidth="79.0" prefWidth="336.0" text="Actions" />
 
                         </columns>
                     </TableView>

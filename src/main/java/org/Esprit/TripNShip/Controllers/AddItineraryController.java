@@ -2,17 +2,18 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
-import javafx.scene.Node;
+import org.Esprit.TripNShip.Utils.GeoUtils;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class AddItineraryController {
     @FXML
@@ -57,5 +58,7 @@ public class AddItineraryController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 
 }

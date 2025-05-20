@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+
 public class GeoUtils {
     public static String getCoordinatesFromCity(String cityName) throws IOException {
         String apiKey = "5b3ce3597851110001cf624873f8c6ba0ae84b41b8a1f73413e37053";
@@ -32,4 +33,5 @@ public class GeoUtils {
 
         return lat + "," + lon;
     }
-}
+
+    }

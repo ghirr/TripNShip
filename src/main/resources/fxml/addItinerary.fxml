@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AddItineraryController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">

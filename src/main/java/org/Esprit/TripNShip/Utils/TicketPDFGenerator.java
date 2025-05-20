@@ -1,10 +1,18 @@
 package org.Esprit.TripNShip.Utils;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.ItineraryService;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +23,7 @@ public class TicketPDFGenerator {
         Document document = new Document();
         ItineraryService is = new ItineraryService();
         Itinerary itinerary = is.getItineraryByCode(ticket.getItineraryCode());
+        String uniqueData = "Ticket"+ticket.getTicketId()+"-"+System.currentTimeMillis();
 
         try {
             PdfWriter.getInstance(document, new FileOutputStream(outputPath));
@@ -43,12 +52,25 @@ public class TicketPDFGenerator {
             document.add(new Paragraph("Price : " + ticket.getPrice() + " TND"));
 
             document.add(new Paragraph(" "));
+            document.add(new Paragraph(" "));
+            document.add(generateQRCodeImage(uniqueData)); // pour
             document.add(new Paragraph("Travel Safe"));
 
-        } catch (DocumentException | IOException e) {
+        } catch (DocumentException | IOException | WriterException e) {
             e.printStackTrace();
         } finally {
             document.close();
         }
+    }
+    public static Image generateQRCodeImage(String data) throws WriterException, IOException, BadElementException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 150, 150);
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "PNG", baos);
+        Image itextImage = Image.getInstance(baos.toByteArray());
+        itextImage.setAlignment(Image.ALIGN_CENTER);
+        return itextImage;
     }
 }

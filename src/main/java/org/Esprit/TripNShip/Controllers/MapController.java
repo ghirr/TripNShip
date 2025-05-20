@@ -50,8 +50,8 @@ public class MapController {
             var point1 = [%s];
             var point2 = [%s];
 
-            L.marker(point1).addTo(map).bindPopup("Départ").openPopup();
-            L.marker(point2).addTo(map).bindPopup("Arrivée");
+            L.marker(point1).addTo(map).bindPopup("Departure").openPopup();
+            L.marker(point2).addTo(map).bindPopup("Arrival").openPopup();
 
             var polyline = L.polyline([point1, point2], {color: 'blue'}).addTo(map);
             map.fitBounds(polyline.getBounds());

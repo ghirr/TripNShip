@@ -90,6 +90,7 @@ public class EmployeeProfileController {
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Edit Profile");
+            dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(((Node) event.getSource()).getScene().getWindow());
             dialogStage.setResizable(false);
@@ -103,6 +104,33 @@ public class EmployeeProfileController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Edit Profile dialog: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleChangePwd(ActionEvent event) {
+        try {
+            if (employee == null) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not retrieve user profile.");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/changePassword.fxml"));
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Change Password");
+            dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            dialogStage.setResizable(false);
+            dialogStage.setScene(new Scene(root));
+
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Change Password dialog: " + e.getMessage());
         }
     }
 

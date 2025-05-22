@@ -42,8 +42,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<!--                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
@@ -51,19 +51,19 @@
                         <Label text="First Name:" />
                         <Label text="Last Name:" GridPane.rowIndex="1" />
                         <Label text="Email:" GridPane.rowIndex="2" />
-                        <Label text="Role:" GridPane.rowIndex="3" />
-                        <Label text="Joining Date:" GridPane.rowIndex="4" />
-                        <Label text="Gender:" GridPane.rowIndex="5" />
-                        <Label text="Phone Number:" GridPane.rowIndex="6" />
-                        <Label text="Birthday Date:" GridPane.rowIndex="7" />
+<!--                        <Label text="Role:" GridPane.rowIndex="3" />-->
+<!--                        <Label text="Joining Date:" GridPane.rowIndex="4" />-->
+                        <Label text="Gender:" GridPane.rowIndex="3" />
+                        <Label text="Phone Number:" GridPane.rowIndex="4" />
+                        <Label text="Birthday Date:" GridPane.rowIndex="5" />
                         <TextField fx:id="firstNameField" styleClass="non-editable-field" GridPane.columnIndex="1" />
                         <TextField fx:id="lastNameField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="emailField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="roleField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="joiningDateField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <ComboBox fx:id="genderComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <DatePicker fx:id="birthdayDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+<!--                        <TextField fx:id="roleField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />-->
+<!--                        <TextField fx:id="joiningDateField" styleClass="non-editable-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />-->
+                        <ComboBox fx:id="genderComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <DatePicker fx:id="birthdayDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     </children>
                 </GridPane>
             </children>

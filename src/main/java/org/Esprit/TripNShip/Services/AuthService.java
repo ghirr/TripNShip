@@ -6,11 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 import org.Esprit.TripNShip.Entities.Client;
-import org.Esprit.TripNShip.Entities.Gender;
 import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Utils.MyDataBase;
@@ -127,7 +124,7 @@ public class AuthService {
         return false; // Si aucun utilisateur trouvé
     }
 
-    public boolean updatePassword(String phoneNumber, String password) {
+    public boolean updatePasswordByPhoneNumber(String phoneNumber, String password) {
         String query = "UPDATE user SET password = ? WHERE phoneNumber = ?";
 
         password = BCrypt.hashpw(password, BCrypt.gensalt(10));
@@ -144,5 +141,43 @@ public class AuthService {
 
         return false;
 
+    }
+
+    public boolean updatePassword(int id, String password) {
+        String query = "UPDATE user SET password = ? WHERE id = ?";
+
+        password = BCrypt.hashpw(password, BCrypt.gensalt(10));
+
+        try (PreparedStatement pst = cnx.prepareStatement(query)) {
+            pst.setString(1, password);
+            pst.setInt(2, id);
+
+            pst.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+
+    public Boolean checkPassword(int id, String password) {
+        String query = "SELECT password FROM user WHERE id = ?";
+        try (PreparedStatement pst = cnx.prepareStatement(query)) {
+            pst.setInt(1, id);
+
+            ResultSet resultSet = pst.executeQuery();
+
+            if (resultSet.next()) {
+                String passwordBD = resultSet.getString("password");
+                if (passwordBD != null && !passwordBD.isEmpty() && BCrypt.checkpw(password, passwordBD)) {
+                    return true;
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

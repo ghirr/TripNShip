@@ -22,11 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
-
-import static com.google.common.io.Files.getFileExtension;
 
 public class Shared {
 
@@ -118,11 +114,11 @@ public class Shared {
         }
     }
 
-    public static String generateRandomPassword() {
+    public static String generateRandomCode(int length) {
 
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < length; i++) {
             password.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
         return password.toString();

@@ -1,5 +1,7 @@
 package org.Esprit.TripNShip.Utils;
 
+import com.mysql.cj.conf.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
 import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 
@@ -13,6 +15,7 @@ public class UserSession {
     private Role userRole;
     private String userEmail;
     private String userProfilePhotoPath;
+    private final SimpleStringProperty profilePhotoUrl = new SimpleStringProperty();
 
     public UserSession(int userId, String userFirstName, String userLastName, Role userRole, String userEmail, String userProfilePhotoPath) {
         this.userId = userId;
@@ -21,6 +24,7 @@ public class UserSession {
         this.userRole = userRole;
         this.userEmail = userEmail;
         this.userProfilePhotoPath = userProfilePhotoPath;
+        this.profilePhotoUrl.set(userProfilePhotoPath);
     }
 
     public static void initSession(User user) {
@@ -60,4 +64,12 @@ public class UserSession {
     public String getUserProfilePhotoPath() {
         return userProfilePhotoPath;
     }
+
+    public SimpleStringProperty getprofilePhotoUrlProperty() {
+        return profilePhotoUrl;
+    }
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl.set(profilePhotoUrl);
+    }
+
 }

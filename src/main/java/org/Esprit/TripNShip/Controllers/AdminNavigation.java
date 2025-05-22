@@ -50,6 +50,12 @@ public class AdminNavigation {
             btnUserManagement.setOnAction(event -> {navigateToUserManagement();});
             navigateToUserManagement();
             userIcon.setOnMouseClicked(event -> {navigateToProfile();});
+            username.setOnMouseClicked(event -> navigateToProfile());
+            currentUser.getprofilePhotoUrlProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null && !newVal.isEmpty()) {
+                    userIcon.setImage(new Image(newVal));
+                }
+            });
         }
     }
 

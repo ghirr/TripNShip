@@ -7,14 +7,9 @@ import org.Esprit.TripNShip.Entities.Employee;
 import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.UserService;
-import org.Esprit.TripNShip.Utils.EmailSender;
-import org.Esprit.TripNShip.Utils.Shared;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.Esprit.TripNShip.Utils.Shared.generateRandomPassword;
-import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 public class EditUserController {
 

@@ -12,7 +12,7 @@ import org.Esprit.TripNShip.Utils.EmailSender;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.Esprit.TripNShip.Utils.Shared.generateRandomPassword;
+import static org.Esprit.TripNShip.Utils.Shared.generateRandomCode;
 import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 
@@ -72,11 +72,11 @@ public class AddUserController {
         Role role = roleMap.get(roleComboBox.getValue());
         String address = addressField.getText().trim();
         double salary = Double.parseDouble(salaryField.getText().trim());
-        String password = generateRandomPassword();
+        String password = generateRandomCode(15);
 
         User newUser = new Employee(firstName,lastName,role,email,address,password,salary);
         userService.add(newUser);
-        new Thread(() -> EmailSender.accountEmail(email, firstName + " " + lastName, password)).start();
+        new Thread(() -> EmailSender.accountEmail(email, firstName + " " + lastName, password,EmailSender.welcomeEmailTemplate,"Welcome To TripNShip","HR Team")).start();
         ListUsersController.getInstance().reloadUserList();
         ((Stage) submitButton.getScene().getWindow()).close();
 

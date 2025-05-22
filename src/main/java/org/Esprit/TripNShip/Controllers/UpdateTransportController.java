@@ -10,7 +10,12 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
+
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 import java. io. File;
 
@@ -24,7 +29,7 @@ public class UpdateTransportController implements Initializable {
     @FXML private Button chooseLogoButton;
     @FXML private Button updateTransportButton;
     @FXML private ComboBox<TransportType> transportationComboBox;
-    private String selectedLogoPath ;  // chemin actuel ou nouveau
+    private String selectedLogoPath ;
 
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -109,9 +114,16 @@ public class UpdateTransportController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            selectedLogoPath = file.getAbsolutePath();
-            companyLogoPathLabel.setText(file.getName());
+            try {
+                String filename = file.getName();
+                selectedLogoPath = file.getAbsolutePath();
+                companyLogoPathLabel.setText(file.getName());
+                String destDir="C:\\xampp\\htdocs\\tripnship\\images\\transporterslogos";// chemin actuel ou nouveau
+                Files.copy(Path.of(selectedLogoPath), Path.of(destDir,filename), StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
         }
-
     }
     }

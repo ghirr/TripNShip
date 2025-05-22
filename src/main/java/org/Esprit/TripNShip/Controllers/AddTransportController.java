@@ -16,6 +16,9 @@ import org.Esprit.TripNShip.Services.TransportService;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
 public class AddTransportController implements Initializable {
@@ -86,9 +89,18 @@ public class AddTransportController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            selectedLogoPath = file.getAbsolutePath();
-            companyLogoPathLabel.setText(file.getName());
+            try {
+                String filename = file.getName();
+                selectedLogoPath = file.getAbsolutePath();
+                companyLogoPathLabel.setText(file.getName());
+                String destDir="C:\\xampp\\htdocs\\tripnship\\images\\transporterslogos";// chemin actuel ou nouveau
+                Files.copy(Path.of(selectedLogoPath), Path.of(destDir,filename), StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
         }
+
     }
 
 }

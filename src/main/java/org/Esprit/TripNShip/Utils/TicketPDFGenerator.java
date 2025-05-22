@@ -9,7 +9,6 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.ItineraryService;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;

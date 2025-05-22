@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import org.Esprit.TripNShip.Utils.GeoUtils;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -24,7 +25,9 @@ public class MapController {
             engine.loadContent(html);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please Check your Internet Connexion");
+            alert.showAndWait();
         }
     }
 

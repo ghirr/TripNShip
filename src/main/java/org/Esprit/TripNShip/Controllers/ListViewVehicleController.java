@@ -35,6 +35,7 @@ public class ListViewVehicleController {
 
     @FXML
     private TableView<Vehicle> vehicleTable;
+
     @FXML
     private TableColumn<Vehicle, String> colbrand;
     @FXML
@@ -49,6 +50,8 @@ public class ListViewVehicleController {
     private TableColumn<Vehicle, Type> coltype;
     @FXML
     private TableColumn<Vehicle, String> colrentalAgency;
+    @FXML
+    private TableColumn<Vehicle, ImageView> colimage;
     @FXML
     private TableColumn<Vehicle, Void> colActions;
     @FXML
@@ -142,6 +145,7 @@ public class ListViewVehicleController {
 
 
     private void configureTable() {
+
         colbrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
         colmodel.setCellValueFactory(new PropertyValueFactory<>("model"));
         collicensePlate.setCellValueFactory(new PropertyValueFactory<>("licensePlate"));
@@ -152,6 +156,22 @@ public class ListViewVehicleController {
         colrentalAgency.setCellValueFactory(cellData -> {
             String rentalAgencyName = cellData.getValue().getRentalAgency().getNameAgency();
             return new SimpleObjectProperty<>(rentalAgencyName);
+        });
+
+        colimage.setCellValueFactory(cellData -> {
+            String imagePath = cellData.getValue().getImageURL();
+            ImageView imageView;
+            if (imagePath != null && !imagePath.isEmpty()) {
+                Image image = new Image(imagePath, true); // true = background loading
+                imageView = new ImageView(image);
+            } else {
+                // Image par défaut si URL n'existe pas
+                Image defaultImage = new Image(getClass().getResourceAsStream("/images/logo.png"));
+                imageView = new ImageView(defaultImage);
+            }
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
+            return new SimpleObjectProperty<>(imageView);
         });
 
         setColActions();
@@ -204,32 +224,19 @@ public class ListViewVehicleController {
     @FXML
     private void showEditPopup(Vehicle vehicle) {
         try {
-            Stage primaryStage = (Stage) stackPane.getScene().getWindow();
-            Scene primaryScene = primaryStage.getScene();
-
-            Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
-            overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
-
-            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
-            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
-
-            Pane rootPane = (Pane) primaryScene.getRoot();
-            rootPane.getChildren().add(overlay);
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/UpdateVehicle.fxml"));
             Parent root = loader.load();
+
             UpdateVehicleController controller = loader.getController();
             controller.setVehicleData(vehicle);
 
             Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
-
-            stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
-
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Modifier véhicule");
             stage.showAndWait();
-            refreshVehicleList();
+
+            loadVehicles();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -248,20 +255,23 @@ public class ListViewVehicleController {
     }
 
     private void handleSearch() {
-        String keyword = searchField.getText().trim().toLowerCase();
+        String keyword = searchField.getText() != null ? searchField.getText().trim().toLowerCase() : "";
         Type selectedType = statusComboBox.getValue();
 
         filteredVehicles = vehicles.stream()
-                .filter(v -> (v.getBrand().toLowerCase().contains(keyword)
-                        || v.getModel().toLowerCase().contains(keyword)
-                        || v.getLicensePlate().toLowerCase().contains(keyword))
-                        && (selectedType == null || v.getType() == selectedType))
+                .filter(v ->
+                        (v.getBrand() != null && v.getBrand().toLowerCase().contains(keyword)
+                                || v.getModel() != null && v.getModel().toLowerCase().contains(keyword)
+                                || v.getLicensePlate() != null && v.getLicensePlate().toLowerCase().contains(keyword))
+                                && (selectedType == null || (v.getType() != null && v.getType() == selectedType))
+                )
                 .collect(Collectors.toList());
 
         pagination.setPageCount((int) Math.ceil((double) filteredVehicles.size() / ROWS_PER_PAGE));
         updateTable(0);
         pagination.setCurrentPageIndex(0);
     }
+
 
     private void setColActions() {
         colActions.setCellFactory(param -> new TableCell<>() {

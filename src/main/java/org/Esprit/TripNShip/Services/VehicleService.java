@@ -25,7 +25,7 @@ public class VehicleService implements IService<Vehicle> {
     @Override
     public void add(Vehicle vehicle) {
 
-        String req = "INSERT INTO vehicle (brand, model, licensePlate, dailyPrice, availability, type, idAgency) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO vehicle (brand, model, licensePlate, dailyPrice, availability, type, idAgency, imageURL) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, vehicle.getBrand());
@@ -35,6 +35,7 @@ public class VehicleService implements IService<Vehicle> {
             pst.setBoolean(5, vehicle.isAvailability());
             pst.setInt(6, vehicle.getType().ordinal());
             pst.setInt(7, vehicle.getRentalAgency().getIdAgency());
+            pst.setString(8, vehicle.getImageURL());
             pst.executeUpdate();
             System.out.println("Vehicle added!");
         } catch (SQLException e) {
@@ -44,7 +45,7 @@ public class VehicleService implements IService<Vehicle> {
 
     @Override
     public void update(Vehicle vehicle) {
-        String req = "UPDATE vehicle SET brand=?, model=?, licensePlate=?, dailyPrice=?, availability=?, type=?, idAgency=? WHERE idVehicle=?";
+        String req = "UPDATE vehicle SET brand=?, model=?, licensePlate=?, dailyPrice=?, availability=?, type=?, idAgency=?, imageURL=? WHERE idVehicle=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, vehicle.getBrand());
@@ -54,7 +55,8 @@ public class VehicleService implements IService<Vehicle> {
             pst.setBoolean(5, vehicle.isAvailability());
             pst.setInt(6, vehicle.getType().ordinal());
             pst.setInt(7, vehicle.getRentalAgency().getIdAgency());
-            pst.setInt(8, vehicle.getIdVehicle());
+            pst.setString(8, vehicle.getImageURL());
+            pst.setInt(9, vehicle.getIdVehicle());
             pst.executeUpdate();
             System.out.println("Vehicle updated!");
         } catch (SQLException e) {
@@ -92,7 +94,8 @@ public class VehicleService implements IService<Vehicle> {
                         rs.getFloat("dailyPrice"),
                         rs.getBoolean("availability"),
                         Type.values()[rs.getInt("type")],
-                        new RentalAgency(rs.getInt("idAgency"))
+                        new RentalAgency(rs.getInt("idAgency")),
+                        rs.getString("imageURL")
                 );
 
                 vehicles.add(vehicle);

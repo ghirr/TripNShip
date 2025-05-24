@@ -105,6 +105,7 @@
                             <TableView fx:id="vehicleTable" VBox.vgrow="ALWAYS"
                                        style="-fx-border-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10;">
                                 <columns>
+                                    <TableColumn fx:id="colimage" prefWidth="70" style="-fx-alignment: CENTER;" text="Image" />
                                     <TableColumn fx:id="colbrand" prefWidth="120" text="Brand" />
                                     <TableColumn fx:id="colmodel" prefWidth="100" text="Model" />
                                     <TableColumn fx:id="collicensePlate" prefWidth="180" text="License Plate" />

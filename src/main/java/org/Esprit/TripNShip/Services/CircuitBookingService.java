@@ -63,44 +63,43 @@ public class CircuitBookingService implements IService<CircuitBooking> {
 
     @Override
     public List<CircuitBooking> getAll() {
-        List<CircuitBooking> circuitBookings = new ArrayList<>();
-        String req = "SELECT cb.*, u.firstName, u.lastName, c.nameCircuit " +
-                "FROM circuitbooking cb " +
-                "JOIN user u ON cb.idUser = u.id " +
-                "JOIN tourcircuit c ON cb.idCircuit = c.idCircuit";
+        List<CircuitBooking> bookings = new ArrayList<>();
+        String req = "SELECT * FROM circuitbooking";
 
-        try {
-            PreparedStatement pst = connection.prepareStatement(req);
-            ResultSet rs = pst.executeQuery();
+        try (PreparedStatement pst = connection.prepareStatement(req);
+             ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
-                // Création du booking
-                CircuitBooking circuitBooking = new CircuitBooking(
-                        rs.getInt("idBooking"),
-                        rs.getTimestamp("bookingDate").toLocalDateTime(),
-                        StatusBooking.values()[rs.getInt("statusBooking")]
-                );
+                CircuitBooking booking = new CircuitBooking();
+                booking.setIdBooking(rs.getInt("idBooking"));
+                booking.setBookingDate(rs.getTimestamp("bookingDate").toLocalDateTime());
 
-                // Création de l'utilisateur
+                // Vérification prudente de l'index pour éviter les erreurs
+                int statusIndex = rs.getInt("statusBooking");
+                if (statusIndex >= 0 && statusIndex < StatusBooking.values().length) {
+                    booking.setStatusBooking(StatusBooking.values()[statusIndex]);
+                } else {
+                    booking.setStatusBooking(StatusBooking.Confirmed);
+                }
+
+                // Associer simplement les IDs
                 User user = new User();
                 user.setIdUser(rs.getInt("idUser"));
-                user.setFirstName(rs.getString("firstName"));
-                user.setLastName(rs.getString("lastName"));
-                circuitBooking.setUser(user);
+                booking.setUser(user);
 
-                // Création du circuit
                 TourCircuit circuit = new TourCircuit();
                 circuit.setIdCircuit(rs.getInt("idCircuit"));
-                circuit.setNameCircuit(rs.getString("nameCircuit"));
-                circuitBooking.setTourCircuit(circuit);
+                booking.setTourCircuit(circuit);
 
-                circuitBookings.add(circuitBooking);
+                bookings.add(booking);
             }
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur : " + e.getMessage());
         }
 
-        return circuitBookings;
+        return bookings;
     }
+
 
 }

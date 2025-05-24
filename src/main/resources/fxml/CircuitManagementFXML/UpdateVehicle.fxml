@@ -61,6 +61,16 @@
                             </VBox>
                         </HBox>
 
+                        <HBox spacing="20">
+
+
+                                <VBox spacing="5">
+                                    <Label text="Image URL" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                    <TextField fx:id="imageURLField" promptText="Image URL"
+                                               style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                </VBox>
+
+                        </HBox>
 
                     </VBox>
 

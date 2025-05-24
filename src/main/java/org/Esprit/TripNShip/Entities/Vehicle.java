@@ -8,6 +8,7 @@ public class Vehicle {
     private int idVehicle;
     private String brand;
     private String model;
+    private String imageURL;
     private String licensePlate;
     private float dailyPrice;
     private boolean availability;
@@ -15,7 +16,7 @@ public class Vehicle {
     private RentalAgency rentalAgency;
 
 
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency) {
+    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency, String imageURL) {
         this.idVehicle = idVehicle;
         this.brand = brand;
         this.model = model;
@@ -24,10 +25,11 @@ public class Vehicle {
         this.availability = availability;
         this.type = type;
         this.rentalAgency = rentalAgency;
+        this.imageURL = imageURL;
 
     }
 
-    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency) {
+    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency, String imageURL) {
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -35,6 +37,7 @@ public class Vehicle {
         this.availability = availability;
         this.type = type;
         this.rentalAgency = rentalAgency;
+        this.imageURL = imageURL;
     }
 
     public Vehicle() {
@@ -110,12 +113,21 @@ public class Vehicle {
         this.rentalAgency = rentalAgency;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
                 "idVehicle=" + idVehicle +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
+                ", imageURL='" + imageURL + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", dailyPrice=" + dailyPrice +
                 ", availability=" + availability +

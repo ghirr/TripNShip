@@ -32,8 +32,8 @@ public class TestCircuitCRUD {
 
 
         // === Créer des véhicules ===
-        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency1);
-        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency1);
+        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency1, "https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_960_720.jpg");
+        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency1, "https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_960_720.jpg");
 
         vehicleService.add(vehicle1);
         vehicleService.add(vehicle2);

@@ -107,7 +107,7 @@ public class ListViewCircuitBookingController {
 
 
         List<String> statusOptions = new ArrayList<>();
-        statusOptions.add("Tous"); // Option pour afficher tous les statuts
+        statusOptions.add("All");
         statusOptions.addAll(Arrays.stream(StatusBooking.values())
                 .map(Enum::name)
                 .collect(Collectors.toList()));
@@ -173,6 +173,7 @@ public class ListViewCircuitBookingController {
     @FXML
     private void showAddCircuitBookingPopup() {
         try {
+
             Stage primaryStage = (Stage) stackPane.getScene().getWindow();
             Scene primaryScene = primaryStage.getScene();
 
@@ -182,24 +183,44 @@ public class ListViewCircuitBookingController {
             primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
             primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
 
+
             Pane rootPane = (Pane) primaryScene.getRoot();
             rootPane.getChildren().add(overlay);
 
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddCircuitBooking.fxml"));
             Parent root = loader.load();
+
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
 
+
             stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
 
+            // Affiche la fenêtre
             stage.showAndWait();
+
+            // Rafraîchit la liste après ajout
+            refreshCircuitBookingList();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            // Affiche l'erreur plus proprement (utile pour FXML mal écrit, chemin faux, etc.)
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d’ouvrir le formulaire : " + e.getMessage());
+            e.printStackTrace(); // Pour voir les détails dans la console
         }
     }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     @FXML
     private void showEditPopup(CircuitBooking circuitBooking) {

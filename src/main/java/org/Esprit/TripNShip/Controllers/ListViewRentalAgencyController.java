@@ -11,10 +11,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
+import javafx.stage.StageStyle;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
 import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Services.RentalAgencyService;
@@ -41,6 +45,9 @@ public class ListViewRentalAgencyController {
     @FXML private TableColumn<RentalAgency, Float> ratingColumn;
     @FXML private TableColumn<RentalAgency, Void> actionColumn;
     @FXML private Pagination pagination;
+    @FXML
+    private StackPane stackPane;
+
 
     // Services
     private final RentalAgencyService rentalAgencyService = new RentalAgencyService();
@@ -203,20 +210,51 @@ public class ListViewRentalAgencyController {
     }
 
 
+    @FXML
     private void openAddAgencyForm() {
         try {
+            // Obtenir la scène principale
+            Stage primaryStage = (Stage) stackPane.getScene().getWindow();
+            Scene primaryScene = primaryStage.getScene();
+
+            // Créer un overlay sombre semi-transparent
+            Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
+            overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
+            overlay.setMouseTransparent(true); // Laisse passer les événements si besoin
+
+            // Adapter l’overlay au redimensionnement
+            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
+            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
+
+            // Ajouter l’overlay à la racine
+            Pane rootPane = (Pane) primaryScene.getRoot();
+            rootPane.getChildren().add(overlay);
+
+            // Charger le fichier FXML du formulaire
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddRentalAgency.fxml"));
-            Parent root = loader.load();
+            Parent formRoot = loader.load();
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Ajouter une Agence");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            // Créer une nouvelle fenêtre modale
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(primaryStage);
+            modalStage.initStyle(StageStyle.UNDECORATED);
+            modalStage.setScene(new Scene(formRoot));
 
-            loadAgenciesFromDatabase();
+            // Supprimer l’overlay et recharger les agences à la fermeture
+            modalStage.setOnHidden(event -> {
+                rootPane.getChildren().remove(overlay);
+                loadAgenciesFromDatabase();
+            });
+
+            modalStage.showAndWait();
+
         } catch (IOException e) {
             e.printStackTrace();
+            // Nettoyage de l’overlay en cas d’échec
+            Stage primaryStage = (Stage) stackPane.getScene().getWindow();
+            Pane rootPane = (Pane) primaryStage.getScene().getRoot();
+            rootPane.getChildren().removeIf(node -> node instanceof Rectangle);
         }
     }
 

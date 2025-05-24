@@ -22,7 +22,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
+
+import static com.google.common.io.Files.getFileExtension;
 
 public class Shared {
 
@@ -51,14 +55,14 @@ public class Shared {
     }
 
     public static void switchScene(Event event, Parent root , String title) {
-        Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        primaryStage.setMaximized(false);
-        primaryStage.setScene(scene);
-        primaryStage.setMaximized(true);
-        primaryStage.setTitle(title);
-        primaryStage.show();
-
+            Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            primaryStage.setMaximized(false);
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.setTitle(title);
+            primaryStage.show();
+        
     }
 
     public static void switchScene(Button btn, URL fxmlFile , String title) {
@@ -114,11 +118,11 @@ public class Shared {
         }
     }
 
-    public static String generateRandomCode(int length) {
+    public static String generateRandomPassword() {
 
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < 15; i++) {
             password.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
         return password.toString();

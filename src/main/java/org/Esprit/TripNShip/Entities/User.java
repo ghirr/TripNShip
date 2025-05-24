@@ -17,9 +17,6 @@ public sealed class User permits Client,Employee {
     private String phoneNumber;
     private Set<Asset> assets ;
 
-    public User(int idUser) {
-
-    }
     public User(int idUser, String firstName, String lastName, Gender gender, Role role, String email, String password, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
         this.idUser = idUser;
         this.firstName = firstName;
@@ -83,11 +80,49 @@ public sealed class User permits Client,Employee {
         this.role = role;
     }
 
-    public User(String firstName) {
+    public User(int idUser,String firstName, String lastName, Role role, String email, String profilePhoto) {
+        this.idUser = idUser;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+        this.profilePhoto = profilePhoto;
     }
 
-    public User() {
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = Role.CLIENT;
+        this.email = email;
+        this.password = password;
+    }
 
+    public User(String firstName, String lastName, Role role, String email , String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(int idUser, String firstName, String lastName, Role role, String email, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber, Gender gender) {
+        this.idUser = idUser;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+        this.profilePhoto = profilePhoto;
+        this.birthdayDate = birthdayDate;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+    }
+
+    public User(int idUser, String firstName, String lastName, Role role, String email) {
+        this.idUser = idUser;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
     }
 
     public int getIdUser() {
@@ -192,5 +227,21 @@ public sealed class User permits Client,Employee {
                 ", birthdayDate=" + birthdayDate +
                 ", phoneNumber='" + phoneNumber
                 ;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(this == obj)
+            return true;
+        if(this.getClass() != obj.getClass())
+            return false;
+        final User user = (User) obj;
+        if(this.idUser != user.getIdUser())
+            return false;
+        if(!this.email.equals(user.getEmail()))
+            return false;
+        return true;
     }
 }

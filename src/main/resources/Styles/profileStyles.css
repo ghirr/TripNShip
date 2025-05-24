@@ -1,0 +1,105 @@
+/* Main Colors */
+* {
+    -fx-primary: #3498db;
+    -fx-primary-light: #5dade2;
+    -fx-primary-dark: #2980b9;
+    -fx-secondary: #34495e;
+    -fx-light-grey: #ecf0f1;
+    -fx-mid-grey: #bdc3c7;
+    -fx-dark-grey: #7f8c8d;
+    -fx-success: #2ecc71;
+    -fx-warning: #f39c12;
+    -fx-danger: #e74c3c;
+    -fx-focus-color: -fx-primary;
+}
+
+/* Background Styles */
+.main-content {
+    -fx-background-color: #f5f8fa;
+}
+
+/* Profile Header Styles */
+.profile-header {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-background-radius: 5;
+}
+
+/* Profile Photo Styles */
+.image-container {
+    -fx-background-color: transparent;
+}
+
+.photo-circle {
+    -fx-fill: -fx-light-grey;
+    -fx-stroke: -fx-primary;
+    -fx-stroke-width: 3;
+}
+
+/* Text Styles */
+.role-label {
+    -fx-text-fill: -fx-primary;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.name-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-secondary;
+}
+
+.email-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-grey;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-secondary;
+    -fx-border-color: -fx-primary;
+    -fx-border-width: 0 0 0 3;
+    -fx-padding: 0 0 0 10;
+}
+
+.info-section {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+.info-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-secondary;
+    -fx-min-width: 100;
+}
+
+.info-value {
+    -fx-text-fill: -fx-dark-grey;
+}
+
+/* Button Styles */
+.action-button {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 3;
+    -fx-padding: 8 15 8 15;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: -fx-primary-light;
+}
+
+.action-button:pressed {
+    -fx-background-color: -fx-primary-dark;
+}
+
+/* Separator Style */
+.separator *.line {
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-color: -fx-mid-grey;
+}

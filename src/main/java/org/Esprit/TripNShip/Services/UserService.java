@@ -2,13 +2,18 @@ package org.Esprit.TripNShip.Services;
 
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static org.Esprit.TripNShip.Utils.Shared.getEnumOrNull;
 
 
 public class UserService implements IService<User> {
@@ -64,10 +69,25 @@ public class UserService implements IService<User> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getInt("id"), rs.getString("firstName"), rs.getString("lastName"),
-                                    Gender.valueOf(rs.getString("gender")), Role.valueOf(rs.getString("role")),
-                        rs.getString("email"),rs.getString("profilePhoto"),
-                        rs.getDate("birthdayDate").toLocalDate().atStartOfDay(),
+                LocalDateTime birthDateTime = null;
+                LocalDateTime hireDateTime = null;
+                Date birthDate = rs.getDate("birthDayDate");
+                Date hireDate = rs.getDate("hireDate");
+                if (birthDate != null) {
+                    birthDateTime = rs.getDate("birthDayDate").toLocalDate().atStartOfDay();
+                }
+                if (hireDate != null) {
+                    hireDateTime = rs.getDate("hireDate").toLocalDate().atStartOfDay();
+                }
+                users.add(new User(
+                        rs.getInt("id"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
+                        getEnumOrNull(Role.class, rs.getString("role")),
+                        rs.getString("email"),
+                        rs.getString("profilePhoto"),
+                        birthDateTime,
                         rs.getString("phoneNumber")));
             }
         } catch (SQLException e) {
@@ -75,6 +95,63 @@ public class UserService implements IService<User> {
         }
 
         return users;
+    }
+
+    public List<Employee> getAllUsers() {
+
+        List<Employee> users = new ArrayList<>();
+
+        String req = "SELECT * FROM user";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                LocalDateTime birthDateTime = null;
+                LocalDateTime hireDateTime = null;
+                Date birthDate = rs.getDate("birthDayDate");
+                Date hireDate = rs.getDate("hireDate");
+                if (birthDate != null) {
+                    birthDateTime = rs.getDate("birthDayDate").toLocalDate().atStartOfDay();
+                }
+                if (hireDate != null) {
+                    hireDateTime = rs.getDate("hireDate").toLocalDate().atStartOfDay();
+                }
+                users.add(
+                        new Employee(
+                                rs.getInt("id"),
+                                rs.getString("firstName"),
+                                rs.getString("lastName"),
+                                getEnumOrNull(Gender.class, rs.getString("gender")),
+                                getEnumOrNull(Role.class, rs.getString("role")),
+                                rs.getString("email"),
+                                rs.getString("profilePhoto"),
+                                birthDateTime,
+                                rs.getString("phoneNumber"),
+                                rs.getString("address"),
+                                rs.getDouble("salary"),
+                                hireDateTime));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return users;
+    }
+
+    public boolean getUserByEmail(String email) {
+        String req = "SELECT * FROM user WHERE email = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
@@ -103,23 +180,19 @@ public class UserService implements IService<User> {
 
     private void addEmployee(Employee employee) {
         String req = "INSERT INTO User (\n" +
-                "    firstName, lastName, gender, role, email, password, profilePhoto" +
-                ",birthdayDate, phoneNumber ,address,salary,hireDate  )"+
-                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                "    firstName, lastName, role, email, password" +
+                ",address,salary,hireDate  )"+
+                " VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
-            ps.setString(3, employee.getGender().toString());
-            ps.setString(4, employee.getRole().toString());
-            ps.setString(5, employee.getEmail());
-            ps.setString(6, employee.getPassword());
-            ps.setString(7, employee.getProfilePhoto());
-            ps.setString(8,employee.getBirthdayDate().toString());
-            ps.setString(9,employee.getPhoneNumber());
-            ps.setString(10,employee.getAddress());
-            ps.setDouble(11,employee.getSalary());
-            ps.setString(12,employee.getHireDate().toString());
+            ps.setString(3, employee.getRole().toString());
+            ps.setString(4, employee.getEmail());
+            ps.setString(5, BCrypt.hashpw(employee.getPassword(), BCrypt.gensalt()));
+            ps.setString(6,employee.getAddress());
+            ps.setDouble(7,employee.getSalary());
+            ps.setString(8,employee.getHireDate().toString());
             ps.executeUpdate();
             System.out.println("Employee ajoutée !");
         } catch (SQLException e) {
@@ -163,36 +236,71 @@ public class UserService implements IService<User> {
         String req = "UPDATE User SET " +
                 "firstName = ?, " +
                 "lastName = ?, " +
-                "gender = ?, " +
                 "role = ?, " +
                 "email = ?, " +
-                "password = ?, " +
+                "address = ? ," +
+                "salary = ? ," +
+                "gender = ?," +
                 "profilePhoto = ?, " +
                 "birthdayDate = ?, " +
                 "phoneNumber = ? ," +
-                "address = ? ," +
-                "salary = ? ," +
-                "hireDate = ? "+
+                "hireDate = ? " +
                 "WHERE id = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
-            ps.setString(3, employee.getGender().toString());
-            ps.setString(4, employee.getRole().toString());
-            ps.setString(5, employee.getEmail());
-            ps.setString(6, employee.getPassword());
-            ps.setString(7, employee.getProfilePhoto());
-            ps.setString(8,employee.getBirthdayDate().toString());
-            ps.setString(9,employee.getPhoneNumber());
-            ps.setString(10,employee.getAddress());
-            ps.setDouble(11,employee.getSalary());
-            ps.setString(12,employee.getHireDate().toString());
-            ps.setInt(13,employee.getIdUser());
+            ps.setString(3, employee.getRole().toString());
+            ps.setString(4, employee.getEmail());
+            ps.setString(5,employee.getAddress());
+            ps.setDouble(6,employee.getSalary());
+            ps.setString(7,employee.getGender().toString());
+            ps.setString(8,employee.getProfilePhoto());
+            ps.setString(9,employee.getBirthdayDate().toString());
+            ps.setString(10,employee.getPhoneNumber());
+            ps.setString(11,employee.getHireDate().toString());
+            ps.setInt(12,employee.getIdUser());
             ps.executeUpdate();
             System.out.println("Employee updated !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Employee getEmployeeById(int id) {
+        String req = "SELECT * FROM User WHERE id = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setString(1, Integer.toString(id));
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                LocalDateTime birthDateTime = null;
+                LocalDateTime hireDateTime = null;
+                Date birthDate = rs.getDate("birthDayDate");
+                Date hireDate = rs.getDate("hireDate");
+                if (birthDate != null) {
+                    birthDateTime = rs.getDate("birthDayDate").toLocalDate().atStartOfDay();
+                }
+                if (hireDate != null) {
+                    hireDateTime = rs.getDate("hireDate").toLocalDate().atStartOfDay();
+                }
+                return new Employee(id,
+                                    rs.getString("firstName"),
+                                    rs.getString("lastName"),
+                                    getEnumOrNull(Gender.class, rs.getString("gender")),
+                                    getEnumOrNull(Role.class, rs.getString("role")),
+                                    rs.getString("email"),
+                                    rs.getString("profilePhoto"),
+                                    birthDateTime,
+                                    rs.getString("phoneNumber"),
+                                    rs.getString("address"),
+                                    rs.getDouble("salary"),
+                                    hireDateTime
+                            );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

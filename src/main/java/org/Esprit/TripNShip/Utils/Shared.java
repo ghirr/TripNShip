@@ -1,22 +1,26 @@
 package org.Esprit.TripNShip.Utils;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.util.Optional;
 
@@ -25,10 +29,42 @@ public class Shared {
     private static final String CHARS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
-    public static void switchScene(ActionEvent event, URL fxmlFile , String title) {
+    private static final String UPLOAD_DIR = "C:/xampp/htdocs/tripNship/";
+    private static final String BASE_URL = "http://localhost/tripNship/";
+    public static final String USERS_PATH = "Users/";
+
+    public static void switchScene(Event event, URL fxmlFile , String title) {
         try {
 
             Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(fxmlFile);
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setMaximized(false);
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.setTitle(title);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void switchScene(Event event, Parent root , String title) {
+            Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            primaryStage.setMaximized(false);
+            primaryStage.setScene(scene);
+            primaryStage.setMaximized(true);
+            primaryStage.setTitle(title);
+            primaryStage.show();
+        
+    }
+
+    public static void switchScene(Button btn, URL fxmlFile , String title) {
+        try {
+
+            Stage primaryStage = (Stage)  btn.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(fxmlFile);
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -78,14 +114,51 @@ public class Shared {
         }
     }
 
-    public static String generateRandomPassword() {
+    public static String generateRandomCode(int length) {
 
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < length; i++) {
             password.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
         return password.toString();
+    }
+
+    public static String uploadProfilePhoto(File file , String dirName) {
+
+        UserSession currentUser = UserSession.getInstance();
+
+        String uploadDir = UPLOAD_DIR + dirName;
+
+        String originalName = file.getName();
+        String extension = "";
+
+        int dotIndex = originalName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < originalName.length() - 1) {
+            extension = originalName.substring(dotIndex); // Includes the dot (e.g., ".jpg")
+        }
+
+        // Create filename using first and last name
+        String fileName = currentUser.getUserFirstName() + currentUser.getUserLastName() +"_"+ System.currentTimeMillis()+extension;
+
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+
+        try {
+            Path destination = Paths.get(uploadDir + fileName);
+            Files.copy(file.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Generate and save URL to database
+
+        return BASE_URL + dirName + fileName;
     }
 
 }

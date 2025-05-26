@@ -18,9 +18,7 @@
             <VBox alignment="CENTER" maxWidth="402.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="366.0" spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 10); -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
 
                 <ImageView fitHeight="150" fitWidth="220" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/logo.png" />
-                    </image>
+                    <Image url="@../images/logo.png"/>
                 </ImageView>
 
                 <Label style="-fx-font-size: 30px;  -fx-text-fill: #222;" text="Login" />

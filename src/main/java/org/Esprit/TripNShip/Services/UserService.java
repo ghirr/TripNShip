@@ -239,7 +239,12 @@ public class UserService implements IService<User> {
                 "role = ?, " +
                 "email = ?, " +
                 "address = ? ," +
-                "salary = ? " +
+                "salary = ? ," +
+                "gender = ?," +
+                "profilePhoto = ?, " +
+                "birthdayDate = ?, " +
+                "phoneNumber = ? ," +
+                "hireDate = ? " +
                 "WHERE id = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
@@ -249,7 +254,12 @@ public class UserService implements IService<User> {
             ps.setString(4, employee.getEmail());
             ps.setString(5,employee.getAddress());
             ps.setDouble(6,employee.getSalary());
-            ps.setInt(7,employee.getIdUser());
+            ps.setString(7,employee.getGender().toString());
+            ps.setString(8,employee.getProfilePhoto());
+            ps.setString(9,employee.getBirthdayDate().toString());
+            ps.setString(10,employee.getPhoneNumber());
+            ps.setString(11,employee.getHireDate().toString());
+            ps.setInt(12,employee.getIdUser());
             ps.executeUpdate();
             System.out.println("Employee updated !");
         } catch (SQLException e) {
@@ -257,4 +267,40 @@ public class UserService implements IService<User> {
         }
     }
 
+    public Employee getEmployeeById(int id) {
+        String req = "SELECT * FROM User WHERE id = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setString(1, Integer.toString(id));
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                LocalDateTime birthDateTime = null;
+                LocalDateTime hireDateTime = null;
+                Date birthDate = rs.getDate("birthDayDate");
+                Date hireDate = rs.getDate("hireDate");
+                if (birthDate != null) {
+                    birthDateTime = rs.getDate("birthDayDate").toLocalDate().atStartOfDay();
+                }
+                if (hireDate != null) {
+                    hireDateTime = rs.getDate("hireDate").toLocalDate().atStartOfDay();
+                }
+                return new Employee(id,
+                                    rs.getString("firstName"),
+                                    rs.getString("lastName"),
+                                    getEnumOrNull(Gender.class, rs.getString("gender")),
+                                    getEnumOrNull(Role.class, rs.getString("role")),
+                                    rs.getString("email"),
+                                    rs.getString("profilePhoto"),
+                                    birthDateTime,
+                                    rs.getString("phoneNumber"),
+                                    rs.getString("address"),
+                                    rs.getDouble("salary"),
+                                    hireDateTime
+                            );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

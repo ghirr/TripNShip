@@ -11,13 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
+import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AuthService;
 import org.Esprit.TripNShip.Utils.Shared;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.io.IOException;
 
@@ -79,10 +79,15 @@ public class LoginController {
         }
 
         try {
-            User utilisateur = utilisateurService.login(email,password);
-            if (utilisateur != null) {
-                // Verify the password using BCrypt
-                showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
+            User user = utilisateurService.login(email,password);
+            if (user != null) {
+                if(user.getRole()== Role.ADMIN){
+                    UserSession.initSession(user);
+                    Shared.switchScene(event,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
+                }
+                else{
+                    showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
+                }
 
             } else {
                 // Password is incorrect

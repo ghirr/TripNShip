@@ -17,8 +17,10 @@ public class EmailSender {
 
     private static final String FROM_EMAIL = "islem24762048@gmail.com";
     private static final String EMAIL_PASSWORD = "jmqi jkcf esrk ezig";
+    public static final String welcomeEmailTemplate = "src/main/resources/templates/email_template.html";
+    public static final String changePwdTemplate = "src/main/resources/templates/changePwd_template.html";
 
-    public static void accountEmail(String toEmail, String name , String password) {
+    public static void accountEmail(String toEmail, String name , String code, String template, String subject, String sender) {
 
 
         Properties props = new Properties();
@@ -34,18 +36,18 @@ public class EmailSender {
         });
 
         try {
-            String htmlTemplate = Files.readString(Paths.get("src/main/resources/templates/email_template.html"));
+            String htmlTemplate = Files.readString(Paths.get(template));
 
 // Replace placeholders
             htmlTemplate = htmlTemplate.replace("{{name}}", name);
-            htmlTemplate = htmlTemplate.replace("{{password}}", password);
+            htmlTemplate = htmlTemplate.replace("{{code}}", code);
             htmlTemplate = htmlTemplate.replace("{{image}}", "cid:logoImage"); // Make sure the src matches
 
 // Create the message
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(FROM_EMAIL, "HR Team"));
+            message.setFrom(new InternetAddress(FROM_EMAIL, sender));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-            message.setSubject("Welcome To TripNShip");
+            message.setSubject(subject);
 
 // Create HTML part
             MimeBodyPart htmlPart = new MimeBodyPart();
@@ -67,24 +69,9 @@ public class EmailSender {
             message.setContent(multipart);
             Transport.send(message);
             System.out.println("✅ HTML email with embedded image sent to " + toEmail);
-
-//            // Load HTML file and replace placeholders
-//            String htmlTemplate = Files.readString(Paths.get("src/main/resources/templates/email_template.html"));
-//
-//            htmlTemplate = htmlTemplate.replace("{{name}}", name);
-//            htmlTemplate = htmlTemplate.replace("{{password}}", password);
-//
-//            Message message = new MimeMessage(session);
-//            message.setFrom(new InternetAddress(FROM_EMAIL, "HR Team"));
-//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-//            message.setSubject("Welcome To TripNShip");
-//
-//            message.setContent(htmlTemplate, "text/html; charset=utf-8");
-//
-//            Transport.send(message);
-            System.out.println("✅ HTML email sent to " + toEmail);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

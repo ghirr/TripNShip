@@ -2,63 +2,89 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
-import org.Esprit.TripNShip.Entities.Client;
-import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AuthService;
-import org.Esprit.TripNShip.Utils.Shared;
-
-import java.io.IOException;
 
 import static org.Esprit.TripNShip.Utils.Shared.showAlert;
+import static org.Esprit.TripNShip.Utils.Shared.switchScene;
 
-public class SignUpController {
+public class ResetPasswordController {
+    @FXML
+    public PasswordField newPasswordField,confirmPasswordField;
+    @FXML
+    public TextField textNewPasswordField;
+    @FXML
+    public Button toggleNewPasswordButton,resetButton;
+    @FXML
+    public HBox strengthMeterContainer;
+    @FXML
+    public Region strengthSection1,strengthSection2,strengthSection3,strengthSection4,strengthSection5;
+    @FXML
+    public Label strengthLabel,errorLabel;
+    @FXML
+    public ImageView eyeIcon;
 
-    public TextField firstNameField,lastNameField,emailField;
-
-    @FXML
-    private ImageView eyeIcon;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private TextField passwordText;
-    @FXML
-    private Region strengthSection1,strengthSection2,strengthSection3,strengthSection4,strengthSection5;
-    @FXML
-    private Label strengthLabel;
+    private String phoneNumber;
 
     private boolean isPasswordVisible ;
-
     private int strength;
 
+    private AuthService authService = new AuthService();
 
-    public void switchToLogin(ActionEvent actionEvent) {
-        Shared.switchScene(actionEvent,getClass().getResource("/fxml/login.fxml"),"Login");
+
+
+    @FXML
+    private void resetPassword(ActionEvent event) {
+        String newPassword = isPasswordVisible ? textNewPasswordField.getText().trim() : newPasswordField.getText().trim();
+        String confirmPassword = confirmPasswordField.getText().trim();
+
+
+        // Perform validations
+        if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            showError("Please fill all fields !");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showError("Check your passwords");
+            return;
+        }
+
+        // Check if password is strong enough (at least medium strength)
+        if (strength <=3) {
+            showError("Kindly use stronger password");
+            return;
+        }
+
+        System.out.println("mriguel");
+        if(authService.updatePasswordByPhoneNumber(phoneNumber, newPassword)) {
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Password successfully reset it");
+            switchScene(event,getClass().getResource("/fxml/login.fxml"),"Login");
+        }else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Something went wrong !");
+        }
+
     }
 
+    @FXML
     public void togglePasswordVisibility(ActionEvent actionEvent) {
         if (!isPasswordVisible) {
-            passwordText.setText(passwordField.getText());
-            passwordText.setVisible(true);
-            passwordField.setVisible(false);
-            passwordText.requestFocus();
-            passwordText.positionCaret(passwordField.getText().length());
+            textNewPasswordField.setText(newPasswordField.getText());
+            textNewPasswordField.setVisible(true);
+            newPasswordField.setVisible(false);
+            textNewPasswordField.requestFocus();
+            textNewPasswordField.positionCaret(newPasswordField.getText().length());
         } else {
-            passwordField.setText(passwordText.getText());
-            passwordField.setVisible(true);
-            passwordText.setVisible(false);
-            passwordField.requestFocus();
-            passwordField.positionCaret(passwordText.getText().length());
+            newPasswordField.setText(textNewPasswordField.getText());
+            newPasswordField.setVisible(true);
+            textNewPasswordField.setVisible(false);
+            newPasswordField.requestFocus();
+            newPasswordField.positionCaret(textNewPasswordField.getText().length());
         }
         updateEyeIcon();
     }
@@ -72,7 +98,7 @@ public class SignUpController {
     @FXML
     private void updatePasswordStrength(KeyEvent keyEvent) {
 
-        String text = isPasswordVisible? passwordText.getText() : passwordField.getText();
+        String text = isPasswordVisible? textNewPasswordField.getText() : newPasswordField.getText();
         strength = calculatePasswordStrength(text);
 
         // Reset all to default with finer height
@@ -107,9 +133,9 @@ public class SignUpController {
             strengthLabel.setStyle("-fx-text-fill: #0074D9; -fx-padding: 5 0 0 0;");
         }
         if (strength >= 5) {
-                strengthSection5.setStyle("-fx-background-color: #B7E5B4; -fx-pref-height: 3; -fx-pref-width: 50;");
-                strengthLabel.setText("Très fort!");
-                strengthLabel.setStyle("-fx-text-fill: #0074D9; -fx-padding: 5 0 0 0;");
+            strengthSection5.setStyle("-fx-background-color: #B7E5B4; -fx-pref-height: 3; -fx-pref-width: 50;");
+            strengthLabel.setText("Très fort!");
+            strengthLabel.setStyle("-fx-text-fill: #0074D9; -fx-padding: 5 0 0 0;");
         }
     }
 
@@ -147,41 +173,14 @@ public class SignUpController {
         return Math.min(5, strength);
     }
 
-    public void handleGoogleSignUp(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login_with_google.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/GoogleLogo.png")));
-            stage.setTitle("SignUp with Google");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void showError(String message) {
+        errorLabel.setText(message);
+        errorLabel.setStyle("-fx-text-fill: red;");
     }
 
-    public void signUp(ActionEvent actionEvent) {
-        String email = emailField.getText().trim();
-        String password = passwordField.isVisible() ? passwordField.getText() : passwordText.getText();
-        String firstName = firstNameField.getText().trim();
-        String lastName = lastNameField.getText().trim();
-
-        if(email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() ) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please fill all fields !");
-            return;
-        }
-
-        if (strength <=3){
-            showAlert(Alert.AlertType.ERROR, "PasswordStrength", "Kindly use stronger password");
-            return;
-        }
-
-        AuthService authService = new AuthService();
-        authService.signUp(new Client(firstName, lastName,email , password));
-        User user = authService.login(email,password);
-        System.out.println(user.getEmail());
-        showAlert(Alert.AlertType.CONFIRMATION,"Success","Sign Up correct");
-
+    public void setPhoneNumber(String phone) {
+        phoneNumber=phone;
     }
+
+
 }

@@ -63,9 +63,7 @@
                <Button fx:id="googleSignUpButton" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign up using Google" onAction="#handleGoogleSignUp">
                   <graphic>
                      <ImageView fitHeight="20.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../images/GoogleLogo.png" />
-                        </image>
+                        <Image url="@../images/GoogleLogo.png"/>
                      </ImageView>
                   </graphic>
                </Button>

@@ -21,14 +21,10 @@ public class AccommodationBooking {
         this.status = status;
     }
 
-//    public AccommodationBooking(int idBooking, String emailUser, Room room, java.sql.Date startDate, java.sql.Date endDate, BookingStatus status) {
-//        this.idBooking = idBooking;
-//        this.user.setEmail(emailUser);
-//        this.room = room;
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//        this.status = status;
-//    }
+    public AccommodationBooking() {
+
+    }
+
 
     public int getIdBooking() {
         return idBooking;

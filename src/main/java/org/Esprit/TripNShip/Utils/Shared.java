@@ -36,6 +36,8 @@ public class Shared {
     private static final String UPLOAD_DIR = "C:/xampp/htdocs/tripNship/";
     private static final String BASE_URL = "http://localhost/tripNship/";
     public static final String USERS_PATH = "Users/";
+    public static final String ROOMS_PATH = "Rooms/";
+    public static final String ACCOMMODATION_PATH = "Accommodation/";
 
     public static void switchScene(Event event, URL fxmlFile , String title) {
         try {
@@ -143,7 +145,7 @@ public class Shared {
         }
 
         // Create filename using first and last name
-        String fileName = currentUser.getUserFirstName() + currentUser.getUserLastName() +"_"+ System.currentTimeMillis()+extension;
+        String fileName =  System.currentTimeMillis()+extension;
 
         File directory = new File(uploadDir);
         if (!directory.exists()) {

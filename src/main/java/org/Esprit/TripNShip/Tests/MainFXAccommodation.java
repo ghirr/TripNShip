@@ -13,7 +13,7 @@ public class MainFXAccommodation extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/Table Room.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/RoomListView.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -26,4 +26,5 @@ public class MainFXAccommodation extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

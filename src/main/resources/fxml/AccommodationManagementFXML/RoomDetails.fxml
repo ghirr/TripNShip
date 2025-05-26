@@ -1,0 +1,28 @@
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Esprit.TripNShip.Controllers.RoomDetailsController">
+    <VBox spacing="15" alignment="TOP_CENTER" style="-fx-padding: 20;"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <!-- Image -->
+        <ImageView fx:id="accommodationImage" fitWidth="400" fitHeight="250" preserveRatio="true" />
+
+        <!-- Informations Hébergement -->
+        <Label fx:id="accommodationNameLabel" style="-fx-font-size: 16px;" />
+        <Label fx:id="accommodationTypeLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="accommodationAddressLabel" style="-fx-font-size: 14px;" />
+
+        <!-- Ligne de séparation -->
+        <Label text="" />
+
+        <!-- Informations Chambre -->
+        <Label fx:id="roomNameLabel" style="-fx-font-size: 16px;" />
+        <Label fx:id="roomTypeLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="availabilityLabel" style="-fx-font-size: 14px;" />
+
+    </VBox>
+</AnchorPane>

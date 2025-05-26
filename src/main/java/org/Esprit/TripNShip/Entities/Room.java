@@ -12,9 +12,6 @@ public class Room {
     private boolean availability;
     private String photosRoom; // Liste des chemins ou URLs des photos
 
-//    public Room() {
-//        this.photosRoom = new ArrayList<>();
-//    }
 
     public Room(int idRoom, Accommodation accommodation, TypeRoom type, String nameRoom, double price, boolean availability, String photosRoom) {
         this.idRoom = idRoom;
@@ -29,14 +26,6 @@ public class Room {
     public Room() {
 
     }
-
-//    // Constructeur simplifié (optionnel)
-//    public Room(int idRoom, String nameRoom, TypeRoom typeRoom) {
-//        this.idRoom = idRoom;
-//        this.nameRoom = nameRoom;
-//        this.type = typeRoom;
-//        this.photosRoom = new ArrayList<>();
-//    }
 
     // Getters et setters
 

@@ -26,18 +26,14 @@ public class AccommodationService implements IService<Accommodation> {
 
     @Override
     public void add(Accommodation accommodation) {
-        String req = "INSERT INTO Accommodation (type, name, address, priceNight, capacity, photos) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO Accommodation (type, name, address, capacity, photosAccommodation) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setString(1, accommodation.getType().name());
             ps.setString(2, accommodation.getName());
             ps.setString(3, accommodation.getAddress());
-            ps.setDouble(4, accommodation.getPriceNight());
-            ps.setInt(5, accommodation.getCapacity());
-
-            // JSON serialize list of photos
-            String photosJson = gson.toJson(accommodation.getPhotos());
-            ps.setString(6, photosJson);
+            ps.setInt(4, accommodation.getCapacity());
+            ps.setString(5, accommodation.getPhotosAccommodation());
 
             ps.executeUpdate();
             System.out.println("✅ Accommodation added!");
@@ -48,22 +44,24 @@ public class AccommodationService implements IService<Accommodation> {
 
     @Override
     public void update(Accommodation accommodation) {
-        String req = "UPDATE Accommodation SET type=?, name=?, address=?, capacity=?, priceNight=?, photos=? WHERE idAccommodation=?";
+        String req = "UPDATE Accommodation SET type=?, name=?, address=?, capacity=?, photosAccommodation=? WHERE idAccommodation=?";
 
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setString(1, accommodation.getType().name());
             ps.setString(2, accommodation.getName());
             ps.setString(3, accommodation.getAddress());
             ps.setInt(4, accommodation.getCapacity());
-            ps.setDouble(5, accommodation.getPriceNight());
 
-            String photosJson = gson.toJson(accommodation.getPhotos());
-            ps.setString(6, photosJson);
+            //String photosJson = gson.toJson(accommodation.getPhotosAccommodation());
+            ps.setString(5, accommodation.getPhotosAccommodation());
 
-            ps.setInt(7, accommodation.getIdAccommodation());
+            ps.setInt(6, accommodation.getIdAccommodation());
 
-            ps.executeUpdate();
-            System.out.println("✅ Accommodation updated!");
+            //ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("✅ Accommodation updated!");
+            }
         } catch (SQLException e) {
             System.out.println("❌ Error while updating accommodation: " + e.getMessage());
         }
@@ -85,26 +83,19 @@ public class AccommodationService implements IService<Accommodation> {
     public List<Accommodation> getAll() {
         List<Accommodation> accommodations = new ArrayList<>();
         String req = "SELECT * FROM Accommodation";
-
+        String folderPath = "C:\\Users\\YJAZIRI\\Desktop\\AllRoomImage";
+        String baseUrl = "http://localhost/tripnship/roomImages/";
         try (PreparedStatement ps = connection.prepareStatement(req);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                String photosJson = rs.getString("photos");
-
-                Type listType = new TypeToken<List<String>>() {}.getType();
-                List<String> photos = (photosJson != null && !photosJson.isEmpty())
-                        ? gson.fromJson(photosJson, listType)
-                        : new ArrayList<>();
-
                 Accommodation accommodation = new Accommodation(
                         rs.getInt("idAccommodation"),
                         TypeAccommodation.valueOf(rs.getString("type").toUpperCase()),
                         rs.getString("name"),
                         rs.getString("address"),
-                        rs.getFloat("priceNight"),
                         rs.getInt("capacity"),
-                        photos
+                        rs.getString("photosAccommodation") // simple String, pas de Gson
                 );
                 accommodations.add(accommodation);
             }
@@ -115,25 +106,28 @@ public class AccommodationService implements IService<Accommodation> {
         return accommodations;
     }
 
-    // ✅ Méthode pour récupérer les chemins des photos dans un dossier
-    public List<String> getImagePathsFromDirectory(String directoryPath) {
-        List<String> photos = new ArrayList<>();
-        File dir = new File(directoryPath);
 
-        if (dir.exists() && dir.isDirectory()) {
-            for (File file : dir.listFiles()) {
-                if (file.isFile() && isImage(file.getName())) {
-                    photos.add(file.getAbsolutePath());
+    // ✅ Méthode pour récupérer les chemins des photos dans un dossier
+    private String findMatchingImageFileName(String roomName, String folderPath) {
+        File folder = new File(folderPath);
+        if (!folder.exists() || !folder.isDirectory()) return null;
+
+        File[] files = folder.listFiles((dir, name) -> {
+            String lower = name.toLowerCase();
+            return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png")
+                    || lower.endsWith(".bmp") || lower.endsWith(".gif");
+        });
+
+        if (files != null) {
+            for (File file : files) {
+                String fileNameWithoutExtension = file.getName().replaceFirst("[.][^.]+$", "");
+                if (fileNameWithoutExtension.equalsIgnoreCase(roomName)) {
+                    return file.getName();
                 }
             }
         }
-        return photos;
+
+        return null;
     }
 
-    // ✅ Vérifie si le fichier est une image
-    private boolean isImage(String filename) {
-        String lower = filename.toLowerCase();
-        return lower.endsWith(".jpg") || lower.endsWith(".jpeg")
-                || lower.endsWith(".png") || lower.endsWith(".gif");
-    }
 }

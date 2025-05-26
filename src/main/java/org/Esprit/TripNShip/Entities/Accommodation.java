@@ -8,23 +8,24 @@ public class Accommodation {
     private TypeAccommodation type;
     private String name;
     private String address;
-    private float priceNight;
     private int capacity;
+    private String photosAccommodation;
     private List<Integer> idRoom = new ArrayList<>();
-    private List<String> photos = new ArrayList<>(); // Liste de chemins d'images
 
-    public Accommodation(int idAccommodation, TypeAccommodation type, String name, String address, float priceNight, int capacity, List<String> photos) {
+    public Accommodation(int idAccommodation, TypeAccommodation type, String name, String address,  int capacity, String photosAccommodation) {
         this.idAccommodation = idAccommodation;
         this.type = type;
         this.name = name;
         this.address = address;
-        this.priceNight = priceNight;
         this.capacity = capacity;
-        this.photos = photos;
+        this.photosAccommodation = photosAccommodation;
     }
 
     public Accommodation() {
     }
+
+
+
 
     public int getIdAccommodation() {
         return idAccommodation;
@@ -58,13 +59,6 @@ public class Accommodation {
         this.address = address;
     }
 
-    public float getPriceNight() {
-        return priceNight;
-    }
-
-    public void setPriceNight(float priceNight) {
-        this.priceNight = priceNight;
-    }
 
     public int getCapacity() {
         return capacity;
@@ -82,12 +76,12 @@ public class Accommodation {
         this.idRoom = idRoom;
     }
 
-    public List<String> getPhotos() {
-        return photos;
+    public String getPhotosAccommodation() {
+        return photosAccommodation;
     }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
+    public void setPhotosAccommodation(String photosAccommodation) {
+        this.photosAccommodation = photosAccommodation;
     }
 
     @Override
@@ -97,10 +91,9 @@ public class Accommodation {
                 ", type=" + type +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", priceNight=" + priceNight +
                 ", capacity=" + capacity +
                 ", idRoom=" + idRoom +
-                ", photos=" + photos +
+                ", photosAccommodation=" + photosAccommodation +
                 '}';
     }
 }

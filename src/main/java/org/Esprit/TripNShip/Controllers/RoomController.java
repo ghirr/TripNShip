@@ -4,17 +4,26 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Accommodation;
 import org.Esprit.TripNShip.Entities.Room;
 import org.Esprit.TripNShip.Entities.TypeRoom;
 import org.Esprit.TripNShip.Services.AccommodationService;
 import org.Esprit.TripNShip.Services.RoomService;
+import org.Esprit.TripNShip.Utils.Shared;
 
+import java.io.File;
 import java.util.List;
+
+import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 public class RoomController {
 
+    public ImageView roomImageView;
+    public Button buttonPhoto;
     @FXML private TextField nameField;
     @FXML private TextField priceField;
     @FXML private ChoiceBox<String> accommodationTypeChoiceBox;
@@ -26,6 +35,7 @@ public class RoomController {
     private final RoomService roomService = new RoomService();
     private final AccommodationService accommodationService = new AccommodationService();
     private List<Accommodation> accommodations;
+    private File selectedPhoto ;
 
     public void setRoom(Room room) {
         this.room = room;
@@ -111,11 +121,14 @@ public class RoomController {
             room = new Room();
         }
 
+        String Photo = Shared.uploadProfilePhoto(selectedPhoto,Shared.ROOMS_PATH);
+
         room.setNameRoom(nameField.getText());
         room.setType(typeRoomEnum);
         room.setPrice(price);
         room.setAvailability(availability);
         room.setAccommodation(selectedAccommodation);
+        room.setPhotosRoom(Photo);
 
         if (room.getIdRoom() == 0) {
             roomService.add(room);
@@ -142,5 +155,28 @@ public class RoomController {
 
     public void setRoomToEdit(Room room) {
         setRoom(room);
+    }
+
+    public void selectPhoto(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Photo");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        Stage stage = (Stage) buttonPhoto.getScene().getWindow();
+        selectedPhoto = fileChooser.showOpenDialog(stage);
+
+        if (selectedPhoto != null) {
+            System.out.println("Selected photo: " + selectedPhoto.getAbsolutePath());
+            try {
+                Image image = new Image(selectedPhoto.toURI().toString());
+                roomImageView.setImage(image);
+            } catch (Exception e) {
+                System.err.println("Error loading selected image: " + e.getMessage());
+                e.printStackTrace();
+                Shared.showAlert(Alert.AlertType.ERROR, "Error", "Could not load the selected image.");
+            }
+        }
     }
 }

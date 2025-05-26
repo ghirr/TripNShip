@@ -4,12 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Accommodation;
 import org.Esprit.TripNShip.Entities.TypeAccommodation;
 import org.Esprit.TripNShip.Services.AccommodationService;
+import org.Esprit.TripNShip.Utils.Shared;
+
+import java.io.File;
+import static org.Esprit.TripNShip.Utils.Shared.showAlert;
+
 
 public class AccommodationController {
+    public ImageView accommodationImageView;
+    public Button buttonPhoto;
 
     @FXML
     private TextField nameField;
@@ -18,16 +28,7 @@ public class AccommodationController {
     private TextField addressField;
 
     @FXML
-    private Button saveButton;
-
-    @FXML
-    private TableView<Accommodation> accommodationsTable;
-
-    @FXML
     private ChoiceBox<String> typeChoiceBox;
-
-    @FXML
-    private TextField priceField;
 
     @FXML
     private TextField capacityField;
@@ -36,12 +37,14 @@ public class AccommodationController {
 
     private final AccommodationService accommodationService = new AccommodationService();
 
+    private File selectedPhoto ;
+
     public void setAccommodation(Accommodation accommodation) {
+
         this.accommodation = accommodation;
         if (accommodation != null) {
             nameField.setText(accommodation.getName());
             addressField.setText(accommodation.getAddress());
-            priceField.setText(String.valueOf(accommodation.getPriceNight()));
             capacityField.setText(String.valueOf(accommodation.getCapacity()));
             typeChoiceBox.setValue(accommodation.getType().name());
         }
@@ -49,12 +52,13 @@ public class AccommodationController {
 
     @FXML
     private void initialize() {
+
         typeChoiceBox.setItems(FXCollections.observableArrayList("HOTEL", "AIRBNB", "GUESTHOUSE"));
         typeChoiceBox.setValue("HOTEL");
     }
 
     private void closeWindow() {
-        ((Stage) priceField.getScene().getWindow()).close();
+        ((Stage) capacityField.getScene().getWindow()).close();
     }
 
     public void saveAccommodation(ActionEvent actionEvent) {
@@ -62,7 +66,6 @@ public class AccommodationController {
         String name = nameField.getText().trim();
         String address = addressField.getText().trim();
         String typeValue = typeChoiceBox.getValue();
-        String priceText = priceField.getText().trim();
         String capacityText = capacityField.getText().trim();
 
         // Vérification des champs
@@ -78,18 +81,6 @@ public class AccommodationController {
 
         if (typeValue == null || typeValue.isEmpty()) {
             showError("Please select a type of accommodation.");
-            return;
-        }
-
-        float price;
-        try {
-            price = Float.parseFloat(priceText);
-            if (price <= 0) {
-                showError("Price must be a positive number.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            showError("Please enter a valid price.");
             return;
         }
 
@@ -117,16 +108,16 @@ public class AccommodationController {
         if (accommodation == null) {
             accommodation = new Accommodation();
         }
+        String Photo = Shared.uploadProfilePhoto(selectedPhoto,Shared.ACCOMMODATION_PATH);
 
         accommodation.setName(name);
         accommodation.setAddress(address);
         accommodation.setType(typeEnum);
-        accommodation.setPriceNight(price);
         accommodation.setCapacity(capacity);
+        accommodation.setPhotosAccommodation(Photo);
 
         if (accommodation.getIdAccommodation() == 0) {
             accommodationService.add(accommodation);
-            TableAccommodationController.getInstance().loadAccommodationsFromDatabase();
             showSuccessMessage("Accommodation added successfully!");
         } else {
             accommodationService.update(accommodation);
@@ -151,4 +142,28 @@ public class AccommodationController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void selectPhoto(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Photo");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        Stage stage = (Stage) buttonPhoto.getScene().getWindow();
+        selectedPhoto = fileChooser.showOpenDialog(stage);
+
+        if (selectedPhoto != null) {
+            System.out.println("Selected photo: " + selectedPhoto.getAbsolutePath());
+            try {
+                Image image = new Image(selectedPhoto.toURI().toString());
+                accommodationImageView.setImage(image);
+            } catch (Exception e) {
+                System.err.println("Error loading selected image: " + e.getMessage());
+                e.printStackTrace();
+                Shared.showAlert(Alert.AlertType.ERROR, "Error", "Could not load the selected image.");
+            }
+        }
+    }
 }
+

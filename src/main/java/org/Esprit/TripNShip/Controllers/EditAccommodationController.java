@@ -1,92 +1,96 @@
 package org.Esprit.TripNShip.Controllers;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Accommodation;
 import org.Esprit.TripNShip.Entities.TypeAccommodation;
 import org.Esprit.TripNShip.Services.AccommodationService;
+import org.Esprit.TripNShip.Utils.Shared;
+
+import java.io.File;
 
 public class EditAccommodationController {
 
+    @FXML private ImageView accommodationImageView;
     @FXML private TextField nameField;
     @FXML private TextField addressField;
     @FXML private ChoiceBox<String> typeChoiceBox;
-    @FXML private TextField priceField;
     @FXML private TextField capacityField;
-    @FXML private Button editAccommodationButton;
 
     private Accommodation accommodation;
     private final AccommodationService accommodationService = new AccommodationService();
+    private File selectedPhoto;
 
-    private Runnable onAccommodationUpdated;
-    private Stage stage;
+    public void setAccommodation(Accommodation accommodation) {
+        this.accommodation = accommodation;
+
+        if (accommodation != null) {
+            nameField.setText(accommodation.getName());
+            addressField.setText(accommodation.getAddress());
+            typeChoiceBox.setValue(accommodation.getType().name());
+            capacityField.setText(String.valueOf(accommodation.getCapacity()));
+
+            String photoPath = accommodation.getPhotosAccommodation();
+
+            if (photoPath != null && !photoPath.isEmpty()) {
+                try {
+                    Image image;
+                    if (photoPath.startsWith("http://") || photoPath.startsWith("https://")) {
+                        image = new Image(photoPath, true);
+                    } else {
+                        File file = new File(photoPath);
+                        if (!file.exists()) {
+                            System.out.println("Photo file not found locally: " + file.getAbsolutePath());
+                            return;
+                        }
+                        image = new Image(file.toURI().toString());
+                    }
+                    accommodationImageView.setImage(image);
+                    System.out.println("Photo loaded successfully.");
+                } catch (Exception e) {
+                    System.out.println("Failed to load image: " + e.getMessage());
+                }
+            } else {
+                System.out.println("No photo path provided.");
+            }
+        }
+    }
+
 
     @FXML
     private void initialize() {
         typeChoiceBox.setItems(FXCollections.observableArrayList("HOTEL", "AIRBNB", "GUESTHOUSE"));
     }
 
-    public void setAccommodation(Accommodation accommodation) {
-        this.accommodation = accommodation;
-        if (accommodation != null) {
-            nameField.setText(accommodation.getName());
-            addressField.setText(accommodation.getAddress());
-            typeChoiceBox.setValue(accommodation.getType().name());
-            priceField.setText(String.valueOf(accommodation.getPriceNight()));
-            capacityField.setText(String.valueOf(accommodation.getCapacity()));
-        }
-    }
-
-    public void setOnAccommodationUpdated(Runnable callback) {
-        this.onAccommodationUpdated = callback;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     @FXML
-    public void setAccommodationToEdit(ActionEvent actionEvent) {
+    private void updateAccommodation() {
         if (accommodation == null) {
-            showAlert(Alert.AlertType.ERROR, "No accommodation selected for editing.");
+            showError("No accommodation selected for editing.");
             return;
         }
 
-        // Lecture des valeurs
         String name = nameField.getText().trim();
         String address = addressField.getText().trim();
         String typeValue = typeChoiceBox.getValue();
-        String priceText = priceField.getText().trim();
         String capacityText = capacityField.getText().trim();
 
-        // Contrôle de validité des champs
         if (name.isEmpty() || !name.matches("[a-zA-Z0-9\\s]+")) {
-            showAlert(Alert.AlertType.ERROR, "Please enter a valid name (letters and numbers only).");
+            showError("Please enter a valid name (letters and numbers only).");
             return;
         }
 
         if (address.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Address cannot be empty.");
+            showError("Address cannot be empty.");
             return;
         }
 
         if (typeValue == null || typeValue.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Please select a type of accommodation.");
-            return;
-        }
-
-        float price;
-        try {
-            price = Float.parseFloat(priceText);
-            if (price <= 0) {
-                showAlert(Alert.AlertType.ERROR, "Price must be a positive number.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Please enter a valid price.");
+            showError("Please select a type of accommodation.");
             return;
         }
 
@@ -94,11 +98,11 @@ public class EditAccommodationController {
         try {
             capacity = Integer.parseInt(capacityText);
             if (capacity <= 0) {
-                showAlert(Alert.AlertType.ERROR, "Capacity must be a positive integer.");
+                showError("Capacity must be a positive integer.");
                 return;
             }
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Please enter a valid capacity.");
+            showError("Please enter a valid capacity.");
             return;
         }
 
@@ -106,50 +110,69 @@ public class EditAccommodationController {
         try {
             typeEnum = TypeAccommodation.valueOf(typeValue);
         } catch (IllegalArgumentException e) {
-            showAlert(Alert.AlertType.ERROR, "Invalid accommodation type selected.");
+            showError("Invalid accommodation type selected.");
             return;
         }
 
-        // Mise à jour
         try {
             accommodation.setName(name);
             accommodation.setAddress(address);
             accommodation.setType(typeEnum);
-            accommodation.setPriceNight(price);
             accommodation.setCapacity(capacity);
 
+            // ✅ Mise à jour de la photo
+            if (selectedPhoto != null) {
+                String uploadedPath = Shared.uploadProfilePhoto(selectedPhoto, Shared.ACCOMMODATION_PATH);
+                accommodation.setPhotosAccommodation(uploadedPath);
+            }
+
             accommodationService.update(accommodation);
-            handleUpdate();
+
+            showInfo("Accommodation updated successfully!");
+            closeWindow();
 
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error while updating accommodation.");
+            showError("Error while updating accommodation: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void handleUpdate() {
-        if (onAccommodationUpdated != null) {
-            onAccommodationUpdated.run();
-        }
+    @FXML
+    private void choosePhoto() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Accommodation Photo");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
 
-        showAlert(Alert.AlertType.INFORMATION, "Accommodation updated successfully.");
+        Stage stage = (Stage) nameField.getScene().getWindow();
+        selectedPhoto = fileChooser.showOpenDialog(stage);
 
-        if (stage != null) {
-            stage.close();
-        } else {
-            closeWindow();
+        if (selectedPhoto != null) {
+            try {
+                Image image = new Image(selectedPhoto.toURI().toString());
+                accommodationImageView.setImage(image);
+            } catch (Exception e) {
+                showError("Could not load the selected image.");
+            }
         }
     }
 
     private void closeWindow() {
-        ((Stage) priceField.getScene().getWindow()).close();
+        ((Stage) nameField.getScene().getWindow()).close();
     }
 
-    private void showAlert(Alert.AlertType alertType, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle("Accommodation");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 }

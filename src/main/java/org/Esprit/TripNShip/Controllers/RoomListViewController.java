@@ -37,17 +37,11 @@ public class RoomListViewController {
                 RoomCardController controller = loader.getController();
                 controller.setRoom(room);
 
-                controller.detailButton.setOnAction(e -> {
-                    System.out.println("➡️ Détail de : " + room.getNameRoom());
-                });
+                controller.detailButton.setOnAction(e -> openRoomDetails(room));
+
 
                 controller.bookingButton.setOnAction(e -> {
                     openBookingWindow(room);
-                });
-
-                // Gestion du bouton Edit
-                controller.editBookingButton.setOnAction(e -> {
-                    openEditBookingWindow(room);
                 });
 
                 roomGridPane.add(card, col, row);
@@ -68,10 +62,8 @@ public class RoomListViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/AccommodationBooking.fxml"));
             Parent root = loader.load();
-
-            // Si besoin, passer la room au contrôleur booking
-            // AccommodationBookingController bookingController = loader.getController();
-            // bookingController.setRoom(room);
+            AccommodationBookingController controller = loader.getController();
+            controller.setRoom(room);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -82,23 +74,25 @@ public class RoomListViewController {
             e.printStackTrace();
         }
     }
-
-    private void openEditBookingWindow(Room room) {
+    @FXML
+    private void openRoomDetails(Room room) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/EditAccommodationBooking.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/RoomDetails.fxml"));
             Parent root = loader.load();
 
-            // Récupérer le contrôleur et lui passer la room pour édition
-            EditAccommodationBookingController editController = loader.getController();
-            editController.setRoom(room);
+            RoomDetailsController controller = loader.getController();
+            controller.setRoom(room);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Modifier la réservation pour : " + room.getNameRoom());
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            stage.setTitle("Room Details");
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
 }
+

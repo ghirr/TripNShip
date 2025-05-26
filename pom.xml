@@ -87,8 +87,6 @@
             <version>3.0.0</version>
         </dependency>
 
-
-
         <!-- Gson: JSON parser -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -96,6 +94,7 @@
             <version>2.9.0</version>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

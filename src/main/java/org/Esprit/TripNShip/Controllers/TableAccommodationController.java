@@ -1,5 +1,6 @@
 package org.Esprit.TripNShip.Controllers;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
@@ -22,6 +25,7 @@ import java.util.List;
 
 public class TableAccommodationController {
 
+    @FXML private TableColumn<Accommodation, ImageView> photosAccommodationColumn;
     @FXML private ComboBox<String> entriesComboBox;
     @FXML private ComboBox<String> typeComboBox; // ComboBox pour filtrer par type
     @FXML private Region spacer;
@@ -31,7 +35,6 @@ public class TableAccommodationController {
     @FXML private TableColumn<Accommodation, TypeAccommodation> typeColumn;
     @FXML private TableColumn<Accommodation, String> nameColumn;
     @FXML private TableColumn<Accommodation, String> addressColumn;
-    @FXML private TableColumn<Accommodation, Float> priceColumn;
     @FXML private TableColumn<Accommodation, Integer> capacityColumn;
     @FXML private TableColumn<Accommodation, Void> actionColumn;
 
@@ -53,8 +56,15 @@ public class TableAccommodationController {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("priceNight"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+        photosAccommodationColumn.setCellValueFactory(cellData -> {
+            String imagePath = cellData.getValue().getPhotosAccommodation();
+            Image image = new Image(imagePath);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
+            return new SimpleObjectProperty<>(imageView);
+        });
 
         // Charger les données des accommodations depuis la base de données
         loadAccommodationsFromDatabase();
@@ -92,6 +102,7 @@ public class TableAccommodationController {
         List<Accommodation> accommodations = accommodationService.getAll();
         accommodationList.setAll(accommodations); // Mettre à jour la liste observable
         accommodationTable.setItems(accommodationList); // Recharger la table
+        accommodationTable.refresh(); // Forcer le rafraîchissement
     }
 
     // Filtrer les accommodations par nom, adresse ou type
@@ -109,8 +120,6 @@ public class TableAccommodationController {
             }
             accommodationTable.setItems(filteredList);
         }
-
-        // Rafraîchir la colonne Actions
         accommodationTable.refresh();
     }
 
@@ -118,13 +127,13 @@ public class TableAccommodationController {
     private void filterAccommodationsByType(String type) {
         ObservableList<Accommodation> filteredList = FXCollections.observableArrayList();
         for (Accommodation accommodation : accommodationList) {
-            // Remplacer les espaces dans les types d'hébergement
             String accommodationType = accommodation.getType().name().replaceAll(" ", "_");
             if (accommodationType.equalsIgnoreCase(type.replaceAll(" ", "_"))) {
                 filteredList.add(accommodation);
             }
         }
-        accommodationTable.setItems(filteredList); // Mettre à jour la table avec les filtres
+        accommodationTable.setItems(filteredList);
+        accommodationTable.refresh();
     }
 
     // Configurer les boutons d'édition et de suppression dans la colonne d'actions
@@ -135,17 +144,14 @@ public class TableAccommodationController {
             private final HBox buttonsContainer = new HBox(5, editButton, deleteButton);
 
             {
-                // Style des boutons
                 editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 5;");
                 deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5;");
 
-                // Action d'édition
                 editButton.setOnAction(event -> {
                     Accommodation accommodation = getTableView().getItems().get(getIndex());
                     handleEditAccommodation(accommodation);
                 });
 
-                // Action de suppression avec confirmation
                 deleteButton.setOnAction(event -> {
                     Accommodation accommodation = getTableView().getItems().get(getIndex());
                     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -155,8 +161,8 @@ public class TableAccommodationController {
                     confirmationAlert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.OK) {
                             try {
-                                accommodationService.delete(accommodation); // Supprimer
-                                loadAccommodationsFromDatabase(); // Recharger la liste après suppression
+                                accommodationService.delete(accommodation);
+                                loadAccommodationsFromDatabase();
                             } catch (Exception e) {
                                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                                 errorAlert.setTitle("Error");
@@ -177,53 +183,63 @@ public class TableAccommodationController {
         });
     }
 
-    // Ouvrir le formulaire de modification d'une accommodation
     private void handleEditAccommodation(Accommodation accommodation) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/EditAccommodation.fxml"));
             Parent root = loader.load();
 
-            // Passer l'accommodation à modifier
             EditAccommodationController controller = loader.getController();
             controller.setAccommodation(accommodation);
 
-            // Ouvrir la fenêtre de modification
             Stage stage = new Stage();
             stage.setTitle("Edit Accommodation");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            // Recharger la liste après modification
             loadAccommodationsFromDatabase();
+            accommodationTable.refresh();
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("❌ Erreur lors de l'ouverture du formulaire de modification : " + e.getMessage());
         }
     }
 
-    // Ouvrir le formulaire d'ajout d'une accommodation
+    // Méthode modifiée pour recharger la liste directement après fermeture de la fenêtre ajout
     private void openAddAccommodationForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AccommodationManagementFXML/Accommodation.fxml"));
             Parent root = loader.load();
 
-            // Ouvrir la fenêtre d'ajout en modal
             Stage stage = new Stage();
             stage.setTitle("Add Accommodation");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
-            stage.showAndWait();
 
-            // Recharger la liste après ajout
-            loadAccommodationsFromDatabase();
+            stage.showAndWait();  // Attend la fermeture de la fenêtre modale
+
+            // Recharge les données depuis la base
+            List<Accommodation> newData = accommodationService.getAll();
+
+            // Clear + setAll dans l'ObservableList liée
+            accommodationList.clear();
+            accommodationList.addAll(newData);
+
+            // Rebind explicitement la TableView
+            accommodationTable.setItems(null);
+            accommodationTable.setItems(accommodationList);
+
+            // Forcer le rafraîchissement visuel complet
+            accommodationTable.refresh();
+
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("⚠️ Erreur lors du chargement de Accommodation.fxml : " + e.getMessage());
+            System.out.println("Erreur lors du chargement de Accommodation.fxml : " + e.getMessage());
         }
     }
 
-    // Méthode pour gérer le clic sur le bouton d'ajout (lien avec le formulaire d'ajout)
+
     @FXML
     private void handleAddButton(ActionEvent event) {
         openAddAccommodationForm();

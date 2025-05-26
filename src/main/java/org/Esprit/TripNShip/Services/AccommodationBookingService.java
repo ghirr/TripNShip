@@ -22,7 +22,7 @@ public class AccommodationBookingService implements IService<AccommodationBookin
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setInt(1, booking.getUser().getIdUser());
-            ps.setInt(2, booking.getRoom().getIdRoom()); // ✅ Utiliser l'objet Room
+            ps.setInt(2, booking.getRoom().getIdRoom());
             ps.setDate(3, new java.sql.Date(booking.getStartDate().getTime()));
             ps.setDate(4, new java.sql.Date(booking.getEndDate().getTime()));
             ps.setString(5, booking.getStatus().name());
@@ -40,7 +40,7 @@ public class AccommodationBookingService implements IService<AccommodationBookin
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setInt(1, booking.getUser().getIdUser());
-            ps.setInt(2, booking.getRoom().getIdRoom()); // ✅ Utiliser l'objet Room
+            ps.setInt(2, booking.getRoom().getIdRoom());
             ps.setDate(3, new java.sql.Date(booking.getStartDate().getTime()));
             ps.setDate(4, new java.sql.Date(booking.getEndDate().getTime()));
             ps.setString(5, booking.getStatus().name());
@@ -74,16 +74,13 @@ public class AccommodationBookingService implements IService<AccommodationBookin
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                // Construire l’objet Room
                 Room room = new Room();
                 room.setIdRoom(rs.getInt("roomId"));
                 room.setNameRoom(rs.getString("nameRoom"));
                 room.setType(TypeRoom.valueOf(rs.getString("type")));
 
-                // Récupérer l'utilisateur associé à cette réservation
                 User user = getUserById(rs.getInt("idUser"));
 
-                // Construire l’objet AccommodationBooking
                 AccommodationBooking booking = new AccommodationBooking(
                         rs.getInt("idBooking"),
                         user,
@@ -101,18 +98,17 @@ public class AccommodationBookingService implements IService<AccommodationBookin
         return bookings;
     }
 
-    // Méthode pour récupérer l'utilisateur par ID
     private User getUserById(int id) {
         User user = null;
 
-        String query = "SELECT * FROM User WHERE id = ?";  // Assurez-vous que la requête utilise le bon nom de colonne
+        String query = "SELECT * FROM User WHERE id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                String genderStr = rs.getString("gender").toUpperCase();  // Convertir en majuscules
+                String genderStr = rs.getString("gender").toUpperCase();
                 Gender gender = Gender.valueOf(genderStr);
 
                 Timestamp birthdayTimestamp = rs.getTimestamp("birthdayDate");
@@ -127,7 +123,7 @@ public class AccommodationBookingService implements IService<AccommodationBookin
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("profilePhoto"),
-                        birthdayDate, // Utiliser la valeur vérifiée
+                        birthdayDate,
                         rs.getString("phoneNumber")
                 );
             }
@@ -137,11 +133,4 @@ public class AccommodationBookingService implements IService<AccommodationBookin
 
         return user;
     }
-
-
-
-
-
 }
-
-

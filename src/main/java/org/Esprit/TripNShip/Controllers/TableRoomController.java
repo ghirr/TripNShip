@@ -1,5 +1,6 @@
 package org.Esprit.TripNShip.Controllers;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,6 +26,7 @@ import java.util.List;
 
 public class TableRoomController {
 
+    @FXML private TableColumn<Room, ImageView> photoColumn;
     @FXML private ComboBox<TypeRoom> typeRoomFilter;
     @FXML private TextField searchField;
     @FXML private Button addRoomButton;
@@ -59,6 +63,16 @@ public class TableRoomController {
         accommodationNameColumn.setCellValueFactory(new PropertyValueFactory<>("accommodationName"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("availability"));
+        photoColumn.setCellValueFactory(cellData -> {
+            String imagePath = cellData.getValue().getPhotosRoom();
+            Image image = new Image(imagePath);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
+            return new SimpleObjectProperty<>(imageView);
+        });
+
+
 
         // Configurer ComboBox pour le filtrage par TypeRoom
         typeRoomFilter.getItems().add(null);  // option pour "All types"

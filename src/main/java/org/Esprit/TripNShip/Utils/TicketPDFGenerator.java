@@ -56,7 +56,7 @@ public class TicketPDFGenerator {
 
             document.add(new Paragraph(" "));
             document.add(new Paragraph(" "));
-            document.add(generateQRCodeImage(uniqueData));
+            document.add(generateQRCodeImage(ticket.toString()));
             Paragraph footer = new Paragraph("Travel Safe");// pour
             footer.setAlignment(Element.ALIGN_CENTER);
             document.add(footer);

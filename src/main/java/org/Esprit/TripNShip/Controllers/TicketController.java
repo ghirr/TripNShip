@@ -190,7 +190,6 @@ public class TicketController {
 
             file.getParentFile().mkdirs();//pour creer le dossier
 
-            // Appel à ta classe de génération
             TicketPDFGenerator.generatePDF(ticket, filename);
             if (file.exists() && Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().open(file);

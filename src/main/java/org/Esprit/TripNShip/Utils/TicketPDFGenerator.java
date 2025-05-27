@@ -52,7 +52,7 @@ public class TicketPDFGenerator {
             document.add(new Paragraph("Arrival Location : "+itinerary.getArrivalLocation()));
             document.add(new Paragraph("Arrival Date : " + ticket.getArrivalDate().format(dateFormatter)));
             document.add(new Paragraph("Arrival Time : " + ticket.getArrivalTime().format(timeFormatter)));
-            document.add(new Paragraph("Price : " + ticket.getPrice() + " TND"));
+            document.add(new Paragraph("Price : " + itinerary.getPrice() + " TND"));
 
             document.add(new Paragraph(" "));
             document.add(new Paragraph(" "));

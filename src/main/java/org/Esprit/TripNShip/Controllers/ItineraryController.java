@@ -25,6 +25,7 @@ public class ItineraryController {
     @FXML private TableColumn<String, Itinerary> departureLocationColumn;
     @FXML private TableColumn<String, Itinerary> arrivalLocationColumn;
     @FXML private TableColumn<String, Itinerary> durationColumn;
+    @FXML private TableColumn<Double, Itinerary> priceColumn;
     @FXML private TableColumn<Itinerary, Void> actionsColumn;
     private ObservableList<Itinerary> itineraryList = FXCollections.observableArrayList();
     @FXML Button addItineraryButton;
@@ -39,6 +40,7 @@ public class ItineraryController {
         departureLocationColumn.setCellValueFactory(new PropertyValueFactory<>("departureLocation"));
         arrivalLocationColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalLocation"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         // Charger tous les tickets depuis le service dans l'observableList
         itineraryList.addAll(is.getAll());

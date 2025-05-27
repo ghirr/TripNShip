@@ -22,12 +22,14 @@ public class AddItineraryController {
     @FXML private TextField departureLocationField;
     @FXML private TextField arrivalLocationField;
     @FXML private TextField durationField;
+    @FXML private TextField priceField;
+
     @FXML private Button addItineraryButton;
 
     public void addItinerary(ActionEvent event) throws IOException {
         if (!validInputs()) return;
         ItineraryService is = new ItineraryService();
-        is.add(new Itinerary(itineraryCodeField.getText(), transporterReferenceField.getText(),departureLocationField.getText(), arrivalLocationField.getText(),durationField.getText()));
+        is.add(new Itinerary(itineraryCodeField.getText(), transporterReferenceField.getText(),departureLocationField.getText(), arrivalLocationField.getText(),durationField.getText(),Double.parseDouble(priceField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Add Itinerary");
@@ -38,7 +40,7 @@ public class AddItineraryController {
     }
 
     public boolean validInputs() {
-                    if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()) {
+                    if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()||durationField.getText().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
                 return false;
 
@@ -46,6 +48,12 @@ public class AddItineraryController {
 
         if (!durationField.getText().matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
             showAlert(Alert.AlertType.ERROR, "Duration Error", "Please enter a valid duration in HH:MM format (00:00 to 23:59)");
+            return false;
+        }
+        try{
+            Double.parseDouble(priceField.getText());
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
             return false;
         }
 

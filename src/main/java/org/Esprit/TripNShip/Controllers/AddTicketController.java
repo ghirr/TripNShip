@@ -21,7 +21,6 @@ public class AddTicketController implements Initializable {
     @FXML private TextField userEmailField;
     @FXML private DatePicker departureDatePicker;
     @FXML private DatePicker arrivalDatePicker;
-    @FXML private TextField priceField;
     @FXML private TextField departureTimeField;
     @FXML private TextField arrivalTimeField;
     @FXML private Button addTicketButton;
@@ -38,7 +37,7 @@ public class AddTicketController implements Initializable {
     public void addTicket(ActionEvent event) throws IOException {
         if(!validInputs()) return;
         TicketService ts = new TicketService();
-        ts.add(new Ticket(itineraryCodeComboBox.getValue(),userEmailField.getText(), departureDatePicker.getValue(),arrivalDatePicker.getValue(), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText()),Double.parseDouble(priceField.getText())));
+        ts.add(new Ticket(itineraryCodeComboBox.getValue(),userEmailField.getText(), departureDatePicker.getValue(),arrivalDatePicker.getValue(), LocalTime.parse(departureTimeField.getText()),LocalTime.parse(arrivalTimeField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("SA7it");
@@ -48,7 +47,7 @@ public class AddTicketController implements Initializable {
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() == null || arrivalDatePicker.getValue()==null||priceField.getText().isEmpty()) {
+        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() == null || arrivalDatePicker.getValue()==null) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -71,12 +70,6 @@ public class AddTicketController implements Initializable {
             LocalTime.parse(arrivalTimeField.getText());
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Time Format Error", "Please set the time in the format HH:MM");
-            return false;
-        }
-        try{
-            Double.parseDouble(priceField.getText());
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
             return false;
         }
 

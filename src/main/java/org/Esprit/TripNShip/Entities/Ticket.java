@@ -29,25 +29,6 @@ public class Ticket {
         this.arrivalTime = arrivalTime;
     }
 
-    private double price;
-
-    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
-        this.itineraryCode = itineraryCode;
-        this.userEmail = userEmail;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
-        this.price = price;
-    }
-
-    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, double price) {
-        this.ticketId = ticketId;
-        this.itineraryCode = itineraryCode;
-        this.userEmail = userEmail;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
-        this.price = price;
-    }
-
     public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
         this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
@@ -55,7 +36,16 @@ public class Ticket {
         this.arrivalDate = arrivalDate;
     }
 
-    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime, double price) {
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
+        this.ticketId = ticketId;
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+    }
+
+
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime) {
         this.ticketId = ticketId;
         this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
@@ -63,27 +53,24 @@ public class Ticket {
         this.arrivalDate = arrivalDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
-        this.price = price;
     }
 
-    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime, double price) {
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime) {
         this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
-        this.price = price;
     }
 
-    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalTime departureTime, LocalDate arrivalDate, LocalTime arrivalTime, double price) {
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalTime departureTime, LocalDate arrivalDate, LocalTime arrivalTime) {
         this.itineraryCode = itineraryCode;
         this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.departureTime = departureTime;
         this.arrivalDate = arrivalDate;
         this.arrivalTime = arrivalTime;
-        this.price = price;
     }
 
     public int getTicketId() {
@@ -126,13 +113,7 @@ public class Ticket {
         this.arrivalDate = arrivalDate;
     }
 
-    public double getPrice() {
-        return price;
-    }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     @Override
     public String toString() {
@@ -144,7 +125,6 @@ public class Ticket {
                 ", arrivalDate=" + arrivalDate +
                 ", departureTime=" + departureTime +
                 ", arrivalTime=" + arrivalTime +
-                ", price=" + price +
                 '}';
     }
 

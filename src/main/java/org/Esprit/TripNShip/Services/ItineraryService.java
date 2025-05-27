@@ -17,14 +17,15 @@ public class ItineraryService implements IService<Itinerary>{
 
     @Override
     public void add(Itinerary itinerary) {
-        String req = "INSERT INTO itinerary (itineraryCode, transporterReference, departureLocation,arrivalLocation,duration) VALUES (?,?,?,?,?)";
+        String req = "INSERT INTO itinerary (itineraryCode, transporterReference, departureLocation,arrivalLocation,duration,price) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement pst= connection.prepareStatement(req);
             pst.setString(1,itinerary.getItineraryCode());
             pst.setString(2,itinerary.getTransporterReference());
             pst.setString(3,itinerary.getDepartureLocation());
             pst.setString(4, itinerary.getArrivalLocation());
-            pst.setString(5,itinerary.getDuration());   //a verifier pour Duration
+            pst.setString(5,itinerary.getDuration());
+            pst.setDouble(6,itinerary.getPrice());//a verifier pour Duration
             pst.executeUpdate();
             System.out.println("Itinerary added successfully!!");
         }
@@ -35,15 +36,16 @@ public class ItineraryService implements IService<Itinerary>{
 
     @Override
     public void update(Itinerary itinerary) {
-        String req = "UPDATE itinerary SET itineraryCode=?,transporterReference=?,departureLocation=?,arrivalLocation=?,duration=? WHERE itineraryId=?";
+        String req = "UPDATE itinerary SET itineraryCode=?,transporterReference=?,departureLocation=?,arrivalLocation=?,duration=?,price=? WHERE itineraryId=?";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, itinerary.getItineraryCode());
             pst.setString(2,itinerary.getTransporterReference());
             pst.setString(3, itinerary.getDepartureLocation());
             pst.setString(4, itinerary.getArrivalLocation());
-            pst.setString(5,itinerary.getDuration()); //a verifier pour Duration
-            pst.setInt(6,itinerary.getItineraryId());
+            pst.setString(5,itinerary.getDuration());
+            pst.setDouble(6,itinerary.getPrice());//a verifier pour Duration
+            pst.setInt(7,itinerary.getItineraryId());
             pst.executeUpdate();
             System.out.println("Itinerary updated successfully");
         }
@@ -76,7 +78,7 @@ public class ItineraryService implements IService<Itinerary>{
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                itineraries.add(new Itinerary(rs.getInt("itineraryId"),rs.getString("itineraryCode"), rs.getString("transporterReference"), rs.getString("departureLocation"), rs.getString("arrivalLocation"), rs.getString("duration"))); //a verifier pour Duration
+                itineraries.add(new Itinerary(rs.getInt("itineraryId"),rs.getString("itineraryCode"), rs.getString("transporterReference"), rs.getString("departureLocation"), rs.getString("arrivalLocation"), rs.getString("duration"),rs.getDouble("price"))); //a verifier pour Duration
 
             }
         } catch (SQLException e) {
@@ -98,7 +100,8 @@ public class ItineraryService implements IService<Itinerary>{
                         rs.getString("transporterReference"),
                         rs.getString("departureLocation"),
                         rs.getString("arrivalLocation"),
-                        rs.getString("duration")
+                        rs.getString("duration"),
+                        rs.getDouble("price")
                 );
             }
         } catch (SQLException e) {

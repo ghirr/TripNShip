@@ -15,6 +15,7 @@ public class UpdateItineraryController {
     @FXML    private TextField departureLocationField;
     @FXML    private TextField arrivalLocationField;
     @FXML    private TextField durationField;
+    @FXML    private TextField priceField;
     @FXML    Button updateItineraryButton;
 
     private final ItineraryService is = new ItineraryService();
@@ -27,6 +28,7 @@ public class UpdateItineraryController {
         departureLocationField.setText(itinerary.getDepartureLocation());
         arrivalLocationField.setText(itinerary.getArrivalLocation());
         durationField.setText(itinerary.getDuration());
+        priceField.setText(Double.toString(itinerary.getPrice()));
     }
 
     @FXML
@@ -37,6 +39,7 @@ public class UpdateItineraryController {
         itinerary.setDepartureLocation((departureLocationField.getText()));
         itinerary.setArrivalLocation(arrivalLocationField.getText());
         itinerary.setDuration((durationField.getText()));
+        itinerary.setPrice(Double.parseDouble(priceField.getText()));
 
         is.update(itinerary);
 
@@ -50,7 +53,7 @@ public class UpdateItineraryController {
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()) {
+        if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()||priceField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -58,6 +61,12 @@ public class UpdateItineraryController {
 
         if (!durationField.getText().matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
             showAlert(Alert.AlertType.ERROR, "Duration Error", "Please enter a valid duration in HH:MM format (00:00 to 23:59)");
+            return false;
+        }
+        try{
+            Double.parseDouble(priceField.getText());
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
             return false;
         }
 

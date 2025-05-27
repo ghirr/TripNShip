@@ -42,7 +42,6 @@
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Time" />
                         <TextField fx:id="arrivalTimeField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Price" />
-                        <TextField fx:id="priceField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                     </VBox>
 
                     <Button fx:id="updateTicketButton" onAction="#saveTicket" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Update" />

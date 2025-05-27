@@ -69,11 +69,7 @@
                                 </cellValueFactory>
                             </TableColumn>
 
-                     <TableColumn fx:id="priceColumn" prefWidth="101.0" text="Price">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="price" />
-                            </cellValueFactory>
-                        </TableColumn>
+
                             <TableColumn fx:id="actionsColumn" maxWidth="391.0" minWidth="79.0" prefWidth="336.0" text="Actions" />
 
                         </columns>

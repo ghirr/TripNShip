@@ -7,6 +7,17 @@ public class Itinerary {
     private String departureLocation;
     private String arrivalLocation;
     private String duration;
+    private double price;
+
+    public Itinerary(int itineraryId, String itineraryCode, String transporterReference, String departureLocation, String arrivalLocation, String duration, double price) {
+        this.itineraryId = itineraryId;
+        this.itineraryCode = itineraryCode;
+        this.transporterReference = transporterReference;
+        this.departureLocation = departureLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.duration = duration;
+        this.price = price;
+    }
 
     public Itinerary(String itineraryCode, String transporterReference, String departureLocation, String arrivalLocation, String duration) {
         this.itineraryCode = itineraryCode;
@@ -23,6 +34,15 @@ public class Itinerary {
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.duration = duration;
+    }
+
+    public Itinerary(String itineraryCode, String transporterReference, String departureLocation, String arrivalLocation, String duration, double price) {
+        this.itineraryCode = itineraryCode;
+        this.transporterReference = transporterReference;
+        this.departureLocation = departureLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.duration = duration;
+        this.price = price;
     }
 
     public String getItineraryCode() {
@@ -43,6 +63,14 @@ public class Itinerary {
 
     public String getDuration() {
         return duration;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public void setItineraryCode(String itineraryCode) {
@@ -69,12 +97,13 @@ public class Itinerary {
     @Override
     public String toString() {
         return "Itinerary{" +
-                "itineraryId=" + itineraryId+
-                "itineraryCode=" + itineraryCode +
-                ", transporterReference=" + transporterReference +
+                "itineraryId=" + itineraryId +
+                ", itineraryCode='" + itineraryCode + '\'' +
+                ", transporterReference='" + transporterReference + '\'' +
                 ", departureLocation='" + departureLocation + '\'' +
                 ", arrivalLocation='" + arrivalLocation + '\'' +
-                ", duration=" + duration +
+                ", duration='" + duration + '\'' +
+                ", price=" + price +
                 '}';
     }
 
@@ -82,7 +111,4 @@ public class Itinerary {
         return itineraryId;
     }
 
-    public void setItineraryId(int itineraryId) {
-        this.itineraryId = itineraryId;
-    }
 }

@@ -85,20 +85,22 @@
                                 <ComboBox fx:id="packageTypeCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select package type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label fx:id="packageTypeErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                                <Label styleClass="card-subtitle" text="Departure City:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                <Label styleClass="card-subtitle" text="Departure Country:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="departureCityField" promptText="Enter departure city" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <!-- Changed from TextField to ComboBox -->
+                                <ComboBox fx:id="departureCityCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select departure country" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label fx:id="departureCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                                <Label styleClass="card-subtitle" text="Arrival City:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                <Label styleClass="card-subtitle" text="Arrival Country:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="arrivalCityField" promptText="Enter arrival city" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <!-- Changed from TextField to ComboBox -->
+                                <ComboBox fx:id="arrivalCityCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select arrival country" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                 <Label fx:id="arrivalCityErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
                                 <Label styleClass="card-subtitle" text="Send Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
@@ -109,13 +111,8 @@
                                 <DatePicker fx:id="sendDatePicker" prefHeight="40.0" prefWidth="414.0" promptText="Select send date" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                 <Label fx:id="sendDateErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 
-                                <Label styleClass="card-subtitle" text="Transporter:" GridPane.halignment="RIGHT" GridPane.rowIndex="10">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Label>
-                                <ComboBox fx:id="transporterCombo" prefHeight="40.0" prefWidth="414.0" promptText="Select a transporter" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                                <Label fx:id="transporterErrorLabel" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                <Label styleClass="card-note" text="Note: A transporter will be assigned to your expedition by an agent." GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
                             </children>
                         </GridPane>
                     </children>

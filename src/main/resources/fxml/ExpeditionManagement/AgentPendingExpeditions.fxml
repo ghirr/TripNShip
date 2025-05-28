@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="650.0" prefWidth="900.0" styleClass="login-container" stylesheets="@../ExpeditionManagement/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.AgentPendingController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="header-container" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-container">
+                    <image>
+                        <Image url="@/images/logo.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets right="15.0" />
+                    </HBox.margin>
+                </ImageView>
+                <Label styleClass="header-label" text="Pending Expeditions Dashboard" />
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="15.0" styleClass="dashboard-container" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" styleClass="card">
+                    <children>
+                        <Label styleClass="card-title" text="Pending Expeditions" />
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Button fx:id="refreshBtn" mnemonicParsing="false" styleClass="secondary-button" text="Refresh List" />
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                    </padding>
+                </HBox>
+
+                <VBox spacing="10.0" styleClass="card" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="card-subtitle" text="Expeditions waiting for transporter assignment" />
+                        <TableView fx:id="expeditionTable" prefHeight="400.0" styleClass="expedition-table" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID" />
+                                <TableColumn fx:id="clientColumn" prefWidth="140.0" text="Client" />
+                                <TableColumn fx:id="packageTypeColumn" prefWidth="110.0" text="Package Type" />
+                                <TableColumn fx:id="weightColumn" prefWidth="80.0" text="Weight (kg)" />
+                                <TableColumn fx:id="routeColumn" prefWidth="200.0" text="Route" />
+                                <TableColumn fx:id="dateColumn" prefWidth="120.0" text="Send Date" />
+                                <TableColumn fx:id="actionColumn" prefWidth="160.0" text="Actions" />
+                            </columns>
+                        </TableView>
+                        <Label fx:id="statusLabel" styleClass="status-label" text="Ready to assign transporters to pending expeditions" />
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                </VBox>
+
+                <HBox alignment="BASELINE_RIGHT" styleClass="status-bar">
+                    <children>
+                        <Label fx:id="timestampLabel" styleClass="timestamp-label" text="Last updated: 2025-05-27 23:36:14" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

@@ -23,8 +23,14 @@ public class ServiceExpedition implements IService<Expedition> {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            pst.setInt(1, expedition.getTransporter().getIdUser());
-            pst.setInt(2, expedition.getClient().getIdUser()); // Added clientId
+            // Handle null transporter
+            if (expedition.getTransporter() == null) {
+                pst.setNull(1, java.sql.Types.INTEGER); // Use NULL for transporterId
+            } else {
+                pst.setInt(1, expedition.getTransporter().getIdUser());
+            }
+
+            pst.setInt(2, expedition.getClient().getIdUser());
             pst.setDouble(3, expedition.getWeight());
             pst.setString(4, expedition.getPackageType().name());
             pst.setString(5, expedition.getPackageStatus().name());
@@ -57,8 +63,14 @@ public class ServiceExpedition implements IService<Expedition> {
                 "currentLocation=?, lastUpdated=? WHERE idExpedition=?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setInt(1, expedition.getTransporter().getIdUser());
-            pst.setInt(2, expedition.getClient().getIdUser()); // Added clientId
+            // Handle null transporter
+            if (expedition.getTransporter() == null) {
+                pst.setNull(1, java.sql.Types.INTEGER);
+            } else {
+                pst.setInt(1, expedition.getTransporter().getIdUser());
+            }
+
+            pst.setInt(2, expedition.getClient().getIdUser());
             pst.setDouble(3, expedition.getWeight());
             pst.setString(4, expedition.getPackageType().name());
             pst.setString(5, expedition.getPackageStatus().name());
@@ -80,7 +92,8 @@ public class ServiceExpedition implements IService<Expedition> {
 
     @Override
     public void delete(Expedition expedition) {
-
+        // Using the delete1 method implementation
+        delete1(expedition);
     }
 
     public boolean update1(Expedition expedition) {
@@ -92,7 +105,14 @@ public class ServiceExpedition implements IService<Expedition> {
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, expedition.getClient().getIdUser());
-            pst.setInt(2, expedition.getTransporter().getIdUser());
+
+            // Handle null transporter
+            if (expedition.getTransporter() == null) {
+                pst.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                pst.setInt(2, expedition.getTransporter().getIdUser());
+            }
+
             pst.setDouble(3, expedition.getWeight());
             pst.setString(4, expedition.getPackageType().toString());
             pst.setString(5, expedition.getPackageStatus().toString());
@@ -102,7 +122,7 @@ public class ServiceExpedition implements IService<Expedition> {
             pst.setString(9, expedition.getDepartureCity());
             pst.setString(10, expedition.getArrivalCity());
             pst.setString(11, expedition.getCurrentLocation());
-            pst.setDate(12, new java.sql.Date(expedition.getLastUpdated().getTime())); // Set lastUpdated to current date
+            pst.setDate(12, new java.sql.Date(expedition.getLastUpdated().getTime()));
             pst.setInt(13, expedition.getExpeditionId());
 
             int rowsAffected = pst.executeUpdate();
@@ -114,7 +134,6 @@ public class ServiceExpedition implements IService<Expedition> {
             return false;
         }
     }
-
 
     public boolean delete1(Expedition expedition) {
         String query = "DELETE FROM expeditions WHERE idExpedition=?";
@@ -136,7 +155,6 @@ public class ServiceExpedition implements IService<Expedition> {
         }
     }
 
-
     @Override
     public List<Expedition> getAll() {
         List<Expedition> expeditionList = new ArrayList<>();
@@ -150,7 +168,7 @@ public class ServiceExpedition implements IService<Expedition> {
                 "t.transportType, t.website " +
                 "FROM expeditions e " +
                 "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
-                "JOIN user t ON e.transporterId = t.idUser AND t.role = 'TRANSPORTER'";
+                "LEFT JOIN user t ON e.transporterId = t.idUser AND t.role = 'TRANSPORTER'"; // Changed to LEFT JOIN
 
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
@@ -167,22 +185,25 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getString("clientPhoneNumber")
                 );
 
-                // Create Transporter object
-                Transporter transporter = new Transporter(
-                        rs.getInt("transporterId"),
-                        rs.getString("transporterFirstName"),
-                        rs.getString("transporterLastName"),
-                        Gender.valueOf(rs.getString("transporterGender")),
-                        rs.getString("transporterEmail"),
-                        rs.getString("transporterPassword"),
-                        rs.getString("transporterProfilePhoto"),
-                        rs.getTimestamp("transporterBirthdayDate").toLocalDateTime(),
-                        rs.getString("transporterPhoneNumber"),
-                        TransportType.valueOf(rs.getString("transportType")),
-                        rs.getString("website")
-                );
+                // Create Transporter object if transporterId is not null
+                Transporter transporter = null;
+                if (rs.getObject("transporterId") != null) {
+                    transporter = new Transporter(
+                            rs.getInt("transporterId"),
+                            rs.getString("transporterFirstName"),
+                            rs.getString("transporterLastName"),
+                            Gender.valueOf(rs.getString("transporterGender")),
+                            rs.getString("transporterEmail"),
+                            rs.getString("transporterPassword"),
+                            rs.getString("transporterProfilePhoto"),
+                            rs.getTimestamp("transporterBirthdayDate").toLocalDateTime(),
+                            rs.getString("transporterPhoneNumber"),
+                            TransportType.valueOf(rs.getString("transportType")),
+                            rs.getString("website")
+                    );
+                }
 
-                // Create Expedition object with both Client and Transporter
+                // Create Expedition object with Client and possibly null Transporter
                 Expedition expedition = new Expedition(
                         rs.getInt("idExpedition"),
                         client,
@@ -208,11 +229,9 @@ public class ServiceExpedition implements IService<Expedition> {
         return expeditionList;
     }
 
-
     public List<Expedition> getExpeditionsForClient(int clientId) {
         List<Expedition> expeditionList = new ArrayList<>();
 
-        // Simple query to get expeditions by clientId
         String query = "SELECT * FROM expeditions WHERE clientId = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
@@ -223,15 +242,13 @@ public class ServiceExpedition implements IService<Expedition> {
 
             while (rs.next()) {
                 try {
-                    // Get the client - avoid direct casting
+                    // Get the client
                     User clientUser = userService.getById(clientId);
                     Client client;
 
-                    // Handle the case when getById returns a User instead of Client
                     if (clientUser instanceof Client) {
                         client = (Client) clientUser;
                     } else {
-                        // Create a Client object using the User data
                         client = new Client(
                                 clientUser.getIdUser(),
                                 clientUser.getFirstName(),
@@ -245,31 +262,33 @@ public class ServiceExpedition implements IService<Expedition> {
                         );
                     }
 
-                    // Get the transporter with similar handling
-                    int transporterId = rs.getInt("transporterId");
-                    User transporterUser = userService.getById(transporterId);
-                    Transporter transporter;
+                    // Get the transporter if it exists
+                    Transporter transporter = null;
+                    if (rs.getObject("transporterId") != null) {
+                        int transporterId = rs.getInt("transporterId");
+                        User transporterUser = userService.getById(transporterId);
 
-                    if (transporterUser instanceof Transporter) {
-                        transporter = (Transporter) transporterUser;
-                    } else {
-                        // Default transporter values if we can't get the proper subclass
-                        transporter = new Transporter(
-                                transporterUser.getIdUser(),
-                                transporterUser.getFirstName(),
-                                transporterUser.getLastName(),
-                                transporterUser.getGender(),
-                                transporterUser.getEmail(),
-                                transporterUser.getPassword(),
-                                transporterUser.getProfilePhoto(),
-                                transporterUser.getBirthdayDate(),
-                                transporterUser.getPhoneNumber(),
-                                TransportType.DHL,  // Default value
-                                "unknown"           // Default value
-                        );
+                        if (transporterUser instanceof Transporter) {
+                            transporter = (Transporter) transporterUser;
+                        } else if (transporterUser != null) {
+                            // Default transporter values if we can't get the proper subclass
+                            transporter = new Transporter(
+                                    transporterUser.getIdUser(),
+                                    transporterUser.getFirstName(),
+                                    transporterUser.getLastName(),
+                                    transporterUser.getGender(),
+                                    transporterUser.getEmail(),
+                                    transporterUser.getPassword(),
+                                    transporterUser.getProfilePhoto(),
+                                    transporterUser.getBirthdayDate(),
+                                    transporterUser.getPhoneNumber(),
+                                    TransportType.DHL,  // Default value
+                                    "unknown"           // Default value
+                            );
+                        }
                     }
 
-                    // Create Expedition object
+                    // Create Expedition object (with potentially null transporter)
                     Expedition expedition = new Expedition(
                             rs.getInt("idExpedition"),
                             client,
@@ -303,6 +322,7 @@ public class ServiceExpedition implements IService<Expedition> {
 
         return expeditionList;
     }
+
     // Get expeditions for a specific transporter
     public List<Expedition> getExpeditionsForTransporter(int transporterId) {
         List<Expedition> expeditionList = new ArrayList<>();
@@ -362,6 +382,61 @@ public class ServiceExpedition implements IService<Expedition> {
         return expeditionList;
     }
 
+    // Get expeditions with pending status (for agent dashboard)
+    public List<Expedition> getPendingExpeditions() {
+        List<Expedition> pendingExpeditions = new ArrayList<>();
+        String query = "SELECT e.*, " +
+                "c.firstName as clientFirstName, c.lastName as clientLastName, c.gender as clientGender, " +
+                "c.email as clientEmail, c.password as clientPassword, c.profilePhoto as clientProfilePhoto, " +
+                "c.birthdayDate as clientBirthdayDate, c.phoneNumber as clientPhoneNumber " +
+                "FROM expeditions e " +
+                "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
+                "WHERE e.packageStatus = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, PackageStatus.PENDING.name());
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                // Create Client object
+                Client client = new Client(
+                        rs.getInt("clientId"),
+                        rs.getString("clientFirstName"),
+                        rs.getString("clientLastName"),
+                        Gender.valueOf(rs.getString("clientGender")),
+                        rs.getString("clientEmail"),
+                        rs.getString("clientPassword"),
+                        rs.getString("clientProfilePhoto"),
+                        rs.getTimestamp("clientBirthdayDate").toLocalDateTime(),
+                        rs.getString("clientPhoneNumber")
+                );
+
+                // Pending expeditions don't have a transporter yet
+                Expedition expedition = new Expedition(
+                        rs.getInt("idExpedition"),
+                        client,
+                        null, // No transporter assigned yet
+                        rs.getDouble("weight"),
+                        PackageType.valueOf(rs.getString("packageType").toUpperCase()),
+                        PackageStatus.valueOf(rs.getString("packageStatus").toUpperCase()),
+                        rs.getDouble("shippingCost"),
+                        rs.getDate("sendDate"),
+                        rs.getDate("estimatedDeliveryDate"),
+                        rs.getString("departureCity"),
+                        rs.getString("arrivalCity"),
+                        rs.getString("currentLocation"),
+                        rs.getDate("lastUpdated")
+                );
+
+                pendingExpeditions.add(expedition);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving pending expeditions: " + e.getMessage());
+        }
+
+        return pendingExpeditions;
+    }
+
     // Get expedition by ID
     public Expedition getById(int expeditionId) {
         String query = "SELECT e.*, " +
@@ -374,7 +449,7 @@ public class ServiceExpedition implements IService<Expedition> {
                 "t.transportType, t.website " +
                 "FROM expeditions e " +
                 "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
-                "JOIN user t ON e.transporterId = t.idUser AND t.role = 'TRANSPORTER' " +
+                "LEFT JOIN user t ON e.transporterId = t.idUser AND t.role = 'TRANSPORTER' " + // Changed to LEFT JOIN
                 "WHERE e.idExpedition = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
@@ -395,22 +470,25 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getString("clientPhoneNumber")
                 );
 
-                // Create Transporter object
-                Transporter transporter = new Transporter(
-                        rs.getInt("transporterId"),
-                        rs.getString("transporterFirstName"),
-                        rs.getString("transporterLastName"),
-                        Gender.valueOf(rs.getString("transporterGender")),
-                        rs.getString("transporterEmail"),
-                        rs.getString("transporterPassword"),
-                        rs.getString("transporterProfilePhoto"),
-                        rs.getTimestamp("transporterBirthdayDate").toLocalDateTime(),
-                        rs.getString("transporterPhoneNumber"),
-                        TransportType.valueOf(rs.getString("transportType")),
-                        rs.getString("website")
-                );
+                // Create Transporter object if transporterId is not null
+                Transporter transporter = null;
+                if (rs.getObject("transporterId") != null) {
+                    transporter = new Transporter(
+                            rs.getInt("transporterId"),
+                            rs.getString("transporterFirstName"),
+                            rs.getString("transporterLastName"),
+                            Gender.valueOf(rs.getString("transporterGender")),
+                            rs.getString("transporterEmail"),
+                            rs.getString("transporterPassword"),
+                            rs.getString("transporterProfilePhoto"),
+                            rs.getTimestamp("transporterBirthdayDate").toLocalDateTime(),
+                            rs.getString("transporterPhoneNumber"),
+                            TransportType.valueOf(rs.getString("transportType")),
+                            rs.getString("website")
+                    );
+                }
 
-                // Create and return the Expedition object
+                // Create and return the Expedition object with potentially null transporter
                 return new Expedition(
                         rs.getInt("idExpedition"),
                         client,

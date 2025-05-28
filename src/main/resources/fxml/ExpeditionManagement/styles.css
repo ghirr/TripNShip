@@ -66,7 +66,7 @@
 }
 
 .secondary-button {
-    -fx-background-color: -fx-secondary-color;
+    -fx-background-color: #5353ab;
 }
 
 .secondary-button:hover {
@@ -483,5 +483,33 @@
     -fx-background-radius: 15px;
     -fx-padding: 20px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+}
+
+/* Accept button - Green color */
+.accept-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.accept-button:hover {
+    -fx-background-color: #218838;
+}
+
+/* Reject button - Red color */
+.reject-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.reject-button:hover {
+    -fx-background-color: #c82333;
 }
 

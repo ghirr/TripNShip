@@ -118,6 +118,7 @@ public class ClientExpeditionsController implements Initializable {
         Label dateLabel = new Label("Send date: " + dateFormat.format(expedition.getSendDate()));
         Label deliveryLabel = new Label("Est. delivery: " + dateFormat.format(expedition.getEstimatedDeliveryDate()));
 
+        // Safely handle null transporter
         String transporterName = expedition.getTransporter() != null ?
                 expedition.getTransporter().getFirstName() + " " + expedition.getTransporter().getLastName() :
                 "Not assigned";
@@ -132,6 +133,62 @@ public class ClientExpeditionsController implements Initializable {
         detailsGrid.add(transporterLabel, 1, 2);
 
         content.getChildren().add(detailsGrid);
+
+        // Show appropriate status information based on expedition status
+        if (expedition.getPackageStatus() == PackageStatus.PENDING) {
+            // Show "Awaiting transporter assignment" message for pending expeditions
+            Label pendingLabel = new Label("Awaiting transporter assignment...");
+            pendingLabel.getStyleClass().add("pending-text");
+            pendingLabel.setAlignment(Pos.CENTER);
+
+            VBox pendingBox = new VBox(pendingLabel);
+            pendingBox.setAlignment(Pos.CENTER);
+            pendingBox.setPadding(new Insets(10, 0, 5, 0));
+            content.getChildren().add(pendingBox);
+        }
+        // Only show approval options if a transporter is assigned AND status is awaiting approval
+        else if (expedition.getPackageStatus() == PackageStatus.AWAITING_CLIENT_APPROVAL &&
+                expedition.getTransporter() != null) {
+            // Create a highlighted approval section
+            VBox approvalSection = new VBox();
+            approvalSection.getStyleClass().add("approval-section");
+            approvalSection.setPadding(new Insets(10));
+            approvalSection.setSpacing(10);
+
+            // Add notification about transporter assignment
+            Label approvalLabel = new Label("Transporter " +
+                    expedition.getTransporter().getFirstName() + " " +
+                    expedition.getTransporter().getLastName() +
+                    " has been assigned to your expedition.");
+            approvalLabel.setWrapText(true);
+            approvalLabel.getStyleClass().add("approval-text");
+
+            // Create distinctively styled buttons
+            HBox buttonBox = new HBox();
+            buttonBox.setAlignment(Pos.CENTER);
+            buttonBox.setSpacing(20);
+
+            Button acceptBtn = new Button("Accept");
+            acceptBtn.setPrefWidth(120);
+            acceptBtn.setPrefHeight(35);
+            acceptBtn.getStyleClass().add("accept-button");
+            acceptBtn.setOnAction(e -> handleAcceptTransporter(expedition));
+
+            Button rejectBtn = new Button("Reject");
+            rejectBtn.setPrefWidth(120);
+            rejectBtn.setPrefHeight(35);
+            rejectBtn.getStyleClass().add("reject-button");
+            rejectBtn.setOnAction(e -> handleRejectTransporter(expedition));
+
+            // Add buttons to the button box
+            buttonBox.getChildren().addAll(acceptBtn, rejectBtn);
+
+            // Add label and buttons to the approval section
+            approvalSection.getChildren().addAll(approvalLabel, buttonBox);
+
+            // Add approval section to content
+            content.getChildren().add(approvalSection);
+        }
 
         // Create buttons
         HBox buttons = new HBox();
@@ -187,10 +244,13 @@ public class ClientExpeditionsController implements Initializable {
         return card;
     }
 
+    // Update this method to handle AWAITING_CLIENT_APPROVAL status
     private String getStatusStyleClass(PackageStatus status) {
         switch (status) {
             case PENDING:
                 return "status-pending";
+            case AWAITING_CLIENT_APPROVAL:
+                return "status-awaiting-approval";
             case SHIPPED:
                 return "status-shipped";
             case IN_TRANSIT:
@@ -203,6 +263,34 @@ public class ClientExpeditionsController implements Initializable {
                 return "status-pending";
         }
     }
+
+    private void handleAcceptTransporter(Expedition expedition) {
+        try {
+            expedition.setPackageStatus(PackageStatus.SHIPPED);
+            expeditionService.update(expedition);
+            showAlert(Alert.AlertType.INFORMATION, "Transporter Accepted",
+                    "You've accepted the transporter for your expedition. Its status is now Shipped.");
+            loadExpeditions();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not accept transporter: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void handleRejectTransporter(Expedition expedition) {
+        try {
+            expedition.setTransporter(null);
+            expedition.setPackageStatus(PackageStatus.PENDING);
+            expeditionService.update(expedition);
+            showAlert(Alert.AlertType.INFORMATION, "Transporter Rejected",
+                    "You've rejected the transporter. Your expedition will be reassigned.");
+            loadExpeditions();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not reject transporter: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     private void handleNewExpedition() {
         try {

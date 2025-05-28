@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Controllers.ExpeditionManagement;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,10 +15,7 @@ import org.Esprit.TripNShip.Services.UserService;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class NewExpeditionController implements Initializable {
 
@@ -34,13 +32,13 @@ public class NewExpeditionController implements Initializable {
     private Label packageTypeErrorLabel;
 
     @FXML
-    private TextField departureCityField;
+    private ComboBox<String> departureCityCombo;
 
     @FXML
     private Label departureCityErrorLabel;
 
     @FXML
-    private TextField arrivalCityField;
+    private ComboBox<String> arrivalCityCombo;
 
     @FXML
     private Label arrivalCityErrorLabel;
@@ -50,12 +48,6 @@ public class NewExpeditionController implements Initializable {
 
     @FXML
     private Label sendDateErrorLabel;
-
-    @FXML
-    private ComboBox<Transporter> transporterCombo;
-
-    @FXML
-    private Label transporterErrorLabel;
 
     @FXML
     private Button createBtn;
@@ -69,6 +61,35 @@ public class NewExpeditionController implements Initializable {
     private UserService userService;
     private ClientExpeditionsController parentController;
 
+    // List of countries for the dropdowns
+    private final String[] countries = {
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
+            "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus",
+            "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil",
+            "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada",
+            "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo",
+            "Costa Rica", "Côte d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti",
+            "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
+            "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany",
+            "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras",
+            "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica",
+            "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo",
+            "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+            "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+            "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia",
+            "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands",
+            "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau",
+            "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+            "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
+            "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
+            "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+            "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname",
+            "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo",
+            "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine",
+            "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
+            "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+    };
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         expeditionService = new ServiceExpedition();
@@ -77,11 +98,17 @@ public class NewExpeditionController implements Initializable {
         // Initialize package types
         packageTypeCombo.setItems(FXCollections.observableArrayList(PackageType.values()));
 
+        // Initialize countries for departure and arrival
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+        departureCityCombo.setItems(countryList);
+        arrivalCityCombo.setItems(countryList);
+
+        // Add search capability to the country dropdowns
+        setupComboBoxSearch(departureCityCombo);
+        setupComboBoxSearch(arrivalCityCombo);
+
         // Set default date to today
         sendDatePicker.setValue(LocalDate.now());
-
-        // Load transporters (in real app, filter by availability, rating, etc.)
-        loadTransporters();
 
         // Clear error labels initially
         clearErrorLabels();
@@ -94,13 +121,57 @@ public class NewExpeditionController implements Initializable {
         cancelBtn.setOnAction(event -> closeWindow());
     }
 
+    // Helper method to make ComboBoxes searchable
+    private void setupComboBoxSearch(ComboBox<String> comboBox) {
+        // Store the original list
+        final ObservableList<String> originalItems = comboBox.getItems();
+
+        // Add listener to enable searching
+        comboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the ComboBox isn't showing its popup, return
+            if (!comboBox.isShowing()) {
+                return;
+            }
+
+            // Text field is empty, show all values
+            if (newValue == null || newValue.isEmpty()) {
+                comboBox.setItems(originalItems);
+                comboBox.show();
+                return;
+            }
+
+            // Filter items by the entered text
+            ObservableList<String> filteredItems = FXCollections.observableArrayList();
+            String lowerCaseFilter = newValue.toLowerCase();
+
+            for (String item : originalItems) {
+                if (item.toLowerCase().contains(lowerCaseFilter)) {
+                    filteredItems.add(item);
+                }
+            }
+
+            comboBox.setItems(filteredItems);
+            comboBox.show();
+        });
+
+        // Make ComboBox editable to allow searching but prevent custom values
+        comboBox.setEditable(true);
+
+        // Add listener to validate selection
+        comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // When a valid item is selected, display it in the editor
+                comboBox.getEditor().setText(newValue);
+            }
+        });
+    }
+
     private void clearErrorLabels() {
         weightErrorLabel.setText("");
         packageTypeErrorLabel.setText("");
         departureCityErrorLabel.setText("");
         arrivalCityErrorLabel.setText("");
         sendDateErrorLabel.setText("");
-        transporterErrorLabel.setText("");
     }
 
     private void setupValidationListeners() {
@@ -123,13 +194,13 @@ public class NewExpeditionController implements Initializable {
         });
 
         // Departure city validation
-        departureCityField.textProperty().addListener((observable, oldValue, newValue) -> {
-            departureCityErrorLabel.setText(newValue.isEmpty() ? "" : "");
+        departureCityCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            departureCityErrorLabel.setText(newValue == null ? "" : "");
         });
 
         // Arrival city validation
-        arrivalCityField.textProperty().addListener((observable, oldValue, newValue) -> {
-            arrivalCityErrorLabel.setText(newValue.isEmpty() ? "" : "");
+        arrivalCityCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            arrivalCityErrorLabel.setText(newValue == null ? "" : "");
         });
 
         // Send date validation
@@ -140,11 +211,6 @@ public class NewExpeditionController implements Initializable {
             } else {
                 sendDateErrorLabel.setText("");
             }
-        });
-
-        // Transporter validation
-        transporterCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            transporterErrorLabel.setText(newValue == null ? "" : "");
         });
     }
 
@@ -168,61 +234,6 @@ public class NewExpeditionController implements Initializable {
         this.parentController = parentController;
     }
 
-    private void loadTransporters() {
-
-            // Utiliser la méthode dédiée qui retourne uniquement les transporteurs
-            List<Transporter> transporters = userService.getAllTransporters();
-
-            // Si aucun transporteur trouvé, ajouter des données fictives
-            if (transporters.isEmpty()) {
-                transporters.add(new Transporter(
-                        1, "John", "Smith", Gender.HOMME, "john@example.com", "password",
-                        "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
-                        "123-456-7890", TransportType.DHL, "www.johnsmith.com"
-                ));
-                transporters.add(new Transporter(
-                        2, "Jane", "Doe", Gender.FEMME, "jane@example.com", "password",
-                        "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
-                        "987-654-3210", TransportType.FEDEX, "www.janedoe.com"
-                ));
-            }
-
-            // Tu peux ensuite utiliser cette liste comme tu le faisais avant
-            // Exemple :
-            for (Transporter t : transporters) {
-                System.out.println("Transporter: " + t.getFirstName() + " " + t.getLastName());
-            }
-
-
-
-        transporterCombo.setItems(FXCollections.observableArrayList(transporters));
-
-        // Set up display for transporter items
-        transporterCombo.setCellFactory(param -> new ListCell<Transporter>() {
-            @Override
-            protected void updateItem(Transporter item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
-                }
-            }
-        });
-
-        transporterCombo.setButtonCell(new ListCell<Transporter>() {
-            @Override
-            protected void updateItem(Transporter item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
-                }
-            }
-        });
-    }
-
     private void handleCreateExpedition(ActionEvent event) {
         if (!validateInputs()) {
             return;
@@ -241,12 +252,11 @@ public class NewExpeditionController implements Initializable {
                 }
             }
 
-            // Create a new expedition
-            Transporter transporter = transporterCombo.getValue();
+            // Create a new expedition - without a transporter
             double weight = Double.parseDouble(weightField.getText());
             PackageType packageType = packageTypeCombo.getValue();
-            String departureCity = departureCityField.getText();
-            String arrivalCity = arrivalCityField.getText();
+            String departureCity = departureCityCombo.getValue();
+            String arrivalCity = arrivalCityCombo.getValue();
             Date sendDate = Date.from(sendDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             // Calculate estimated delivery date (simple: send date + 5 days)
@@ -277,10 +287,10 @@ public class NewExpeditionController implements Initializable {
             // Current location starts as departure city
             String currentLocation = departureCity;
 
-            // Create expedition with client, current date as last updated
+            // Create expedition with client, current date as last updated, but NO transporter
             Expedition newExpedition = new Expedition(
                     client,
-                    transporter,
+                    null, // No transporter assigned yet
                     weight,
                     packageType,
                     PackageStatus.PENDING,
@@ -297,7 +307,8 @@ public class NewExpeditionController implements Initializable {
             expeditionService.add(newExpedition);
 
             // Show success message
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Expedition created successfully!");
+            showAlert(Alert.AlertType.INFORMATION, "Success",
+                    "Expedition created successfully! Waiting for transporter assignment.");
 
             // Refresh the parent controller and close window
             if (parentController != null) {
@@ -336,13 +347,13 @@ public class NewExpeditionController implements Initializable {
             isValid = false;
         }
 
-        if (departureCityField.getText().isEmpty()) {
-            departureCityErrorLabel.setText("Please enter a departure city");
+        if (departureCityCombo.getValue() == null) {
+            departureCityErrorLabel.setText("Please select a departure country");
             isValid = false;
         }
 
-        if (arrivalCityField.getText().isEmpty()) {
-            arrivalCityErrorLabel.setText("Please enter an arrival city");
+        if (arrivalCityCombo.getValue() == null) {
+            arrivalCityErrorLabel.setText("Please select an arrival country");
             isValid = false;
         }
 
@@ -351,11 +362,6 @@ public class NewExpeditionController implements Initializable {
             isValid = false;
         } else if (sendDatePicker.getValue().isBefore(LocalDate.now())) {
             sendDateErrorLabel.setText("Send date cannot be in the past");
-            isValid = false;
-        }
-
-        if (transporterCombo.getValue() == null) {
-            transporterErrorLabel.setText("Please select a transporter");
             isValid = false;
         }
 

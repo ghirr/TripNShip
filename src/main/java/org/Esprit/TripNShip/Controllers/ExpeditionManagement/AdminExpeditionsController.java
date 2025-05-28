@@ -17,11 +17,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import org.Esprit.TripNShip.Entities.*;
+import org.Esprit.TripNShip.Services.PDFExportService;
 import org.Esprit.TripNShip.Services.ServiceExpedition;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
@@ -29,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class AdminExpeditionsController implements Initializable {
 
@@ -219,6 +218,7 @@ public class AdminExpeditionsController implements Initializable {
                     String textColor = "white";
                     String bgColor = switch (item) {
                         case PENDING -> "#f39c12"; // Orange
+                        case AWAITING_CLIENT_APPROVAL -> "#fd7e14"; // Dark orange
                         case SHIPPED -> "#9b59b6"; // Purple
                         case IN_TRANSIT -> "#3498db"; // Blue
                         case DELIVERED -> "#2ecc71"; // Green
@@ -341,7 +341,9 @@ public class AdminExpeditionsController implements Initializable {
             statusLabel.setText("Filters cleared");
         });
 
-        exportBtn.setOnAction(event -> exportToCSV());
+        // Change from CSV to PDF export
+        exportBtn.setText("Export to PDF");
+        exportBtn.setOnAction(event -> exportToPDF());
 
         viewDetailsBtn.setOnAction(event -> {
             Expedition selectedExpedition = expeditionsTable.getSelectionModel().getSelectedItem();
@@ -483,64 +485,57 @@ public class AdminExpeditionsController implements Initializable {
         }
     }
 
-    private void exportToCSV() {
+    // New method for PDF export instead of CSV
+    private void exportToPDF() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Expeditions Report");
+        fileChooser.setTitle("Save Expeditions Report as PDF");
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
         fileChooser.setInitialFileName("expeditions_report_" +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) +
-                ".csv");
+                ".pdf");
 
         File file = fileChooser.showSaveDialog(expeditionsTable.getScene().getWindow());
 
         if (file != null) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                // Write header
-                writer.write("ID,Status,Client,Transporter,Package Type,Weight (kg),Departure City,Arrival City," +
-                        "Current Location,Send Date,Delivery Date,Shipping Cost\n");
+            try {
+                // Get filtered expeditions as List
+                List<Expedition> expeditionsToExport = filteredExpeditions.stream().collect(Collectors.toList());
 
-                // Write data rows
-                for (Expedition expedition : filteredExpeditions) {
-                    String clientName = expedition.getClient() != null ?
-                            expedition.getClient().getFirstName() + " " + expedition.getClient().getLastName() : "N/A";
+                // Create filter description
+                StringBuilder filterDescription = new StringBuilder("Filters applied: ");
 
-                    String transporterName = expedition.getTransporter() != null ?
-                            expedition.getTransporter().getFirstName() + " " + expedition.getTransporter().getLastName() : "Not Assigned";
-
-                    String row = String.format("%d,%s,\"%s\",\"%s\",%s,%.2f,\"%s\",\"%s\",\"%s\",%s,%s,%.2f\n",
-                            expedition.getExpeditionId(),
-                            expedition.getPackageStatus(),
-                            clientName,
-                            transporterName,
-                            expedition.getPackageType(),
-                            expedition.getWeight(),
-                            expedition.getDepartureCity(),
-                            expedition.getArrivalCity(),
-                            expedition.getCurrentLocation(),
-                            dateFormat.format(expedition.getSendDate()),
-                            dateFormat.format(expedition.getEstimatedDeliveryDate()),
-                            expedition.getShippingCost());
-
-                    writer.write(row);
+                if (statusFilterCombo.getValue() != null) {
+                    filterDescription.append("Status = ").append(statusFilterCombo.getValue().toString());
+                } else {
+                    filterDescription.append("All statuses");
                 }
 
-                statusLabel.setText("Exported " + filteredExpeditions.size() + " expeditions to CSV");
+                if (!searchField.getText().isEmpty()) {
+                    filterDescription.append(", Search term = \"").append(searchField.getText()).append("\"");
+                }
 
+                // Export to PDF
+                PDFExportService.exportToPDF(expeditionsToExport, file, filterDescription.toString());
+
+                statusLabel.setText("Exported " + expeditionsToExport.size() + " expeditions to PDF");
+
+                // Show success message
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Export Successful");
                 successAlert.setHeaderText(null);
-                successAlert.setContentText("Successfully exported " + filteredExpeditions.size() +
-                        " expeditions to " + file.getName());
+                successAlert.setContentText("Successfully exported " + expeditionsToExport.size() +
+                        " expeditions to PDF file: " + file.getName());
                 successAlert.showAndWait();
 
-            } catch (IOException e) {
-                statusLabel.setText("Error exporting to CSV: " + e.getMessage());
+            } catch (Exception e) {
+                statusLabel.setText("Error exporting to PDF: " + e.getMessage());
                 e.printStackTrace();
 
+                // Show error message
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Export Error");
-                errorAlert.setHeaderText("Failed to export data");
+                errorAlert.setHeaderText("Failed to export data to PDF");
                 errorAlert.setContentText("An error occurred: " + e.getMessage());
                 errorAlert.showAndWait();
             }

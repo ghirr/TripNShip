@@ -8,11 +8,14 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
 
+import java.time.LocalTime;
+
 public class UpdateItineraryController {
 
     @FXML private TextField itineraryCodeField;
     @FXML    private TextField transporterReferenceField;
     @FXML    private TextField departureLocationField;
+    @FXML private TextField departureTimeField;
     @FXML    private TextField arrivalLocationField;
     @FXML    private TextField durationField;
     @FXML    private TextField priceField;
@@ -26,6 +29,7 @@ public class UpdateItineraryController {
         itineraryCodeField.setText(itinerary.getItineraryCode());
         transporterReferenceField.setText(itinerary.getTransporterReference());
         departureLocationField.setText(itinerary.getDepartureLocation());
+        departureTimeField.setText(itinerary.getDepartureTime().toString());
         arrivalLocationField.setText(itinerary.getArrivalLocation());
         durationField.setText(itinerary.getDuration());
         priceField.setText(Double.toString(itinerary.getPrice()));
@@ -37,6 +41,7 @@ public class UpdateItineraryController {
         itinerary.setItineraryCode(itineraryCodeField.getText());
         itinerary.setTransporterReference(transporterReferenceField.getText());
         itinerary.setDepartureLocation((departureLocationField.getText()));
+        itinerary.setDepartureTime(LocalTime.parse(departureTimeField.getText()));
         itinerary.setArrivalLocation(arrivalLocationField.getText());
         itinerary.setDuration((durationField.getText()));
         itinerary.setPrice(Double.parseDouble(priceField.getText()));
@@ -53,7 +58,7 @@ public class UpdateItineraryController {
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()||priceField.getText().isEmpty()) {
+        if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || departureTimeField.getText().isEmpty()||arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()||priceField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -67,6 +72,12 @@ public class UpdateItineraryController {
             Double.parseDouble(priceField.getText());
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
+            return false;
+        }
+        try {
+            LocalTime.parse(departureTimeField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR,"Time Format Error","Please set the time in the format HH:MM");
             return false;
         }
 

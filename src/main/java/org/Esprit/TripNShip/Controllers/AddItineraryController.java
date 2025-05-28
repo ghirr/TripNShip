@@ -12,6 +12,7 @@ import org.Esprit.TripNShip.Utils.GeoUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,6 +21,7 @@ public class AddItineraryController {
     private TextField itineraryCodeField;
     @FXML private TextField transporterReferenceField;
     @FXML private TextField departureLocationField;
+    @FXML private TextField departureTimeField;
     @FXML private TextField arrivalLocationField;
     @FXML private TextField durationField;
     @FXML private TextField priceField;
@@ -29,7 +31,7 @@ public class AddItineraryController {
     public void addItinerary(ActionEvent event) throws IOException {
         if (!validInputs()) return;
         ItineraryService is = new ItineraryService();
-        is.add(new Itinerary(itineraryCodeField.getText(), transporterReferenceField.getText(),departureLocationField.getText(), arrivalLocationField.getText(),durationField.getText(),Double.parseDouble(priceField.getText())));
+        is.add(new Itinerary(itineraryCodeField.getText(), transporterReferenceField.getText(),departureLocationField.getText(), LocalTime.parse(departureTimeField.getText()), arrivalLocationField.getText(),durationField.getText(),Double.parseDouble(priceField.getText())));
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Add Itinerary");
@@ -40,7 +42,7 @@ public class AddItineraryController {
     }
 
     public boolean validInputs() {
-                    if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()||durationField.getText().isEmpty()) {
+                    if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || arrivalLocationField.getText().isEmpty()||departureTimeField.getText().isEmpty()||durationField.getText().isEmpty()||priceField.getText().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
                 return false;
 
@@ -54,6 +56,12 @@ public class AddItineraryController {
             Double.parseDouble(priceField.getText());
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
+            return false;
+        }
+        try {
+            LocalTime.parse(departureTimeField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Time Format Error", "Please set the time in the format HH:MM");
             return false;
         }
 

@@ -25,13 +25,17 @@
                         <TextField fx:id="itineraryCodeField" editable="true" maxWidth="Infinity" promptText="e.g Flight/Train number" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transport Reference" />
-                        <TextField fx:id="transporterReferenceField" maxWidth="Infinity" promptText="eg TAR/AF/SNCFT/CTN" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="transporterReferenceField" maxWidth="Infinity"  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Time" />
+                        <TextField fx:id="departureTimeField" maxWidth="Infinity" promptText="HH:MM" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Location" />
-                        <TextField fx:id="departureLocationField" maxWidth="Infinity" promptText="e.g TUN DJE" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="departureLocationField" maxWidth="Infinity"  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Location" />
                         <TextField fx:id="arrivalLocationField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Duration" />
                         <TextField fx:id="durationField" maxWidth="Infinity" promptText="HH:MM" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

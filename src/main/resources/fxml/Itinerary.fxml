@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.TextField?>
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ItineraryController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
@@ -47,37 +47,49 @@
 
                     <TableView fx:id="itineraryTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>
-                     <TableColumn fx:id="itineraryCodeColumn" prefWidth="150" text="Itinerary Code">
+                     <TableColumn fx:id="itineraryCodeColumn" prefWidth="83.0" text="Itinerary Code">
                         <cellValueFactory>
                            <PropertyValueFactory property="itineraryCode" />
                         </cellValueFactory>
                      </TableColumn>
-                            <TableColumn fx:id="transporterReferenceColumn" prefWidth="200" text="Transporter Reference">
+                            <TableColumn fx:id="transporterReferenceColumn" prefWidth="109.0" text="Transporter Reference">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="transportReference" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="departureLocationColumn" prefWidth="150" text="Departure Location">
+                            <TableColumn fx:id="departureLocationColumn" prefWidth="112.0" text="Departure Location">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="departureLocation" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="arrivalLocationColumn" prefWidth="100" text="Arrival Location">
+                            <TableColumn fx:id="departureTimeColumn" prefWidth="99.0" text="Departure Time">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="departureTime" />
+                                </cellValueFactory>
+                            </TableColumn>
+
+                            <TableColumn fx:id="arrivalLocationColumn" prefWidth="139.0" text="Arrival Location">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="arrivalLocation" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="durationColumn" prefWidth="150" text="Duration">
+                            <TableColumn fx:id="arrivalTimeColumn" editable="false" prefWidth="75.0" text="Arrival Time">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="Arrival" />
+                                </cellValueFactory>
+                            </TableColumn>
+
+                            <TableColumn fx:id="durationColumn" prefWidth="67.0" text="Duration">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="duration" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="priceColumn" prefWidth="150" text="Price">
+                            <TableColumn fx:id="priceColumn" prefWidth="70.0" text="Price">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="price" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="actionsColumn" prefWidth="150" text="Actions" />
+                            <TableColumn fx:id="actionsColumn" prefWidth="187.0" text="Actions" />
 
                         </columns>
                     </TableView>

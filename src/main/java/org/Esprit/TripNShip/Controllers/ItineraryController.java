@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.Optional;
 
 public class ItineraryController {
@@ -23,7 +24,9 @@ public class ItineraryController {
     @FXML private TableColumn<String, Itinerary> itineraryCodeColumn;
     @FXML private TableColumn<String, Itinerary> transporterReferenceColumn;
     @FXML private TableColumn<String, Itinerary> departureLocationColumn;
+    @FXML private TableColumn<LocalTime,Itinerary> departureTimeColumn;
     @FXML private TableColumn<String, Itinerary> arrivalLocationColumn;
+    @FXML private TableColumn<LocalTime,Itinerary> arrivalTimeColumn;
     @FXML private TableColumn<String, Itinerary> durationColumn;
     @FXML private TableColumn<Double, Itinerary> priceColumn;
     @FXML private TableColumn<Itinerary, Void> actionsColumn;
@@ -38,7 +41,9 @@ public class ItineraryController {
         itineraryCodeColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryCode"));
         transporterReferenceColumn.setCellValueFactory(new PropertyValueFactory<>("transporterReference"));
         departureLocationColumn.setCellValueFactory(new PropertyValueFactory<>("departureLocation"));
+        departureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
         arrivalLocationColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalLocation"));
+        arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 

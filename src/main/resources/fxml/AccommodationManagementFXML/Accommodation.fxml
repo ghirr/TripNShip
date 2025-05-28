@@ -1,65 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import com.gluonhq.maps.MapView?>
 
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AccommodationController">
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
-            <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
-                <StackPane style="-fx-padding: 20;">
-                    <VBox alignment="CENTER" maxWidth="400" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AccommodationController">
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+        <VBox alignment="CENTER" spacing="15">
+            <!-- Form Section with Map included -->
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="450" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Accommodation" />
 
-<!--                        <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                            <Image url="@../../images/logo.png" />-->
-<!--                        </ImageView>-->
+                    <ImageView fx:id="accommodationImageView" fitHeight="150" fitWidth="200" preserveRatio="true">
+                        <Image url="@../../images/logo.png" />
+                    </ImageView>
 
-                        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Accommodation" />
+                    <VBox alignment="CENTER_LEFT" maxWidth="350" spacing="12">
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Accommodation Photo" />
+                        <Button fx:id="buttonPhoto" onAction="#selectPhoto" style="-fx-background-color: #6b7280; -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 8; -fx-background-radius: 6;" text="Select Photo" />
 
-                        <ImageView fx:id="accommodationImageView" fitHeight="150" fitWidth="200" preserveRatio="true">
-                            <Image url="@../../images/logo.png" />
-                        </ImageView>
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Type of Accommodation" />
+                        <ChoiceBox fx:id="typeChoiceBox" prefHeight="35.0" prefWidth="350.0" style="-fx-font-size: 14px; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Accommodation Name" />
+                        <TextField fx:id="nameField" prefWidth="350.0" promptText="Enter accommodation name" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                        <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
-                            <Label prefHeight="20.0" prefWidth="164.0" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Accommodation Photo" />
-                            <Button fx:id="buttonPhoto" onAction="#selectPhoto" />
-                            <!-- TypeAccommodation (choice box) -->
-                            <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="TypeAccommodation" />
-                            <ChoiceBox fx:id="typeChoiceBox" prefHeight="31.0" prefWidth="215.0" style="-fx-font-size: 14px; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Address" />
+                        <TextField fx:id="addressField" prefWidth="350.0" promptText="Enter full address" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
-                            <!-- Name -->
-                            <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Name" />
-                            <TextField fx:id="nameField" promptText="Accommodation Name" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <Button fx:id="geocodeButton" onAction="#geocodeAddress" style="-fx-background-color: #059669; -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 8 16; -fx-background-radius: 6;" text="📍 Get Location from Address" />
 
-                            <!-- Address -->
-                            <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Address" />
-                            <TextField fx:id="addressField" promptText="Address" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
-                            <HBox spacing="5" />
+                        <!-- Embedded Gluon Map -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Select Location on Map" />
+                        <StackPane prefHeight="400" prefWidth="350" style="-fx-border-color: #e5e7eb; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+                            <MapView fx:id="mapView" prefHeight="400" prefWidth="350.0" />
+                            <Button fx:id="zoomInButton" text="➕" style="-fx-font-size: 16px; -fx-background-radius: 6;"
+                                    StackPane.alignment="TOP_RIGHT">
+                                <StackPane.margin>
+                                    <Insets top="10" right="10"/>
+                                </StackPane.margin>
+                            </Button>
+                            <Button fx:id="zoomOutButton" text="➖" style="-fx-font-size: 16px; -fx-background-radius: 6;"
+                                    StackPane.alignment="TOP_RIGHT">
+                                <StackPane.margin>
+                                    <Insets top="50" right="10"/>
+                                </StackPane.margin>
+                            </Button>
+                        </StackPane>
 
-                            <!-- Capacity -->
-                            <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Capacity" />
-                            <TextField fx:id="capacityField" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
-                        </VBox>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Button fx:id="clearMapButton" text="🗑️Clear Map" onAction="#clearMap" style="-fx-background-color: #FE4B4B" />
+                        </HBox>
 
-                        <Button fx:id="addAccommodationButton" onAction="#saveAccommodation" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Add Accommodation" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Capacity (persons)" />
+                        <TextField fx:id="capacityField" prefWidth="350.0" promptText="Enter maximum capacity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
+                        <Label fx:id="coordinatesLabel" style="-fx-font-size: 12px; -fx-text-fill: #6b7280; -fx-font-family: monospace;" text="Coordinates: Not set" />
                     </VBox>
-                </StackPane>
 
-                <!-- TableView for displaying accommodations -->
-                <StackPane prefHeight="9.0" prefWidth="394.0" style="-fx-padding: 20; -fx-background-color: transparent;" />
-                <padding>
-                    <Insets bottom="20" top="20" />
-                </padding>
-            </VBox>
-        </ScrollPane>
-    </StackPane>
+                    <Button fx:id="addAccommodationButton" onAction="#saveAccommodation" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 350; -fx-cursor: hand;" text="Add Accommodation" />
+                </VBox>
+            </StackPane>
+
+            <padding>
+                <Insets bottom="30" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

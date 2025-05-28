@@ -8,6 +8,8 @@ public class Accommodation {
     private TypeAccommodation type;
     private String name;
     private String address;
+    private double latitude;
+    private double longitude;
     private int capacity;
     private String photosAccommodation;
     private List<Integer> idRoom = new ArrayList<>();
@@ -17,6 +19,27 @@ public class Accommodation {
         this.type = type;
         this.name = name;
         this.address = address;
+        this.capacity = capacity;
+        this.photosAccommodation = photosAccommodation;
+    }
+
+    public Accommodation(int idAccommodation, TypeAccommodation type, String name, String address, double latitude, double longitude, int capacity, String photosAccommodation) {
+        this.idAccommodation = idAccommodation;
+        this.type = type;
+        this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.capacity = capacity;
+        this.photosAccommodation = photosAccommodation;
+    }
+
+    public Accommodation(int idAccommodation, TypeAccommodation type, String name, double latitude, double longitude, int capacity, String photosAccommodation) {
+        this.idAccommodation = idAccommodation;
+        this.type = type;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.capacity = capacity;
         this.photosAccommodation = photosAccommodation;
     }
@@ -82,6 +105,22 @@ public class Accommodation {
 
     public void setPhotosAccommodation(String photosAccommodation) {
         this.photosAccommodation = photosAccommodation;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     @Override

@@ -26,14 +26,16 @@ public class AccommodationService implements IService<Accommodation> {
 
     @Override
     public void add(Accommodation accommodation) {
-        String req = "INSERT INTO Accommodation (type, name, address, capacity, photosAccommodation) VALUES (?, ?, ?, ?, ?)";
+        String req = "INSERT INTO Accommodation (type, name, address, latitude, longitude, capacity, photosAccommodation) VALUES (?, ?, ?, ?, ?,?,?)";
 
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setString(1, accommodation.getType().name());
             ps.setString(2, accommodation.getName());
             ps.setString(3, accommodation.getAddress());
-            ps.setInt(4, accommodation.getCapacity());
-            ps.setString(5, accommodation.getPhotosAccommodation());
+            ps.setDouble(4, accommodation.getLatitude());
+            ps.setDouble(5, accommodation.getLongitude());
+            ps.setInt(6 ,accommodation.getCapacity());
+            ps.setString(7, accommodation.getPhotosAccommodation());
 
             ps.executeUpdate();
             System.out.println("✅ Accommodation added!");
@@ -44,18 +46,20 @@ public class AccommodationService implements IService<Accommodation> {
 
     @Override
     public void update(Accommodation accommodation) {
-        String req = "UPDATE Accommodation SET type=?, name=?, address=?, capacity=?, photosAccommodation=? WHERE idAccommodation=?";
+        String req = "UPDATE Accommodation SET type=?, name=?, address=?,latitude=?,longitude=?, capacity=?, photosAccommodation=? WHERE idAccommodation=?";
 
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setString(1, accommodation.getType().name());
             ps.setString(2, accommodation.getName());
             ps.setString(3, accommodation.getAddress());
-            ps.setInt(4, accommodation.getCapacity());
+            ps.setDouble(4, accommodation.getLatitude());
+            ps.setDouble(5, accommodation.getLongitude());
+            ps.setInt(6 ,accommodation.getCapacity());
 
             //String photosJson = gson.toJson(accommodation.getPhotosAccommodation());
-            ps.setString(5, accommodation.getPhotosAccommodation());
+            ps.setString(7, accommodation.getPhotosAccommodation());
 
-            ps.setInt(6, accommodation.getIdAccommodation());
+            ps.setInt(8, accommodation.getIdAccommodation());
 
             //ps.executeUpdate();
             int affectedRows = ps.executeUpdate();
@@ -94,6 +98,8 @@ public class AccommodationService implements IService<Accommodation> {
                         TypeAccommodation.valueOf(rs.getString("type").toUpperCase()),
                         rs.getString("name"),
                         rs.getString("address"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
                         rs.getInt("capacity"),
                         rs.getString("photosAccommodation") // simple String, pas de Gson
                 );
@@ -104,30 +110,6 @@ public class AccommodationService implements IService<Accommodation> {
         }
 
         return accommodations;
-    }
-
-
-    // ✅ Méthode pour récupérer les chemins des photos dans un dossier
-    private String findMatchingImageFileName(String roomName, String folderPath) {
-        File folder = new File(folderPath);
-        if (!folder.exists() || !folder.isDirectory()) return null;
-
-        File[] files = folder.listFiles((dir, name) -> {
-            String lower = name.toLowerCase();
-            return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png")
-                    || lower.endsWith(".bmp") || lower.endsWith(".gif");
-        });
-
-        if (files != null) {
-            for (File file : files) {
-                String fileNameWithoutExtension = file.getName().replaceFirst("[.][^.]+$", "");
-                if (fileNameWithoutExtension.equalsIgnoreCase(roomName)) {
-                    return file.getName();
-                }
-            }
-        }
-
-        return null;
     }
 
 }

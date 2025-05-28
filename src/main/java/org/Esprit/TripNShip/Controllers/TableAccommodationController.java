@@ -17,11 +17,14 @@ import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Accommodation;
+import org.Esprit.TripNShip.Entities.Employee;
 import org.Esprit.TripNShip.Entities.TypeAccommodation;
 import org.Esprit.TripNShip.Services.AccommodationService;
+import org.Esprit.TripNShip.Utils.Shared;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class TableAccommodationController {
 
@@ -86,7 +89,7 @@ public class TableAccommodationController {
         });
 
         // Configurer les boutons
-        addButton.setOnAction(event -> openAddAccommodationForm());
+//        addButton.setOnAction(event -> openAddAccommodationForm());
 
         // Recherche dynamique par nom ou adresse
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -138,47 +141,30 @@ public class TableAccommodationController {
 
     // Configurer les boutons d'édition et de suppression dans la colonne d'actions
     private void setupActionButtons() {
-        actionColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button editButton = new Button("Edit");
-            private final Button deleteButton = new Button("Delete");
-            private final HBox buttonsContainer = new HBox(5, editButton, deleteButton);
-
+        actionColumn.setCellFactory(param -> new TableCell<Accommodation, Void>() {
+            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/editIcon.png")));
+            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/deleteIcon.png")));
+            private final HBox hbox = new HBox(10, editIcon, deleteIcon);
             {
-                editButton.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-background-radius: 5;");
-                deleteButton.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 5;");
+                editIcon.setFitWidth(30);
+                editIcon.setFitHeight(30);
+                deleteIcon.setFitWidth(30);
+                deleteIcon.setFitHeight(30);
 
-                editButton.setOnAction(event -> {
-                    Accommodation accommodation = getTableView().getItems().get(getIndex());
-                    handleEditAccommodation(accommodation);
-                });
+                // Appliquer un curseur "pointer" aux icônes
+                editIcon.setStyle("-fx-cursor: hand;");
+                deleteIcon.setStyle("-fx-cursor: hand;");
 
-                deleteButton.setOnAction(event -> {
-                    Accommodation accommodation = getTableView().getItems().get(getIndex());
-                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmationAlert.setTitle("Confirm Deletion");
-                    confirmationAlert.setHeaderText("Are you sure you want to delete this accommodation?");
-                    confirmationAlert.setContentText("This action cannot be undone.");
-                    confirmationAlert.showAndWait().ifPresent(response -> {
-                        if (response == ButtonType.OK) {
-                            try {
-                                accommodationService.delete(accommodation);
-                                loadAccommodationsFromDatabase();
-                            } catch (Exception e) {
-                                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                                errorAlert.setTitle("Error");
-                                errorAlert.setHeaderText("Error Deleting Accommodation");
-                                errorAlert.setContentText("An error occurred while trying to delete the accommodation: " + e.getMessage());
-                                errorAlert.showAndWait();
-                            }
-                        }
-                    });
-                });
+
+                editIcon.setOnMouseClicked(event -> handleEditAccommodation(getTableView().getItems().get(getIndex())));
+                deleteIcon.setOnMouseClicked(event -> confirmDelete(getTableView().getItems().get(getIndex())));
+            
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : buttonsContainer);
+                setGraphic(empty ? null : hbox);
             }
         });
     }
@@ -206,6 +192,15 @@ public class TableAccommodationController {
         }
     }
 
+    private void confirmDelete(Accommodation accommodation) {
+        Optional<ButtonType> result = Shared.deletePopUP("Are you sure to delete this user ?");
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            accommodationService.delete(accommodation);
+            accommodationList.remove(accommodation);
+            accommodationTable.refresh();
+        }
+    }
+
     // Méthode modifiée pour recharger la liste directement après fermeture de la fenêtre ajout
     private void openAddAccommodationForm() {
         try {
@@ -217,21 +212,21 @@ public class TableAccommodationController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
 
-            stage.showAndWait();  // Attend la fermeture de la fenêtre modale
+            stage.show(); // Attend la fermeture de la fenêtre modale
 
             // Recharge les données depuis la base
-            List<Accommodation> newData = accommodationService.getAll();
-
-            // Clear + setAll dans l'ObservableList liée
-            accommodationList.clear();
-            accommodationList.addAll(newData);
-
-            // Rebind explicitement la TableView
-            accommodationTable.setItems(null);
-            accommodationTable.setItems(accommodationList);
-
-            // Forcer le rafraîchissement visuel complet
-            accommodationTable.refresh();
+//            List<Accommodation> newData = accommodationService.getAll();
+//
+//            // Clear + setAll dans l'ObservableList liée
+//            accommodationList.clear();
+//            accommodationList.addAll(newData);
+//
+//            // Rebind explicitement la TableView
+//            accommodationTable.setItems(null);
+//            accommodationTable.setItems(accommodationList);
+//
+//            // Forcer le rafraîchissement visuel complet
+//            accommodationTable.refresh();
 
         } catch (IOException e) {
             e.printStackTrace();

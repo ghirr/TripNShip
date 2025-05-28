@@ -8,7 +8,6 @@ import org.Esprit.TripNShip.Entities.BookingStatus;
 import org.Esprit.TripNShip.Entities.Room;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AccommodationBookingService;
-import org.Esprit.TripNShip.Utils.EmailBookSender;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -20,9 +19,6 @@ public class AccommodationBookingController {
 
     @FXML
     private DatePicker endDatePicker;
-
-//    @FXML
-//    private TextField usernameField;
 
     @FXML
     private TextField priceField;
@@ -141,7 +137,7 @@ public class AccommodationBookingController {
 
                     bookingService.add(booking);
                     showAlert(Alert.AlertType.INFORMATION, "Réservation ajoutée avec succès !");
-                    EmailBookSender.sendEmail(email, "Confirmation de réservation", "Votre réservation a été enregistrée avec succès !");
+                    //EmailBookSender.sendEmail(email, "Confirmation de réservation", "Votre réservation a été enregistrée avec succès !");
                     showAlert(Alert.AlertType.INFORMATION, "Email de confirmation envoyé à " + email);
 
                     closeWindow();

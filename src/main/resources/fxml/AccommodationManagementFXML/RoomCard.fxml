@@ -1,23 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<AnchorPane prefHeight="378.0" prefWidth="320.0"
-            style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0, 0, 3);"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="320.0"
+            style="-fx-background-color: white; -fx-background-radius: 16; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 4);"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.Esprit.TripNShip.Controllers.RoomCardController">
-    <VBox layoutX="23.0" prefHeight="342.0" prefWidth="342.0" spacing="12">
-        <ImageView fx:id="roomImageView" fitHeight="143.0" fitWidth="318.0" preserveRatio="true" style="-fx-background-color: #e5e7eb; -fx-background-radius: 12;" />
-        <Label fx:id="roomNameLabel" style="-fx-font-size: 16px; -fx-font-weight: bold ;" />
-        <Label fx:id="roomPriceLabel" style="-fx-font-size: 16px; -fx-text-fill: #6b7280;" />
 
-        <HBox prefHeight="112.0" prefWidth="342.0" spacing="20" style="-fx-padding: 60 0 0 0;">
-            <Button fx:id="detailButton" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 18; -fx-background-radius: 10;" text="Details" />
-            <Button fx:id="bookingButton" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 18; -fx-background-radius: 10;" text="Booking" />
-        </HBox>
+    <VBox spacing="0" style="-fx-background-color: transparent;"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <!-- Image Container with Overlay Effects -->
+        <StackPane style="-fx-background-color: #f1f5f9; -fx-background-radius: 16 16 0 0;">
+            <ImageView fx:id="roomImageView" fitHeight="180.0" fitWidth="320.0"
+                       preserveRatio="true"
+                       style="-fx-background-radius: 16 16 0 0; -fx-clip: true;">
+                <StackPane.margin>
+                    <Insets />
+                </StackPane.margin>
+            </ImageView>
+
+            <!-- Gradient Overlay for better text readability -->
+            <VBox alignment="BOTTOM_LEFT" style="-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.3), transparent); -fx-background-radius: 16 16 0 0;">
+                <StackPane.margin>
+                    <Insets />
+                </StackPane.margin>
+
+                <!-- Rating Badge (Optional - can be bound to data) -->
+                <HBox alignment="CENTER_LEFT" spacing="4">
+                    <VBox.margin>
+                        <Insets bottom="12.0" left="16.0" />
+                    </VBox.margin>
+                    <Label text="⭐" style="-fx-font-size: 14px;" />
+                    <Label fx:id="ratingLabel" text="4.8"
+                           style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                </HBox>
+            </VBox>
+
+            <!-- Favorite/Wishlist Button -->
+            <Button fx:id="favoriteButton" text="♡"
+                    style="-fx-background-color: rgba(255,255,255,0.9); -fx-text-fill: #e11d48; -fx-font-size: 18px; -fx-background-radius: 20; -fx-min-width: 36; -fx-min-height: 36; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);">
+                <StackPane.margin>
+                    <Insets top="12.0" right="12.0" />
+                </StackPane.margin>
+                <StackPane.alignment>TOP_RIGHT</StackPane.alignment>
+            </Button>
+        </StackPane>
+
+        <!-- Content Section -->
+        <VBox spacing="0" style="-fx-padding: 16; -fx-background-color: white; -fx-background-radius: 0 0 16 16;">
+
+            <!-- Room Info Section -->
+            <VBox spacing="6">
+                <!-- Room Name -->
+                <Label fx:id="roomNameLabel"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+
+                <!-- Room Features Row -->
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <HBox spacing="3" alignment="CENTER_LEFT">
+                        <Label text="🛏️" style="-fx-font-size: 11px;" />
+                        <Label fx:id="roomTypeLabel" text="Double"
+                               style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" />
+                    </HBox>
+
+                    <HBox spacing="3" alignment="CENTER_LEFT">
+                        <Label text="👥" style="-fx-font-size: 11px;" />
+                        <Label fx:id="capacityLabel" text="2"
+                               style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" />
+                    </HBox>
+
+                    <HBox spacing="3" alignment="CENTER_LEFT">
+                        <Label text="📏" style="-fx-font-size: 11px;" />
+                        <Label fx:id="sizeLabel" text="25m²"
+                               style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" />
+                    </HBox>
+                </HBox>
+
+                <!-- Amenities Row -->
+                <HBox spacing="6" alignment="CENTER_LEFT">
+                    <VBox.margin>
+                        <Insets top="2.0" />
+                    </VBox.margin>
+                    <Label text="📶" style="-fx-font-size: 10px;" />
+                    <Label text="❄️" style="-fx-font-size: 10px;" />
+                    <Label text="🚿" style="-fx-font-size: 10px;" />
+                    <Label text="📺" style="-fx-font-size: 10px;" />
+                </HBox>
+            </VBox>
+
+            <!-- Price and Availability Section -->
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="12.0" />
+                </VBox.margin>
+
+                <!-- Price Display -->
+                <HBox alignment="CENTER_LEFT" spacing="4">
+                    <Label fx:id="roomPriceLabel"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #059669;" />
+                    <Label text="/night"
+                           style="-fx-font-size: 12px; -fx-text-fill: #6b7280;" />
+
+                    <!-- Availability Status -->
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="availabilityLabel" text="Available"
+                           style="-fx-background-color: #dcfce7; -fx-text-fill: #16a34a; -fx-padding: 3 6; -fx-background-radius: 10; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <!-- Action Buttons -->
+                <HBox spacing="8" alignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="2.0" />
+                    </VBox.margin>
+
+                    <Button fx:id="detailButton" text="Details"
+                            style="-fx-background-color: transparent; -fx-border-color: #3b82f6; -fx-border-width: 1.5; -fx-text-fill: #3b82f6; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 10; -fx-border-radius: 10; -fx-cursor: hand;"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+
+                    <Button fx:id="bookingButton" text="Book Now"
+                            style="-fx-background-color: linear-gradient(to right, #3b82f6, #1d4ed8); -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 10; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.4), 6, 0, 0, 2);"
+                            HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                </HBox>
+            </VBox>
+        </VBox>
     </VBox>
 </AnchorPane>

@@ -32,14 +32,6 @@
     -fx-padding: 5px 0;
 }
 
-.modern-table .table-row-cell:filled:selected {
-    -fx-background-color: #e0f0ff;
-}
-
-.modern-table .table-row-cell:filled:selected .text {
-    -fx-fill: black;
-}
-
 .modern-table .table-row-cell:odd {
     -fx-background-color: #f9fbff;
 }

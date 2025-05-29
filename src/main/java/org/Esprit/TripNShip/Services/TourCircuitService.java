@@ -84,8 +84,7 @@ public class TourCircuitService implements IService<TourCircuit> {
                         rs.getFloat("priceCircuit"),
                         rs.getString("duration"),
                         rs.getString("destination"),
-                        rs.getBoolean("guideIncluded"),
-                        new ArrayList<>()
+                        rs.getBoolean("guideIncluded")
                 );
                 tourCircuits.add(tourCircuit);
             }

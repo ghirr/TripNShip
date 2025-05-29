@@ -1,61 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AddVehicleRentalController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
             <StackPane style="-fx-padding: 20;">
-                <VBox alignment="CENTER" maxWidth="400" spacing="10.0"
+                <VBox alignment="CENTER" maxWidth="600" spacing="10.0"
                       style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
                     <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../../images/logo.png" />
                         </image>
                     </ImageView>
 
-                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Vehicle Rental" />
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Booking Vehicle" />
 
-                    <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
-                        <Label text="Start Date" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <DatePicker fx:id="startDatePicker" promptText="Select start date"
-                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                    <!-- Formulaire avec champs alignés -->
+                    <VBox alignment="CENTER_LEFT" maxWidth="600" spacing="12">
 
-                        <Label text="End Date" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <DatePicker fx:id="endDatePicker" promptText="Select end date"
-                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <!-- Ligne 1 : Start Date + End Date -->
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Start Date" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <DatePicker fx:id="startDatePicker" promptText="Select start date"
+                                            style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="End Date" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <DatePicker fx:id="endDatePicker" promptText="Select end date"
+                                            style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                        </HBox>
 
-                        <Label text="Total Price" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <TextField fx:id="totalPriceField" promptText="Enter total price"
-                                   style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <!-- Ligne 2 : Total Price + Status -->
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Total Price" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <TextField fx:id="totalPriceField" promptText="Enter total price"
+                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Status" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <ComboBox fx:id="statusComboBox" promptText="Select status"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                        </HBox>
 
-                        <Label text="Status" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <ComboBox fx:id="statusComboBox" promptText="Select status"
-                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <!-- Ligne 3 : Vehicle + Agency -->
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Vehicle" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <ComboBox fx:id="vehicleComboBox" promptText="Select vehicle"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Agency" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <ComboBox fx:id="agencyComboBox" promptText="Select user"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                        </HBox>
 
-                        <Label text="Vehicle" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <ComboBox fx:id="vehicleComboBox" promptText="Select vehicle"
-                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
-
-                        <Label text="User" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                        <ComboBox fx:id="userComboBox" promptText="Select user"
-                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                     </VBox>
 
-                    <Button fx:id="addRentalButton" text="Add Rental"
+                    <!-- Bouton de soumission -->
+                    <Button fx:id="addRentalButton" text="Book Vehicle"
                             style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" />
                 </VBox>
             </StackPane>
+
             <padding>
                 <Insets top="20" bottom="20" />
             </padding>

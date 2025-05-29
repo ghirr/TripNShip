@@ -17,9 +17,6 @@ public sealed class User permits Client,Employee {
     private String phoneNumber;
     private Set<Asset> assets ;
 
-    public User(int idUser) {
-
-    }
     public User(int idUser, String firstName, String lastName, Gender gender, Role role, String email, String password, String profilePhoto, LocalDateTime birthdayDate, String phoneNumber) {
         this.idUser = idUser;
         this.firstName = firstName;
@@ -128,6 +125,12 @@ public sealed class User permits Client,Employee {
         this.email = email;
     }
 
+    public User() {
+
+    }
+
+    public User(int idUser) {
+    }
 
     public int getIdUser() {
         return idUser;

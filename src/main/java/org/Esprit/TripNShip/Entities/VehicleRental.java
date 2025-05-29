@@ -12,6 +12,13 @@ public class VehicleRental {
     private Vehicle vehicle;
     private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public VehicleRental(LocalDateTime startDate, LocalDateTime endDate, float totalPrice,
                          StautCircuit statusCircuit, Vehicle vehicle, User user) {
@@ -32,6 +39,7 @@ public class VehicleRental {
         this.statusCircuit = statusCircuit;
         this.vehicle = vehicle;
         this.user = user;
+
     }
 
     public VehicleRental() {
@@ -70,14 +78,6 @@ public class VehicleRental {
         this.totalPrice = totalPrice;
     }
 
-    public StautCircuit getStatus() {
-        return statusCircuit;
-    }
-
-    public void setStatus(StautCircuit status) {
-        this.statusCircuit = status;
-    }
-
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -86,13 +86,15 @@ public class VehicleRental {
         this.vehicle = vehicle;
     }
 
-    public User getUser() {
-        return user;
+
+    public StautCircuit getStatusCircuit() {
+        return statusCircuit;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStatusCircuit(StautCircuit statusCircuit) {
+        this.statusCircuit = statusCircuit;
     }
+
 
     @Override
     public String toString() {
@@ -105,10 +107,5 @@ public class VehicleRental {
                 ", vehicle=" + vehicle +
                 ", user=" + user +
                 '}';
-    }
-
-
-    public int getIdAgency() {
-        return 0;
     }
 }

@@ -1,9 +1,6 @@
 package org.Esprit.TripNShip.Services;
 
-import org.Esprit.TripNShip.Entities.StautCircuit;
-import org.Esprit.TripNShip.Entities.User;
-import org.Esprit.TripNShip.Entities.Vehicle;
-import org.Esprit.TripNShip.Entities.VehicleRental;
+import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
 import java.sql.*;
@@ -13,13 +10,9 @@ import java.util.List;
 public class VehicleRentalService implements IService<VehicleRental> {
 
     private final Connection connection;
-    private final VehicleService vehicleService;
-    private final UserService userService;
 
     public VehicleRentalService() {
         connection = MyDataBase.getInstance().getConnection();
-        vehicleService = new VehicleService();
-        userService = new UserService();
     }
 
     @Override
@@ -30,7 +23,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
             pst.setTimestamp(1, Timestamp.valueOf(vehicleRental.getStartDate()));
             pst.setTimestamp(2, Timestamp.valueOf(vehicleRental.getEndDate()));
             pst.setFloat(3, vehicleRental.getTotalPrice());
-            pst.setInt(4, vehicleRental.getStatus().ordinal());
+            pst.setInt(4, vehicleRental.getStatusCircuit().ordinal());
             pst.setInt(5, vehicleRental.getVehicle().getIdVehicle());
             pst.setInt(6, vehicleRental.getUser().getIdUser());
             pst.executeUpdate();
@@ -48,7 +41,7 @@ public class VehicleRentalService implements IService<VehicleRental> {
             pst.setTimestamp(1, Timestamp.valueOf(vehicleRental.getStartDate()));
             pst.setTimestamp(2, Timestamp.valueOf(vehicleRental.getEndDate()));
             pst.setFloat(3, vehicleRental.getTotalPrice());
-            pst.setInt(4, vehicleRental.getStatus().ordinal());
+            pst.setInt(4, vehicleRental.getStatusCircuit().ordinal());
             pst.setInt(5, vehicleRental.getVehicle().getIdVehicle());
             pst.setInt(6, vehicleRental.getUser().getIdUser());
             pst.setInt(7, vehicleRental.getIdRental());
@@ -80,8 +73,6 @@ public class VehicleRentalService implements IService<VehicleRental> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Vehicle vehicle = new Vehicle(rs.getInt("idVehicle"));
-                User user = new User(rs.getInt("idUser"));
 
                 VehicleRental vehicleRental = new VehicleRental(
                         rs.getInt("idRental"),
@@ -89,8 +80,9 @@ public class VehicleRentalService implements IService<VehicleRental> {
                         rs.getTimestamp("endDate").toLocalDateTime(),
                         rs.getFloat("totalPrice"),
                         StautCircuit.values()[rs.getInt("statusCircuit")],
-                        vehicle,
-                        user
+                        new Vehicle(rs.getInt("idVehicle")),
+                        new User(rs.getInt("idUser"))
+
                 );
                 vehicleRentals.add(vehicleRental);
             }

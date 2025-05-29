@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.CheckBox?>
 <StackPane xmlns="http://javafx.com/javafx/17.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.Esprit.TripNShip.Controllers.AddVehicleController"
@@ -69,8 +70,8 @@
                         <HBox spacing="20">
                             <VBox spacing="5">
                                 <Label text="Availability" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                                <TextField fx:id="availabilityField" promptText="true / false"
-                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                <CheckBox fx:id="availabilityCheckBox"  text="Available" />
+
                             </VBox>
                             <VBox spacing="5">
                                 <Label text="Type" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
@@ -79,12 +80,19 @@
                             </VBox>
                         </HBox>
 
-                        <!-- Agency -->
-                        <VBox spacing="5">
-                            <Label text="Agency" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                            <ComboBox fx:id="agencyComboBox" promptText="Select an Agency"
-                                      style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
-                        </VBox>
+
+                        <HBox spacing="20">
+
+                            <VBox spacing="5">
+                                <Label text="Vehicle Image:" />
+                                <HBox spacing="10">
+                                    <children>
+                                        <Button fx:id="chooseImageButton" text="Choose Image" />
+                                        <Label fx:id="imageFileNameLabel" text="No file chosen" />
+                                    </children>
+                                </HBox>
+                            </VBox>
+                        </HBox>
 
                     </VBox>
 

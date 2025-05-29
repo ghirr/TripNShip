@@ -8,13 +8,15 @@ public class Vehicle {
     private int idVehicle;
     private String brand;
     private String model;
+    private String imageURL;
     private String licensePlate;
     private float dailyPrice;
     private boolean availability;
     private Type type;
-    private RentalAgency agency;
+    private RentalAgency rentalAgency;
 
-    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency agency) {
+
+    public Vehicle(int idVehicle, String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency, String imageURL) {
         this.idVehicle = idVehicle;
         this.brand = brand;
         this.model = model;
@@ -22,17 +24,20 @@ public class Vehicle {
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
-        this.agency = agency;
+        this.rentalAgency = rentalAgency;
+        this.imageURL = imageURL;
+
     }
 
-    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency agency) {
+    public Vehicle(String brand, String model, String licensePlate, float dailyPrice, boolean availability, Type type, RentalAgency rentalAgency, String imageURL) {
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
         this.dailyPrice = dailyPrice;
         this.availability = availability;
         this.type = type;
-        this.agency = agency;
+        this.rentalAgency = rentalAgency;
+        this.imageURL = imageURL;
     }
 
     public Vehicle() {
@@ -41,6 +46,8 @@ public class Vehicle {
 
     public Vehicle(int idVehicle) {
     }
+
+
 
     public int getIdVehicle() {
         return idVehicle;
@@ -98,12 +105,20 @@ public class Vehicle {
         this.type = type;
     }
 
-    public RentalAgency getAgency() {
-        return agency;
+    public RentalAgency getRentalAgency() {
+        return rentalAgency;
     }
 
-    public void setAgency(RentalAgency agency) {
-        this.agency = agency;
+    public void setRentalAgency(RentalAgency rentalAgency) {
+        this.rentalAgency = rentalAgency;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     @Override
@@ -112,11 +127,12 @@ public class Vehicle {
                 "idVehicle=" + idVehicle +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
+                ", imageURL='" + imageURL + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", dailyPrice=" + dailyPrice +
                 ", availability=" + availability +
                 ", type=" + type +
-                ", agency=" + agency +
+                ", rentalAgency=" + rentalAgency +
                 '}';
     }
 }

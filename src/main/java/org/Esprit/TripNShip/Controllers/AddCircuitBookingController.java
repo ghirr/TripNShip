@@ -2,7 +2,6 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxListCell;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
 import org.Esprit.TripNShip.Entities.StatusBooking;
 import org.Esprit.TripNShip.Entities.TourCircuit;
@@ -12,7 +11,6 @@ import org.Esprit.TripNShip.Services.TourCircuitService;
 import org.Esprit.TripNShip.Services.UserService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class AddCircuitBookingController {
 
@@ -37,10 +35,10 @@ public class AddCircuitBookingController {
 
     @FXML
     private void initialize() {
-        // Charger les statuts dans la ComboBox
+        // Charger les statuts
         statusComboBox.getItems().addAll(StatusBooking.values());
 
-        // Charger les users
+        // Charger les utilisateurs
         userComboBox.getItems().addAll(userService.getAll());
         userComboBox.setCellFactory(cb -> new ListCell<>() {
             @Override
@@ -49,7 +47,13 @@ public class AddCircuitBookingController {
                 setText(empty || user == null ? null : user.getFirstName() + " " + user.getLastName());
             }
         });
-        userComboBox.setButtonCell(userComboBox.getCellFactory().call(null));
+        userComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty || user == null ? null : user.getFirstName() + " " + user.getLastName());
+            }
+        });
 
         // Charger les circuits
         tourCircuitComboBox.getItems().addAll(tourCircuitService.getAll());
@@ -60,9 +64,14 @@ public class AddCircuitBookingController {
                 setText(empty || circuit == null ? null : circuit.getNameCircuit());
             }
         });
-        tourCircuitComboBox.setButtonCell(tourCircuitComboBox.getCellFactory().call(null));
+        tourCircuitComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(TourCircuit circuit, boolean empty) {
+                super.updateItem(circuit, empty);
+                setText(empty || circuit == null ? null : circuit.getNameCircuit());
+            }
+        });
 
-        // Action bouton
         addBookingButton.setOnAction(event -> addCircuitBooking());
     }
 

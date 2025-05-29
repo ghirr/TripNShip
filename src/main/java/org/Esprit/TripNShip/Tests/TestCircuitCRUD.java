@@ -27,9 +27,13 @@ public class TestCircuitCRUD {
         agencyService.add(agency2);
         agencyService.add(agency3);
 
+        System.out.println("ID agence 1 : " + agency1.getIdAgency());
+
+
+
         // === Créer des véhicules ===
-        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency2);
-        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency3);
+        Vehicle vehicle1 = new Vehicle("Toyota", "Corolla", "123ABC", 50.0f, true, Type.Car, agency1, "https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_960_720.jpg");
+        Vehicle vehicle2 = new Vehicle("Ford", "Focus", "456DEF", 55.0f, true, Type.Car, agency1, "https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_960_720.jpg");
 
         vehicleService.add(vehicle1);
         vehicleService.add(vehicle2);
@@ -42,7 +46,7 @@ public class TestCircuitCRUD {
                 .orElse(null);
 
         // === Récupérer un utilisateur par ID depuis la liste ===
-        int desiredUserId = 8;
+        int desiredUserId = 6;
         User userFromDB = userService.getAll().stream()
                 .filter(u -> u.getIdUser() == desiredUserId)
                 .findFirst()
@@ -76,7 +80,7 @@ public class TestCircuitCRUD {
 
             // === Update Rentals ===
             rental1.setTotalPrice(180.0f);
-            rental2.setStatus(StautCircuit.Active);
+            rental2.setStatusCircuit(StautCircuit.Active);
 
             rentalService.update(rental1);
             rentalService.update(rental2);
@@ -96,7 +100,7 @@ public class TestCircuitCRUD {
 
         // === Créer un circuit touristique ===
         TourCircuit tourCircuit = new TourCircuit(0, "Andalusian Adventure", "Discover Spain's beauty",
-                1200.0f, "7 Days", "Spain", true, null);
+                1200.0f, "7 Days", "Spain", true);
         tourCircuitService.add(tourCircuit);
 
         // Récupérer le dernier ajouté

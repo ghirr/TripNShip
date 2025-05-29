@@ -13,6 +13,7 @@ import org.Esprit.TripNShip.Utils.Shared;
 import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class AdminNavigation {
 
@@ -70,10 +71,12 @@ public class AdminNavigation {
     public void navigateToTransportManagement(ActionEvent actionEvent) {
     }
 
-    public void navigateToAccommodationManagement(ActionEvent actionEvent) {
+    public void navigateToAccommodationManagement() {
+        loadView("/fxml/Home.fxml");
     }
 
-    public void navigateToCircuitManagement(ActionEvent actionEvent) {
+    public void navigateToCircuitManagement() {
+        loadView("/fxml/CircuitManagementFXML/Dashboard.fxml");
     }
 
     public void navigateToExpeditionManagement(ActionEvent actionEvent) {
@@ -90,23 +93,27 @@ public class AdminNavigation {
 
     private void loadView(String fxmlFile) {
         try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            URL resource = getClass().getResource(fxmlFile);
+            if (resource == null) {
+                System.err.println("Fichier FXML introuvable : " + fxmlFile);
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(resource);
             Parent newLoadedPane = loader.load();
 
-            // Clear old content and set new content
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(newLoadedPane);
+            contentArea.getChildren().setAll(newLoadedPane);
 
-            // Make sure the loaded pane fills the contentArea
             AnchorPane.setTopAnchor(newLoadedPane, 0.0);
             AnchorPane.setBottomAnchor(newLoadedPane, 0.0);
             AnchorPane.setLeftAnchor(newLoadedPane, 0.0);
             AnchorPane.setRightAnchor(newLoadedPane, 0.0);
 
         } catch (IOException e) {
+            System.err.println("Erreur lors du chargement du fichier FXML : " + fxmlFile);
             e.printStackTrace();
         }
     }
+
 
 }

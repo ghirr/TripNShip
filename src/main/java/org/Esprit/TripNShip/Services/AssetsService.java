@@ -75,7 +75,6 @@ public class AssetsService implements IService<Asset> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override

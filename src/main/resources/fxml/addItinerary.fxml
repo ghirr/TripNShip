@@ -22,7 +22,7 @@
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary Code" />
-                        <TextField fx:id="itineraryCodeField" maxWidth="Infinity" promptText="e.g Flight/Train number" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="itineraryCodeField" maxWidth="Infinity" promptText="Flight/Train number" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Transporter Reference" />
                         <TextField fx:id="transporterReferenceField" maxWidth="Infinity"  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

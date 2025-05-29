@@ -13,7 +13,20 @@ public class Itinerary {
     private String duration;
     private double price;
 
-    public Itinerary(String itineraryCode, String transporterReference, String departureLocation, LocalTime departureTime , String arrivalLocation,LocalTime arrivalTime, String duration, double price) {
+    public Itinerary(int itineraryId, String itineraryCode, String transporterReference, String departureLocation, LocalTime departureTime, String arrivalLocation, LocalTime arrivalTime, String duration, double price) {
+        this.itineraryId = itineraryId;
+        this.itineraryCode = itineraryCode;
+        this.transporterReference = transporterReference;
+        this.departureLocation = departureLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.duration = duration;
+        this.price = price;
+        updateArrivalTime();
+    }
+
+    public Itinerary(String itineraryCode, String transporterReference, String departureLocation, LocalTime departureTime , String arrivalLocation, LocalTime arrivalTime, String duration, double price) {
         this.itineraryCode = itineraryCode;
         this.transporterReference = transporterReference;
         this.departureLocation = departureLocation;
@@ -136,6 +149,10 @@ public class Itinerary {
 
     public int getItineraryId() {
         return itineraryId;
+    }
+
+    public void setItineraryId(int itineraryId) {
+        this.itineraryId = itineraryId;
     }
 
     @Override

@@ -36,16 +36,18 @@ public class ItineraryService implements IService<Itinerary>{
 
     @Override
     public void update(Itinerary itinerary) {
-        String req = "UPDATE itinerary SET itineraryCode=?,transporterReference=?,departureLocation=?,arrivalLocation=?,duration=?,price=? WHERE itineraryId=?";
+        String req = "UPDATE itinerary SET itineraryCode=?,transporterReference=?,departureLocation=?,departureTime=?,arrivalLocation=?,arrivalTime=?,duration=?,price=? WHERE itineraryId=?";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, itinerary.getItineraryCode());
             pst.setString(2,itinerary.getTransporterReference());
             pst.setString(3, itinerary.getDepartureLocation());
-            pst.setString(4, itinerary.getArrivalLocation());
-            pst.setString(5,itinerary.getDuration());
-            pst.setDouble(6,itinerary.getPrice());//a verifier pour Duration
-            pst.setInt(7,itinerary.getItineraryId());
+            pst.setTime(4,Time.valueOf(itinerary.getDepartureTime()));
+            pst.setString(5, itinerary.getArrivalLocation());
+            pst.setTime(6,Time.valueOf(itinerary.getArrivalTime()));
+            pst.setString(7,itinerary.getDuration());
+            pst.setDouble(8,itinerary.getPrice());//a verifier pour Duration
+            pst.setInt(9,itinerary.getItineraryId());
             pst.executeUpdate();
             System.out.println("Itinerary updated successfully");
         }
@@ -78,7 +80,7 @@ public class ItineraryService implements IService<Itinerary>{
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                itineraries.add(new Itinerary(rs.getString("itineraryCode"), rs.getString("transporterReference"), rs.getString("departureLocation"),rs.getTime("departureTime").toLocalTime(), rs.getString("arrivalLocation"), rs.getTime("arrivalTime").toLocalTime(),rs.getString("duration"),rs.getDouble("price"))); //a verifier pour Duration
+                itineraries.add(new Itinerary(rs.getInt("itineraryId"),rs.getString("itineraryCode"), rs.getString("transporterReference"), rs.getString("departureLocation"),rs.getTime("departureTime").toLocalTime(), rs.getString("arrivalLocation"), rs.getTime("arrivalTime").toLocalTime(),rs.getString("duration"),rs.getDouble("price"))); //a verifier pour Duration
 
             }
         } catch (SQLException e) {

@@ -19,7 +19,7 @@ public class UpdateTicketController implements Initializable {
     @FXML private ComboBox<String> itineraryCodeComboBox;
     @FXML private TextField userEmailField;
     @FXML private DatePicker departureDatePicker;
-    @FXML private DatePicker arrivalDatePicker;
+    @FXML private TextField arrivalDateField;
     @FXML private TextField departureTimeField;
     @FXML private TextField arrivalTimeField;
     @FXML private Button updateTicketButton;
@@ -31,9 +31,14 @@ public class UpdateTicketController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ItineraryService is = new ItineraryService();
         List<Itinerary> itineraries = is.getAll();
-        for (Itinerary itinerary : itineraries) {
-            itineraryCodeComboBox.getItems().add(itinerary.getItineraryCode());
+        for (Itinerary i : itineraries) {
+            itineraryCodeComboBox.getItems().add(i.getItineraryCode());
         }
+        itineraryCodeComboBox.setOnAction(event -> onItineraryCodeSelected());
+        departureDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> updateArrivalDate());
+        departureTimeField.setEditable(false);
+        arrivalTimeField.setEditable(false);
+        arrivalDateField.setEditable(false);
     }
 
     public void setTicket(Ticket ticket) {
@@ -41,9 +46,9 @@ public class UpdateTicketController implements Initializable {
         itineraryCodeComboBox.setValue(ticket.getItineraryCode());
         userEmailField.setText(String.valueOf(ticket.getUserEmail()));
         departureDatePicker.setValue(ticket.getDepartureDate());
-        arrivalDatePicker.setValue(ticket.getArrivalDate());
-        departureTimeField.setText(ticket.getDepartureTime().toString());
-        arrivalTimeField.setText(ticket.getArrivalTime().toString());
+        arrivalDateField.setText(ticket.getArrivalDate().toString());
+        onItineraryCodeSelected();
+
     }
 
     @FXML
@@ -53,9 +58,8 @@ public class UpdateTicketController implements Initializable {
         ticket.setItineraryCode(itineraryCodeComboBox.getValue());
         ticket.setUserEmail(userEmailField.getText());
         ticket.setDepartureDate(departureDatePicker.getValue());
-        ticket.setArrivalDate(arrivalDatePicker.getValue());
-        ticket.setDepartureTime(LocalTime.parse(departureTimeField.getText()));
-        ticket.setArrivalTime(LocalTime.parse(arrivalTimeField.getText()));
+        ticket.setArrivalDate(LocalDate.parse(arrivalDateField.getText()));
+
 
         ts.update(ticket);
 
@@ -68,7 +72,7 @@ public class UpdateTicketController implements Initializable {
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() ==null || arrivalDatePicker.getValue()==null||departureTimeField.getText().isEmpty()||arrivalTimeField.getText().isEmpty()) {
+        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() ==null || arrivalDateField.getText().isEmpty()||departureTimeField.getText().isEmpty()||arrivalTimeField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -80,8 +84,7 @@ public class UpdateTicketController implements Initializable {
         }
         try {
             departureDatePicker.getValue();
-            arrivalDatePicker.getValue();
-        } catch (Exception e) {
+                } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR,"Date Format Error","Please set the dates in the format YYYY-MM-DD");
             return false;
         }
@@ -103,6 +106,37 @@ public class UpdateTicketController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    @FXML
+    private void onItineraryCodeSelected() {
+        String selectedCode = itineraryCodeComboBox.getValue();
+        if (selectedCode != null) {
+            ItineraryService is = new ItineraryService();
+            Itinerary itinerary = is.getItineraryByCode(selectedCode);
+            if (itinerary != null) {
+                departureTimeField.setText(itinerary.getDepartureTime().toString());
+                arrivalTimeField.setText(itinerary.getArrivalTime().toString());
+                updateArrivalDate();
+            }
+        }
+    }
+    private void updateArrivalDate() {
+        String selectedCode = itineraryCodeComboBox.getValue();
+        LocalDate departureDate = departureDatePicker.getValue();
+
+        if (selectedCode == null || departureDate == null) {
+            return;
+        }
+
+        ItineraryService is = new ItineraryService();
+        Itinerary itinerary = is.getItineraryByCode(selectedCode);
+        if (itinerary != null && itinerary.getDepartureTime() != null && itinerary.getDuration() != null) {
+            LocalDate calculatedArrivalDate = Ticket.calculateArrivalDate(departureDate, itinerary.getDepartureTime(), itinerary.getDuration());
+            if (calculatedArrivalDate != null) {
+                arrivalDateField.setText(calculatedArrivalDate.toString());
+            }
+        }
+    }
+
 
 }
 

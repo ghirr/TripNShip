@@ -34,7 +34,7 @@
                         <DatePicker fx:id="departureDatePicker" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Date" />
-                        <DatePicker fx:id="arrivalDatePicker" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="arrivalDateField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Time" />
                         <TextField fx:id="departureTimeField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

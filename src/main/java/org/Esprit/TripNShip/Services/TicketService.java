@@ -13,15 +13,14 @@ public class TicketService implements IService<Ticket>{
 
     @Override
     public void add(Ticket ticket) {
-        String req = "insert into ticket (itineraryCode,userEmail,departureDate,arrivalDate,departureTime,arrivalTime) values (?,?,?,?,?,?) ";
+        String req = "insert into ticket (itineraryCode,userEmail,departureDate,arrivalDate) values (?,?,?,?) ";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, ticket.getItineraryCode());
             pst.setString(2,ticket.getUserEmail());
             pst.setDate(3, Date.valueOf(ticket.getDepartureDate()));
             pst.setDate(4,Date.valueOf(ticket.getArrivalDate()));
-            pst.setTime(5,Time.valueOf(ticket.getDepartureTime()));
-            pst.setTime(6,Time.valueOf(ticket.getArrivalTime()));
+
             pst.executeUpdate();
             System.out.println("Ticket Added Successfully!!");
         } catch (Exception e) {
@@ -31,16 +30,15 @@ public class TicketService implements IService<Ticket>{
 
     @Override
     public void update(Ticket ticket) {
-        String req =" update ticket set itineraryCode=?,userEmail=?,departureDate=?,arrivalDate=?,departureTime=?,arrivalTime=? where ticketId=?";
+        String req =" update ticket set itineraryCode=?,userEmail=?,departureDate=?,arrivalDate=? where ticketId=?";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, ticket.getItineraryCode());
             pst.setString(2,ticket.getUserEmail());
             pst.setDate(3,Date.valueOf(ticket.getDepartureDate()));
             pst.setDate(4,Date.valueOf(ticket.getArrivalDate()));
-            pst.setTime(5,Time.valueOf(ticket.getDepartureTime()));
-            pst.setTime(6,Time.valueOf(ticket.getArrivalTime()));
-            pst.setInt(7,ticket.getTicketId());
+
+            pst.setInt(5,ticket.getTicketId());
             pst.executeUpdate();
             System.out.println("Ticket updated successfully!!");
         } catch (Exception e) {
@@ -68,7 +66,7 @@ public class TicketService implements IService<Ticket>{
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs= pst.executeQuery();
             while (rs.next()){
-                tickets.add(new Ticket(rs.getString("itineraryCode"),rs.getString("userEmail"), rs.getDate("departureDate").toLocalDate(), rs.getDate("arrivalDate").toLocalDate(),rs.getTime("departureTime").toLocalTime(),rs.getTime("arrivalTime").toLocalTime()));
+                tickets.add(new Ticket(rs.getInt("ticketId"), rs.getString("itineraryCode"),rs.getString("userEmail"), rs.getDate("departureDate").toLocalDate(), rs.getDate("arrivalDate").toLocalDate()));
             }
 
         } catch (Exception e) {

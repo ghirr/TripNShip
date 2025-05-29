@@ -32,8 +32,6 @@ public class TicketController {
     @FXML private TableColumn<String, Ticket> userEmailColumn;
     @FXML private TableColumn<LocalDate, Ticket> departureDateColumn;
     @FXML private TableColumn<LocalDate, Ticket> arrivalDateColumn;
-    @FXML private TableColumn<LocalTime,Ticket> departureTimeColumn;
-    @FXML private TableColumn<LocalTime,Ticket> arrivalTimeColumn;
     @FXML private TableColumn<Ticket, Void> actionsColumn;
     @FXML private TextField searchField;
 
@@ -49,8 +47,6 @@ public class TicketController {
         userEmailColumn.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
         departureDateColumn.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
         arrivalDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
-        departureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
-        arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
 
         ticketList.addAll(ts.getAll());
 

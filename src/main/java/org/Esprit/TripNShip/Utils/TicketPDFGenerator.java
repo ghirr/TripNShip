@@ -25,7 +25,6 @@ public class TicketPDFGenerator {
         logo.setAlignment(Element.ALIGN_CENTER);
         ItineraryService is = new ItineraryService();
         Itinerary itinerary = is.getItineraryByCode(ticket.getItineraryCode());
-        String uniqueData = "Ticket"+ticket.getTicketId()+"-"+System.currentTimeMillis();
 
         try {
             PdfWriter.getInstance(document, new FileOutputStream(outputPath));
@@ -48,10 +47,10 @@ public class TicketPDFGenerator {
             document.add(new Paragraph("Email : " + ticket.getUserEmail()));
             document.add(new Paragraph("Departure Location : "+ (itinerary.getDepartureLocation())));
             document.add(new Paragraph("Departure Date : " + ticket.getDepartureDate().format(dateFormatter)));
-            document.add(new Paragraph("Departure Time : " + ticket.getDepartureTime().format(timeFormatter)));
+            document.add(new Paragraph("Departure Time : " + itinerary.getDepartureTime().format(timeFormatter)));
             document.add(new Paragraph("Arrival Location : "+itinerary.getArrivalLocation()));
             document.add(new Paragraph("Arrival Date : " + ticket.getArrivalDate().format(dateFormatter)));
-            document.add(new Paragraph("Arrival Time : " + ticket.getArrivalTime().format(timeFormatter)));
+            document.add(new Paragraph("Arrival Time : " + itinerary.getArrivalTime().format(timeFormatter)));
             document.add(new Paragraph("Price : " + itinerary.getPrice() + " TND"));
 
             document.add(new Paragraph(" "));

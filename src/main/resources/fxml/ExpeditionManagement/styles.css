@@ -496,4 +496,17 @@
 .reject-button:hover {
     -fx-background-color: #c82333;
 }
+.expedition-card {
+    -fx-min-height: 220px;
+    -fx-pref-height: 250px;
+    -fx-min-width: 380px;
+    -fx-pref-width: 450px;
+    -fx-margin-bottom: 30px;  /* Additional bottom margin */
+}
+
+.tile-pane {
+    -fx-hgap: 20px;
+    -fx-vgap: 30px;
+    -fx-padding: 20px;
+}
 

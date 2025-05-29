@@ -44,6 +44,12 @@ public class ClientExpeditionsController implements Initializable {
         expeditionService = new ServiceExpedition();
         userService = new UserService();
 
+        // Configure TilePane with better spacing
+        expeditionTiles.setHgap(20);     // Horizontal gap between cards
+        expeditionTiles.setVgap(30);     // Increased vertical gap between cards
+        expeditionTiles.setPrefColumns(2); // Preferred number of columns
+        expeditionTiles.setPadding(new Insets(15));
+
         // Load expeditions data
         loadExpeditions();
 
@@ -74,12 +80,13 @@ public class ClientExpeditionsController implements Initializable {
     private VBox createExpeditionCard(Expedition expedition) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        // Create card container
+        // Create card container with sufficient height
         VBox card = new VBox();
         card.getStyleClass().add("expedition-card");
         card.setSpacing(12);
         card.setPadding(new Insets(15));
-        card.setMinHeight(180);
+        card.setMinHeight(220);  // Increased minimum height
+        card.setPrefHeight(250); // Added preferred height
         card.setPrefWidth(450);
 
         // Create card header with ID and status
@@ -190,27 +197,31 @@ public class ClientExpeditionsController implements Initializable {
             content.getChildren().add(approvalSection);
         }
 
-        // Create buttons
-        HBox buttons = new HBox();
-        buttons.setSpacing(10);
+        // Create buttons - FIX: Create a FlowPane instead of HBox to handle button wrapping
+        FlowPane buttons = new FlowPane();
+        buttons.setHgap(8);  // Horizontal gap between buttons
+        buttons.setVgap(8);  // Vertical gap if buttons wrap to next line
         buttons.setAlignment(Pos.CENTER_RIGHT);
         buttons.setPadding(new Insets(12, 0, 0, 0));
 
+        // Reduce button width to fit better
+        double buttonWidth = 80;
+
         // View details button
         Button viewDetailsBtn = new Button("Details");
-        viewDetailsBtn.setPrefWidth(90);
+        viewDetailsBtn.setPrefWidth(buttonWidth);
         viewDetailsBtn.getStyleClass().addAll("primary-button");
         viewDetailsBtn.setOnAction(event -> handleViewExpedition(expedition));
 
         // Track history button
         Button trackHistoryBtn = new Button("Track");
-        trackHistoryBtn.setPrefWidth(90);
+        trackHistoryBtn.setPrefWidth(buttonWidth);
         trackHistoryBtn.getStyleClass().addAll("secondary-button");
         trackHistoryBtn.setOnAction(event -> handleTrackHistory(expedition));
 
         // Edit button (only available for PENDING expeditions)
         Button editBtn = new Button("Edit");
-        editBtn.setPrefWidth(90);
+        editBtn.setPrefWidth(buttonWidth);
         editBtn.getStyleClass().addAll("neutral-button");
         editBtn.setOnAction(event -> handleEditExpedition(expedition));
 
@@ -222,7 +233,7 @@ public class ClientExpeditionsController implements Initializable {
 
         // Delete button
         Button deleteBtn = new Button("Delete");
-        deleteBtn.setPrefWidth(90);
+        deleteBtn.setPrefWidth(buttonWidth);
         deleteBtn.getStyleClass().addAll("danger-button");
         deleteBtn.setOnAction(event -> handleDeleteExpedition(expedition));
 
@@ -243,7 +254,6 @@ public class ClientExpeditionsController implements Initializable {
 
         return card;
     }
-
     // Update this method to handle AWAITING_CLIENT_APPROVAL status
     private String getStatusStyleClass(PackageStatus status) {
         switch (status) {

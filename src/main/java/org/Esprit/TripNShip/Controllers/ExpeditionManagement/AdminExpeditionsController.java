@@ -95,6 +95,9 @@ public class AdminExpeditionsController implements Initializable {
     @FXML
     private Label statusLabel;
 
+    // New button for statistics
+    @FXML
+    private Button statsBtn;
     @FXML
     private Label timestampLabel;
 
@@ -130,7 +133,11 @@ public class AdminExpeditionsController implements Initializable {
         timestampLabel.setText("Last updated: " + LocalDateTime.now().format(timestampFormatter));
     }
 
+
     private void setupTableColumns() {
+        // Existing table column setup code...
+        // (kept for brevity)
+
         // Basic columns
         idColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty("Expedition #" + cellData.getValue().getExpeditionId()));
@@ -323,6 +330,8 @@ public class AdminExpeditionsController implements Initializable {
     }
 
     private void setupButtons() {
+        // Existing button setup code...
+
         // Disable detail buttons initially (no selection)
         viewDetailsBtn.setDisable(true);
         viewTrackingBtn.setDisable(true);
@@ -341,7 +350,6 @@ public class AdminExpeditionsController implements Initializable {
             statusLabel.setText("Filters cleared");
         });
 
-        // Change from CSV to PDF export
         exportBtn.setText("Export to PDF");
         exportBtn.setOnAction(event -> exportToPDF());
 
@@ -365,7 +373,40 @@ public class AdminExpeditionsController implements Initializable {
                 handleDeleteExpedition(selectedExpedition);
             }
         });
+
+        // Add action for the statistics button
+        if (statsBtn != null) {
+            statsBtn.setOnAction(event -> openStatisticsDashboard());
+        }
     }
+    private void openStatisticsDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/ExpeditionStatistics.fxml"));
+            Parent root = loader.load();
+
+            ExpeditionStatisticsController controller = loader.getController();
+            // Pass the current data to statistics controller
+            controller.setExpeditionData(new ArrayList<>(expeditionsList));
+
+            Stage stage = new Stage();
+            stage.setTitle("Expedition Statistics Dashboard");
+            Scene scene = new Scene(root, 1100, 700);
+            stage.setScene(scene);
+            stage.show();
+
+            statusLabel.setText("Opened statistics dashboard");
+        } catch (IOException e) {
+            statusLabel.setText("Error opening statistics dashboard");
+            e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not open statistics dashboard");
+            alert.setContentText("An error occurred: " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
 
     private void loadExpeditions() {
         try {

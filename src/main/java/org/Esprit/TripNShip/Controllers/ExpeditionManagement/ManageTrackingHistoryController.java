@@ -112,18 +112,18 @@ public class ManageTrackingHistoryController implements Initializable {
             List<TrackingHistory> allTrackingList = trackingService.getTrackingByExpedition(expedition.getExpeditionId());
 
             // Filter to only show entries created by this transporter
-            List<TrackingHistory> transporterTrackingList = allTrackingList.stream()
-                    .filter(entry -> entry.getUpdatedBy().getIdUser() == transporter.getIdUser())
-                    .sorted(Comparator.comparing(TrackingHistory::getTimestamp).reversed())
-                    .collect(Collectors.toList());
+//            List<TrackingHistory> transporterTrackingList = allTrackingList.stream()
+//                    .filter(entry -> entry.getUpdatedBy().getIdUser() == transporter.getIdUser())
+//                    .sorted(Comparator.comparing(TrackingHistory::getTimestamp).reversed())
+//                    .collect(Collectors.toList());
 
             trackingListView.getItems().clear();
-            trackingListView.getItems().addAll(transporterTrackingList);
-
-            // Add placeholder text if no tracking data found
-            if (transporterTrackingList.isEmpty()) {
-                trackingListView.setPlaceholder(new Label("You haven't created any tracking entries for this expedition yet."));
-            }
+//            trackingListView.getItems().addAll(transporterTrackingList);
+//
+//            // Add placeholder text if no tracking data found
+//            if (transporterTrackingList.isEmpty()) {
+//                trackingListView.setPlaceholder(new Label("You haven't created any tracking entries for this expedition yet."));
+//            }
         }
     }
 

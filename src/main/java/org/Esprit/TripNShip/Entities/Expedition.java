@@ -218,7 +218,7 @@ public class Expedition {
         return "Expedition{" +
                 "expeditionId=" + expeditionId +
                 ", client=" + (client != null ? client.getIdUser() : "null") +
-                ", transporter=" + (transporter != null ? transporter.getIdUser() : "null") +
+                ", transporter=" + (transporter != null ? transporter.toString() : "null") +
                 ", weight=" + weight +
                 ", packageType=" + packageType +
                 ", packageStatus=" + packageStatus +

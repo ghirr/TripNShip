@@ -69,7 +69,7 @@ public class CircuitBookingService implements IService<CircuitBooking> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                User user = new User(rs.getInt("idUser"), rs.getString("firstName"), null, null, null, null, null, null, null);
+                User user = new User(rs.getInt("idUser"));
                 TourCircuit circuit = new TourCircuit(rs.getInt("idCircuit"), rs.getString("nameCircuit"), null, 0f, null, null, null, null);
 
                 CircuitBooking circuitBooking = new CircuitBooking(

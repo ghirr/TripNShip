@@ -118,8 +118,7 @@ public class ClientExpeditionsController implements Initializable {
         Label dateLabel = new Label("Send date: " + dateFormat.format(expedition.getSendDate()));
         Label deliveryLabel = new Label("Est. delivery: " + dateFormat.format(expedition.getEstimatedDeliveryDate()));
 
-        String transporterName = expedition.getTransporter() != null ?
-                expedition.getTransporter().getFirstName() + " " + expedition.getTransporter().getLastName() :
+        String transporterName =
                 "Not assigned";
         Label transporterLabel = new Label("Transporter: " + transporterName);
 
@@ -212,7 +211,7 @@ public class ClientExpeditionsController implements Initializable {
             NewExpeditionController controller = loader.getController();
 
             // The issue is here - getById() returns a User object that can't be directly cast to Client
-            User user = userService.getById(STATIC_CLIENT_ID);
+            User user = new User(1);
 
             // Fix: Check if the role is CLIENT before casting
             if (user != null && user.getRole() == Role.CLIENT) {

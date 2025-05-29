@@ -163,7 +163,7 @@ public class TrackingHistoryController implements Initializable {
 
                         String updaterName = "Unknown";
                         if (item.getUpdatedBy() != null) {
-                            updaterName = item.getUpdatedBy().getFirstName() + " " + item.getUpdatedBy().getLastName();
+//                            updaterName = item.getUpdatedBy().getFirstName() + " " + item.getUpdatedBy().getLastName();
                         }
                         Label updaterLabel = new Label("Updated by: " + updaterName);
                         updaterLabel.getStyleClass().add("tracking-updater");

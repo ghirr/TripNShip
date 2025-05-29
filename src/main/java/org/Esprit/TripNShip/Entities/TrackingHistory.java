@@ -88,7 +88,7 @@ public class TrackingHistory {
                 ", status=" + status +
                 ", locationNote='" + locationNote + '\'' +
                 ", timestamp=" + timestamp +
-                ", updatedBy=" + updatedBy.getIdUser() +
+//                ", updatedBy=" + updatedBy.getIdUser() +
                 '}';
     }
 }

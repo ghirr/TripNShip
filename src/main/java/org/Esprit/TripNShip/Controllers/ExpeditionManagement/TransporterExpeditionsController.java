@@ -247,10 +247,10 @@ public class TransporterExpeditionsController implements Initializable {
             UpdateExpeditionStatusController controller = loader.getController();
 
             // Get the current transporter
-            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
+//            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
 
             controller.setExpedition(expedition);
-            controller.setTransporter(transporter);
+//            controller.setTransporter(transporter);
             controller.setParentController(this);
 
             Stage stage = new Stage();
@@ -272,10 +272,10 @@ public class TransporterExpeditionsController implements Initializable {
             AddTrackingEntryController controller = loader.getController();
 
             // Get the current transporter
-            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
+//            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
 
             controller.setExpedition(expedition);
-            controller.setTransporter(transporter);
+//            controller.setTransporter(transporter);
             controller.setParentController(this);
 
             Stage stage = new Stage();
@@ -296,10 +296,10 @@ public class TransporterExpeditionsController implements Initializable {
             ManageTrackingHistoryController controller = loader.getController();
 
             // Get the current transporter
-            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
+//            Transporter transporter = (Transporter) userService.getById(STATIC_TRANSPORTER_ID);
 
             controller.setExpedition(expedition);
-            controller.setTransporter(transporter);
+//            controller.setTransporter(transporter);
             controller.setParentController(this);
 
             Stage stage = new Stage();

@@ -101,16 +101,16 @@ public class ExpeditionDetailsController implements Initializable {
         estimatedDeliveryLabel.setText(dateFormat.format(expedition.getEstimatedDeliveryDate()));
 
         // Set transporter details
-        if (expedition.getTransporter() != null) {
-            transporterNameLabel.setText(expedition.getTransporter().getFirstName() + " " +
-                    expedition.getTransporter().getLastName());
-
-            transporterContactLabel.setText(expedition.getTransporter().getEmail() + " | " +
-                    expedition.getTransporter().getPhoneNumber());
-        } else {
-            transporterNameLabel.setText("Not assigned");
-            transporterContactLabel.setText("N/A");
-        }
+//        if (expedition.getTransporter() != null) {
+//            transporterNameLabel.setText(expedition.getTransporter().getFirstName() + " " +
+//                    expedition.getTransporter().getLastName());
+//
+//            transporterContactLabel.setText(expedition.getTransporter().getEmail() + " | " +
+//                    expedition.getTransporter().getPhoneNumber());
+//        } else {
+//            transporterNameLabel.setText("Not assigned");
+//            transporterContactLabel.setText("N/A");
+//        }
     }
 
     private String getStatusStyleClass(PackageStatus status) {

@@ -151,12 +151,12 @@ public class NewExpeditionController implements Initializable {
     public void setClientId(int clientId) {
         this.clientId = clientId;
         // Fetch client data when clientId is set
-        if (clientId > 0 && userService != null) {
-            User user = userService.getById(clientId);
-            if (user instanceof Client) {
-                this.client = (Client) user;
-            }
-        }
+//        if (clientId > 0 && userService != null) {
+//            User user = userService.getById(clientId);
+//            if (user instanceof Client) {
+//                this.client = (Client) user;
+//            }
+//        }
     }
 
     public void setClient(Client client) {
@@ -171,31 +171,31 @@ public class NewExpeditionController implements Initializable {
     private void loadTransporters() {
 
             // Utiliser la méthode dédiée qui retourne uniquement les transporteurs
-            List<Transporter> transporters = userService.getAllTransporters();
+//            List<Transporter> transporters = userService.getAllTransporters();
 
             // Si aucun transporteur trouvé, ajouter des données fictives
-            if (transporters.isEmpty()) {
-                transporters.add(new Transporter(
-                        1, "John", "Smith", Gender.MALE, "john@example.com", "password",
-                        "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
-                        "123-456-7890", ShippingType.DHL, "www.johnsmith.com"
-                ));
-                transporters.add(new Transporter(
-                        2, "Jane", "Doe", Gender.FEMALE, "jane@example.com", "password",
-                        "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
-                        "987-654-3210", ShippingType.FEDEX, "www.janedoe.com"
-                ));
-            }
+//            if (transporters.isEmpty()) {
+//                transporters.add(new Transporter(
+//                        1, "John", "Smith", Gender.MALE, "john@example.com", "password",
+//                        "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
+//                        "123-456-7890", ShippingType.DHL, "www.johnsmith.com"
+//                ));
+//                transporters.add(new Transporter(
+//                        2, "Jane", "Doe", Gender.FEMALE, "jane@example.com", "password",
+//                        "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
+//                        "987-654-3210", ShippingType.FEDEX, "www.janedoe.com"
+//                ));
+//            }
 
             // Tu peux ensuite utiliser cette liste comme tu le faisais avant
             // Exemple :
-            for (Transporter t : transporters) {
-                System.out.println("Transporter: " + t.getFirstName() + " " + t.getLastName());
-            }
-
-
-
-        transporterCombo.setItems(FXCollections.observableArrayList(transporters));
+//            for (Transporter t : transporters) {
+//                System.out.println("Transporter: " + t.getFirstName() + " " + t.getLastName());
+//            }
+//
+//
+//
+//        transporterCombo.setItems(FXCollections.observableArrayList(transporters));
 
         // Set up display for transporter items
         transporterCombo.setCellFactory(param -> new ListCell<Transporter>() {
@@ -205,7 +205,7 @@ public class NewExpeditionController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
+         //           setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
                 }
             }
         });
@@ -217,7 +217,7 @@ public class NewExpeditionController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
+                   // setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
                 }
             }
         });
@@ -230,16 +230,16 @@ public class NewExpeditionController implements Initializable {
 
         try {
             // Verify client exists
-            if (client == null) {
-                // Try to fetch client if it wasn't set earlier
-                User user = userService.getById(clientId);
-                if (user instanceof Client) {
-                    client = (Client) user;
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Client not found or invalid.");
-                    return;
-                }
-            }
+//            if (client == null) {
+//                // Try to fetch client if it wasn't set earlier
+//                User user = userService.getById(clientId);
+//                if (user instanceof Client) {
+//                    client = (Client) user;
+//                } else {
+//                    showAlert(Alert.AlertType.ERROR, "Error", "Client not found or invalid.");
+//                    return;
+//                }
+//            }
 
             // Create a new expedition
             Transporter transporter = transporterCombo.getValue();

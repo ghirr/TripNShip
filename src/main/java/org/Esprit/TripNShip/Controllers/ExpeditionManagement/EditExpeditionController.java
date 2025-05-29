@@ -184,14 +184,14 @@ public class EditExpeditionController implements Initializable {
         sendDatePicker.setValue(sendDate);
 
         // Set selected transporter
-        if (expedition.getTransporter() != null) {
-            for (Transporter t : transporterCombo.getItems()) {
-                if (t.getIdUser() == expedition.getTransporter().getIdUser()) {
-                    transporterCombo.setValue(t);
-                    break;
-                }
-            }
-        }
+//        if (expedition.getTransporter() != null) {
+//            for (Transporter t : transporterCombo.getItems()) {
+//                if (t.getIdUser() == expedition.getTransporter().getIdUser()) {
+//                    transporterCombo.setValue(t);
+//                    break;
+//                }
+//            }
+//        }
 
         // Disable the form if expedition is not in PENDING status
         if (expedition.getPackageStatus() != PackageStatus.PENDING) {
@@ -223,49 +223,49 @@ public class EditExpeditionController implements Initializable {
 
     private void loadTransporters() {
         // In a real app, we would filter users to get only transporters
-        List<Transporter> transporters = userService.getAllTransporters();
+//        List<Transporter> transporters = userService.getAllTransporters();
 
         // If no transporters found in database, use dummy data
-        if (transporters.isEmpty()) {
-            // Dummy transporter data
-            transporters.add(new Transporter(
-                    1, "John", "Smith", Gender.MALE, "john@example.com", "password",
-                    "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
-                    "123-456-7890", ShippingType.DHL, "www.johnsmith.com"
-            ));
-            transporters.add(new Transporter(
-                    2, "Jane", "Doe", Gender.FEMALE, "jane@example.com", "password",
-                    "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
-                    "987-654-3210", ShippingType.FEDEX, "www.janedoe.com"
-            ));
-        }
+//        if (transporters.isEmpty()) {
+//            // Dummy transporter data
+//            transporters.add(new Transporter(
+//                    1, "John", "Smith", Gender.MALE, "john@example.com", "password",
+//                    "profile.jpg", LocalDate.of(1985, 5, 15).atStartOfDay(),
+//                    "123-456-7890", ShippingType.DHL, "www.johnsmith.com"
+//            ));
+//            transporters.add(new Transporter(
+//                    2, "Jane", "Doe", Gender.FEMALE, "jane@example.com", "password",
+//                    "profile.jpg", LocalDate.of(1990, 8, 20).atStartOfDay(),
+//                    "987-654-3210", ShippingType.FEDEX, "www.janedoe.com"
+//            ));
+//        }
 
-        transporterCombo.setItems(FXCollections.observableArrayList(transporters));
+//        transporterCombo.setItems(FXCollections.observableArrayList(transporters));
+//
+//        // Set up display for transporter items
+//        transporterCombo.setCellFactory(param -> new ListCell<Transporter>() {
+//            @Override
+//            protected void updateItem(Transporter item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (empty || item == null) {
+//                    setText(null);
+//                } else {
+//                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
+//                }
+//            }
+//        });
 
-        // Set up display for transporter items
-        transporterCombo.setCellFactory(param -> new ListCell<Transporter>() {
-            @Override
-            protected void updateItem(Transporter item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
-                }
-            }
-        });
-
-        transporterCombo.setButtonCell(new ListCell<Transporter>() {
-            @Override
-            protected void updateItem(Transporter item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
-                }
-            }
-        });
+//        transporterCombo.setButtonCell(new ListCell<Transporter>() {
+//            @Override
+//            protected void updateItem(Transporter item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (empty || item == null) {
+//                    setText(null);
+//                } else {
+//                    setText(item.getFirstName() + " " + item.getLastName() + " (" + item.getTransportType() + ")");
+//                }
+//            }
+//        });
     }
 
     private void handleSaveExpedition(ActionEvent event) {

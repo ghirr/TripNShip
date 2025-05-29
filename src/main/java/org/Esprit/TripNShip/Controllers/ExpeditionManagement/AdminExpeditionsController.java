@@ -151,14 +151,14 @@ public class AdminExpeditionsController implements Initializable {
             }
         });
 
-        transporterColumn.setCellValueFactory(cellData -> {
-            Transporter transporter = cellData.getValue().getTransporter();
-            if (transporter != null) {
-                return new SimpleStringProperty(transporter.getFirstName() + " " + transporter.getLastName());
-            } else {
-                return new SimpleStringProperty("Not Assigned");
-            }
-        });
+//        transporterColumn.setCellValueFactory(cellData -> {
+//            Transporter transporter = cellData.getValue().getTransporter();
+//            if (transporter != null) {
+//               // return new SimpleStringProperty(transporter.getFirstName() + " " + transporter.getLastName());
+////            } else {
+//                return new SimpleStringProperty("Not Assigned");
+//            }
+//        });
 
         routeColumn.setCellValueFactory(cellData -> {
             Expedition exp = cellData.getValue();
@@ -291,11 +291,11 @@ public class AdminExpeditionsController implements Initializable {
 
             // Search in transporter name
             if (expedition.getTransporter() != null) {
-                String transporterName = expedition.getTransporter().getFirstName() + " " +
-                        expedition.getTransporter().getLastName();
-                if (transporterName.toLowerCase().contains(searchText)) {
-                    return true;
-                }
+//                String transporterName = expedition.getTransporter().getFirstName() + " " +
+//                        expedition.getTransporter().getLastName();
+//                if (transporterName.toLowerCase().contains(searchText)) {
+//                    return true;
+//                }
             }
 
             // Search in cities
@@ -504,24 +504,24 @@ public class AdminExpeditionsController implements Initializable {
                     String clientName = expedition.getClient() != null ?
                             expedition.getClient().getFirstName() + " " + expedition.getClient().getLastName() : "N/A";
 
-                    String transporterName = expedition.getTransporter() != null ?
-                            expedition.getTransporter().getFirstName() + " " + expedition.getTransporter().getLastName() : "Not Assigned";
+             //       String transporterName = expedition.getTransporter() != null ?
+//                            expedition.getTransporter().getFirstName() + " " + expedition.getTransporter().getLastName() : "Not Assigned";
 
-                    String row = String.format("%d,%s,\"%s\",\"%s\",%s,%.2f,\"%s\",\"%s\",\"%s\",%s,%s,%.2f\n",
-                            expedition.getExpeditionId(),
-                            expedition.getPackageStatus(),
-                            clientName,
-                            transporterName,
-                            expedition.getPackageType(),
-                            expedition.getWeight(),
-                            expedition.getDepartureCity(),
-                            expedition.getArrivalCity(),
-                            expedition.getCurrentLocation(),
-                            dateFormat.format(expedition.getSendDate()),
-                            dateFormat.format(expedition.getEstimatedDeliveryDate()),
-                            expedition.getShippingCost());
-
-                    writer.write(row);
+//                    String row = String.format("%d,%s,\"%s\",\"%s\",%s,%.2f,\"%s\",\"%s\",\"%s\",%s,%s,%.2f\n",
+//                            expedition.getExpeditionId(),
+//                            expedition.getPackageStatus(),
+//                            clientName,
+//                            transporterName,
+//                            expedition.getPackageType(),
+//                            expedition.getWeight(),
+//                            expedition.getDepartureCity(),
+//                            expedition.getArrivalCity(),
+//                            expedition.getCurrentLocation(),
+//                            dateFormat.format(expedition.getSendDate()),
+//                            dateFormat.format(expedition.getEstimatedDeliveryDate()),
+//                            expedition.getShippingCost());
+//
+//                    writer.write(row);
                 }
 
                 statusLabel.setText("Exported " + filteredExpeditions.size() + " expeditions to CSV");

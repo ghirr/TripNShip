@@ -11,6 +11,9 @@ import org.Esprit.TripNShip.Services.VehicleService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.UUID;
+
+import static org.Esprit.TripNShip.Utils.Shared.UPLOAD_DIR;
 
 public class AddVehicleController {
 
@@ -65,6 +68,7 @@ public class AddVehicleController {
         boolean availability = availabilityCheckBox.isSelected();
         Type type = typeVehicleComboBox.getValue();
 
+        // Vérification des champs obligatoires
         if (brand.isEmpty() || model.isEmpty() || licensePlate.isEmpty()
                 || dailyPriceText.isEmpty() || type == null || selectedImageFile == null) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please fill in all fields and select an image.");
@@ -74,21 +78,26 @@ public class AddVehicleController {
         try {
             float dailyPrice = Float.parseFloat(dailyPriceText);
 
-            // Utilisation d'une agence fictive si non injectée
+            // Création d'une agence par défaut si non définie
             if (rentalAgency == null) {
                 rentalAgency = new RentalAgency();
-                rentalAgency.setIdAgency(1); // Assure-toi que l'ID existe dans ta base
+                rentalAgency.setIdAgency(1); // ID d'agence fictif, doit exister dans la base
                 rentalAgency.setNameAgency("Default Agency");
             }
 
-            // Copier l’image dans un dossier local
-            String uploadsDir = "src/main/resources/uploads/";
-            Files.createDirectories(Paths.get(uploadsDir)); // Crée le dossier si nécessaire
+            // Définir un nom de dossier pour les uploads (modifiable si besoin)
+            String dirName = "vehicles"; // ou une variable de classe, ou calculé dynamiquement
+            Path uploadsDir = Paths.get(UPLOAD_DIR, dirName);
+            Files.createDirectories(uploadsDir); // Crée le dossier si non existant
 
-            String fileName = System.currentTimeMillis() + "_" + selectedImageFile.getName();
-            Path destination = Paths.get(uploadsDir, fileName);
+            // Générer un nom de fichier unique avec extension
+            String fileExtension = getFileExtension(selectedImageFile.getName());
+            String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + fileExtension;
+
+            Path destination = uploadsDir.resolve(fileName);
             Files.copy(selectedImageFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
+            // Création de l'objet Vehicle
             Vehicle vehicle = new Vehicle();
             vehicle.setBrand(brand);
             vehicle.setModel(model);
@@ -96,26 +105,29 @@ public class AddVehicleController {
             vehicle.setDailyPrice(dailyPrice);
             vehicle.setAvailability(availability);
             vehicle.setType(type);
-
-            // Utiliser URI pour être compatible avec JavaFX Image
-            vehicle.setImageURL(destination.toUri().toString());
-
+            vehicle.setImageURL(destination.toUri().toString()); // Pour ImageView JavaFX
             vehicle.setRentalAgency(rentalAgency);
 
+            // Enregistrement dans la base
             vehicleService.add(vehicle);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Vehicle added successfully!");
             clearFields();
+
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Invalid Input", "Daily price must be a valid number.");
         } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "File Error", "Could not save image file: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "File Error", "Could not save image file:\n" + e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to add vehicle: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to add vehicle:\n" + e.getMessage());
         }
     }
+
+    // Méthode utilitaire pour récupérer l'extension d’un fichier
+    private String getFileExtension(String fileName) {
+        int lastDot = fileName.lastIndexOf('.');
+        return (lastDot != -1 && lastDot < fileName.length() - 1) ? fileName.substring(lastDot) : "";
+    }
+
 
     private void clearFields() {
         brandField.clear();

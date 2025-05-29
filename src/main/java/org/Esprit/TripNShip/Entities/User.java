@@ -125,6 +125,13 @@ public sealed class User permits Client,Employee {
         this.email = email;
     }
 
+    public User() {
+
+    }
+
+    public User(int idUser) {
+    }
+
     public int getIdUser() {
         return idUser;
     }

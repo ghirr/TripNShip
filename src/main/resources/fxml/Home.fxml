@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Pos?>
+
+<BorderPane fx:id="mainBorderPane"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.Esprit.TripNShip.Controllers.HomeController"
+            stylesheets="@../Styles/home.css">
+
+    <!-- NAVBAR -->
+    <top>
+        <HBox fx:id="header" spacing="20" alignment="CENTER" styleClass="header">
+            <!-- Logo à gauche -->
+            <ImageView fx:id="logoImage" fitHeight="55" fitWidth="75" styleClass="logo"/>
+
+            <!-- Menu centré -->
+            <HBox spacing="40" alignment="CENTER" styleClass="menu">
+                <Label fx:id="homeLabel" text="Home" styleClass="menu-item"/>
+                <Label fx:id="accommodationLabel" text="Accommodation" styleClass="menu-item"/>
+                <Label fx:id="transportLabel" text="Transport" styleClass="menu-item"/>
+                <Label fx:id="expeditionLabel" text="Expedition" styleClass="menu-item"/>
+                <Label fx:id="circuitLabel" text="Circuit" styleClass="menu-item"/>
+                <Label fx:id="vehicleLabel" text="Vehicle" styleClass="menu-item"/>
+            </HBox>
+
+            <!-- Espace extensible à droite -->
+            <Pane HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </top>
+
+    <!-- CONTENU PRINCIPAL -->
+    <center>
+        <VBox fx:id="defaultContent" spacing="40" alignment="CENTER" styleClass="content">
+            <!-- Texte -->
+            <VBox spacing="15" alignment="CENTER">
+                <Label text="Go beyond your imagination" styleClass="title"/>
+                <Label text="Discover your ideal experience with us" styleClass="subtitle"/>
+            </VBox>
+
+            <!-- Cartes -->
+            <HBox spacing="30" alignment="CENTER">
+                <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                    <ImageView fx:id="card1" fitWidth="230" fitHeight="200"/>
+                    <Label text="7% Discount for all Airlines" styleClass="card-text"/>
+                </VBox>
+
+                <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                    <ImageView fx:id="card2" fitWidth="230" fitHeight="200"/>
+                    <Label text="Travel around the world" styleClass="card-text"/>
+                </VBox>
+
+                <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                    <ImageView fx:id="card3" fitWidth="230" fitHeight="200"/>
+                    <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
+                </VBox>
+
+                <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                    <ImageView fx:id="card4" fitWidth="230" fitHeight="200"/>
+                    <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- FOOTER -->
+    <bottom>
+        <HBox alignment="CENTER" styleClass="footer">
+            <Label text="© 2025 TripNShip. All rights reserved." styleClass="footer-text"/>
+        </HBox>
+    </bottom>
+</BorderPane>

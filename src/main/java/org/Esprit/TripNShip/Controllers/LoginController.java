@@ -81,11 +81,12 @@ public class LoginController {
         try {
             User user = utilisateurService.login(email,password);
             if (user != null) {
-                if(user.getRole()== Role.ADMIN){
+                if(!user.getRole().equals(Role.CLIENT)){
                     UserSession.initSession(user);
                     Shared.switchScene(event,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
                 }
                 else{
+                    Shared.switchScene(event,getClass().getResource("/fxml/Home.fxml"),"Main");
                     showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
                 }
 

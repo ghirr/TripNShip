@@ -78,6 +78,12 @@
             <artifactId>dotenv-java</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext7-core</artifactId>
+            <version>8.0.3</version> <!-- ou une version plus récente -->
+            <type>pom</type>
+        </dependency>
 
     </dependencies>
 

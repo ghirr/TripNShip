@@ -64,7 +64,13 @@ public class CircuitBookingService implements IService<CircuitBooking> {
     @Override
     public List<CircuitBooking> getAll() {
         List<CircuitBooking> bookings = new ArrayList<>();
-        String req = "SELECT * FROM circuitbooking";
+        String req = """
+        SELECT cb.*, u.id, u.firstName, u.lastName, 
+               tc.idCircuit, tc.nameCircuit
+        FROM circuitbooking cb
+        JOIN user u ON cb.idUser = u.id
+        JOIN tourcircuit tc ON cb.idCircuit = tc.idCircuit
+        """;
 
         try (PreparedStatement pst = connection.prepareStatement(req);
              ResultSet rs = pst.executeQuery()) {
@@ -74,7 +80,6 @@ public class CircuitBookingService implements IService<CircuitBooking> {
                 booking.setIdBooking(rs.getInt("idBooking"));
                 booking.setBookingDate(rs.getTimestamp("bookingDate").toLocalDateTime());
 
-                // Vérification prudente de l'index pour éviter les erreurs
                 int statusIndex = rs.getInt("statusBooking");
                 if (statusIndex >= 0 && statusIndex < StatusBooking.values().length) {
                     booking.setStatusBooking(StatusBooking.values()[statusIndex]);
@@ -82,13 +87,17 @@ public class CircuitBookingService implements IService<CircuitBooking> {
                     booking.setStatusBooking(StatusBooking.Confirmed);
                 }
 
-                // Associer simplement les IDs
+                // Récupérer les données utilisateur
                 User user = new User();
                 user.setIdUser(rs.getInt("idUser"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
                 booking.setUser(user);
 
+                // Récupérer les données du circuit
                 TourCircuit circuit = new TourCircuit();
                 circuit.setIdCircuit(rs.getInt("idCircuit"));
+                circuit.setNameCircuit(rs.getString("nameCircuit"));
                 booking.setTourCircuit(circuit);
 
                 bookings.add(booking);
@@ -100,6 +109,5 @@ public class CircuitBookingService implements IService<CircuitBooking> {
 
         return bookings;
     }
-
 
 }

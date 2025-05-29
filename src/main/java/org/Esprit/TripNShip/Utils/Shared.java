@@ -33,7 +33,7 @@ public class Shared {
     private static final String CHARS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
 
-    private static final String UPLOAD_DIR = "C:/xampp/htdocs/tripNship/";
+    public static final String UPLOAD_DIR = "C:/xampp/htdocs/tripNship/";
     private static final String BASE_URL = "http://localhost/tripNship/";
     public static final String USERS_PATH = "Users/";
 

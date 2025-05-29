@@ -45,17 +45,14 @@
                         <Insets bottom="0.0" />
                     </VBox.margin>
                 </HBox>
-                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="600.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
                     <content>
-                        <TilePane fx:id="expeditionTiles" hgap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefColumns="2" prefRows="2" prefTileHeight="200.0" prefTileWidth="450.0" vgap="20.0">
+                        <TilePane fx:id="expeditionTiles" hgap="20.0" vgap="30.0" prefColumns="2" prefTileHeight="250.0" prefTileWidth="450.0">
                             <padding>
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                         </TilePane>
                     </content>
-                    <VBox.margin>
-                        <Insets top="0.0" />
-                    </VBox.margin>
                 </ScrollPane>
             </children>
         </VBox>

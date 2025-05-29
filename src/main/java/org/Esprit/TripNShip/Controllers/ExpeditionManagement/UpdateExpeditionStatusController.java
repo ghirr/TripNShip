@@ -2,16 +2,20 @@ package org.Esprit.TripNShip.Controllers.ExpeditionManagement;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.ServiceExpedition;
 import org.Esprit.TripNShip.Services.ServiceTrackingHistory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,11 +44,19 @@ public class UpdateExpeditionStatusController implements Initializable {
     @FXML
     private Button cancelBtn;
 
+    // Map picker button
+    @FXML
+    private Button mapPickerBtn;
+
     private Expedition expedition;
     private Transporter transporter;
     private ServiceExpedition expeditionService;
     private ServiceTrackingHistory trackingService;
     private TransporterExpeditionsController parentController;
+
+    // Location coordinates
+    private double latitude = 0;
+    private double longitude = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,6 +66,9 @@ public class UpdateExpeditionStatusController implements Initializable {
         // Set up button handlers
         updateBtn.setOnAction(event -> handleUpdateStatus());
         cancelBtn.setOnAction(event -> closeWindow());
+
+        // Configure map picker button
+        mapPickerBtn.setOnAction(event -> openLocationPicker());
 
         // Set up validation listeners
         locationField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -77,52 +92,41 @@ public class UpdateExpeditionStatusController implements Initializable {
         currentStatusLabel.getStyleClass().clear();
         currentStatusLabel.getStyleClass().addAll("expedition-status", getStatusStyleClass(expedition.getPackageStatus()));
 
-        // Load valid next statuses based on current status
-        loadNextPossibleStatuses(expedition.getPackageStatus());
+        // Initialize the status combobox with all possible statuses except the current one
+        initializeStatusComboBox(expedition.getPackageStatus());
     }
 
-    private void loadNextPossibleStatuses(PackageStatus currentStatus) {
-        List<PackageStatus> allStatuses = new ArrayList<>(Arrays.asList(PackageStatus.values()));
-        List<PackageStatus> availableStatuses;
-
-        // Determine which statuses are valid transitions from the current status
-        switch (currentStatus) {
-            case PENDING:
-                availableStatuses = Arrays.asList(PackageStatus.SHIPPED, PackageStatus.CANCELLED);
-                break;
-            case SHIPPED:
-                availableStatuses = Arrays.asList(PackageStatus.IN_TRANSIT, PackageStatus.CANCELLED);
-                break;
-            case IN_TRANSIT:
-                availableStatuses = Arrays.asList(PackageStatus.DELIVERED, PackageStatus.CANCELLED);
-                break;
-            case DELIVERED:
-                availableStatuses = new ArrayList<>(); // Terminal state
-                break;
-            case CANCELLED:
-                availableStatuses = new ArrayList<>(); // Terminal state
-                break;
-            default:
-                availableStatuses = allStatuses;
-                break;
-        }
-
-        // Filter out the current status to avoid setting to the same status
-        availableStatuses = availableStatuses.stream()
+    private void initializeStatusComboBox(PackageStatus currentStatus) {
+        // Get all statuses except the current one
+        List<PackageStatus> availableStatuses = Arrays.stream(PackageStatus.values())
                 .filter(status -> status != currentStatus)
                 .collect(Collectors.toList());
 
         statusComboBox.setItems(FXCollections.observableArrayList(availableStatuses));
 
-        // Disable the update button if no transitions are available
-        if (availableStatuses.isEmpty()) {
-            statusComboBox.setPromptText("No status changes possible");
-            statusComboBox.setDisable(true);
-            updateBtn.setDisable(true);
-        } else {
-            statusComboBox.setPromptText("Select new status");
-            statusComboBox.setDisable(false);
-            updateBtn.setDisable(false);
+        // Set a default selection to the most likely next status
+        switch (currentStatus) {
+            case PENDING:
+                selectStatus(PackageStatus.SHIPPED);
+                break;
+            case AWAITING_CLIENT_APPROVAL:
+                selectStatus(PackageStatus.SHIPPED);
+                break;
+            case SHIPPED:
+                selectStatus(PackageStatus.IN_TRANSIT);
+                break;
+            case IN_TRANSIT:
+                selectStatus(PackageStatus.DELIVERED);
+                break;
+            default:
+                // No default selection for other statuses
+                break;
+        }
+    }
+
+    private void selectStatus(PackageStatus status) {
+        if (statusComboBox.getItems().contains(status)) {
+            statusComboBox.setValue(status);
         }
     }
 
@@ -134,6 +138,44 @@ public class UpdateExpeditionStatusController implements Initializable {
         this.parentController = parentController;
     }
 
+    private void openLocationPicker() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/MapLocationPicker.fxml"));
+            Parent root = loader.load();
+
+            MapLocationPickerController controller = loader.getController();
+
+            // Set callback to handle location selection
+            controller.setCallback(new MapLocationPickerController.LocationCallback() {
+                @Override
+                public void locationSelected(String location, double lat, double lng) {
+                    // Update location field and store coordinates
+                    locationField.setText(location);
+                    latitude = lat;
+                    longitude = lng;
+
+                    // Clear error if any
+                    locationErrorLabel.setText("");
+                }
+            });
+
+            // If we have coordinates from a previous location, use them as initial
+            // For now we'll use default (Tunisia)
+
+            Stage stage = new Stage();
+            stage.setTitle("Pick Package Location");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setMinWidth(800);
+            stage.setMinHeight(600);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not open location picker: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void handleUpdateStatus() {
         if (!validateInputs()) {
             return;
@@ -143,9 +185,15 @@ public class UpdateExpeditionStatusController implements Initializable {
             PackageStatus newStatus = statusComboBox.getValue();
             String newLocation = locationField.getText().trim();
 
+            // Create location string with coordinates if available
+            String locationWithCoordinates = newLocation;
+            if (latitude != 0 && longitude != 0) {
+                locationWithCoordinates = newLocation + " [" + latitude + "," + longitude + "]";
+            }
+
             // Update the expedition status and location
             expedition.setPackageStatus(newStatus);
-            expedition.setCurrentLocation(newLocation);
+            expedition.setCurrentLocation(locationWithCoordinates);
 
             // Save the updated expedition
             expeditionService.update(expedition);
@@ -179,17 +227,19 @@ public class UpdateExpeditionStatusController implements Initializable {
     }
 
     private boolean validateInputs() {
+        boolean isValid = true;
+
         if (statusComboBox.getValue() == null) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Please select a new status.");
-            return false;
+            isValid = false;
         }
 
         if (locationField.getText().trim().isEmpty()) {
-            locationErrorLabel.setText("Location is required");
-            return false;
+            locationErrorLabel.setText("Location is required. Please select a location on the map.");
+            isValid = false;
         }
 
-        return true;
+        return isValid;
     }
 
     private String getStatusStyleClass(PackageStatus status) {
@@ -204,6 +254,8 @@ public class UpdateExpeditionStatusController implements Initializable {
                 return "status-delivered";
             case CANCELLED:
                 return "status-cancelled";
+            case AWAITING_CLIENT_APPROVAL:
+                return "status-awaiting-approval";
             default:
                 return "status-pending";
         }

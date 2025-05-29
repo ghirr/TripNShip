@@ -44,6 +44,7 @@
                         </Label>
                         <Label styleClass="card-subtitle" text="Manage all expeditions across the platform" />
                     </VBox>
+                    <Button fx:id="statsBtn" mnemonicParsing="false" styleClass="primary-button" text="Statistics Dashboard" />
                     <Button fx:id="refreshBtn" mnemonicParsing="false" styleClass="secondary-button" text="Refresh Data" />
                     <Button fx:id="exportBtn" mnemonicParsing="false" styleClass="neutral-button" text="Export to PDF" />
                     <padding>

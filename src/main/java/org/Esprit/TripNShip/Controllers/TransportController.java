@@ -7,31 +7,35 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Transport;
 import org.Esprit.TripNShip.Entities.TransportType;
 import org.Esprit.TripNShip.Services.TransportService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 public class TransportController {
 
-    @FXML private Button addTicketButton;
+    @FXML private Button addTransportButton;
     @FXML private TableView<Transport> transportTable;
-    @FXML private TableColumn<String, Transport> transportIdColumn;
-    @FXML private TableColumn<TransportType, Transport> transportationColumn;
-    @FXML private TableColumn<String, Transport> companyNameColumn;
+    @FXML private TableColumn<Transport, String> logoColumn;
+    @FXML private TableColumn<Transport, String> transporterReferenceColumn;
+    @FXML private TableColumn<Transport, String> transportationColumn;
+    @FXML private TableColumn<Transport, String> companyNameColumn;
     @FXML private TableColumn<Integer, Transport> companyPhoneColumn;
     @FXML private TableColumn<String, Transport> companyWebsiteColumn;
     @FXML private TableColumn<String, Transport> companyEmailColumn;
     @FXML private TableColumn<Transport, Void> actionsColumn;
+    @FXML private TextField searchField;
+    @FXML private ComboBox<TransportType> transportationFilterComboBox;
 
 
     private ObservableList<Transport> transportList = FXCollections.observableArrayList();
@@ -40,20 +44,48 @@ public class TransportController {
     @FXML
     public void initialize() {
         // Lier les colonnes aux attributs
-        transportIdColumn.setCellValueFactory(new PropertyValueFactory<>("transportId"));
+        logoColumn.setCellValueFactory(new PropertyValueFactory<>("logoPath"));
+        logoColumn.setCellFactory(column->new TableCell<>(){
+           private final ImageView imageView = new ImageView();
+            {
+                imageView.setFitHeight(40);
+                imageView.setFitWidth(40);
+                imageView.setPreserveRatio(true);
+            }
+            @Override
+            protected void updateItem(String path, boolean empty){
+                super.updateItem(path,empty);
+                if(empty || path==null||path.isEmpty()){
+                    setGraphic(null);
+                }
+                else{
+                    try{
+                        imageView.setImage(new Image("file:" + path));
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null);
+                    }
+                }
+            }
+                });
+        transporterReferenceColumn.setCellValueFactory(new PropertyValueFactory<>("transporterReference"));
         transportationColumn.setCellValueFactory(new PropertyValueFactory<>("transportation"));
         companyNameColumn.setCellValueFactory(new PropertyValueFactory<>("companyName"));
         companyPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("companyPhone"));
         companyWebsiteColumn.setCellValueFactory(new PropertyValueFactory<>("companyWebsite"));
         companyEmailColumn.setCellValueFactory(new PropertyValueFactory<>("companyEmail"));
 
-        // Charger tous les tickets depuis le service
         transportList.addAll(ts.getAll());
 
-        // Afficher dans la TableView
        transportTable.setItems(transportList);
 
         addActionsToTable();
+        setupSearch();
+
+        //pour le combobox : filtre par transportation type
+        transportationFilterComboBox.getItems().add(null); // Option "Tous"
+        transportationFilterComboBox.getItems().addAll(TransportType.values());
+        transportationFilterComboBox.setOnAction(event -> filterTransportList());
     }
 
 
@@ -99,11 +131,17 @@ public class TransportController {
         }
     }
     private void handleDelete(Transport transport) {
-        ts.delete(transport); // appelle ta vraie méthode
-        transportTable.getItems().remove(transport); // met à jour la table
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText("Are you sure you want to delete this transport");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ts.delete(transport);
+            transportTable.getItems().remove(transport);
+        }
+
     }
-
-
 
     private void handleEdit(Transport transport) {
         try {
@@ -123,6 +161,39 @@ public class TransportController {
             e.printStackTrace();
         }
     }
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<Transport> filteredList = FXCollections.observableArrayList();
+
+            for (Transport transport : transportList) {
+                if (transport.getCompanyName().toLowerCase().contains(newValue.toLowerCase())) {
+                    filteredList.add(transport);
+                }
+            }
+
+            transportTable.setItems(filteredList);
+
+            // Si la barre est vide, on remet toute la liste
+            if (newValue.isEmpty()) {
+                transportTable.setItems(transportList);
+            }
+            addActionsToTable(); // pour remettre les boutons actions en place
+        });
+    }
+    private void filterTransportList() {
+        TransportType selectedType = transportationFilterComboBox.getValue();
+        String searchKeyword = searchField.getText().toLowerCase();
+
+        ObservableList<Transport> filteredList = transportList.filtered(transport -> {
+            boolean matchesType = (selectedType == null || transport.getTransportation() == selectedType);
+            boolean matchesCompanyName = (searchKeyword.isEmpty() || transport.getCompanyName().toLowerCase().contains(searchKeyword));
+            return matchesType && matchesCompanyName;
+        });
+
+        transportTable.setItems(filteredList);
+        addActionsToTable();
+    }
+
 
 }
 

@@ -7,47 +7,54 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
-
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.Optional;
 
 public class ItineraryController {
 
     @FXML
     private TableView<Itinerary> itineraryTable;
-    @FXML private TableColumn<String, Itinerary> itineraryIdColumn;
-    @FXML private TableColumn<String, Itinerary> transportIdColumn;
+    @FXML private TableColumn<String, Itinerary> itineraryCodeColumn;
+    @FXML private TableColumn<String, Itinerary> transporterReferenceColumn;
     @FXML private TableColumn<String, Itinerary> departureLocationColumn;
+    @FXML private TableColumn<LocalTime,Itinerary> departureTimeColumn;
     @FXML private TableColumn<String, Itinerary> arrivalLocationColumn;
+    @FXML private TableColumn<LocalTime,Itinerary> arrivalTimeColumn;
     @FXML private TableColumn<String, Itinerary> durationColumn;
+    @FXML private TableColumn<Double, Itinerary> priceColumn;
     @FXML private TableColumn<Itinerary, Void> actionsColumn;
     private ObservableList<Itinerary> itineraryList = FXCollections.observableArrayList();
+    @FXML Button addItineraryButton;
+    @FXML TextField searchField;
     ItineraryService is = new ItineraryService();
 
     @FXML
     public void initialize() {
         // Lier les colonnes aux attributs
-        itineraryIdColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryId"));
-        transportIdColumn.setCellValueFactory(new PropertyValueFactory<>("transportId"));
+        itineraryCodeColumn.setCellValueFactory(new PropertyValueFactory<>("itineraryCode"));
+        transporterReferenceColumn.setCellValueFactory(new PropertyValueFactory<>("transporterReference"));
         departureLocationColumn.setCellValueFactory(new PropertyValueFactory<>("departureLocation"));
+        departureTimeColumn.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
         arrivalLocationColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalLocation"));
+        arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        // Charger tous les tickets depuis le service
+        // Charger tous les tickets depuis le service dans l'observableList
         itineraryList.addAll(is.getAll());
 
         // Afficher dans la TableView
         itineraryTable.setItems(itineraryList);
 
         addActionsToTable();
+        setupSearch();
 
     }
 
@@ -93,11 +100,17 @@ public class ItineraryController {
         }
     }
     private void handleDelete(Itinerary itinerary) {
-        is.delete(itinerary); // appelle ta vraie méthode
-        itineraryTable.getItems().remove(itinerary); // met à jour la table
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText("Are you sure you want to delete this itinerary");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            is.delete(itinerary);
+            itineraryTable.getItems().remove(itinerary);
+        }
+
     }
-
-
 
     private void handleEdit(Itinerary itinerary) {
         try {
@@ -116,6 +129,26 @@ public class ItineraryController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void setupSearch() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<Itinerary> filteredList = FXCollections.observableArrayList();
+
+            for (Itinerary itinerary : itineraryList) {
+                if (itinerary.getTransporterReference().toLowerCase().contains(newValue.toLowerCase()) ||
+                        itinerary.getDepartureLocation().toLowerCase().contains(newValue)||(itinerary.getArrivalLocation().toLowerCase().contains(newValue))) {
+                    filteredList.add(itinerary);
+                }
+            }
+
+            itineraryTable.setItems(filteredList);
+
+            // Si la barre est vide, on remet toute la liste
+            if (newValue.isEmpty()) {
+                itineraryTable.setItems(itineraryList);
+            }
+            addActionsToTable(); // pour remettre les boutons actions en place
+        });
     }
 
 }

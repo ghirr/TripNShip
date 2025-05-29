@@ -1,15 +1,19 @@
 package org.Esprit.TripNShip.Entities;
 
 public class Transport {
-    private String transportId;
+    private int transportId;
+    private String logoPath;
+    private String transporterReference;
     private TransportType transportation;
     private String companyName;
     private int companyPhone;
     private String companyEmail;
     private String companyWebsite;
 
-    public Transport(String transportId, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
+    public Transport(int transportId, String logoPath, String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
         this.transportId = transportId;
+        this.logoPath = logoPath;
+        this.transporterReference = transporterReference;
         this.transportation = transportation;
         this.companyName = companyName;
         this.companyPhone = companyPhone;
@@ -17,32 +21,61 @@ public class Transport {
         this.companyWebsite = companyWebsite;
     }
 
-    public Transport(String transportId, TransportType transportation, String companyName) {
-        this.transportId = transportId;
+    public Transport(String logoPath, String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
+        this.logoPath = logoPath;
+        this.transporterReference = transporterReference;
+        this.transportation = transportation;
+        this.companyName = companyName;
+        this.companyPhone = companyPhone;
+        this.companyEmail = companyEmail;
+        this.companyWebsite = companyWebsite;
+    }
+
+    public Transport(String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
+        this.transporterReference = transporterReference;
+        this.transportation = transportation;
+        this.companyName = companyName;
+        this.companyPhone = companyPhone;
+        this.companyEmail = companyEmail;
+        this.companyWebsite = companyWebsite;
+    }
+
+    public Transport(String transporterReference, TransportType transportation, String companyName) {
+        this.transporterReference = transporterReference;
         this.transportation = transportation;
         this.companyName = companyName;
     }
 
-    public Transport(String transportId, TransportType transportation, String companyName, int companyPhone) {
-        this.transportId = transportId;
+    public Transport(String transporterReference, TransportType transportation, String companyName, int companyPhone) {
+        this.transporterReference = transporterReference;
         this.transportation = transportation;
         this.companyName = companyName;
         this.companyPhone = companyPhone;
     }
 
-    public Transport(String companyEmail, int companyPhone, TransportType transportation, String transportId, String companyName) {
+    public Transport(String transporterReference, String companyEmail, int companyPhone, TransportType transportation, String companyName) {
         this.companyEmail = companyEmail;
         this.companyPhone = companyPhone;
         this.transportation = transportation;
-        this.transportId = transportId;
+        this.transporterReference = transporterReference;
         this.companyName = companyName;
     }
 
-    public String getTransportId() {
+    public Transport(int transportId, String transporterReference, TransportType transportation, String companyName, int companyPhone, String companyEmail, String companyWebsite) {
+        this.transportId = transportId;
+        this.transporterReference = transporterReference;
+        this.transportation = transportation;
+        this.companyName = companyName;
+        this.companyPhone = companyPhone;
+        this.companyEmail = companyEmail;
+        this.companyWebsite = companyWebsite;
+    }
+
+    public int getTransportId() {
         return transportId;
     }
 
-    public void setTransportId(String transportId) {
+    public void setTransportId(int transportId) {
         this.transportId = transportId;
     }
 
@@ -86,15 +119,34 @@ public class Transport {
         this.companyWebsite = companyWebsite;
     }
 
+
+    public String getTransporterReference() {
+        return transporterReference;
+    }
+
+    public void setTransporterReference(String transporterReference) {
+        this.transporterReference = transporterReference;
+    }
+
+    public String getLogoPath() {
+        return logoPath;
+    }
+
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
+    }
+
     @Override
     public String toString() {
         return "Transport{" +
                 "transportId=" + transportId +
+                ", transporterReference='" + transporterReference + '\'' +
                 ", transportation=" + transportation +
                 ", companyName='" + companyName + '\'' +
                 ", companyPhone=" + companyPhone +
                 ", companyEmail='" + companyEmail + '\'' +
                 ", companyWebsite='" + companyWebsite + '\'' +
+                ", logoPath='" + logoPath + '\'' +
                 '}';
     }
 }

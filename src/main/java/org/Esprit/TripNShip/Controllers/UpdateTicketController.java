@@ -1,6 +1,5 @@
 package org.Esprit.TripNShip.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -9,23 +8,24 @@ import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.ItineraryService;
 import org.Esprit.TripNShip.Services.TicketService;
-import java.io.IOException;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddTicketController implements Initializable {
-
+public class UpdateTicketController implements Initializable {
     @FXML private ComboBox<String> itineraryCodeComboBox;
     @FXML private TextField userEmailField;
     @FXML private DatePicker departureDatePicker;
-    @FXML private TextField departureTimeField;
     @FXML private TextField arrivalDateField;
+    @FXML private TextField departureTimeField;
     @FXML private TextField arrivalTimeField;
+    @FXML private Button updateTicketButton;
 
-    @FXML private Button addTicketButton;
+    private final TicketService ts = new TicketService();
+    private Ticket ticket;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,20 +41,38 @@ public class AddTicketController implements Initializable {
         arrivalDateField.setEditable(false);
     }
 
-    public void addTicket(ActionEvent event) throws IOException {
-        if(!validInputs()) return;
-        TicketService ts = new TicketService();
-        ts.add(new Ticket(itineraryCodeComboBox.getValue(),userEmailField.getText(), departureDatePicker.getValue(), LocalDate.parse(arrivalDateField.getText())));
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+        itineraryCodeComboBox.setValue(ticket.getItineraryCode());
+        userEmailField.setText(String.valueOf(ticket.getUserEmail()));
+        departureDatePicker.setValue(ticket.getDepartureDate());
+        arrivalDateField.setText(ticket.getArrivalDate().toString());
+        onItineraryCodeSelected();
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("SA7it");
-        alert.setContentText("Ticket Added !");
-        alert.show();
-        Stage stage = (Stage) itineraryCodeComboBox.getScene().getWindow();
+    }
+
+    @FXML
+    private void saveTicket() {
+        if (!validInputs()) return;
+
+        ticket.setItineraryCode(itineraryCodeComboBox.getValue());
+        ticket.setUserEmail(userEmailField.getText());
+        ticket.setDepartureDate(departureDatePicker.getValue());
+        ticket.setArrivalDate(LocalDate.parse(arrivalDateField.getText()));
+
+
+        ts.update(ticket);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Update");
+        alert.setContentText("Ticket updated successfully!");
+        alert.showAndWait();
+
+        Stage stage = (Stage) userEmailField.getScene().getWindow();
         stage.close();
     }
     public boolean validInputs() {
-        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() == null) {
+        if (itineraryCodeComboBox.getValue() == null ||  userEmailField.getText().isEmpty() || departureDatePicker.getValue() ==null || arrivalDateField.getText().isEmpty()||departureTimeField.getText().isEmpty()||arrivalTimeField.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
             return false;
 
@@ -66,12 +84,18 @@ public class AddTicketController implements Initializable {
         }
         try {
             departureDatePicker.getValue();
-        } catch (Exception e) {
+                } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR,"Date Format Error","Please set the dates in the format YYYY-MM-DD");
             return false;
         }
 
-
+        try {
+            LocalTime.parse(departureTimeField.getText());
+            LocalTime.parse(arrivalTimeField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR,"Time Format Error","Please set the time in the format HH:MM");
+            return false;
+        }
 
         return true;
     }
@@ -82,8 +106,6 @@ public class AddTicketController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
     @FXML
     private void onItineraryCodeSelected() {
         String selectedCode = itineraryCodeComboBox.getValue();
@@ -117,3 +139,4 @@ public class AddTicketController implements Initializable {
 
 
 }
+

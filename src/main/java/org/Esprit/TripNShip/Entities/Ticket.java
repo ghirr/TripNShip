@@ -1,54 +1,86 @@
 package org.Esprit.TripNShip.Entities;
 
+import org.Esprit.TripNShip.Services.ItineraryService;
+
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Ticket {
     private int ticketId;
-    private String itineraryId;
-    private int userId;
+    private String itineraryCode;
+    private String userEmail;
     private LocalDate departureDate;
     private LocalDate arrivalDate;
-    private double price;
 
-    public Ticket(int ticketId, String itineraryId, int userId, LocalDate departureDate, LocalDate arrivalDate, double price) {
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
         this.ticketId = ticketId;
-        this.itineraryId = itineraryId;
-        this.userId = userId;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
-        this.price = price;
-    }
-
-    public Ticket(int ticketId, String itineraryId, int userId, LocalDate departureDate, LocalDate arrivalDate) {
-        this.ticketId = ticketId;
-        this.itineraryId = itineraryId;
-        this.userId = userId;
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
     }
+
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate) {
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = updateArrivalDate();
+    }
+
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate) {
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = updateArrivalDate();
+    }
+
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate) {
+        this.ticketId = ticketId;
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = updateArrivalDate();
+    }
+
+
+    public Ticket(int ticketId, String itineraryCode, String userEmail, LocalDate departureDate, LocalTime departureTime, LocalTime arrivalTime) {
+        this.ticketId = ticketId;
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = updateArrivalDate();
+
+    }
+
+    public Ticket(String itineraryCode, String userEmail, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime) {
+        this.itineraryCode = itineraryCode;
+        this.userEmail = userEmail;
+        this.departureDate = departureDate;
+        this.arrivalDate = updateArrivalDate();
+
+    }
+
 
     public int getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
+    public String getItineraryCode() {
+        return itineraryCode;
     }
 
-    public String getItineraryId() {
-        return itineraryId;
+    public void setItineraryCode(String itineraryCode) {
+        this.itineraryCode = itineraryCode;
     }
 
-    public void setItineraryId(String itineraryId) {
-        this.itineraryId = itineraryId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public LocalDate getDepartureDate() {
@@ -67,23 +99,50 @@ public class Ticket {
         this.arrivalDate = arrivalDate;
     }
 
-    public double getPrice() {
-        return price;
+
+    private LocalDate updateArrivalDate() {
+        ItineraryService is = new ItineraryService();
+        Itinerary itinerary = is.getItineraryByCode(itineraryCode);
+        if (itinerary != null) {
+            return calculateArrivalDate(departureDate, itinerary.getDepartureTime(), itinerary.getDuration());
+        } else {
+            return null;
+        }
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+
+    public static LocalDate calculateArrivalDate(LocalDate departureDate, LocalTime departureTime, String duration) {
+        if (departureDate == null || departureTime == null || duration == null || !duration.matches("\\d{1,2}:\\d{2}")) {
+            return null;
+        }
+
+        String[] parts = duration.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+
+        Duration dur = Duration.ofHours(hours).plusMinutes(minutes);
+
+        // Crée un LocalDateTime combiné
+        LocalDateTime departureDateTime = LocalDateTime.of(departureDate, departureTime);
+
+        // Calcule l'heure d'arrivée
+        LocalDateTime arrivalDateTime = departureDateTime.plus(dur);
+
+        return arrivalDateTime.toLocalDate(); // extrait la date seulement
     }
+
+
 
     @Override
     public String toString() {
         return "Ticket{" +
                 "ticketId=" + ticketId +
-                ", itineraryId='" + itineraryId + '\'' +
-                ", userId=" + userId +
+                ", itineraryCode='" + itineraryCode + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 ", departureDate=" + departureDate +
                 ", arrivalDate=" + arrivalDate +
-                ", price=" + price +
+
                 '}';
     }
+
 }

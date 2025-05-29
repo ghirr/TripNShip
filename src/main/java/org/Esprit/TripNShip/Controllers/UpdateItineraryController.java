@@ -2,41 +2,49 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Services.ItineraryService;
 
+import java.time.LocalTime;
+
 public class UpdateItineraryController {
-    @FXML
-    private TextField itineraryIdField;
-    @FXML
-    private TextField transportIdField;
-    @FXML
-    private TextField departureLocationField;
-    @FXML
-    private TextField arrivalLocationField;
-    @FXML
-    private TextField durationField;
+
+    @FXML private TextField itineraryCodeField;
+    @FXML    private TextField transporterReferenceField;
+    @FXML    private TextField departureLocationField;
+    @FXML private TextField departureTimeField;
+    @FXML    private TextField arrivalLocationField;
+    @FXML    private TextField durationField;
+    @FXML    private TextField priceField;
+    @FXML    Button updateItineraryButton;
 
     private final ItineraryService is = new ItineraryService();
     private Itinerary itinerary;
 
     public void setItinerary(Itinerary itinerary) {
         this.itinerary = itinerary;
-        itineraryIdField.setText(String.valueOf(itinerary.getItineraryId()));
-        transportIdField.setText(itinerary.getTransportId());
+        itineraryCodeField.setText(itinerary.getItineraryCode());
+        transporterReferenceField.setText(itinerary.getTransporterReference());
         departureLocationField.setText(itinerary.getDepartureLocation());
+        departureTimeField.setText(itinerary.getDepartureTime().toString());
         arrivalLocationField.setText(itinerary.getArrivalLocation());
         durationField.setText(itinerary.getDuration());
+        priceField.setText(Double.toString(itinerary.getPrice()));
     }
 
     @FXML
     private void saveItinerary() {
-        itinerary.setTransportId(transportIdField.getText());
+        if(!validInputs()) return;
+        itinerary.setItineraryCode(itineraryCodeField.getText());
+        itinerary.setTransporterReference(transporterReferenceField.getText());
         itinerary.setDepartureLocation((departureLocationField.getText()));
+        itinerary.setDepartureTime(LocalTime.parse(departureTimeField.getText()));
         itinerary.setArrivalLocation(arrivalLocationField.getText());
         itinerary.setDuration((durationField.getText()));
+        itinerary.setPrice(Double.parseDouble(priceField.getText()));
 
         is.update(itinerary);
 
@@ -46,7 +54,40 @@ public class UpdateItineraryController {
         alert.showAndWait();
 
         // Ferme la fenêtre
-        Stage stage = (Stage) itineraryIdField.getScene().getWindow();
+        Stage stage = (Stage) itineraryCodeField.getScene().getWindow();
         stage.close();
+    }
+    public boolean validInputs() {
+        if (itineraryCodeField.getText().isEmpty() ||  transporterReferenceField.getText().isEmpty() || departureLocationField.getText().isEmpty() || departureTimeField.getText().isEmpty()||arrivalLocationField.getText().isEmpty()||durationField.getText().isEmpty()||priceField.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please Fill in all required fields");
+            return false;
+
+        }
+
+        if (!durationField.getText().matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
+            showAlert(Alert.AlertType.ERROR, "Duration Error", "Please enter a valid duration in HH:MM format (00:00 to 23:59)");
+            return false;
+        }
+        try{
+            Double.parseDouble(priceField.getText());
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR,"Price Format Error","Please set the price as Double");
+            return false;
+        }
+        try {
+            LocalTime.parse(departureTimeField.getText());
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR,"Time Format Error","Please set the time in the format HH:MM");
+            return false;
+        }
+
+        return true;
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String message){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

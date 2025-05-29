@@ -3,28 +3,29 @@ package org.Esprit.TripNShip.Services;
 import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItineraryService implements IService<Itinerary>{
+    private List<Itinerary> itineraries;
     private final Connection connection;
     public ItineraryService() { connection=MyDataBase.getInstance().getConnection();
     }
 
     @Override
     public void add(Itinerary itinerary) {
-        String req = "INSERT INTO itinerary (itineraryId, transportId, departureLocation,arrivalLocation,duration) VALUES (?,?,?,?,?)";
+        String req = "INSERT INTO itinerary (itineraryCode, transporterReference, departureLocation,departureTime,arrivalLocation,arrivalTime,duration,price) VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst= connection.prepareStatement(req);
-            pst.setString(1,itinerary.getItineraryId());
-            pst.setString(2,itinerary.getTransportId());
+            pst.setString(1,itinerary.getItineraryCode());
+            pst.setString(2,itinerary.getTransporterReference());
             pst.setString(3,itinerary.getDepartureLocation());
-            pst.setString(4, itinerary.getArrivalLocation());
-            pst.setString(5,itinerary.getDuration());   //a verifier pour Duration
+            pst.setTime(4, Time.valueOf(itinerary.getDepartureTime()));
+            pst.setString(5, itinerary.getArrivalLocation());
+            pst.setTime(6,Time.valueOf(itinerary.getArrivalTime()));
+            pst.setString(7,itinerary.getDuration());
+            pst.setDouble(8,itinerary.getPrice());//a verifier pour Duration
             pst.executeUpdate();
             System.out.println("Itinerary added successfully!!");
         }
@@ -35,14 +36,18 @@ public class ItineraryService implements IService<Itinerary>{
 
     @Override
     public void update(Itinerary itinerary) {
-        String req = "UPDATE itinerary SET transportId=?,departureLocation=?,arrivalLocation=?,duration=? WHERE itineraryId=?";
+        String req = "UPDATE itinerary SET itineraryCode=?,transporterReference=?,departureLocation=?,departureTime=?,arrivalLocation=?,arrivalTime=?,duration=?,price=? WHERE itineraryId=?";
         try{
             PreparedStatement pst = connection.prepareStatement(req);
-            pst.setString(1,itinerary.getTransportId());
-            pst.setString(2, itinerary.getDepartureLocation());
-            pst.setString(3, itinerary.getArrivalLocation());
-            pst.setString(4,itinerary.getDuration()); //a verifier pour Duration
-            pst.setString(5,itinerary.getItineraryId());
+            pst.setString(1, itinerary.getItineraryCode());
+            pst.setString(2,itinerary.getTransporterReference());
+            pst.setString(3, itinerary.getDepartureLocation());
+            pst.setTime(4,Time.valueOf(itinerary.getDepartureTime()));
+            pst.setString(5, itinerary.getArrivalLocation());
+            pst.setTime(6,Time.valueOf(itinerary.getArrivalTime()));
+            pst.setString(7,itinerary.getDuration());
+            pst.setDouble(8,itinerary.getPrice());//a verifier pour Duration
+            pst.setInt(9,itinerary.getItineraryId());
             pst.executeUpdate();
             System.out.println("Itinerary updated successfully");
         }
@@ -57,7 +62,7 @@ public class ItineraryService implements IService<Itinerary>{
         String req = "DELETE FROM itinerary WHERE itineraryId=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
-            pst.setString(1,itinerary.getItineraryId());
+            pst.setInt(1,itinerary.getItineraryId());
             pst.executeUpdate();
             System.out.println("Itinerary Deleted Successfully");
         }
@@ -75,14 +80,36 @@ public class ItineraryService implements IService<Itinerary>{
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                itineraries.add(new Itinerary(rs.getString("itineraryId"), rs.getString("transportId"), rs.getString("departureLocation"), rs.getString("arrivalLocation"), rs.getString("duration"))); //a verifier pour Duration
+                itineraries.add(new Itinerary(rs.getInt("itineraryId"),rs.getString("itineraryCode"), rs.getString("transporterReference"), rs.getString("departureLocation"),rs.getTime("departureTime").toLocalTime(), rs.getString("arrivalLocation"), rs.getTime("arrivalTime").toLocalTime(),rs.getString("duration"),rs.getDouble("price"))); //a verifier pour Duration
 
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return itineraries;
+    }
 
-
+    public Itinerary getItineraryByCode(String code){
+        String req = "SELECT * FROM itinerary WHERE itineraryCode = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setString(1, code);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return new Itinerary(
+                        rs.getString("itineraryCode"),
+                        rs.getString("transporterReference"),
+                        rs.getString("departureLocation"),
+                        rs.getTime("departureTime").toLocalTime(),
+                        rs.getString("arrivalLocation"),
+                        rs.getTime("arrivalTime").toLocalTime(),
+                        rs.getString("duration"),
+                        rs.getDouble("price")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

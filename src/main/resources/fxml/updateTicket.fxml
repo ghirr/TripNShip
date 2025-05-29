@@ -12,7 +12,7 @@
 
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ComboBox?>
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AddTicketController">
+<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.UpdateTicketController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
             <StackPane style="-fx-padding: 20;">
@@ -20,15 +20,15 @@
                     <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../images/logo.png" />
                     </ImageView>
-                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Add Ticket" />
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Update Ticket" />
 
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
 
-                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary Code" />
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary ID" />
                         <ComboBox fx:id="itineraryCodeComboBox" maxWidth="Infinity" promptText="Select Itinerary Code" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User Email" />
-                        <TextField fx:id="userEmailField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="userEmailField" maxWidth="Infinity" promptText="e.g TUN DJE" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Date" />
                         <DatePicker fx:id="departureDatePicker" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
@@ -41,10 +41,10 @@
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Time" />
                         <TextField fx:id="arrivalTimeField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
-
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Price" />
                     </VBox>
 
-                    <Button fx:id="addTicketButton" onAction="#addTicket" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Add Ticket" />
+                    <Button fx:id="updateTicketButton" onAction="#saveTicket" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Update" />
                 </VBox>
             </StackPane>
             <padding>

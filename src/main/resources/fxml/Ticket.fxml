@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -17,6 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
 
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.TicketController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
@@ -30,74 +28,43 @@
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Tickets" />
 
                     <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-                        <Label style="-fx-text-fill: #222;" text="Show" />
-                        <ComboBox fx:id="entriesComboBox" prefWidth="60">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="5" />
-                                    <String fx:value="10" />
-                                    <String fx:value="25" />
-                                    <String fx:value="50" />
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-                        <Label style="-fx-text-fill: #222;" text="entries" />
 
                         <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
 
-                        <!-- StackPane to contain TextField and Icon inside it -->
-                        <StackPane>
-                            <TextField fx:id="searchField" promptText="Search..." style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8; -fx-border-color: #ccc; -fx-pref-width: 200; -fx-font-size: 12px;" />
-                        </StackPane>
+                        <StackPane />
 
-                        <Button fx:id="addTicketButton" onAction="#toAddTicket" style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;" text="Add">
-                            <graphic>
-                                <ImageView fitHeight="18" fitWidth="18">
-                                    <Image url="@../../resources/images/icons8-plus-24.png" />
-                                </ImageView>
-                            </graphic>
-                        </Button>
-
-                        <Button fx:id="exportExcelButton" style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;" text="Export">
-                            <graphic>
-                                <ImageView fitHeight="18" fitWidth="18">
-                                    <Image url="@../../resources/images/icons8-export-excel-24.png" />
-                                </ImageView>
-                            </graphic>
-                        </Button>
+                        <Button fx:id="addTicketButton" onAction="#toAddTicket" prefHeight="27.0" prefWidth="97.0" style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;" text="Add" />
 
                     </HBox>
+                    <TextField fx:id="searchField" maxWidth="300.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Email or Departure Date..." translateX="-272.0" />
+
 
                     <TableView fx:id="ticketTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
                         <columns>
-                            <TableColumn fx:id="ticketIdColumn" prefWidth="150" text="Ticket Id">
+                            <TableColumn fx:id="itineraryCodeColumn" prefWidth="120.0" text="Itinerary Code">
                                 <cellValueFactory>
-                                    <PropertyValueFactory property="ticketId" />
+                                    <PropertyValueFactory property="itineraryCode" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="itineraryIdColumn" prefWidth="200" text="Itinerary Id">
+                            <TableColumn fx:id="userEmailColumn" prefWidth="198.0" text="User Email">
                                 <cellValueFactory>
-                                    <PropertyValueFactory property="itineraryId" />
+                                    <PropertyValueFactory property="userEmail" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="userIdColumn" prefWidth="150" text="User Id">
-                                <cellValueFactory>
-                                    <PropertyValueFactory property="userId" />
-                                </cellValueFactory>
-                            </TableColumn>
-                            <TableColumn fx:id="departureDateColumn" prefWidth="100" text="Departure Date">
+                            <TableColumn fx:id="departureDateColumn" prefWidth="108.0" text="Departure Date">
                                 <cellValueFactory>
                                     <PropertyValueFactory property="departureDate" />
                                 </cellValueFactory>
                             </TableColumn>
-                            <TableColumn fx:id="arrivalDateColumn" prefWidth="150" text="Arrival Date" />
-                     <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Price" >
-                            <cellValueFactory>
-                                <PropertyValueFactory property="ticketId" />
-                            </cellValueFactory>
-                        </TableColumn>
+                            <TableColumn fx:id="arrivalDateColumn" prefWidth="122.0" text="Arrival Date" />
+
+
+                            <TableColumn fx:id="actionsColumn" maxWidth="391.0" minWidth="79.0" prefWidth="172.0" text="Actions" />
+
                         </columns>
                     </TableView>
+                    <WebView fx:id="mapWebView" prefHeight="400.0" prefWidth="850.0" />
+
                 </VBox>
             </StackPane>
             <padding>

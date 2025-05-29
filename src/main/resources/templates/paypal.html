@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Payment</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .payment-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .payment-header p {
+            color: #7f8c8d;
+            margin: 10px 0 0 0;
+            font-size: 16px;
+        }
+
+        .booking-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #3498db;
+        }
+
+        .booking-details h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+        }
+
+        .total-amount {
+            border-top: 2px solid #e9ecef;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .total-amount .detail-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .paypal-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .paypal-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        #paypal-button-container {
+            margin: 20px 0;
+            min-height: 50px;
+        }
+
+        .payment-status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .status-success {
+            background-color: #d1f2eb;
+            color: #00695c;
+            border: 1px solid #4caf50;
+        }
+
+        .status-error {
+            background-color: #fadbd8;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .powered-by {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .security-info {
+            background: #e8f5e8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #2e7d32;
+        }
+
+        .security-icon {
+            color: #4caf50;
+            font-size: 18px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="payment-container">
+    <div class="payment-header">
+        <h1>Secure Payment</h1>
+        <p>Complete your booking payment with PayPal</p>
+    </div>
+
+    <div class="booking-details">
+        <h3>Booking Summary</h3>
+        <div class="detail-row">
+            <span class="detail-label">Booking ID:</span>
+            <span class="detail-value" id="booking-id">#12345</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Room:</span>
+            <span class="detail-value" id="room-name">Deluxe Suite</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Check-in:</span>
+            <span class="detail-value" id="check-in">Dec 25, 2024</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Check-out:</span>
+            <span class="detail-value" id="check-out">Dec 28, 2024</span>
+        </div>
+        <div class="detail-row total-amount">
+            <span class="detail-label">Total Amount:</span>
+            <span class="detail-value" id="total-amount">$299.99</span>
+        </div>
+    </div>
+
+    <div class="paypal-section">
+        <svg class="paypal-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.076 21.337H5.47a.641.641 0 01-.633-.74L7.13 3.959c.053-.29.307-.499.603-.499h4.507c.807 0 1.544.044 2.242.133 1.751.222 2.998.829 3.707 1.804.709.975.966 2.171.764 3.553-.27 1.842-1.107 3.241-2.482 4.159-1.375.918-3.336 1.378-5.827 1.378h-1.106c-.287 0-.53.21-.583.497l-.692 4.353z" fill="#263B80"/>
+            <path d="M18.235 6.759c-.065.385-.154.744-.267 1.076-.113.332-.25.636-.412.912-.162.276-.349.525-.562.747-.213.222-.45.416-.711.582-.836.532-1.851.798-3.045.798h-1.104c-.287 0-.53.21-.583.497L10.66 15.31a.641.641 0 01-.633.56H8.221c-.287 0-.53.21-.583.497l-.692 4.353a.641.641 0 01-.633.74H4.707a.641.641 0 01-.633-.74L6.367 3.082c.053-.29.307-.499.603-.499h4.507c.807 0 1.544.044 2.242.133 2.48.316 3.973 1.341 4.308 3.043z" fill="#179BD7"/>
+            <path d="M6.323 21.337H4.717a.641.641 0 01-.633-.74L6.377 3.959c.053-.29.307-.499.603-.499h4.507c.807 0 1.544.044 2.242.133 1.751.222 2.998.829 3.707 1.804.709.975.966 2.171.764 3.553-.27 1.842-1.107 3.241-2.482 4.159-1.375.918-3.336 1.378-5.827 1.378H8.785c-.287 0-.53.21-.583.497l-.692 4.353z" fill="#222D65"/>
+        </svg>
+
+        <!-- PayPal Button Container -->
+        <div id="paypal-button-container"></div>
+    </div>
+
+    <div class="payment-status" id="payment-status"></div>
+
+    <div class="security-info">
+        <span class="security-icon">🔒</span>
+        Your payment information is encrypted and secure
+    </div>
+
+    <div class="powered-by">
+        Powered by PayPal • Secure Payment Processing
+    </div>
+</div>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+
+<script>
+    // Payment configuration
+    let bookingData = {
+        id: "12345",
+        roomName: "Deluxe Suite",
+        checkIn: "Dec 25, 2024",
+        checkOut: "Dec 28, 2024",
+        amount: "299.99"
+    };
+
+    // Function to update booking details from JavaFX
+    function updateBookingDetails(data) {
+        bookingData = data;
+        document.getElementById('booking-id').textContent = '#' + data.id;
+        document.getElementById('room-name').textContent = data.roomName;
+        document.getElementById('check-in').textContent = data.checkIn;
+        document.getElementById('check-out').textContent = data.checkOut;
+        document.getElementById('total-amount').textContent = '$' + data.amount;
+    }
+
+    // Function to show payment status
+    function showPaymentStatus(type, message) {
+        const statusDiv = document.getElementById('payment-status');
+        statusDiv.className = 'payment-status status-' + type;
+        statusDiv.style.display = 'block';
+
+        if (type === 'pending') {
+            statusDiv.innerHTML = '<div class="loading-spinner"></div>' + message;
+        } else {
+            statusDiv.innerHTML = message;
+        }
+    }
+
+    // Function to notify JavaFX about payment result
+    function notifyJavaFX(status, details) {
+        // This will be called by JavaFX WebEngine to handle the callback
+        if (window.javafx) {
+            window.javafx.paymentCallback(status, details);
+        }
+        console.log('Payment Status:', status, details);
+    }
+
+    // PayPal Button Configuration
+    paypal.Buttons({
+        style: {
+            color: 'blue',
+            shape: 'pill',
+            label: 'pay',
+            height: 50,
+            tagline: false
+        },
+
+        // Create order
+        createOrder: function(data, actions) {
+            showPaymentStatus('pending', 'Processing payment...');
+
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: bookingData.amount,
+                        currency_code: 'USD'
+                    },
+                    description: `Accommodation booking - ${bookingData.roomName}`,
+                    custom_id: bookingData.id,
+                    soft_descriptor: 'TripNShip Booking'
+                }],
+                application_context: {
+                    brand_name: 'TripNShip',
+                    landing_page: 'BILLING',
+                    user_action: 'PAY_NOW'
+                }
+            });
+        },
+
+        // Handle successful payment
+        onApprove: function(data, actions) {
+            showPaymentStatus('pending', 'Finalizing payment...');
+
+            return actions.order.capture().then(function(details) {
+                showPaymentStatus('success',
+                    `Payment successful! Transaction ID: ${details.id}`
+                );
+
+                // Notify JavaFX about successful payment
+                notifyJavaFX('SUCCESS', {
+                    transactionId: details.id,
+                    payerId: details.payer.payer_id,
+                    amount: details.purchase_units[0].amount.value,
+                    bookingId: bookingData.id
+                });
+            });
+        },
+
+        // Handle payment cancellation
+        onCancel: function(data) {
+            showPaymentStatus('error', 'Payment was cancelled');
+            notifyJavaFX('CANCELLED', { reason: 'User cancelled payment' });
+        },
+
+        // Handle payment errors
+        onError: function(err) {
+            console.error('PayPal Error:', err);
+            showPaymentStatus('error', 'Payment failed. Please try again.');
+            notifyJavaFX('ERROR', { error: err.toString() });
+        }
+
+    }).render('#paypal-button-container');
+
+    // Initialize with default data
+    document.addEventListener('DOMContentLoaded', function() {
+        updateBookingDetails(bookingData);
+    });
+
+    // Expose functions to JavaFX
+    window.updateBookingDetails = updateBookingDetails;
+    window.showPaymentStatus = showPaymentStatus;
+</script>
+</body>
+</html>

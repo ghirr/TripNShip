@@ -25,6 +25,13 @@ public class AccommodationBooking {
 
     }
 
+    public AccommodationBooking(int idBooking, Room room, Date startDate, Date endDate, BookingStatus status) {
+        this.idBooking = idBooking;
+        this.room = room;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
 
     public int getIdBooking() {
         return idBooking;

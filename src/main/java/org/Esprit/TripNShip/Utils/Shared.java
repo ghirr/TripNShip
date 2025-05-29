@@ -1,5 +1,6 @@
 package org.Esprit.TripNShip.Utils;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,6 +84,27 @@ public class Shared {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void switchScene(Node node, URL fxmlFile , String title) {
+        Platform.runLater(() -> {
+            try {
+                Stage primaryStage = (Stage) node.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(fxmlFile);
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                primaryStage.setMaximized(false);
+                primaryStage.setScene(scene);
+                primaryStage.setMaximized(true);
+                primaryStage.setTitle(title);
+                Image icon = new Image(Shared.class.getResourceAsStream("/images/logo.png"));
+                primaryStage.getIcons().clear();
+                primaryStage.getIcons().add(icon);
+                primaryStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static void showAlert(Alert.AlertType type, String title, String message) {

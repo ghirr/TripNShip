@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class RoomService implements IService<Room> {
@@ -146,6 +147,52 @@ public class RoomService implements IService<Room> {
 
         return null;
     }
+
+
+    public List<Room> getAvailableRoom(Date date) {
+        List<Room> rooms = new ArrayList<>();
+        String req = """
+            SELECT *
+            FROM room r
+            WHERE r.idRoom NOT IN (
+                SELECT res.roomId
+                FROM accommodationbooking res
+                WHERE res.startDate <= ? AND res.endDate >= ?
+            )""";
+
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            // Set the same date for both placeholders
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            ps.setDate(1, sqlDate);
+            ps.setDate(2, sqlDate);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int idAccommodation = rs.getInt("idAccommodation");
+                    Accommodation accommodation = getAccommodationById(idAccommodation);
+                    boolean availability = rs.getBoolean("availability");
+
+                    Room room = new Room(
+                            rs.getInt("idRoom"),
+                            accommodation,
+                            TypeRoom.valueOf(rs.getString("type").toUpperCase()),
+                            rs.getString("nameRoom"),
+                            rs.getDouble("price"),
+                            availability,
+                            rs.getString("photosRoom")
+                    );
+
+                    rooms.add(room);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error while retrieving rooms: " + e.getMessage());
+        }
+
+        return rooms;
+    }
+
+
 
 
 

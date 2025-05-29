@@ -2,6 +2,7 @@ package org.Esprit.TripNShip.Services;
 
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -89,7 +90,6 @@ public class AccommodationBookingService implements IService<AccommodationBookin
                         rs.getDate("endDate"),
                         BookingStatus.valueOf(rs.getString("status"))
                 );
-
                 bookings.add(booking);
             }
         } catch (SQLException e) {
@@ -133,4 +133,43 @@ public class AccommodationBookingService implements IService<AccommodationBookin
 
         return user;
     }
+
+    public List<AccommodationBooking> getBookingsByUserId(int userId) {
+        List<AccommodationBooking> userBookings = new ArrayList<>();
+        String req = "SELECT ab.*, r.nameRoom, r.type , r.price FROM AccommodationBooking ab " +
+                "JOIN Room r ON ab.roomId = r.idRoom " +
+                "WHERE ab.idUser = ? " +
+                "ORDER BY ab.startDate DESC";
+
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Room room = new Room();
+                room.setIdRoom(rs.getInt("roomId"));
+                room.setNameRoom(rs.getString("nameRoom"));
+                room.setType(TypeRoom.valueOf(rs.getString("type")));
+                room.setPrice(rs.getDouble("price"));
+                User user = new User(UserSession.getInstance().getUserId(), UserSession.getInstance().getUserFirstName(), UserSession.getInstance().getUserLastName(), UserSession.getInstance().getUserRole(), UserSession.getInstance().getUserEmail());
+
+
+                AccommodationBooking booking = new AccommodationBooking(
+                        rs.getInt("idBooking"),
+                        user,
+                        room,
+                        rs.getDate("startDate"),
+                        rs.getDate("endDate"),
+                        BookingStatus.valueOf(rs.getString("status"))
+                );
+
+                userBookings.add(booking);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while retrieving user bookings: " + e.getMessage());
+        }
+        return userBookings;
+    }
+
+
 }

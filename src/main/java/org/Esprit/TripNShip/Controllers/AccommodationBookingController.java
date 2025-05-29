@@ -8,6 +8,7 @@ import org.Esprit.TripNShip.Entities.BookingStatus;
 import org.Esprit.TripNShip.Entities.Room;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AccommodationBookingService;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -77,7 +78,6 @@ public class AccommodationBookingController {
         try {
             LocalDate startDate = startDatePicker.getValue();
             LocalDate endDate = endDatePicker.getValue();
-//            String username = usernameField.getText().trim();
 
             if (startDate == null || endDate == null) {
                 showAlert(Alert.AlertType.WARNING, "Veuillez remplir tous les champs.");
@@ -94,56 +94,28 @@ public class AccommodationBookingController {
                 return;
             }
 
-            // Popup pour saisir email avec validation obligatoire
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Email obligatoire");
-            dialog.setHeaderText("Merci de saisir votre email (doit finir par @gmail.com)");
-            dialog.setContentText("Email :");
 
-            // Boucle jusqu'à ce qu'un email valide soit saisi ou annulation
-            while (true) {
-                var result = dialog.showAndWait();
-                if (result.isEmpty()) {
-                    // Utilisateur a annulé
-                    showAlert(Alert.AlertType.WARNING, "Email obligatoire pour valider la réservation.");
-                    return; // sortir sans ajouter la réservation
-                }
-                String email = result.get().trim();
+            UserSession currentUser = UserSession.getInstance();
+            User user = new User(currentUser.getUserId(), currentUser.getUserFirstName(), currentUser.getUserLastName(), currentUser.getUserRole(), currentUser.getUserEmail());
 
-                if (email.isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, "L'email ne peut pas être vide.");
-                } else if (!email.endsWith("@gmail.com")) {
-                    showAlert(Alert.AlertType.ERROR, "L'email doit se terminer par '@gmail.com'.");
-                } else {
-                    // Email valide, on crée l'utilisateur et la réservation
 
-                    // Exemple : On crée un User avec email en username et email (adapter si besoin)
-                    User user = new User(email, "ghariani", email, "66");
+            long nights = ChronoUnit.DAYS.between(startDate, endDate);
+            if (nights == 0) nights = 1;
+            double pricePerNight = selectedRoom.getPrice();
+            double totalPrice = nights * pricePerNight;
+            priceField.setText(String.format("%.2f", totalPrice));
 
-                    long nights = ChronoUnit.DAYS.between(startDate, endDate);
-                    if (nights == 0) nights = 1;
-                    double pricePerNight = selectedRoom.getPrice();
-                    double totalPrice = nights * pricePerNight;
-                    priceField.setText(String.format("%.2f", totalPrice));
+            AccommodationBooking booking = new AccommodationBooking(
+                    0,
+                    user,
+                    selectedRoom,
+                    java.sql.Date.valueOf(startDate),
+                    java.sql.Date.valueOf(endDate),
+                    BookingStatus.PENDING
+            );
 
-                    AccommodationBooking booking = new AccommodationBooking(
-                            0,
-                            user,
-                            selectedRoom,
-                            java.sql.Date.valueOf(startDate),
-                            java.sql.Date.valueOf(endDate),
-                            BookingStatus.PENDING
-                    );
-
-                    bookingService.add(booking);
-                    showAlert(Alert.AlertType.INFORMATION, "Réservation ajoutée avec succès !");
-                    //EmailBookSender.sendEmail(email, "Confirmation de réservation", "Votre réservation a été enregistrée avec succès !");
-                    showAlert(Alert.AlertType.INFORMATION, "Email de confirmation envoyé à " + email);
-
-                    closeWindow();
-                    break; // sortir de la boucle while
-                }
-            }
+            bookingService.add(booking);
+            showAlert(Alert.AlertType.INFORMATION, "Réservation ajoutée avec succès !");
 
         } catch (Exception e) {
             e.printStackTrace();

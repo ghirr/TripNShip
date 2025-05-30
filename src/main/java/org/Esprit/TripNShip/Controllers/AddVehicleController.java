@@ -2,15 +2,20 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Entities.Type;
 import org.Esprit.TripNShip.Entities.Vehicle;
+import org.Esprit.TripNShip.Services.RentalAgencyService;
 import org.Esprit.TripNShip.Services.VehicleService;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.List;
 import java.util.UUID;
 
 import static org.Esprit.TripNShip.Utils.Shared.UPLOAD_DIR;
@@ -23,26 +28,35 @@ public class AddVehicleController {
     @FXML private TextField dailyPriceField;
     @FXML private CheckBox availabilityCheckBox;
     @FXML private ComboBox<Type> typeVehicleComboBox;
+    @FXML private ComboBox<RentalAgency> rentalAgencyComboBox;
     @FXML private Button addVehicleButton;
     @FXML private Button chooseImageButton;
     @FXML private Label imageFileNameLabel;
+    @FXML
+    private ImageView closeIcon;
 
     private final VehicleService vehicleService = new VehicleService();
-    private RentalAgency rentalAgency;
+    private final RentalAgencyService rentalAgencyService = new RentalAgencyService();
 
     private File selectedImageFile;
 
     @FXML
     private void initialize() {
         typeVehicleComboBox.getItems().addAll(Type.values());
+        loadRentalAgencies();
 
-        // Ajout explicite des handlers
+//        // Afficher seulement nameAgency dans la ComboBox
+//        rentalAgencyComboBox.setCellFactory();
+
         addVehicleButton.setOnAction(event -> addVehicle());
         chooseImageButton.setOnAction(event -> handleChooseImage());
+
+
     }
 
-    public void setRentalAgency(RentalAgency agency) {
-        this.rentalAgency = agency;
+    private void loadRentalAgencies() {
+        List<RentalAgency> agencies = rentalAgencyService.getAll();
+        rentalAgencyComboBox.getItems().addAll(agencies);
     }
 
     @FXML
@@ -67,37 +81,28 @@ public class AddVehicleController {
         String dailyPriceText = dailyPriceField.getText().trim();
         boolean availability = availabilityCheckBox.isSelected();
         Type type = typeVehicleComboBox.getValue();
-
-        // Vérification des champs obligatoires
+        RentalAgency selectedAgency = rentalAgencyComboBox.getValue();
         if (brand.isEmpty() || model.isEmpty() || licensePlate.isEmpty()
-                || dailyPriceText.isEmpty() || type == null || selectedImageFile == null) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please fill in all fields and select an image.");
+                || dailyPriceText.isEmpty() || type == null || selectedImageFile == null || selectedAgency == null) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please fill in all fields and select an image and agency.");
             return;
         }
 
         try {
             float dailyPrice = Float.parseFloat(dailyPriceText);
 
-            // Création d'une agence par défaut si non définie
-            if (rentalAgency == null) {
-                rentalAgency = new RentalAgency();
-                rentalAgency.setIdAgency(1); // ID d'agence fictif, doit exister dans la base
-                rentalAgency.setNameAgency("Default Agency");
-            }
-
-            // Définir un nom de dossier pour les uploads (modifiable si besoin)
-            String dirName = "vehicles"; // ou une variable de classe, ou calculé dynamiquement
+            // Sauvegarder l'image
+            String dirName = "vehicles";
             Path uploadsDir = Paths.get(UPLOAD_DIR, dirName);
-            Files.createDirectories(uploadsDir); // Crée le dossier si non existant
+            Files.createDirectories(uploadsDir);
 
-            // Générer un nom de fichier unique avec extension
             String fileExtension = getFileExtension(selectedImageFile.getName());
             String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID() + fileExtension;
 
             Path destination = uploadsDir.resolve(fileName);
             Files.copy(selectedImageFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-            // Création de l'objet Vehicle
+            // Créer l'objet Vehicle
             Vehicle vehicle = new Vehicle();
             vehicle.setBrand(brand);
             vehicle.setModel(model);
@@ -105,10 +110,9 @@ public class AddVehicleController {
             vehicle.setDailyPrice(dailyPrice);
             vehicle.setAvailability(availability);
             vehicle.setType(type);
-            vehicle.setImageURL(destination.toUri().toString()); // Pour ImageView JavaFX
-            vehicle.setRentalAgency(rentalAgency);
+            vehicle.setImageURL(destination.toUri().toString());
+            vehicle.setRentalAgency(selectedAgency);
 
-            // Enregistrement dans la base
             vehicleService.add(vehicle);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Vehicle added successfully!");
             clearFields();
@@ -122,12 +126,10 @@ public class AddVehicleController {
         }
     }
 
-    // Méthode utilitaire pour récupérer l'extension d’un fichier
     private String getFileExtension(String fileName) {
         int lastDot = fileName.lastIndexOf('.');
         return (lastDot != -1 && lastDot < fileName.length() - 1) ? fileName.substring(lastDot) : "";
     }
-
 
     private void clearFields() {
         brandField.clear();
@@ -136,10 +138,16 @@ public class AddVehicleController {
         dailyPriceField.clear();
         availabilityCheckBox.setSelected(false);
         typeVehicleComboBox.getSelectionModel().clearSelection();
+        rentalAgencyComboBox.getSelectionModel().clearSelection();
         selectedImageFile = null;
         imageFileNameLabel.setText("No file chosen");
     }
 
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
+        stage.close();
+    }
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

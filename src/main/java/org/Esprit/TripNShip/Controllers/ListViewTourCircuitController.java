@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ListViewTourCircuitController {
@@ -198,6 +199,8 @@ public class ListViewTourCircuitController {
     private void openAddTourForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddTourCircuit.fxml"));
+
+
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -211,4 +214,5 @@ public class ListViewTourCircuitController {
             e.printStackTrace();
         }
     }
+
 }

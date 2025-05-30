@@ -2,6 +2,8 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
 import org.Esprit.TripNShip.Entities.StatusBooking;
 import org.Esprit.TripNShip.Entities.TourCircuit;
@@ -28,6 +30,9 @@ public class AddCircuitBookingController {
 
     @FXML
     private Button addBookingButton;
+
+    @FXML
+    private ImageView closeIcon;
 
     private final CircuitBookingService circuitBookingService = new CircuitBookingService();
     private final UserService userService = new UserService();
@@ -108,6 +113,12 @@ public class AddCircuitBookingController {
         statusComboBox.setValue(null);
         userComboBox.setValue(null);
         tourCircuitComboBox.setValue(null);
+    }
+
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
+        stage.close();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

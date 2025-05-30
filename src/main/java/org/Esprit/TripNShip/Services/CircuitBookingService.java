@@ -21,7 +21,11 @@ public class CircuitBookingService implements IService<CircuitBooking> {
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setTimestamp(1, Timestamp.valueOf(circuitBooking.getBookingDate()));
-            pst.setInt(2, circuitBooking.getStatusBooking().ordinal());
+            if (circuitBooking.getStatusBooking() == null) {
+                pst.setNull(2, java.sql.Types.INTEGER);
+            } else {
+                pst.setInt(2, circuitBooking.getStatusBooking().ordinal());
+            }
             pst.setInt(3, circuitBooking.getUser().getIdUser());
             pst.setInt(4, circuitBooking.getTourCircuit().getIdCircuit());
             pst.executeUpdate();
@@ -65,7 +69,7 @@ public class CircuitBookingService implements IService<CircuitBooking> {
     public List<CircuitBooking> getAll() {
         List<CircuitBooking> bookings = new ArrayList<>();
         String req = """
-        SELECT cb.*, u.id, u.firstName, u.lastName, 
+        SELECT cb.*, u.id, u.firstName, u.lastName, u.email,
                tc.idCircuit, tc.nameCircuit
         FROM circuitbooking cb
         JOIN user u ON cb.idUser = u.id
@@ -92,6 +96,7 @@ public class CircuitBookingService implements IService<CircuitBooking> {
                 user.setIdUser(rs.getInt("idUser"));
                 user.setFirstName(rs.getString("firstName"));
                 user.setLastName(rs.getString("lastName"));
+                user.setEmail(rs.getString("email"));
                 booking.setUser(user);
 
                 // Récupérer les données du circuit

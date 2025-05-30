@@ -27,6 +27,7 @@ import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.VehicleService;
 import org.Esprit.TripNShip.Utils.Shared;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -93,12 +94,11 @@ public class ListViewVehicleController {
             return row;
         });
 
-        // Setup ComboBox with enum Type + "All" option as null
         List<Type> typeOptions = new ArrayList<>();
-        typeOptions.add(null); // represents "All"
+        typeOptions.add(null);
         typeOptions.addAll(Arrays.asList(Type.values()));
         statusComboBox.setItems(FXCollections.observableArrayList(typeOptions));
-        statusComboBox.setValue(null); // default "All"
+        statusComboBox.setValue(null);
 
         statusComboBox.setConverter(new StringConverter<>() {
             @Override
@@ -132,8 +132,6 @@ public class ListViewVehicleController {
         vehicles.setAll(vehicleList);
     }
 
-
-
     private void confirmDelete(Vehicle vehicle) {
         Optional<ButtonType> result = Shared.deletePopUP("Are you sure to delete this booking?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -143,9 +141,7 @@ public class ListViewVehicleController {
         }
     }
 
-
     private void configureTable() {
-
         colbrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
         colmodel.setCellValueFactory(new PropertyValueFactory<>("model"));
         collicensePlate.setCellValueFactory(new PropertyValueFactory<>("licensePlate"));
@@ -159,20 +155,43 @@ public class ListViewVehicleController {
         });
 
         colimage.setCellValueFactory(cellData -> {
-            String imagePath = cellData.getValue().getImageURL();
-            ImageView imageView;
-            if (imagePath != null && !imagePath.isEmpty()) {
-                Image image = new Image(imagePath, true); // true = background loading
-                imageView = new ImageView(image);
-            } else {
-                // Image par défaut si URL n'existe pas
-                Image defaultImage = new Image(getClass().getResourceAsStream("/images/logo.png"));
-                imageView = new ImageView(defaultImage);
+            ImageView imageView = new ImageView();
+
+            try {
+                String imagePath = cellData.getValue().getImageURL();
+
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    // Nettoyer le chemin s'il commence par "file:\"
+                    if (imagePath.startsWith("file:\\")) {
+                        imagePath = imagePath.replace("file:\\", "");
+                    } else if (imagePath.startsWith("file:/")) {
+                        imagePath = imagePath.replace("file:/", "");
+                    }
+
+                    File imageFile = new File(imagePath);
+                    if (imageFile.exists()) {
+                        String imageURI = imageFile.toURI().toString();
+                        imageView.setImage(new Image(imageURI));
+                    } else {
+                        System.out.println("Image introuvable : " + imageFile.getAbsolutePath());
+                        imageView.setImage(new Image(getClass().getResource("/images/icons8-car-rental-64.png").toExternalForm()));
+                    }
+                } else {
+                    imageView.setImage(new Image(getClass().getResource("/images/icons8-car-rental-64.png").toExternalForm()));
+                }
+
+            } catch (Exception e) {
+                System.out.println("Erreur lors du chargement de l'image : " + e.getMessage());
+                imageView.setImage(new Image(getClass().getResource("/images/icons8-car-rental-64.png").toExternalForm()));
             }
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
+
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(60);
+            imageView.setPreserveRatio(true);
+
             return new SimpleObjectProperty<>(imageView);
         });
+
 
         setColActions();
         colActions.setSortable(false);
@@ -242,7 +261,6 @@ public class ListViewVehicleController {
         }
     }
 
-
     private void refreshVehicleList() {
         filteredVehicles = new ArrayList<>(vehicles);
         pagination.setPageCount((int) Math.ceil((double) filteredVehicles.size() / ROWS_PER_PAGE));
@@ -251,7 +269,7 @@ public class ListViewVehicleController {
 
     public void reloadVehicleList() {
         loadVehicles();
-        handleSearch(); // recharge avec filtre et recherche
+        handleSearch();
     }
 
     private void handleSearch() {
@@ -271,7 +289,6 @@ public class ListViewVehicleController {
         updateTable(0);
         pagination.setCurrentPageIndex(0);
     }
-
 
     private void setColActions() {
         colActions.setCellFactory(param -> new TableCell<>() {

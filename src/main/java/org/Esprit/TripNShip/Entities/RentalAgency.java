@@ -34,6 +34,9 @@ public class RentalAgency {
     public RentalAgency(int idAgency) {
     }
 
+    public RentalAgency(int idAgency, String nameAgency) {
+    }
+
 
     public int getIdAgency() {
         return idAgency;

@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.CheckBox?>
 <StackPane xmlns="http://javafx.com/javafx/17.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.Esprit.TripNShip.Controllers.AddVehicleController"
            style="-fx-background-color: #111827;">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true"
-                style="-fx-background: #111827; -fx-background-color: transparent;">
+                style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
             <padding>
                 <Insets top="20" bottom="20" />
@@ -27,6 +20,16 @@
             <StackPane style="-fx-padding: 20;">
                 <VBox alignment="CENTER" maxWidth="600" spacing="10"
                       style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
+                    <HBox alignment="TOP_RIGHT" prefWidth="Infinity">
+                        <ImageView fx:id="closeIcon"
+                                   fitHeight="24" fitWidth="24"
+                                   pickOnBounds="true" preserveRatio="true"
+                                   onMouseClicked="#handleCloseForm"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@/images/icons8-close-30 (1).png" />
+                        </ImageView>
+                    </HBox>
 
                     <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                         <image>
@@ -38,59 +41,66 @@
 
                     <VBox spacing="12" alignment="CENTER">
 
-                        <!-- Brand + Model -->
+                        <!-- Row 1: Brand + Model -->
                         <HBox spacing="20">
-                            <VBox spacing="5">
+                            <VBox spacing="5" prefWidth="250">
                                 <Label text="Brand" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                                 <TextField fx:id="brandField" promptText="Brand"
-                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                           style="-fx-font-size: 14px; -fx-padding: 10;" />
                             </VBox>
-                            <VBox spacing="5">
+                            <VBox spacing="5" prefWidth="250">
                                 <Label text="Model" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                                 <TextField fx:id="modelField" promptText="Model"
-                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                           style="-fx-font-size: 14px; -fx-padding: 10;" />
                             </VBox>
                         </HBox>
 
-                        <!-- License Plate + Daily Price -->
+                        <!-- Row 2: License Plate + Daily Price -->
                         <HBox spacing="20">
-                            <VBox spacing="5">
+                            <VBox spacing="5" prefWidth="250">
                                 <Label text="License Plate" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                                 <TextField fx:id="licensePlateField" promptText="License Plate"
-                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                           style="-fx-font-size: 14px; -fx-padding: 10;" />
                             </VBox>
-                            <VBox spacing="5">
+                            <VBox spacing="5" prefWidth="250">
                                 <Label text="Daily Price" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
                                 <TextField fx:id="dailyPriceField" promptText="Daily Price"
-                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                           style="-fx-font-size: 14px; -fx-padding: 10;" />
                             </VBox>
                         </HBox>
 
-                        <!-- Availability + Type -->
+                        <!-- Row 3: Availability + Type -->
                         <HBox spacing="20">
-                            <VBox spacing="5">
+                            <VBox spacing="5" prefWidth="250">
                                 <Label text="Availability" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                                <CheckBox fx:id="availabilityCheckBox"  text="Available" />
-
+                                <CheckBox fx:id="availabilityCheckBox" text="Available" />
                             </VBox>
-                            <VBox spacing="5">
+                            <VBox spacing="5" prefWidth="250">
                                 <Label text="Type" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
-                                <ComboBox fx:id="typeVehicleComboBox" promptText="Select an Agency"
-                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                                <ComboBox fx:id="typeVehicleComboBox" promptText="Select a type"
+                                          style="-fx-font-size: 14px; -fx-padding: 10;" />
                             </VBox>
                         </HBox>
 
-
+                        <!-- Row 4: Vehicle Image + Label -->
                         <HBox spacing="20">
+                            <VBox spacing="5" prefWidth="250">
+                                <Label text="Vehicle Image:" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <Button fx:id="chooseImageButton" text="Choose Image"
+                                        style="-fx-font-size: 14px;" />
+                            </VBox>
+                            <VBox spacing="5" prefWidth="250" alignment="CENTER_LEFT">
+                                <Label text="Selected File:" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <Label fx:id="imageFileNameLabel" text="No file chosen" />
+                            </VBox>
+                        </HBox>
 
-                            <VBox spacing="5">
-                                <Label text="Vehicle Image:" />
-                                <HBox spacing="10">
-                                    <children>
-                                        <Button fx:id="chooseImageButton" text="Choose Image" />
-                                        <Label fx:id="imageFileNameLabel" text="No file chosen" />
-                                    </children>
-                                </HBox>
+                        <!-- Row 5: Rental Agency -->
+                        <HBox spacing="20">
+                            <VBox spacing="5" prefWidth="520">
+                                <Label text="Rental Agency" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <ComboBox fx:id="rentalAgencyComboBox" promptText="Select an agency"
+                                          style="-fx-font-size: 14px; -fx-padding: 10;" />
                             </VBox>
                         </HBox>
 

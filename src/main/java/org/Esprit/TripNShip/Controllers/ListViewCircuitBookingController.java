@@ -1,6 +1,7 @@
 package org.Esprit.TripNShip.Controllers;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,49 +33,28 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ListViewCircuitBookingController {
 
-    @FXML
-    private TableView<CircuitBooking> circuitBookingTable;
-    @FXML
-    private TableColumn<CircuitBooking, String> colBookingDate;
-    @FXML
-    private TableColumn<CircuitBooking, String> colCustomerName;
-    @FXML
-    private TableColumn<CircuitBooking, String> colTourName;
-    @FXML
-    private TableColumn<CircuitBooking, String> colStatus;
-    @FXML
-    private TableColumn<CircuitBooking, Void> colActions;
-    @FXML
-    private ComboBox<String> statusComboBox;
-    @FXML
-    private TextField searchField;
-    @FXML
-    private Pagination pagination;
-    @FXML
-    private StackPane stackPane;
+    @FXML private TableView<CircuitBooking> circuitBookingTable;
+    @FXML private TableColumn<CircuitBooking, String> colBookingDate;
+    @FXML private TableColumn<CircuitBooking, String> colCustomerName;
+    @FXML private TableColumn<CircuitBooking, String> colTourName;
+    @FXML private TableColumn<CircuitBooking, String> colStatus;
+    @FXML private TableColumn<CircuitBooking, Void> colActions;
+    @FXML private ComboBox<String> statusComboBox;
+    @FXML private TextField searchField;
+    @FXML private Pagination pagination;
+    @FXML private StackPane stackPane;
 
     private static ListViewCircuitBookingController instance;
     private ObservableList<CircuitBooking> circuitBookings = FXCollections.observableArrayList();
@@ -99,25 +79,22 @@ public class ListViewCircuitBookingController {
         if (searchField != null) {
             VBox.setMargin(searchField, new Insets(0, 0, 20, 0));
         }
+
         circuitBookingTable.setRowFactory(tv -> {
             TableRow<CircuitBooking> row = new TableRow<>();
             row.setPrefHeight(40);
             return row;
         });
 
-
         List<String> statusOptions = new ArrayList<>();
         statusOptions.add("All");
-        statusOptions.addAll(Arrays.stream(StatusBooking.values())
-                .map(Enum::name)
-                .collect(Collectors.toList()));
-
+        statusOptions.addAll(Arrays.stream(StatusBooking.values()).map(Enum::name).collect(Collectors.toList()));
         statusComboBox.setItems(FXCollections.observableArrayList(statusOptions));
         statusComboBox.setValue("All");
 
-
         reloadCircuitBookingList();
         configureTable();
+
         pagination.setPageCount((int) Math.ceil((double) circuitBookings.size() / ROWS_PER_PAGE));
         pagination.setCurrentPageIndex(0);
         pagination.setMaxPageIndicatorCount(3);
@@ -149,11 +126,7 @@ public class ListViewCircuitBookingController {
             return new SimpleObjectProperty<>(fullName);
         });
 
-
-        colTourName.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getTourCircuit().getNameCircuit())
-        );
-
+        colTourName.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTourCircuit().getNameCircuit()));
 
         setColActions();
         colActions.setSortable(false);
@@ -162,65 +135,62 @@ public class ListViewCircuitBookingController {
     private void updateTable(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredCircuitBookings.size());
-
-        List<CircuitBooking> pageItems = filteredCircuitBookings.isEmpty() ?
-                Collections.emptyList() : filteredCircuitBookings.subList(fromIndex, toIndex);
-
+        List<CircuitBooking> pageItems = filteredCircuitBookings.isEmpty() ? Collections.emptyList() : filteredCircuitBookings.subList(fromIndex, toIndex);
         circuitBookingTable.setItems(FXCollections.observableArrayList(pageItems));
         setColActions();
+    }
+
+    private void setColActions() {
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-edit-64.png")));
+            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-delete-48.png")));
+            private final ImageView pdfIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-export-pdf-30.png")));
+            private final HBox hbox = new HBox(10, editIcon, deleteIcon, pdfIcon);
+
+            {
+                editIcon.setFitWidth(30); editIcon.setFitHeight(30);
+                deleteIcon.setFitWidth(30); deleteIcon.setFitHeight(30);
+                pdfIcon.setFitWidth(30); pdfIcon.setFitHeight(30);
+
+                editIcon.setOnMouseClicked(e -> showEditPopup(getTableView().getItems().get(getIndex())));
+                deleteIcon.setOnMouseClicked(e -> confirmDelete(getTableView().getItems().get(getIndex())));
+                pdfIcon.setOnMouseClicked(e -> generatePdf(getTableView().getItems().get(getIndex())));
+            }
+
+            @Override protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) setGraphic(null); else setGraphic(hbox);
+            }
+        });
     }
 
     @FXML
     private void showAddCircuitBookingPopup() {
         try {
-
             Stage primaryStage = (Stage) stackPane.getScene().getWindow();
             Scene primaryScene = primaryStage.getScene();
 
             Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
             overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
 
-            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
-            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
-
-
             Pane rootPane = (Pane) primaryScene.getRoot();
             rootPane.getChildren().add(overlay);
 
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CircuitManagementFXML/AddCircuitBooking.fxml"));
             Parent root = loader.load();
-
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
-
-
             stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
-
-            // Affiche la fenêtre
             stage.showAndWait();
 
-            // Rafraîchit la liste après ajout
             refreshCircuitBookingList();
-
         } catch (IOException e) {
-            // Affiche l'erreur plus proprement (utile pour FXML mal écrit, chemin faux, etc.)
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d’ouvrir le formulaire : " + e.getMessage());
-            e.printStackTrace(); // Pour voir les détails dans la console
         }
     }
-
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
 
     @FXML
     private void showEditPopup(CircuitBooking circuitBooking) {
@@ -230,9 +200,6 @@ public class ListViewCircuitBookingController {
 
             Rectangle overlay = new Rectangle(primaryScene.getWidth(), primaryScene.getHeight());
             overlay.setFill(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
-
-            primaryScene.widthProperty().addListener((obs, oldVal, newVal) -> overlay.setWidth(newVal.doubleValue()));
-            primaryScene.heightProperty().addListener((obs, oldVal, newVal) -> overlay.setHeight(newVal.doubleValue()));
 
             Pane rootPane = (Pane) primaryScene.getRoot();
             rootPane.getChildren().add(overlay);
@@ -246,14 +213,21 @@ public class ListViewCircuitBookingController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
-
             stage.setOnHidden(e -> rootPane.getChildren().remove(overlay));
-
             stage.showAndWait();
+
             refreshCircuitBookingList();
         } catch (IOException e) {
-            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d’ouvrir le formulaire : " + e.getMessage());
         }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void refreshCircuitBookingList() {
@@ -270,15 +244,13 @@ public class ListViewCircuitBookingController {
     @FXML
     private void handleStatusFilter() {
         String selectedStatus = statusComboBox.getValue();
-
         if (selectedStatus != null && !selectedStatus.isEmpty() && !selectedStatus.equalsIgnoreCase("Tous")) {
             filteredCircuitBookings = circuitBookings.stream()
                     .filter(c -> c.getStatusBooking().name().equalsIgnoreCase(selectedStatus))
                     .collect(Collectors.toList());
         } else {
-            filteredCircuitBookings = new ArrayList<>(circuitBookings); // Affiche tout
+            filteredCircuitBookings = new ArrayList<>(circuitBookings);
         }
-
         pagination.setPageCount((int) Math.ceil((double) filteredCircuitBookings.size() / ROWS_PER_PAGE));
         updateTable(0);
         pagination.setCurrentPageIndex(0);
@@ -286,17 +258,10 @@ public class ListViewCircuitBookingController {
 
     public void generatePdf(CircuitBooking booking) {
         try {
-            String userHome = System.getProperty("user.home");
-            Path downloadsPath = Paths.get(userHome, "Downloads");
+            Path downloadsPath = Paths.get(System.getProperty("user.home"), "Downloads");
+            if (!Files.exists(downloadsPath)) Files.createDirectories(downloadsPath);
 
-            if (!Files.exists(downloadsPath)) {
-                Files.createDirectories(downloadsPath);
-            }
-
-            String fileName = "circuit_booking_" + booking.getIdBooking() + ".pdf";
-            Path pdfPath = downloadsPath.resolve(fileName);
-
-            // Génération PDF avec iText
+            Path pdfPath = downloadsPath.resolve("circuit_booking_" + booking.getIdBooking() + ".pdf");
             PdfWriter writer = new PdfWriter(pdfPath.toString());
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
@@ -306,79 +271,22 @@ public class ListViewCircuitBookingController {
             document.add(new Paragraph("Tour: " + booking.getTourCircuit().getNameCircuit()));
             document.add(new Paragraph("Booking Date: " + booking.getBookingDate()));
             document.add(new Paragraph("Status: " + booking.getStatusBooking()));
-
             document.close();
 
-            System.out.println("PDF generated at: " + pdfPath.toString());
-
-            // Afficher une popup de confirmation sur le thread JavaFX
             Platform.runLater(() -> {
-                Alert alert = new Alert(AlertType.INFORMATION);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("PDF généré");
                 alert.setHeaderText(null);
                 alert.setContentText("Le PDF a été généré dans le dossier Téléchargements.");
                 alert.showAndWait();
             });
 
-            // Ouvrir automatiquement le PDF avec l'application par défaut (desktop)
             if (Desktop.isDesktopSupported()) {
-                Desktop desktop = Desktop.getDesktop();
-                try {
-                    desktop.open(pdfPath.toFile());
-                } catch (IOException e) {
-                    System.err.println("Impossible d'ouvrir le PDF automatiquement.");
-                    e.printStackTrace();
-                }
+                Desktop.getDesktop().open(pdfPath.toFile());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void setColActions() {
-        colActions.setCellFactory(param -> new TableCell<>() {
-            private final ImageView editIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-edit-64.png")));
-            private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-delete-48.png")));
-            private final ImageView pdfIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/icons8-export-pdf-30.png")));
-
-            private final HBox hbox = new HBox(10, editIcon, deleteIcon, pdfIcon);
-
-            {
-                editIcon.setFitWidth(30);
-                editIcon.setFitHeight(30);
-                deleteIcon.setFitWidth(30);
-                deleteIcon.setFitHeight(30);
-                pdfIcon.setFitWidth(30);
-                pdfIcon.setFitHeight(30);
-
-                editIcon.setStyle("-fx-cursor: hand;");
-                deleteIcon.setStyle("-fx-cursor: hand;");
-                pdfIcon.setStyle("-fx-cursor: hand;");
-
-                editIcon.setOnMouseClicked(event -> {
-                    CircuitBooking booking = getTableView().getItems().get(getIndex());
-                    if (booking != null) showEditPopup(booking);
-                });
-
-                deleteIcon.setOnMouseClicked(event -> {
-                    CircuitBooking booking = getTableView().getItems().get(getIndex());
-                    if (booking != null) confirmDelete(booking);
-                });
-
-                pdfIcon.setOnMouseClicked(event -> {
-                    CircuitBooking booking = getTableView().getItems().get(getIndex());
-                    if (booking != null) {
-                        generatePdf(booking);
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : hbox);
-            }
-        });
     }
 }

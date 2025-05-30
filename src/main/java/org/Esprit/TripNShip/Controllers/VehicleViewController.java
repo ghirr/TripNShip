@@ -37,14 +37,23 @@ public class VehicleViewController {
     }
 
     private VBox createVehicleCard(Vehicle vehicle) {
-        VBox card = new VBox(10);
-        card.setPrefWidth(220);
-        card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #ccc; -fx-padding: 15; -fx-alignment: center; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);");
+        VBox card = new VBox(12);
+        card.setPrefWidth(240);
+        card.setStyle("""
+        -fx-background-color: #ffffff;
+        -fx-border-color: #e0e0e0;
+        -fx-border-radius: 12;
+        -fx-background-radius: 12;
+        -fx-padding: 16;
+        -fx-alignment: center;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4);
+        """);
 
         // Image
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(180);
-        imageView.setFitHeight(120);
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(130);
+        imageView.setPreserveRatio(true);
 
         try {
             String imageURL = vehicle.getImageURL();
@@ -60,29 +69,32 @@ public class VehicleViewController {
 
         // Infos
         Label brand = new Label(vehicle.getBrand());
+        brand.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
         Label nameLabel = new Label(vehicle.getModel());
+        nameLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666;");
+
         Label priceLabel = new Label("Price: $" + vehicle.getDailyPrice());
+        priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #888;");
 
         // Boutons
         Button bookButton = new Button("Book");
-        bookButton.setOnAction(e -> {
-            showPopup("/fxml/CircuitManagementFXML/AddVehicleRental.fxml", null);
-        });
+
+
+        bookButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6;");
+
+
+        bookButton.setOnAction(e -> showPopup("/fxml/CircuitManagementFXML/AddVehicleRental.fxml", null));
 
 
 
-        Button detailsButton = new Button("Details");
-        detailsButton.setOnAction(e -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Vehicle Details");
-            alert.setHeaderText(vehicle.getModel());
-            alert.setContentText(vehicle.toString());
-            alert.showAndWait();
-        });
+        VBox buttonBox = new VBox(6, bookButton);
+        buttonBox.setStyle("-fx-alignment: center;");
 
-        card.getChildren().addAll(imageView, brand, nameLabel, priceLabel, bookButton, detailsButton);
+        card.getChildren().addAll(imageView, brand, nameLabel, priceLabel, buttonBox);
         return card;
     }
+
 
     public void showPopup(String fxmlPath, Object controller) {
         try {

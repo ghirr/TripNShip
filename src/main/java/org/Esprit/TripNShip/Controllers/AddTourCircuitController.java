@@ -1,13 +1,18 @@
 package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.TourCircuit;
 import org.Esprit.TripNShip.Services.TourCircuitService;
 
+import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddTourCircuitController {
+public class AddTourCircuitController implements Initializable {
+
     @FXML
     private TextField nameField;
 
@@ -29,11 +34,15 @@ public class AddTourCircuitController {
     @FXML
     private Button addCircuitButton;
 
+    @FXML
+    private ImageView closeIcon;
+
     private final TourCircuitService tourCircuitService = new TourCircuitService();
     private ResourceBundle rs;
 
-    @FXML
-    private void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.rs = resources;
         addCircuitButton.setOnAction(event -> addCircuit());
     }
 
@@ -52,8 +61,8 @@ public class AddTourCircuitController {
 
         try {
             float price = Float.parseFloat(priceText);
-            
-            TourCircuit circuit = new TourCircuit(rs.getString("nameCircuit"));
+
+            TourCircuit circuit = new TourCircuit();
             circuit.setNameCircuit(name);
             circuit.setDescriptionCircuit(description);
             circuit.setPriceCircuit(price);
@@ -63,7 +72,7 @@ public class AddTourCircuitController {
 
             tourCircuitService.add(circuit);
 
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Tour circuit added successfully!");
+            showAlert(Alert.AlertType.INFORMATION,"success.title", "success.message");
             clearFields();
 
         } catch (NumberFormatException e) {
@@ -80,6 +89,12 @@ public class AddTourCircuitController {
         durationField.clear();
         destinationField.clear();
         guideCheckBox.setSelected(false);
+    }
+
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
+        stage.close();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

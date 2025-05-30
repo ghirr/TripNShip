@@ -77,7 +77,7 @@ public class RentalAgencyService implements IService<RentalAgency> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()){
-                rentalAgencies.add(new RentalAgency(rs.getString("nameAgency"), rs.getString("addressAgency"), rs.getString("contactAgency"), rs.getFloat("rating")));
+                rentalAgencies.add(new RentalAgency(rs.getInt("idAgency"),rs.getString("nameAgency"), rs.getString("addressAgency"), rs.getString("contactAgency"), rs.getFloat("rating")));
             }
         }catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -80,11 +80,20 @@ public class VehicleService implements IService<Vehicle> {
     @Override
     public List<Vehicle> getAll() {
         List<Vehicle> vehicles = new ArrayList<>();
-        String req = "SELECT * FROM vehicle";
+        String req = """
+        SELECT v.*, a.nameAgency
+        FROM vehicle v
+        JOIN rentalagency a ON v.idAgency = a.idAgency
+    """;
+
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
+                RentalAgency agency = new RentalAgency(
+                        rs.getInt("idAgency")
+                );
+                agency.setNameAgency(rs.getString("nameAgency"));
 
                 Vehicle vehicle = new Vehicle(
                         rs.getInt("idVehicle"),
@@ -94,7 +103,7 @@ public class VehicleService implements IService<Vehicle> {
                         rs.getFloat("dailyPrice"),
                         rs.getBoolean("availability"),
                         Type.values()[rs.getInt("type")],
-                        new RentalAgency(rs.getInt("idAgency")),
+                        agency,
                         rs.getString("imageURL")
                 );
 
@@ -103,6 +112,9 @@ public class VehicleService implements IService<Vehicle> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return vehicles;
     }
+
+
 }

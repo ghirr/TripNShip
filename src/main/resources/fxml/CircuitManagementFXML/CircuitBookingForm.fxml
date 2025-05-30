@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.Esprit.TripNShip.Controllers.CircuitBookingController"
+           style="-fx-background-color: #111827;">
+    <VBox alignment="CENTER" spacing="20">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <VBox spacing="12" alignment="CENTER_LEFT"
+              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12;
+                     -fx-border-color: #9333ea; -fx-border-radius: 10; -fx-border-width: 3;"
+              maxWidth="400">
+
+            <Label fx:id="circuitNameLabel" text="Circuit Name"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+            <Label text="Booking Date" style="-fx-font-size: 14px;"/>
+            <DatePicker fx:id="bookingDatePicker" />
+
+            <Button fx:id="submitBookingButton" text="Book Now"
+                    style="-fx-background-color: #9333ea; -fx-text-fill: white;
+                           -fx-font-size: 16px; -fx-padding: 10; -fx-background-radius: 8;"/>
+        </VBox>
+    </VBox>
+</StackPane>

@@ -2,6 +2,7 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.TourCircuit;
 import org.Esprit.TripNShip.Services.TourCircuitService;
@@ -15,6 +16,8 @@ public class UpdateTourCircuitController {
     @FXML private TextField destinationField;
     @FXML private CheckBox guideCheckBox;
     @FXML private Button updateCircuitButton;
+    @FXML
+    private ImageView closeIcon;
 
     private TourCircuitService tourCircuitService;
     private TourCircuit originalCircuit;
@@ -110,6 +113,12 @@ public class UpdateTourCircuitController {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
+        stage.close();
     }
 
     private void closeWindow() {

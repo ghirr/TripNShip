@@ -10,22 +10,19 @@ import java.time.LocalDateTime;
 public final class Transporter extends User {
 
     private TransportType transportType;
-    private String website;
 
     public Transporter(int idUser, String firstName, String lastName, Gender gender, String email, String password,
                        String profilePhoto, LocalDateTime birthdayDate, String phoneNumber,
-                       TransportType transportType, String website) {
+                       TransportType transportType) {
         super(idUser, firstName, lastName, gender, Role.TRANSPORTER, email, password, profilePhoto, birthdayDate, phoneNumber);
         this.transportType = transportType;
-        this.website = website;
     }
 
     public Transporter(String firstName, String lastName, Gender gender, String email, String password,
                        String profilePhoto, LocalDateTime birthdayDate, String phoneNumber,
-                       TransportType transportType, String website) {
+                       TransportType transportType) {
         super(firstName, lastName, gender, Role.TRANSPORTER, email, password, profilePhoto, birthdayDate, phoneNumber);
         this.transportType = transportType;
-        this.website = website;
     }
 
     public TransportType getTransportType() {
@@ -36,13 +33,9 @@ public final class Transporter extends User {
         this.transportType = transportType;
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
+//    }
+//
+//    }
 
     @Override
     public String toString() {
@@ -57,7 +50,6 @@ public final class Transporter extends User {
                 ", birthdayDate=" + getBirthdayDate() +
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", transportType=" + transportType +
-                ", website='" + website + '\'' +
                 '}';
     }
 }

@@ -23,8 +23,8 @@ public class TestExpeditionCRUD {
                 "profile1.png",
                 LocalDateTime.of(1985, 5, 20, 0, 0),
                 "0123456789",
-                TransportType.LA_POSTE,
-                "https://www.laposte.fr"
+                TransportType.LA_POSTE
+              //  "https://www.laposte.fr"
         );
 
         transporterService.add(transporter1);
@@ -38,8 +38,8 @@ public class TestExpeditionCRUD {
                 "profile2.png",
                 LocalDateTime.of(1990, 3, 10, 0, 0),
                 "0987654321",
-                TransportType.DHL,
-                "https://www.dhl.com"
+                TransportType.DHL
+               // "https://www.dhl.com"
         );
 
         transporterService.add(transporter2);

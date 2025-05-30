@@ -144,8 +144,7 @@ public class UserService implements IService<User> {
                             rs.getString("profilePhoto"),
                             rs.getTimestamp("birthdayDate").toLocalDateTime(),
                             rs.getString("phoneNumber"),
-                            TransportType.valueOf(rs.getString("transportType")),
-                            rs.getString("website")
+                            TransportType.valueOf(rs.getString("transportType"))
                     );
                 } else {
                     // For any other role, return a base User object
@@ -208,7 +207,6 @@ public class UserService implements IService<User> {
             ps.setString(8, transporter.getBirthdayDate().toString());
             ps.setString(9, transporter.getPhoneNumber());
             ps.setString(10, transporter.getTransportType().name());
-            ps.setString(11, transporter.getWebsite());
             ps.executeUpdate();
             System.out.println("Transporter added!");
         } catch (SQLException e) {
@@ -297,7 +295,6 @@ public class UserService implements IService<User> {
             ps.setString(8, transporter.getBirthdayDate().toString());
             ps.setString(9, transporter.getPhoneNumber());
             ps.setString(10, transporter.getTransportType().name());
-            ps.setString(11, transporter.getWebsite());
             ps.setInt(12, transporter.getIdUser());
             ps.executeUpdate();
             System.out.println("Transporter updated!");
@@ -322,8 +319,7 @@ public class UserService implements IService<User> {
                         rs.getString("profilePhoto"),
                         rs.getTimestamp("birthdayDate").toLocalDateTime(),
                         rs.getString("phoneNumber"),
-                        TransportType.valueOf(rs.getString("transportType")),
-                        rs.getString("website")
+                        TransportType.valueOf(rs.getString("transportType"))
                 );
                 transporters.add(transporter);
             }

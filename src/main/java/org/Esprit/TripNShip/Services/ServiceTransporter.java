@@ -32,7 +32,6 @@ public class ServiceTransporter implements IService<Transporter> {
             pst.setTimestamp(8, Timestamp.valueOf(transporter.getBirthdayDate()));
             pst.setString(9, transporter.getPhoneNumber());
             pst.setString(10, transporter.getTransportType().name());
-            pst.setString(11, transporter.getWebsite());
 
             pst.executeUpdate();
             System.out.println("Transporter added!");
@@ -55,7 +54,6 @@ public class ServiceTransporter implements IService<Transporter> {
             pst.setTimestamp(7, Timestamp.valueOf(transporter.getBirthdayDate()));
             pst.setString(8, transporter.getPhoneNumber());
             pst.setString(9, transporter.getTransportType().name());
-            pst.setString(10, transporter.getWebsite());
             pst.setInt(11, transporter.getIdUser());
 
             pst.executeUpdate();
@@ -98,8 +96,7 @@ public class ServiceTransporter implements IService<Transporter> {
                         rs.getString("profilePhoto"),
                         rs.getTimestamp("birthdayDate").toLocalDateTime(),
                         rs.getString("phoneNumber"),
-                        TransportType.valueOf(rs.getString("transportType")),
-                        rs.getString("website")
+                        TransportType.valueOf(rs.getString("transportType"))
                 );
                 transporters.add(transporter);
             }

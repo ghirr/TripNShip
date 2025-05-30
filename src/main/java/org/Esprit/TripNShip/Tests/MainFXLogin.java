@@ -13,7 +13,7 @@ public class MainFXLogin extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/AdminExpeditionsView.fxml" +
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/TransporterExpeditions.fxml" +
                 ""));
         Parent root = loader.load();
         Scene scene = new Scene(root);

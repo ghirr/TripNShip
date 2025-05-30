@@ -36,7 +36,7 @@ public class ServiceTrackingHistory {
 
     public List<TrackingHistory> getTrackingByExpedition(int expeditionId) {
         List<TrackingHistory> list = new ArrayList<>();
-        String query = "SELECT th.*, u.firstName, u.lastName, u.gender, u.email, u.password, u.profilePhoto, u.birthdayDate, u.phoneNumber, u.transportType, u.website " +
+        String query = "SELECT th.*, u.firstName, u.lastName, u.gender, u.email, u.password, u.profilePhoto, u.birthdayDate, u.phoneNumber, u.transportType " +
                 "FROM tracking_history th " +
                 "JOIN user u ON th.updatedBy = u.idUser " +
                 "WHERE th.expeditionId = ? " +
@@ -57,8 +57,7 @@ public class ServiceTrackingHistory {
                         rs.getString("profilePhoto"),
                         rs.getTimestamp("birthdayDate").toLocalDateTime(),
                         rs.getString("phoneNumber"),
-                        TransportType.valueOf(rs.getString("transportType")),
-                        rs.getString("website")
+                        TransportType.valueOf(rs.getString("transportType"))
                 );
 
                 TrackingHistory tracking = new TrackingHistory(

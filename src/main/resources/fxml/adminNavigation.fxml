@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxWidth="1865.0" prefHeight="823.0" prefWidth="1865.0" stylesheets="@../Styles/navigation.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.AdminNavigation">
+
+    <!-- Navbar -->
+    <AnchorPane layoutX="-17.0" layoutY="-11.0" prefHeight="54" prefWidth="1882.0" style="-fx-background-color: rgba(255,255,255,0.61);" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+        <HBox alignment="CENTER_RIGHT" prefHeight="66.0" spacing="20" AnchorPane.rightAnchor="20.0">
+            <Region HBox.hgrow="ALWAYS" />
+
+            <HBox spacing="10" style="-fx-background-color: rgba(255,255,255,0.61);">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="30" />
+                </padding>
+
+                <ImageView fx:id="userIcon" fitHeight="25.5" fitWidth="26.5" styleClass="user-icon">
+                    <Image url="@../images/icon_user_session.png" />
+                </ImageView>
+
+                <Label fx:id="username" maxWidth="Infinity" prefHeight="25" styleClass="username" text="Islem Ghariani" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <ImageView fx:id="logoutIcon" fitHeight="22.5" fitWidth="22.5" onMouseClicked="#logout" pickOnBounds="true" style="-fx-cursor: hand">
+                    <Image url="@../images/logout.png" />
+                </ImageView>
+
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="30" />
+                </padding>
+            </HBox>
+        </HBox>
+    </AnchorPane>
+
+
+    <!-- Logo -->
+    <VBox alignment="CENTER" prefHeight="174.0" prefWidth="330.0" style="-fx-background-color: #2A1B50;" AnchorPane.topAnchor="0.0">
+        <ImageView fitHeight="173.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/logo.png" />
+        </ImageView>
+    </VBox>
+
+    <!-- Scrollable Sidebar -->
+    <ScrollPane fitToHeight="true" prefWidth="250" styleClass="sidebar-scrollpane" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="173.0">
+        <VBox alignment="CENTER" prefWidth="330.0" spacing="25" style="-fx-background-color: #2A1B50; -fx-alignment: TOP_CENTER;">
+            <!-- Dashboard -->
+            <Button fx:id="btnDashboard" onAction="#navigateToDashBoard" styleClass="sidebar-button" text="  Dashboard">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <Image url="@../images/icon_dashboard.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+
+            <Button fx:id="btnUserManagement" styleClass="sidebar-button" text=" User Management">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <Image url="@../images/icon_user_management.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnTransportManagement" onAction="#navigateToTransportManagement" styleClass="sidebar-button" text=" Transport Management">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <Image url="@../images/icon_transport_management.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnAccommodationManagement" onAction="#navigateToAccommodationManagement" styleClass="sidebar-button" text=" Accommodation Management">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <Image url="@../images/icon_accommodation_management.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnCircuitManagement" onAction="#navigateToCircuitManagement" styleClass="sidebar-button" text=" Circuit Management">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <Image url="@../images/icon_circuit_management.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnExpeditionManagement" onAction="#navigateToExpeditionManagement" styleClass="sidebar-button" text=" Expedition Management">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="30.0">
+                        <Image url="@../images/icon_expedition_management.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+        </VBox>
+    </ScrollPane>
+
+    <AnchorPane fx:id="contentArea" layoutX="330.0" layoutY="106.0" prefHeight="803.0" prefWidth="1534.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="-10" AnchorPane.topAnchor="60.0" />
+</AnchorPane>

@@ -1,7 +1,6 @@
 package org.Esprit.TripNShip.Controllers;
 
-import com.google.api.client.auth.oauth2.Credential;
-import javafx.concurrent.Task;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,14 +12,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
+import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AuthService;
-import org.Esprit.TripNShip.Services.GoogleOAuthService;
 import org.Esprit.TripNShip.Utils.Shared;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.io.IOException;
+
+import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 public class LoginController {
     @FXML
@@ -78,10 +79,15 @@ public class LoginController {
         }
 
         try {
-            User utilisateur = utilisateurService.login(email,password);
-            if (utilisateur != null) {
-                // Verify the password using BCrypt
-                showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
+            User user = utilisateurService.login(email,password);
+            if (user != null) {
+                if(user.getRole()== Role.ADMIN){
+                    UserSession.initSession(user);
+                    Shared.switchScene(event,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
+                }
+                else{
+                    showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
+                }
 
             } else {
                 // Password is incorrect
@@ -106,25 +112,6 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null); // Remove header text
-        alert.setContentText(message);
-
-        // Apply CSS
-        DialogPane dialogPane = alert.getDialogPane();
-//        dialogPane.getStylesheets().add(getClass().getResource("/Styles/custom-alert.css").toExternalForm());
-
-        // Make window draggable
-        alert.initStyle(StageStyle.TRANSPARENT);
-
-        // The OK button will already be styled by the CSS
-
-        alert.showAndWait();
-    }
-
 
     public void switchToForgetPassword(ActionEvent actionEvent) {
         Shared.switchScene(actionEvent,getClass().getResource("/fxml/forgotPwd.fxml"),"Forgot Password");

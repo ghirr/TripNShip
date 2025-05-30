@@ -18,16 +18,14 @@
             <VBox alignment="CENTER" maxWidth="402.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="366.0" spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 10); -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
 
                 <ImageView fitHeight="150" fitWidth="220" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/logo.png" />
-                    </image>
+                    <Image url="@../images/logo.png"/>
                 </ImageView>
 
                 <Label style="-fx-font-size: 30px;  -fx-text-fill: #222;" text="Login" />
 
                 <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
                     <Label style="-fx-font-size: 16px; -fx-text-fill: #333;" text="Email" />
-                    <TextField fx:id="emailField" promptText="Email" style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8;                                       -fx-border-color: #ccc; -fx-border-radius: 8; -fx-pref-width: 300;" />
+                    <TextField fx:id="emailField" promptText="Email" style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8;-fx-border-color: #ccc; -fx-border-radius: 8; -fx-pref-width: 300;" />
                 </VBox>
 
                 <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">

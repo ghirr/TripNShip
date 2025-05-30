@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            color: #333;
+        }
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2a9df4;
+            margin-bottom: 10px;
+        }
+        .password-box {
+            background: #E4E0E1;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        img{
+            display: block;
+            width: 200px;
+            margin: 0 auto 30px;
+        }
+        .name{
+            color: #60B5FF;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <img src="{{image}}" alt="logo">
+    <div class="header">Welcome to the Company <strong class="name">{{name}}!</strong></div>
+    <p>Your account has been created.</p>
+    <p><strong>Your password:</strong></p>
+    <div class="password-box">{{code}}</div>
+    <p>Please change your password after logging in for security purposes.</p>
+    <p>Best regards,<br>The HR Team</p>
+</div>
+</body>
+</html>

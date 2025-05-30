@@ -7,17 +7,15 @@ import java.time.LocalDateTime;
 
 public class TestUserCRUD {
     public static void main(String[] args) {
-        User user = new Client("Hamdi","Kamel", Gender.MALE,"samah@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342");
-        Client user2 = new Client("Hamza","Kamel", Gender.MALE,"hamza@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342");
-        User user3 = new TourCoordinator("kamilia","betoni", Gender.FEMALE,"kamilia@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342","Paris",3250.800,LocalDateTime.now());
-        Employee user4 = new ShippingCoordinator("taha","regued", Gender.MALE,"taha@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342","Paris",3250.800,LocalDateTime.now());
-        Transporter user5 = new Transporter("test","test",Gender.MALE,"test@gmail.com","test","localhost://user.jpeg",LocalDateTime.of(2002,4,12,0,0),"94567342",TransportType.LA_POSTE);
+//        User user = new Client("Hamdi","Kamel", Gender.MALE,"samah@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342");
+//        Client user2 = new Client("Hamza","Kamel", Gender.MALE,"hamza@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342");
+//        User user3 = new TourCoordinator("kamilia","betoni", Gender.FEMALE,"kamilia@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342","Paris",3250.800,LocalDateTime.now());
+//        Employee user4 = new ShippingCoordinator("taha","regued", Gender.MALE,"taha@gmail.com","haysy267h","localhost://user.jpeg", LocalDateTime.of(2002,4,12,0,0),"94567342","Paris",3250.800,LocalDateTime.now());
           UserService us = new UserService();
 //        // adding
-        us.add(user);
-        us.add(user2);
-        us.add(user4);
-        us.add(user5);
+          us.getAllUsers().forEach(user -> {
+              System.out.println(user.toString());
+          });
 //        us.getAll().forEach(u -> System.out.println(u.toString()));
 //        // updating
 //        user.setPhoneNumber("2734688");

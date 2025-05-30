@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane prefHeight="650.0" prefWidth="900.0"
+            stylesheets="@../Styles/profileStyles.css" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Esprit.TripNShip.Controllers.EmployeeProfileController">
+    <center>
+        <AnchorPane styleClass="main-content" BorderPane.alignment="CENTER">
+            <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <padding>
+                    <Insets bottom="20.0"/>
+                </padding>
+                <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="profile-header">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    </padding>
+                    <AnchorPane maxHeight="150.0" maxWidth="1.7976931348623157E308" minHeight="150.0"
+                                minWidth="150.0" styleClass="image-container">
+                        <Circle fx:id="profilePhotoCircle" centerX="75.0" centerY="75.0" radius="70.0"
+                                styleClass="photo-circle"/>
+                        <ImageView fx:id="profileImageView" fitHeight="140.0" fitWidth="140.0" layoutX="5.0"
+                                   layoutY="5.0" pickOnBounds="true" preserveRatio="true"
+                                   AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0"/>
+                    </AnchorPane>
+                    <VBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="roleLabel" styleClass="role-label" text="Role"/>
+                        <Label fx:id="nameLabel" styleClass="name-label" text="First Name Last Name"/>
+                        <Label fx:id="emailLabel" styleClass="email-label" text="email@example.com"/>
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                            <Button fx:id="editProfileBtn" mnemonicParsing="false"
+                                    styleClass="action-button" text="Edit Profile"/>
+                            <Button  mnemonicParsing="false" onAction="#handleChangePwd"
+                                    styleClass="action-button" text="Change Password"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+                <Separator/>
+                <HBox spacing="20.0">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0"/>
+                    </VBox.margin>
+                    <VBox prefWidth="300.0" spacing="20.0" styleClass="info-section">
+                        <padding>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                        </padding>
+                        <Label styleClass="section-title" text="Personal Information"/>
+                        <HBox spacing="10.0">
+                            <Label styleClass="info-label" text="Gender:"/>
+                            <Label fx:id="genderLabel" styleClass="info-value" text="Male"/>
+                        </HBox>
+                        <HBox spacing="10.0">
+                            <Label styleClass="info-label" text="Phone:"/>
+                            <Label fx:id="phoneLabel" styleClass="info-value" text="+123 456 7890"/>
+                        </HBox>
+                        <HBox spacing="10.0">
+                            <Label styleClass="info-label" text="Birth Date:"/>
+                            <Label fx:id="birthDateLabel" styleClass="info-value"
+                                   text="January 1, 1990"/>
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="20.0" styleClass="info-section" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                        </padding>
+                        <Label styleClass="section-title" text="Employment Information"/>
+                        <HBox spacing="10.0" >
+                            <Label styleClass="info-label" text="Joining Date:"/>
+                            <Label fx:id="joiningDateLabel" styleClass="info-value"
+                                   text="March 15, 2022"/>
+                        </HBox>
+                        <HBox spacing="10.0" >
+                            <Label styleClass="info-label" text="Employee Address:"/>
+                            <Label fx:id="employeeAddressLabel" styleClass="info-value"
+                                   text="Tunis Bardo"/>
+                        </HBox>
+                        <HBox spacing="10.0" >
+                            <Label styleClass="info-label" text="Employee Salary:"/>
+                            <Label fx:id="employeeSalaryLabel" styleClass="info-value" text="2000"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </center>
+</BorderPane>

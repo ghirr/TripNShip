@@ -17,7 +17,6 @@
             <!-- Logo à gauche -->
             <ImageView fx:id="logoImage" fitHeight="55" fitWidth="75" styleClass="logo"/>
 
-            <!-- Menu centré -->
             <HBox spacing="40" alignment="CENTER" styleClass="menu">
                 <Label fx:id="homeLabel" text="Home" styleClass="menu-item"/>
                 <Label fx:id="accommodationLabel" text="Accommodation" styleClass="menu-item"/>
@@ -27,43 +26,94 @@
                 <Label fx:id="vehicleLabel" text="Vehicle" styleClass="menu-item"/>
             </HBox>
 
+
             <!-- Espace extensible à droite -->
             <Pane HBox.hgrow="ALWAYS"/>
         </HBox>
     </top>
 
-    <!-- CONTENU PRINCIPAL -->
+    <!-- CONTENU PRINCIPAL AVEC SCROLL -->
     <center>
-        <VBox fx:id="defaultContent" spacing="40" alignment="CENTER" styleClass="content">
-            <!-- Texte -->
-            <VBox spacing="15" alignment="CENTER">
-                <Label text="Go beyond your imagination" styleClass="title"/>
-                <Label text="Discover your ideal experience with us" styleClass="subtitle"/>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
+            <VBox fx:id="defaultContent" spacing="40" alignment="CENTER" styleClass="content">
+                <!-- Texte -->
+                <VBox spacing="15" alignment="CENTER">
+                    <Label text="Go beyond your imagination" styleClass="title"/>
+                    <Label text="Discover your ideal experience with us" styleClass="subtitle"/>
+                </VBox>
+
+                <!-- Cartes -->
+                <HBox spacing="30" alignment="CENTER">
+                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                        <ImageView fx:id="card1" fitWidth="230" fitHeight="200"/>
+                        <Label text="7% Discount for all Airlines" styleClass="card-text"/>
+                    </VBox>
+
+                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                        <ImageView fx:id="card2" fitWidth="230" fitHeight="200"/>
+                        <Label text="Travel around the world" styleClass="card-text"/>
+                    </VBox>
+
+                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                        <ImageView fx:id="card3" fitWidth="230" fitHeight="200"/>
+                        <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
+                    </VBox>
+
+                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
+                        <ImageView fx:id="card4" fitWidth="230" fitHeight="200"/>
+                        <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Bloc météo amélioré -->
+                <VBox spacing="10" alignment="CENTER"
+                      style="-fx-background-color: linear-gradient(to bottom, #90caf9, #e3f2fd);
+                             -fx-padding: 25 30;
+                             -fx-background-radius: 15;
+                             -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 15, 0, 0, 5);
+                             -fx-border-radius: 15;
+                             -fx-border-color: #42a5f5;
+                             -fx-border-width: 2;">
+
+                    <Label text="🌤️ Current Weather"
+                           style="-fx-font-size: 22px;
+                                  -fx-text-fill: #0d47a1;
+                                  -fx-font-weight: 700;
+                                  -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.15) , 2, 0, 1, 1);" />
+
+                    <!-- Affichage météo auto via IP/localisation -->
+                    <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
+                        <ImageView fx:id="weatherIcon" fitWidth="80" fitHeight="80"
+                                   style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 2);" />
+                        <Label fx:id="weatherLabel" wrapText="true"
+                               style="-fx-font-size: 18px;
+                                      -fx-text-fill: #1e272e;
+                                      -fx-font-weight: 600;" />
+                    </HBox>
+
+                    <!-- Barre de recherche par ville -->
+                    <HBox spacing="12" alignment="CENTER" style="-fx-padding: 8 0;">
+                        <TextField fx:id="cityTextField" promptText="Entrez une ville"
+                                   style="-fx-background-radius: 15;
+                                          -fx-background-color: white;
+                                          -fx-border-radius: 15;
+                                          -fx-border-color: #90caf9;
+                                          -fx-border-width: 1.5;
+                                          -fx-padding: 8 15;
+                                          -fx-font-size: 16px;" />
+                        <Button fx:id="fetchButton" text="Search" onAction="#fetchWeatherByCity"
+                                style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
+                                       -fx-text-fill: white;
+                                       -fx-font-weight: 700;
+                                       -fx-background-radius: 15;
+                                       -fx-padding: 8 20;
+                                       -fx-cursor: hand;
+                                       -fx-effect: dropshadow(gaussian, rgba(30,136,229,0.6), 8, 0, 0, 3);" />
+                    </HBox>
+
+                </VBox>
             </VBox>
-
-            <!-- Cartes -->
-            <HBox spacing="30" alignment="CENTER">
-                <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                    <ImageView fx:id="card1" fitWidth="230" fitHeight="200"/>
-                    <Label text="7% Discount for all Airlines" styleClass="card-text"/>
-                </VBox>
-
-                <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                    <ImageView fx:id="card2" fitWidth="230" fitHeight="200"/>
-                    <Label text="Travel around the world" styleClass="card-text"/>
-                </VBox>
-
-                <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                    <ImageView fx:id="card3" fitWidth="230" fitHeight="200"/>
-                    <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
-                </VBox>
-
-                <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                    <ImageView fx:id="card4" fitWidth="230" fitHeight="200"/>
-                    <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
-                </VBox>
-            </HBox>
-        </VBox>
+        </ScrollPane>
     </center>
 
     <!-- FOOTER -->

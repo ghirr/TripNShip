@@ -126,7 +126,7 @@ public class AdminNavigation {
 
 
     public void navigateToItineraryManagement(ActionEvent actionEvent) {
-        loadView("/fxml/itineraryManagement.fxml");
+        loadView("/fxml/Itinerary.fxml");
 
     }
 
@@ -145,11 +145,11 @@ public class AdminNavigation {
 
     private void toggleSubMenu(VBox subMenu, ImageView arrowIcon, boolean isVisible) {
         boolean newState = !isVisible;
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(200),
-                        new KeyValue(subMenu.prefHeightProperty(), newState ? 80 : 0),
-                        new KeyValue(subMenu.opacityProperty(), newState ? 1 : 0)));
-        timeline.play();
+//        Timeline timeline = new Timeline(
+//                new KeyFrame(Duration.millis(200),
+//                        new KeyValue(subMenu.prefHeightProperty(), newState ? 80 : 0),
+//                        new KeyValue(subMenu.opacityProperty(), newState ? 1 : 0)));
+//        timeline.play();
         subMenu.setManaged(newState);
         subMenu.setVisible(newState);
         arrowIcon.setRotate(newState ? 90 : 0);

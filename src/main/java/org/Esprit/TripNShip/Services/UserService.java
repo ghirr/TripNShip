@@ -254,11 +254,23 @@ public class UserService implements IService<User> {
             ps.setString(4, employee.getEmail());
             ps.setString(5,employee.getAddress());
             ps.setDouble(6,employee.getSalary());
-            ps.setString(7,employee.getGender().toString());
+            if (employee.getGender() != null) {
+                ps.setString(7, employee.getGender().toString());
+            } else {
+                ps.setNull(7, java.sql.Types.VARCHAR);
+            }
             ps.setString(8,employee.getProfilePhoto());
-            ps.setString(9,employee.getBirthdayDate().toString());
+            if (employee.getBirthdayDate() != null) {
+                ps.setString(9, employee.getBirthdayDate().toString());
+            } else {
+                ps.setNull(9, java.sql.Types.VARCHAR);
+            }
             ps.setString(10,employee.getPhoneNumber());
-            ps.setString(11,employee.getHireDate().toString());
+            if (employee.getHireDate() != null) {
+                ps.setString(11, employee.getHireDate().toString());
+            } else {
+                ps.setNull(11, java.sql.Types.VARCHAR);
+            }
             ps.setInt(12,employee.getIdUser());
             ps.executeUpdate();
             System.out.println("Employee updated !");

@@ -96,7 +96,7 @@ public class EditUserController {
         String address = addressField.getText().trim();
         double salary = Double.parseDouble(salaryField.getText().trim());
 
-        User newUser = new Employee(this.currentUser.getIdUser(),firstName,lastName,role,this.currentUser.getEmail(),address,salary);
+        User newUser = new Employee(this.currentUser.getIdUser(),firstName,lastName,currentUser.getGender(),role,this.currentUser.getEmail(),this.currentUser.getProfilePhoto(),currentUser.getBirthdayDate(), currentUser.getPhoneNumber(),address,salary,currentUser.getHireDate());
         userService.update(newUser);
            ListUsersController.getInstance().reloadUserList();
         ((Stage) submitButton.getScene().getWindow()).close();

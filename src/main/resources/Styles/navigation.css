@@ -123,29 +123,35 @@
     -fx-max-height: 100px; /* Ajustez selon la hauteur nécessaire */
     -fx-opacity: 1;
 }
+
+/* 📜 Scrollbar Styling */
 .sidebar-scrollpane {
-    -fx-background-color: #2A1B50; /* Assurez-vous que c'est la même couleur que la sidebar */
-    -fx-border-width: 0;
-}
-
-.sidebar, .sidebar-scrollpane {
-    -fx-pref-width: 270px;
-}
-/* Scrollbar vertical */
-.sidebar-scrollpane .scroll-bar:vertical {
     -fx-background-color: #2A1B50;
+    -fx-border-width: 0;
+    -fx-pref-width: 330px;
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
 }
 
-/* Piste de la scrollbar */
+.sidebar-scrollpane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8px;
+}
+
 .sidebar-scrollpane .scroll-bar:vertical .track {
-    -fx-background-color: #2A1B50; /* Mauve foncé */
+    -fx-background-color: transparent;
 }
 
-/* Bouton de défilement */
 .sidebar-scrollpane .scroll-bar:vertical .thumb {
-    -fx-background-color: #2A1B50; /* Mauve clair */
-    -fx-background-radius: 5px;
+    -fx-background-color: rgba(123, 97, 255, 0.5);
+    -fx-background-radius: 4px;
 }
+
+.sidebar-scrollpane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(123, 97, 255, 0.8);
+}
+
+
 .menu-button {
     -fx-min-width: 200px; /* Ajuste la largeur selon ton design */
     -fx-max-width: 200px;
@@ -185,9 +191,6 @@
     -fx-pref-width: 1000; /* Large value to ensure it takes all available space
 }*/
 
-.sidebar-scrollpane {
-    -fx-pref-width: 330px; /* Mets la même largeur que la section du logo */
-}
 
 #sidebar {
     -fx-pref-width: 330px;

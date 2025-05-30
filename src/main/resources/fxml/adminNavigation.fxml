@@ -46,7 +46,8 @@
     </VBox>
 
     <!-- Scrollable Sidebar -->
-    <ScrollPane fitToHeight="true" prefWidth="250" styleClass="sidebar-scrollpane" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="173.0">
+    <ScrollPane fitToHeight="true" prefWidth="250" styleClass="sidebar-scrollpane"
+                AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="173.0">
         <VBox alignment="CENTER" prefWidth="330.0" spacing="25" style="-fx-background-color: #2A1B50; -fx-alignment: TOP_CENTER;">
             <!-- Dashboard -->
             <Button fx:id="btnDashboard" onAction="#navigateToDashBoard" styleClass="sidebar-button" text="  Dashboard">

@@ -7,46 +7,77 @@
 <?import javafx.scene.layout.*?>
 
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.UpdateVehicleRentalController">
-    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
         <VBox alignment="CENTER" spacing="10">
             <StackPane style="-fx-padding: 20;">
-                <VBox alignment="CENTER" maxWidth="400" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                <VBox alignment="CENTER" maxWidth="500" spacing="10.0"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
+                    <!-- Barre du haut avec bouton fermer -->
+                    <HBox alignment="TOP_RIGHT" prefWidth="Infinity">
+                        <ImageView fx:id="closeIcon"
+                                   fitHeight="24" fitWidth="24"
+                                   pickOnBounds="true" preserveRatio="true"
+                                   onMouseClicked="#handleCloseForm"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@/images/icons8-close-30 (1).png" />
+                        </ImageView>
+                    </HBox>
                     <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                         <Image url="@../../images/logo.png" />
                     </ImageView>
+
                     <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Update Vehicle Rental" />
 
-                    <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+                    <VBox spacing="16" maxWidth="500">
 
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Start Date" />
-                        <DatePicker fx:id="startDatePicker"
-                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;"
-                                    promptText="Select start date" />
+                        <!-- Start Date & End Date -->
+                        <HBox spacing="20">
+                            <VBox spacing="4">
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Start Date" />
+                                <DatePicker fx:id="startDatePicker"
+                                            style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 230; -fx-border-color: #ccc; -fx-border-radius: 8;"
+                                            promptText="Select start date" />
+                            </VBox>
+                            <VBox spacing="4">
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="End Date" />
+                                <DatePicker fx:id="endDatePicker"
+                                            style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 230; -fx-border-color: #ccc; -fx-border-radius: 8;"
+                                            promptText="Select end date" />
+                            </VBox>
+                        </HBox>
 
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="End Date" />
-                        <DatePicker fx:id="endDatePicker"
-                                    style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;"
-                                    promptText="Select end date" />
+                        <!-- Total Price & Status -->
+                        <HBox spacing="20">
+                            <VBox spacing="4">
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Total Price" />
+                                <TextField fx:id="totalPriceField"
+                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 230; -fx-border-color: #ccc; -fx-border-radius: 8;"
+                                           promptText="Enter total price" />
+                            </VBox>
+                            <VBox spacing="4">
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Status" />
+                                <ComboBox fx:id="statusComboBox"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 230; -fx-border-color: #ccc; -fx-border-radius: 8;"
+                                          promptText="Select status" />
+                            </VBox>
+                        </HBox>
 
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Total Price" />
-                        <TextField fx:id="totalPriceField"
-                                   style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;"
-                                   promptText="Enter total price" />
-
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Status" />
-                        <ComboBox fx:id="statusComboBox"
-                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;"
-                                  promptText="Select status" />
-
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Vehicle" />
-                        <ComboBox fx:id="vehicleComboBox"
-                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;"
-                                  promptText="Select vehicle" />
-
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User" />
-                        <ComboBox fx:id="userComboBox"
-                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 300; -fx-border-color: #ccc; -fx-border-radius: 8;"
-                                  promptText="Select user" />
+                        <!-- Vehicle & User -->
+                        <HBox spacing="20">
+                            <VBox spacing="4">
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Vehicle" />
+                                <ComboBox fx:id="vehicleComboBox"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 230; -fx-border-color: #ccc; -fx-border-radius: 8;"
+                                          promptText="Select vehicle" />
+                            </VBox>
+                            <VBox spacing="4">
+                                <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User" />
+                                <ComboBox fx:id="userComboBox"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-pref-width: 230; -fx-border-color: #ccc; -fx-border-radius: 8;"
+                                          promptText="Select user" />
+                            </VBox>
+                        </HBox>
 
                     </VBox>
 

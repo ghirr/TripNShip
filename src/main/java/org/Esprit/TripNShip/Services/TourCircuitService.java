@@ -23,6 +23,7 @@ public class TourCircuitService implements IService<TourCircuit> {
     public void add(TourCircuit tourCircuit) {
         String req = "INSERT INTO tourcircuit(nameCircuit, descriptionCircuit, priceCircuit, duration, destination, guideIncluded) VALUES (?, ?, ?, ?, ?, ?)";
         try {
+            System.out.println(tourCircuit);
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, tourCircuit.getNameCircuit());
             pst.setString(2, tourCircuit.getDescriptionCircuit());

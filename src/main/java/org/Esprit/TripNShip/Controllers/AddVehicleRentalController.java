@@ -2,12 +2,12 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class AddVehicleRentalController {
 
@@ -27,13 +27,16 @@ public class AddVehicleRentalController {
     private ComboBox<Vehicle> vehicleComboBox;
 
     @FXML
-    private ComboBox<RentalAgency> agencyComboBox;
+    private ComboBox<User> userComboBox;
 
     @FXML
     private Button addRentalButton;
 
+    @FXML
+    private ImageView closeIcon;
+
     private final VehicleRentalService vehicleRentalService = new VehicleRentalService();
-    private final RentalAgencyService rentalAgencyService = new RentalAgencyService();
+    private final UserService userService = new UserService();
     private final VehicleService vehicleService = new VehicleService();
 
     @FXML
@@ -41,16 +44,16 @@ public class AddVehicleRentalController {
         // Status
         statusComboBox.getItems().addAll(StautCircuit.values());
 
-        // Agencies
-        agencyComboBox.getItems().addAll(rentalAgencyService.getAll());
-        agencyComboBox.setCellFactory(cb -> new ListCell<>() {
+        // Users (agencies ?)
+        userComboBox.getItems().addAll(userService.getAll());
+        userComboBox.setCellFactory(cb -> new ListCell<>() {
             @Override
-            protected void updateItem(RentalAgency rentalAgency, boolean empty) {
-                super.updateItem(rentalAgency, empty);
-                setText(empty || rentalAgency == null ? null : rentalAgency.getNameAgency());
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty || user == null ? null : user.getFirstName()); // ou getName() selon ta classe User
             }
         });
-        agencyComboBox.setButtonCell(agencyComboBox.getCellFactory().call(null));
+        userComboBox.setButtonCell(userComboBox.getCellFactory().call(null));
 
         // Vehicles
         vehicleComboBox.getItems().addAll(vehicleService.getAll());
@@ -72,11 +75,17 @@ public class AddVehicleRentalController {
         LocalDate endDate = endDatePicker.getValue();
         String totalPriceText = totalPriceField.getText();
         StautCircuit status = statusComboBox.getValue();
-        RentalAgency selectedAgency = agencyComboBox.getValue();
+        User selectedUser = userComboBox.getValue();
         Vehicle selectedVehicle = vehicleComboBox.getValue();
 
-        if (startDate == null || endDate == null || totalPriceText.isEmpty() || status == null || selectedAgency == null || selectedVehicle == null) {
+        if (startDate == null || endDate == null || totalPriceText == null || totalPriceText.isEmpty() ||
+                status == null || selectedUser == null || selectedVehicle == null) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please fill in all fields.");
+            return;
+        }
+
+        if (endDate.isBefore(startDate)) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "End date cannot be before start date.");
             return;
         }
 
@@ -89,6 +98,7 @@ public class AddVehicleRentalController {
             rental.setTotalPrice(totalPrice);
             rental.setStatusCircuit(status);
             rental.setVehicle(selectedVehicle);
+            rental.setUser(selectedUser); // IMPORTANT : affecter l'utilisateur
 
             vehicleRentalService.add(rental);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Vehicle rental added successfully!");
@@ -102,12 +112,18 @@ public class AddVehicleRentalController {
         }
     }
 
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
+        stage.close();
+    }
+
     private void clearFields() {
         startDatePicker.setValue(null);
         endDatePicker.setValue(null);
         totalPriceField.clear();
         statusComboBox.setValue(null);
-        agencyComboBox.setValue(null);
+        userComboBox.setValue(null);
         vehicleComboBox.setValue(null);
     }
 

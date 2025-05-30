@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.RentalAgency;
 import org.Esprit.TripNShip.Services.RentalAgencyService;
@@ -20,6 +21,8 @@ public class UpdateRentalAgencyController {
     private TextField ratingField;
     @FXML
     private Button updateAgencyButton;
+    @FXML
+    private ImageView closeIcon;
 
     private RentalAgencyService rentalAgencyService;
     private RentalAgency agencyToUpdate;
@@ -49,7 +52,7 @@ public class UpdateRentalAgencyController {
         if (validateInput()) {
             updateAgency();
             showSuccessAlert();
-            closeWindow();
+
         }
     }
 
@@ -109,8 +112,9 @@ public class UpdateRentalAgencyController {
         alert.showAndWait();
     }
 
-    private void closeWindow() {
-        Stage stage = (Stage) updateAgencyButton.getScene().getWindow();
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
         stage.close();
     }
 }

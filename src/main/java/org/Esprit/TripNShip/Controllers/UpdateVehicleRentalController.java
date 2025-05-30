@@ -2,37 +2,25 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.UserService;
 import org.Esprit.TripNShip.Services.VehicleRentalService;
 import org.Esprit.TripNShip.Services.VehicleService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class UpdateVehicleRentalController {
 
-    @FXML
-    private DatePicker startDatePicker;
-
-    @FXML
-    private DatePicker endDatePicker;
-
-    @FXML
-    private TextField totalPriceField;
-
-    @FXML
-    private ComboBox<StautCircuit> statusComboBox;
-
-    @FXML
-    private ComboBox<Vehicle> vehicleComboBox;
-
-    @FXML
-    private ComboBox<User> userComboBox;
-
-    @FXML
-    private Button updateButton;
+    @FXML private DatePicker startDatePicker;
+    @FXML private DatePicker endDatePicker;
+    @FXML private TextField totalPriceField;
+    @FXML private ComboBox<StautCircuit> statusComboBox;
+    @FXML private ComboBox<Vehicle> vehicleComboBox;
+    @FXML private ComboBox<User> userComboBox;
+    @FXML private Button updateButton;
+    @FXML private ImageView closeIcon;
 
     private final VehicleRentalService vehicleRentalService = new VehicleRentalService();
     private final VehicleService vehicleService = new VehicleService();
@@ -46,7 +34,6 @@ public class UpdateVehicleRentalController {
     }
 
     private void populateFields() {
-        // Remplir les ComboBox
         List<Vehicle> vehicles = vehicleService.getAll();
         vehicleComboBox.getItems().setAll(vehicles);
 
@@ -55,6 +42,38 @@ public class UpdateVehicleRentalController {
 
         statusComboBox.getItems().setAll(StautCircuit.values());
 
+        // Affichage personnalisé basé sur toString() des entités (optionnel car toString est défini)
+        // Ici on le fait explicitement pour le cas où tu veux contrôler précisément l'affichage :
+
+        userComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty || user == null ? null : user.getLastName() + " " + user.getFirstName());
+            }
+        });
+        userComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                setText(empty || user == null ? null : user.getLastName() + " " + user.getFirstName());
+            }
+        });
+
+        vehicleComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Vehicle vehicle, boolean empty) {
+                super.updateItem(vehicle, empty);
+                setText(empty || vehicle == null ? null : vehicle.getBrand());
+            }
+        });
+        vehicleComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Vehicle vehicle, boolean empty) {
+                super.updateItem(vehicle, empty);
+                setText(empty || vehicle == null ? null : vehicle.getBrand());
+            }
+        });
 
         if (currentRental != null) {
             startDatePicker.setValue(currentRental.getStartDate().toLocalDate());
@@ -89,6 +108,12 @@ public class UpdateVehicleRentalController {
                 stage.close();
             }
         });
+    }
+
+    @FXML
+    private void handleCloseForm() {
+        Stage stage = (Stage) closeIcon.getScene().getWindow();
+        stage.close();
     }
 
     private boolean validateInput() {

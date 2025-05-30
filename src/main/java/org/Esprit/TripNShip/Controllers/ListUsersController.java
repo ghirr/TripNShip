@@ -282,6 +282,7 @@ public class ListUsersController {
             case SHIPPING_COORDINATOR -> "Shipping Coordinator";
             case CLIENT -> "Client";
             case ADMIN -> "Admin";
+            case TRANSPORTER -> "Transporter";
         };
     }
 

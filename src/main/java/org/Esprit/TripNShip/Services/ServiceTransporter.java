@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.Esprit.TripNShip.Utils.Shared.getEnumOrNull;
+
 public class ServiceTransporter implements IService<Transporter> {
 
     private final Connection connection;
@@ -42,7 +44,7 @@ public class ServiceTransporter implements IService<Transporter> {
 
     @Override
     public void update(Transporter transporter) {
-        String query = "UPDATE users SET firstName = ?, lastName = ?, gender = ?, email = ?, password = ?, profilePhoto = ?, birthdayDate = ?, phoneNumber = ?, transportType = ?, website = ? WHERE idUser = ?";
+        String query = "UPDATE users SET firstName = ?, lastName = ?, gender = ?, email = ?, password = ?, profilePhoto = ?, birthdayDate = ?, phoneNumber = ?, transportType = ?, website = ? WHERE id = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setString(1, transporter.getFirstName());
@@ -65,7 +67,7 @@ public class ServiceTransporter implements IService<Transporter> {
 
     @Override
     public void delete(Transporter transporter) {
-        String query = "DELETE FROM users WHERE idUser = ? AND role = ?";
+        String query = "DELETE FROM users WHERE id = ? AND role = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setInt(1, transporter.getIdUser());
@@ -87,10 +89,10 @@ public class ServiceTransporter implements IService<Transporter> {
 
             while (rs.next()) {
                 Transporter transporter = new Transporter(
-                        rs.getInt("idUser"),
+                        rs.getInt("id"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
-                        Gender.valueOf(rs.getString("gender")),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("profilePhoto"),

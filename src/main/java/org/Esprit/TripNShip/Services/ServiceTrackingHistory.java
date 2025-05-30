@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.Esprit.TripNShip.Utils.Shared.getEnumOrNull;
+
 public class ServiceTrackingHistory {
 
     private final Connection connection;
@@ -38,7 +40,7 @@ public class ServiceTrackingHistory {
         List<TrackingHistory> list = new ArrayList<>();
         String query = "SELECT th.*, u.firstName, u.lastName, u.gender, u.email, u.password, u.profilePhoto, u.birthdayDate, u.phoneNumber, u.transportType " +
                 "FROM tracking_history th " +
-                "JOIN user u ON th.updatedBy = u.idUser " +
+                "JOIN user u ON th.updatedBy = u.id " +
                 "WHERE th.expeditionId = ? " +
                 "ORDER BY th.timestamp ASC";
 
@@ -51,7 +53,7 @@ public class ServiceTrackingHistory {
                         rs.getInt("updatedBy"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
-                        Gender.valueOf(rs.getString("gender")),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("profilePhoto"),

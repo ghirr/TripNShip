@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.Esprit.TripNShip.Utils.Shared.getEnumOrNull;
+
 public class ServiceExpedition implements IService<Expedition> {
 
     private final Connection connection;
@@ -167,8 +169,8 @@ public class ServiceExpedition implements IService<Expedition> {
                 "t.birthdayDate as transporterBirthdayDate, t.phoneNumber as transporterPhoneNumber, " +
                 "t.transportType " +
                 "FROM expeditions e " +
-                "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
-                "LEFT JOIN user t ON e.transporterId = t.idUser AND t.role = 'TRANSPORTER'";
+                "JOIN user c ON e.clientId = c.id AND c.role = 'CLIENT' " +
+                "LEFT JOIN user t ON e.transporterId = t.id AND t.role = 'TRANSPORTER'";
 
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
@@ -177,7 +179,7 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getInt("clientId"),
                         rs.getString("clientFirstName"),
                         rs.getString("clientLastName"),
-                        Gender.valueOf(rs.getString("clientGender")),
+                        getEnumOrNull(Gender.class, rs.getString("clientGender")),
                         rs.getString("clientEmail"),
                         rs.getString("clientPassword"),
                         rs.getString("clientProfilePhoto"),
@@ -203,7 +205,7 @@ public class ServiceExpedition implements IService<Expedition> {
                             rs.getInt("transporterId"),
                             rs.getString("transporterFirstName"),
                             rs.getString("transporterLastName"),
-                            Gender.valueOf(rs.getString("transporterGender")),
+                            getEnumOrNull(Gender.class, rs.getString("transporterGender")),
                             rs.getString("transporterEmail"),
                             rs.getString("transporterPassword"),
                             rs.getString("transporterProfilePhoto"),
@@ -346,8 +348,8 @@ public class ServiceExpedition implements IService<Expedition> {
                         "t.birthdayDate AS transporterBirthdayDate, t.phoneNumber AS transporterPhoneNumber, " +
                         "t.transportType " +
                         "FROM expeditions e " +
-                        "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
-                        "LEFT JOIN user t ON e.transporterId = t.idUser AND (t.role = 'TRANSPORTER' OR t.role IS NULL) " +
+                        "JOIN user c ON e.clientId = c.id AND c.role = 'CLIENT' " +
+                        "LEFT JOIN user t ON e.transporterId = t.id AND (t.role = 'TRANSPORTER' OR t.role IS NULL) " +
                         "WHERE e.transporterId = ?";
 
 
@@ -361,7 +363,7 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getInt("clientId"),
                         rs.getString("clientFirstName"),
                         rs.getString("clientLastName"),
-                        Gender.valueOf(rs.getString("clientGender")),
+                        getEnumOrNull(Gender.class, rs.getString("transporterGender")),
                         rs.getString("clientEmail"),
                         rs.getString("clientPassword"),
                         rs.getString("clientProfilePhoto"),
@@ -407,7 +409,7 @@ public class ServiceExpedition implements IService<Expedition> {
                 "c.email as clientEmail, c.password as clientPassword, c.profilePhoto as clientProfilePhoto, " +
                 "c.birthdayDate as clientBirthdayDate, c.phoneNumber as clientPhoneNumber " +
                 "FROM expeditions e " +
-                "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
+                "JOIN user c ON e.clientId = c.id AND c.role = 'CLIENT' " +
                 "WHERE e.packageStatus = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
@@ -420,7 +422,7 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getInt("clientId"),
                         rs.getString("clientFirstName"),
                         rs.getString("clientLastName"),
-                        Gender.valueOf(rs.getString("clientGender")),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
                         rs.getString("clientEmail"),
                         rs.getString("clientPassword"),
                         rs.getString("clientProfilePhoto"),
@@ -465,8 +467,8 @@ public class ServiceExpedition implements IService<Expedition> {
                 "t.birthdayDate as transporterBirthdayDate, t.phoneNumber as transporterPhoneNumber, " +
                 "t.transportType, t.website " +
                 "FROM expeditions e " +
-                "JOIN user c ON e.clientId = c.idUser AND c.role = 'CLIENT' " +
-                "LEFT JOIN user t ON e.transporterId = t.idUser AND t.role = 'TRANSPORTER' " + // Changed to LEFT JOIN
+                "JOIN user c ON e.clientId = c.id AND c.role = 'CLIENT' " +
+                "LEFT JOIN user t ON e.transporterId = t.id AND t.role = 'TRANSPORTER' " + // Changed to LEFT JOIN
                 "WHERE e.idExpedition = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(query)) {
@@ -479,7 +481,7 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getInt("clientId"),
                         rs.getString("clientFirstName"),
                         rs.getString("clientLastName"),
-                        Gender.valueOf(rs.getString("clientGender")),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
                         rs.getString("clientEmail"),
                         rs.getString("clientPassword"),
                         rs.getString("clientProfilePhoto"),
@@ -494,7 +496,7 @@ public class ServiceExpedition implements IService<Expedition> {
                             rs.getInt("transporterId"),
                             rs.getString("transporterFirstName"),
                             rs.getString("transporterLastName"),
-                            Gender.valueOf(rs.getString("transporterGender")),
+                            getEnumOrNull(Gender.class, rs.getString("gender")),
                             rs.getString("transporterEmail"),
                             rs.getString("transporterPassword"),
                             rs.getString("transporterProfilePhoto"),

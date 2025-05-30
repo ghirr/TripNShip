@@ -42,7 +42,7 @@ public class TransporterExpeditionsController implements Initializable {
     @FXML
     private Button refreshBtn;
 
-    private final int STATIC_TRANSPORTER_ID = 9; // For testing, in real app this would come from login
+    private final int STATIC_TRANSPORTER_ID = 69; // For testing, in real app this would come from login
     private ServiceExpedition expeditionService;
     private UserService userService;
     private PackageStatus currentFilter = null; // null means show all

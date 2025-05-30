@@ -38,8 +38,12 @@ public class AdminNavigation {
     public Button btnItinerary;
     public Button btnTicket;
     public ImageView arrowIconTransportManagement;
+    public ImageView arrowIconAccommodationManagement;
+    public VBox subMenuAccommodationManagement;
+    public Button btnAccommodation;
+    public Button btnRoom;
     private boolean isSubMenuTransportManagementVisible = false;
-
+    private boolean isSubMenuAccommodationManagementVisible = false;
 
     public AdminNavigation() {
         instance = this;
@@ -78,10 +82,6 @@ public class AdminNavigation {
 
     public void navigateToUserManagement() {
         loadView("/fxml/listUsers.fxml");
-    }
-
-    public void navigateToAccommodationManagement() {
-        loadView("/fxml/Home.fxml");
     }
 
     public void navigateToCircuitManagement() {
@@ -153,5 +153,18 @@ public class AdminNavigation {
         subMenu.setManaged(newState);
         subMenu.setVisible(newState);
         arrowIcon.setRotate(newState ? 90 : 0);
+    }
+
+    public void toggleSubMenuAccommodationManagement(ActionEvent actionEvent) {
+        toggleSubMenu(subMenuAccommodationManagement, arrowIconAccommodationManagement, isSubMenuAccommodationManagementVisible);
+        isSubMenuAccommodationManagementVisible = !isSubMenuAccommodationManagementVisible;
+    }
+
+    public void navigateToAccommodationManagement(ActionEvent actionEvent) {
+        loadView("/fxml/AccommodationManagementFXML/TableAccommodation.fxml");
+    }
+
+    public void navigateToRoomManagement(ActionEvent actionEvent) {
+        loadView("/fxml/AccommodationManagementFXML/Table Room.fxml");
     }
 }

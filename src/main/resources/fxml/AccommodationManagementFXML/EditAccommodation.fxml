@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import com.gluonhq.maps.MapView?>
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.EditAccommodationController">
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.EditAccommodationController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
         <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
             <StackPane style="-fx-padding: 20;">

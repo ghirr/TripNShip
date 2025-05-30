@@ -87,16 +87,26 @@
                 <Button fx:id="btnTransports" onAction="#navigateToTransportManagement" text="Transport" styleClass="sidebar-sub-button" />
                 <Button fx:id="btnItinerary" onAction="#navigateToItineraryManagement" text="Itinerary" styleClass="sidebar-sub-button" />
                 <Button fx:id="btnTicket" onAction="#navigateToTicketManagement" text="Ticket" styleClass="sidebar-sub-button" />
-
             </VBox>
 
-            <Button fx:id="btnAccommodationManagement" onAction="#navigateToAccommodationManagement" styleClass="sidebar-button" text=" Accommodation Management">
+            <Button fx:id="btnAccommodationManagement" onAction="#toggleSubMenuAccommodationManagement" styleClass="sidebar-button">
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_accommodation_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_accommodation_management.png"/>
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text=" Accommodation Management"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="arrowIconAccommodationManagement" fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@/images/fleche.png"/>
+                        </ImageView>
+                    </HBox>
                 </graphic>
             </Button>
+            <VBox fx:id="subMenuAccommodationManagement" visible="false" managed="false">
+                <Button fx:id="btnAccommodation" onAction="#navigateToAccommodationManagement" text="Accommodation" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnRoom" onAction="#navigateToRoomManagement" text="Room" styleClass="sidebar-sub-button"/>
+            </VBox>
 
             <Button fx:id="btnCircuitManagement" onAction="#navigateToCircuitManagement" styleClass="sidebar-button" text=" Circuit Management">
                 <graphic>

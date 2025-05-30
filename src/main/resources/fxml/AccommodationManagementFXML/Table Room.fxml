@@ -15,70 +15,74 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.Esprit.TripNShip.Controllers.TableRoomController">
-    <children>
-        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #111827;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-            <VBox alignment="CENTER" maxWidth="900" spacing="10" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.TableRoomController">
+    <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #fcfdff;" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <VBox alignment="CENTER" maxWidth="900" spacing="10"
+              style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
 
-                <ImageView fitHeight="128" fitWidth="245" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../images/logo.png" />
-                    </image>
-                </ImageView>
+<!--            <ImageView fitHeight="128" fitWidth="245" pickOnBounds="true" preserveRatio="true">-->
+<!--                <image>-->
+<!--                    <Image url="@../../images/logo.png"/>-->
+<!--                </image>-->
+<!--            </ImageView>-->
 
-                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Rooms List" />
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Rooms List"/>
 
-                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-                    <Label style="-fx-text-fill: #222;" text="Type Room" />
-                    <ComboBox fx:id="typeRoomFilter" prefWidth="150.0" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <TextField fx:id="searchField" promptText="Search..." style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8; -fx-border-color: #ccc; -fx-pref-width: 200; -fx-font-size: 12px;" />
-                    <Button fx:id="addRoomButton" style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8;" text="Add">
-                        <graphic>
-                            <ImageView fitHeight="18" fitWidth="18">
-                                <image>
-                                    <Image url="@../../images/icons8-plus-24.png" />
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+                <Label style="-fx-text-fill: #222;" text="Type Room"/>
+                <ComboBox fx:id="typeRoomFilter" prefWidth="150.0"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="searchField" promptText="Search..."
+                           style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8; -fx-border-color: #ccc; -fx-pref-width: 200; -fx-font-size: 12px;"/>
+                <Button fx:id="addRoomButton"
+                        style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8;"
+                        text="Add">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <image>
+                                <Image url="@../../images/icons8-plus-24.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
 
-                <TableView fx:id="roomTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
-                    <columns>
+            <TableView fx:id="roomTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                <columns>
 
-                        <!-- Nouvelle colonne pour afficher la photo -->
-                        <TableColumn fx:id="photoColumn" prefWidth="100" text="Photos Room" />
+                    <!-- Nouvelle colonne pour afficher la photo -->
+                    <TableColumn fx:id="photoColumn" prefWidth="100" text="Photos Room"/>
 
-                        <TableColumn fx:id="typeColumn" prefWidth="95.19998663663864" text="Room Type">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="type" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn fx:id="nameColumn" prefWidth="150.40001678466797" text="Room Name">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="nameRoom" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn fx:id="accommodationColumn" prefWidth="132.7999725341797" text="Accommodation Type" />
-                        <TableColumn fx:id="accommodationNameColumn" prefWidth="165.60006713867188" text="Accommodation Name" />
-                        <TableColumn fx:id="priceColumn" prefWidth="72.79998779296875" text="Price">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="price" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn fx:id="availabilityColumn" prefWidth="73.5999755859375" text="Availability">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="availability" />
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn fx:id="actionsColumn" prefWidth="167.2000732421875" text="Action" />
-                    </columns>
-                </TableView>
+                    <TableColumn fx:id="typeColumn" prefWidth="95.19998663663864" text="Room Type">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="type"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="nameColumn" prefWidth="150.40001678466797" text="Room Name">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="nameRoom"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="accommodationColumn" prefWidth="132.7999725341797" text="Accommodation Type"/>
+                    <TableColumn fx:id="accommodationNameColumn" prefWidth="165.60006713867188"
+                                 text="Accommodation Name"/>
+                    <TableColumn fx:id="priceColumn" prefWidth="72.79998779296875" text="Price">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="price"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="availabilityColumn" prefWidth="73.5999755859375" text="Availability">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="availability"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="actionsColumn" prefWidth="167.2000732421875" text="Action"/>
+                </columns>
+            </TableView>
 
-                <!-- Pagination -->
-                <Pagination fx:id="pagination" currentPageIndex="0" pageCount="1" style="-fx-padding: 10;" />
-            </VBox>
+            <!-- Pagination -->
+            <Pagination fx:id="pagination" currentPageIndex="0" pageCount="1" style="-fx-padding: 10;"/>
         </VBox>
-    </children>
+    </VBox>
 </AnchorPane>

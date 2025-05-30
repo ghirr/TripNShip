@@ -11,9 +11,9 @@
             <StackPane style="-fx-padding: 20;">
                 <VBox alignment="CENTER" maxWidth="900" spacing="10" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
 
-                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../../images/logo.png" />
-                    </ImageView>
+<!--                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                        <Image url="@../../images/logo.png" />-->
+<!--                    </ImageView>-->
 
                     <Label prefHeight="40.0" prefWidth="298.0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Accommodations List" />
 

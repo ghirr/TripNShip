@@ -123,7 +123,13 @@ public class TransportController {
     }
     public void toAddTransport(ActionEvent event) throws IOException {
         {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/addTransport.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addTransport.fxml"));
+            Parent root = loader.load();
+
+            AddTransportController controller = loader.getController();
+
+            // Callback pour rafraîchir la table après ajout
+            controller.setOnTransportAdded(() -> refreshTransportTable());
             Stage stage = new Stage();
             stage.setTitle("Add Transport");
             stage.setScene(new Scene(root));
@@ -192,6 +198,11 @@ public class TransportController {
 
         transportTable.setItems(filteredList);
         addActionsToTable();
+    }
+    public void refreshTransportTable() {
+        transportList.setAll(ts.getAll());
+        transportTable.setItems(transportList);
+        addActionsToTable(); // Remettre les boutons d'action
     }
 
 

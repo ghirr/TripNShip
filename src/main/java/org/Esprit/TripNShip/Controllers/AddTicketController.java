@@ -26,6 +26,11 @@ public class AddTicketController implements Initializable {
     @FXML private TextField arrivalTimeField;
 
     @FXML private Button addTicketButton;
+    private Runnable onTicketAdded;
+
+    public void setOnTicketAdded(Runnable onTicketAdded) {
+        this.onTicketAdded = onTicketAdded;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,6 +56,9 @@ public class AddTicketController implements Initializable {
         alert.setContentText("Ticket Added !");
         alert.show();
         Stage stage = (Stage) itineraryCodeComboBox.getScene().getWindow();
+        if (onTicketAdded != null) {
+            onTicketAdded.run(); // Rafraîchir la table dans TicketController
+        }
         stage.close();
     }
     public boolean validInputs() {

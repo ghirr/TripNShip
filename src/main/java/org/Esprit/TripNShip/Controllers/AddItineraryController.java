@@ -27,6 +27,11 @@ public class AddItineraryController {
     @FXML private TextField priceField;
 
     @FXML private Button addItineraryButton;
+    private Runnable onItineraryAdded;
+
+    public void setOnItineraryAdded(Runnable onItineraryAdded) {
+        this.onItineraryAdded = onItineraryAdded;
+    }
 
     public void addItinerary(ActionEvent event) throws IOException {
         if (!validInputs()) return;
@@ -38,6 +43,10 @@ public class AddItineraryController {
         alert.setContentText("itinerary Added !");
         alert.show();
         Stage stage = (Stage) itineraryCodeField.getScene().getWindow();
+
+        if (onItineraryAdded != null) {
+            onItineraryAdded.run(); // Rafraîchir la table dans Itinerary
+        }
         stage.close();
     }
 

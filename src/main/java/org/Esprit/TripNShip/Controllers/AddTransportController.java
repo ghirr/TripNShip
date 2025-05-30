@@ -31,6 +31,11 @@ public class AddTransportController implements Initializable {
     @FXML private Button chooseLogoButton;
     @FXML private Label companyLogoPathLabel;
     @FXML private Button addTransportButton;
+    private Runnable onTransportAdded;
+
+    public void setOnTransportAdded(Runnable onTransportAdded) {
+        this.onTransportAdded = onTransportAdded;
+    }
 
     private String selectedLogoPath="";
 
@@ -49,6 +54,10 @@ public class AddTransportController implements Initializable {
         alert.setContentText("Transport Added !");
         alert.show();
         Stage stage = (Stage) transporterReferenceField.getScene().getWindow();
+
+        if (onTransportAdded != null) {
+            onTransportAdded.run(); // Rafraîchir la table dans TicketController
+        }
         stage.close();
     }
     public boolean validInputs() {

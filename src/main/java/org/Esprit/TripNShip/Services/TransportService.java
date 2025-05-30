@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TransportService implements IService<Transport>{
     private final Connection connection;
@@ -90,6 +91,14 @@ public class TransportService implements IService<Transport>{
             System.out.println(e.getMessage());
         }
         return transports;
+    }
+
+    public List<String> getAllTransportReferences() {
+        List<Transport> transports = getAll(); // suppose que tu as déjà cette méthode
+        return transports.stream()
+                .map(Transport::getTransporterReference) // ou tout autre champ de référence
+                .map(Object::toString)          // convertir en String si nécessaire
+                .collect(Collectors.toList());
     }
 }
 

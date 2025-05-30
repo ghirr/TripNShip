@@ -70,8 +70,8 @@ public class HomeController {
 
 
         setupDropdownMenu(accommodationLabel,
-                createMenuItem("Hotels", "#"),
-                createMenuItem("Resorts", "#")
+                createMenuItem("Book Room", "#"),
+                createMenuItem("My Booking", "#")
         );
 
         setupDropdownMenu(transportLabel,

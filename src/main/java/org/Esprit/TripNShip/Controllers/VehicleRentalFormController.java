@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.*;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -88,7 +89,8 @@ public class VehicleRentalFormController {
             }
 
             float totalPrice = Float.parseFloat(totalPriceText);
-            User user = userService.getEmployeeById(7);
+            User user = new User();
+            user.setIdUser(UserSession.getInstance().getUserId());
 
             VehicleRental rental = new VehicleRental();
             rental.setStartDate(startDate.atStartOfDay());

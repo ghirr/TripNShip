@@ -86,8 +86,8 @@ public class LoginController {
                     Shared.switchScene(event,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
                 }
                 else{
+                    UserSession.initSession(user);
                     Shared.switchScene(event,getClass().getResource("/fxml/Home.fxml"),"Main");
-                    showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
                 }
 
             } else {

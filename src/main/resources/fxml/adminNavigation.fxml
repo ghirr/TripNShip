@@ -66,13 +66,28 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="btnTransportManagement" onAction="#navigateToTransportManagement" styleClass="sidebar-button" text=" Transport Management">
+            <Button fx:id="btnTransportManagement" onAction="#toggleSubMenuTransportManagement" styleClass="sidebar-button" >
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_transport_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_transport_management.png" />
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text="Transport Management" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <ImageView fx:id="arrowIconTransportManagement" fitHeight="20.0" fitWidth="20.0">
+                            <image>
+                                <Image url="@/images/fleche.png" />
+                            </image>
+                        </ImageView>
+                    </HBox>
                 </graphic>
             </Button>
+            <VBox fx:id="subMenuTransportManagement" visible="false" managed="false">
+                <Button fx:id="btnTransports" onAction="#navigateToTransportManagement" text="Transport" styleClass="sidebar-sub-button" />
+                <Button fx:id="btnItinerary" onAction="#navigateToItineraryManagement" text="Itinerary" styleClass="sidebar-sub-button" />
+                <Button fx:id="btnTicket" onAction="#navigateToTicketManagement" text="Ticket" styleClass="sidebar-sub-button" />
+
+            </VBox>
 
             <Button fx:id="btnAccommodationManagement" onAction="#navigateToAccommodationManagement" styleClass="sidebar-button" text=" Accommodation Management">
                 <graphic>

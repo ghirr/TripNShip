@@ -1,5 +1,8 @@
 package org.Esprit.TripNShip.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.Esprit.TripNShip.Utils.Shared;
 import org.Esprit.TripNShip.Utils.UserSession;
 
@@ -28,6 +33,13 @@ public class AdminNavigation {
 
 
     private static AdminNavigation instance;
+    public VBox subMenuTransportManagement;
+    public Button btnTransports;
+    public Button btnItinerary;
+    public Button btnTicket;
+    public ImageView arrowIconTransportManagement;
+    private boolean isSubMenuTransportManagementVisible = false;
+
 
     public AdminNavigation() {
         instance = this;
@@ -66,9 +78,6 @@ public class AdminNavigation {
 
     public void navigateToUserManagement() {
         loadView("/fxml/listUsers.fxml");
-    }
-
-    public void navigateToTransportManagement(ActionEvent actionEvent) {
     }
 
     public void navigateToAccommodationManagement() {
@@ -116,4 +125,33 @@ public class AdminNavigation {
     }
 
 
+    public void navigateToItineraryManagement(ActionEvent actionEvent) {
+        loadView("/fxml/itineraryManagement.fxml");
+
+    }
+
+    public void navigateToTicketManagement(ActionEvent actionEvent) {
+        loadView("/fxml/Ticket.fxml");
+    }
+
+    public void navigateToTransportManagement(ActionEvent actionEvent) {
+        loadView("/fxml/Transport.fxml");
+    }
+
+    public void toggleSubMenuTransportManagement(ActionEvent actionEvent) {
+        toggleSubMenu(subMenuTransportManagement, arrowIconTransportManagement, isSubMenuTransportManagementVisible);
+        isSubMenuTransportManagementVisible = !isSubMenuTransportManagementVisible;
+    }
+
+    private void toggleSubMenu(VBox subMenu, ImageView arrowIcon, boolean isVisible) {
+        boolean newState = !isVisible;
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(200),
+                        new KeyValue(subMenu.prefHeightProperty(), newState ? 80 : 0),
+                        new KeyValue(subMenu.opacityProperty(), newState ? 1 : 0)));
+        timeline.play();
+        subMenu.setManaged(newState);
+        subMenu.setVisible(newState);
+        arrowIcon.setRotate(newState ? 90 : 0);
+    }
 }

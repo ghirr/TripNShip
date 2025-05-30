@@ -17,7 +17,7 @@ public class TestExpeditionCRUD {
         Transporter transporter1 = new Transporter(
                 "Jean",
                 "Dupont",
-                Gender.HOMME,
+                Gender.MALE,
                 "laposte@example.com",
                 "1234",
                 "profile1.png",
@@ -32,7 +32,7 @@ public class TestExpeditionCRUD {
         Transporter transporter2 = new Transporter(
                 "Marie",
                 "Curie",
-                Gender.FEMME,
+                Gender.FEMALE,
                 "dhl@example.com",
                 "abcd",
                 "profile2.png",

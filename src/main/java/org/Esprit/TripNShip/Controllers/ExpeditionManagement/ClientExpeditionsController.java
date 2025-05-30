@@ -35,7 +35,7 @@ public class ClientExpeditionsController implements Initializable {
     @FXML
     private Button refreshBtn;
 
-    private final int STATIC_CLIENT_ID = 1;
+    private final int STATIC_CLIENT_ID = 67;
     private ServiceExpedition expeditionService;
     private UserService userService;
 

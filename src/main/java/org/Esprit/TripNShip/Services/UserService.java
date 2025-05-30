@@ -49,7 +49,7 @@ public class UserService implements IService<User> {
     @Override
     public void delete(User user) {
 
-    String req = "DELETE FROM user WHERE idUser=?";
+    String req = "DELETE FROM user WHERE id=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setInt(1, user.getIdUser());
@@ -70,7 +70,7 @@ public class UserService implements IService<User> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                users.add(new User(rs.getInt("idUser"), rs.getString("firstName"), rs.getString("lastName"),
+                users.add(new User(rs.getInt("id"), rs.getString("firstName"), rs.getString("lastName"),
                                     Gender.valueOf(rs.getString("gender")), Role.valueOf(rs.getString("role")),
                         rs.getString("email"),rs.getString("profilePhoto"),
                         rs.getDate("birthdayDate").toLocalDate().atStartOfDay(),
@@ -110,7 +110,7 @@ public class UserService implements IService<User> {
 
 
     public User getById(int id) {
-        String req = "SELECT * FROM user WHERE idUser = ?";  // Note: using idUser, not id
+        String req = "SELECT * FROM user WHERE id = ?";  // Note: using idUser, not id
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setInt(1, id);
@@ -122,7 +122,7 @@ public class UserService implements IService<User> {
                 if ("CLIENT".equals(role)) {
                     // Return a Client object
                     return new Client(
-                            rs.getInt("idUser"),
+                            rs.getInt("id"),
                             rs.getString("firstName"),
                             rs.getString("lastName"),
                             Gender.valueOf(rs.getString("gender")),
@@ -135,7 +135,7 @@ public class UserService implements IService<User> {
                 } else if ("TRANSPORTER".equals(role)) {
                     // Return a Transporter object
                     return new Transporter(
-                            rs.getInt("idUser"),
+                            rs.getInt("id"),
                             rs.getString("firstName"),
                             rs.getString("lastName"),
                             Gender.valueOf(rs.getString("gender")),
@@ -149,7 +149,7 @@ public class UserService implements IService<User> {
                 } else {
                     // For any other role, return a base User object
                     return new User(
-                            rs.getInt("idUser"),
+                            rs.getInt("id"),
                             rs.getString("firstName"),
                             rs.getString("lastName"),
                             Gender.valueOf(rs.getString("gender")),
@@ -226,7 +226,7 @@ public class UserService implements IService<User> {
                     "profilePhoto = ?, " +
                     "birthdayDate = ?, " +
                     "phoneNumber = ? " +
-                    "WHERE idUser = ?";
+                    "WHERE id = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, client.getFirstName());
@@ -260,7 +260,7 @@ public class UserService implements IService<User> {
                 "address = ? ," +
                 "salary = ? ," +
                 "hireDate = ? "+
-                "WHERE idUser = ?";
+                "WHERE id = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(req);
             ps.setString(1, employee.getFirstName());
@@ -283,7 +283,7 @@ public class UserService implements IService<User> {
         }
     }
     private void updateTransporter(Transporter transporter) {
-        String req = "UPDATE user SET firstName=?, lastName=?, gender=?, role=?, email=?, password=?, profilePhoto=?, birthdayDate=?, phoneNumber=?, transportType=?, website=? WHERE idUser=?";
+        String req = "UPDATE user SET firstName=?, lastName=?, gender=?, role=?, email=?, password=?, profilePhoto=?, birthdayDate=?, phoneNumber=?, transportType=?, website=? WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(req)) {
             ps.setString(1, transporter.getFirstName());
             ps.setString(2, transporter.getLastName());
@@ -310,7 +310,7 @@ public class UserService implements IService<User> {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Transporter transporter = new Transporter(
-                        rs.getInt("idUser"),
+                        rs.getInt("id"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         Gender.valueOf(rs.getString("gender")),

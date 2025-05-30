@@ -38,8 +38,16 @@ public class AdminNavigation {
     public VBox subMenuAccommodationManagement;
     public Button btnAccommodation;
     public Button btnRoom;
+    public ImageView arrowIconCircuitManagement;
+    public VBox SubMenuCircuitManagement;
+    public Button btnRentalAgency;
+    public Button btnVehicle;
+    public Button btnVehicleRental;
+    public Button btnTourCircuit;
+    public Button btnCircuitBooking;
     private boolean isSubMenuTransportManagementVisible = false;
     private boolean isSubMenuAccommodationManagementVisible = false;
+    private boolean isSubMenuCircuitManagementVisible = false;
 
     public AdminNavigation() {
         instance = this;
@@ -164,5 +172,30 @@ public class AdminNavigation {
 
     public void navigateToRoomManagement(ActionEvent actionEvent) {
         loadView("/fxml/AccommodationManagementFXML/Table Room.fxml");
+    }
+
+    public void toggleSubMenuCircuitManagement(ActionEvent actionEvent) {
+        toggleSubMenu(SubMenuCircuitManagement, arrowIconCircuitManagement, isSubMenuCircuitManagementVisible);
+        isSubMenuCircuitManagementVisible = !isSubMenuCircuitManagementVisible;
+    }
+
+    public void navigateToRentalAgencyManagement(ActionEvent actionEvent) {
+        loadView("/fxml/CircuitManagementFXML/AgencyListView.fxml");
+    }
+
+    public void navigateToVehicle(ActionEvent actionEvent) {
+        loadView("/fxml/CircuitManagementFXML/VehicleListView.fxml");
+    }
+
+    public void navigateToVehicleRental(ActionEvent actionEvent) {
+        loadView("/fxml/CircuitManagementFXML/VehicleRentalListView.fxml");
+    }
+
+    public void navigateToTourCircuit(ActionEvent actionEvent) {
+        loadView("/fxml/CircuitManagementFXML/TourCircuitListView.fxml");
+    }
+
+    public void navigateToCircuitBooking(ActionEvent actionEvent) {
+        loadView("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml");
     }
 }

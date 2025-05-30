@@ -115,4 +115,55 @@ public class CircuitBookingService implements IService<CircuitBooking> {
         return bookings;
     }
 
+    public List<CircuitBooking> getCircuitBookingByUserId(int userId) {
+        List<CircuitBooking> bookings = new ArrayList<>();
+        String req = """
+    SELECT cb.*, u.id, u.firstName, u.lastName, u.email,
+           tc.idCircuit, tc.nameCircuit
+    FROM circuitbooking cb
+    JOIN user u ON cb.idUser = u.id
+    JOIN tourcircuit tc ON cb.idCircuit = tc.idCircuit
+    WHERE cb.idUser = ?
+    """;
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            pst.setInt(1, userId);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    CircuitBooking booking = new CircuitBooking();
+                    booking.setIdBooking(rs.getInt("idBooking"));
+                    booking.setBookingDate(rs.getTimestamp("bookingDate").toLocalDateTime());
+
+                    int statusIndex = rs.getInt("statusBooking");
+                    if (statusIndex >= 0 && statusIndex < StatusBooking.values().length) {
+                        booking.setStatusBooking(StatusBooking.values()[statusIndex]);
+                    } else {
+                        booking.setStatusBooking(StatusBooking.Confirmed);
+                    }
+
+                    // Récupérer les données utilisateur
+                    User user = new User();
+                    user.setIdUser(rs.getInt("idUser"));
+                    user.setFirstName(rs.getString("firstName"));
+                    user.setLastName(rs.getString("lastName"));
+                    user.setEmail(rs.getString("email"));
+                    booking.setUser(user);
+
+                    // Récupérer les données du circuit
+                    TourCircuit circuit = new TourCircuit();
+                    circuit.setIdCircuit(rs.getInt("idCircuit"));
+                    circuit.setNameCircuit(rs.getString("nameCircuit"));
+                    booking.setTourCircuit(circuit);
+
+                    bookings.add(booking);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des réservations : " + e.getMessage());
+        }
+
+        return bookings;
+    }
+
+
 }

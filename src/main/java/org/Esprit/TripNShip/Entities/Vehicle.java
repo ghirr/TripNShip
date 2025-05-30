@@ -47,6 +47,8 @@ public class Vehicle {
     public Vehicle(int idVehicle) {
     }
 
+    public Vehicle(int idVehicle, String brand) {
+    }
 
 
     public int getIdVehicle() {

@@ -87,13 +87,12 @@ public class LoginController {
             if (user != null) {
                 if(user.getRole().equals(Role.CLIENT)){
                     UserSession.initSession(user);
-                    Shared.switchScene(event,getClass().getResource("/fxml/AccommodationManagementFXML/RoomListView.fxml"),"Main");
+                    Shared.switchScene(event,getClass().getResource("/fxml/Home.fxml"),"Main");
                 }
                 else{
                     UserSession.initSession(user);
                     Shared.switchScene(event,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
                 }
-
             } else {
                 // Password is incorrect
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Invalid credentials");

@@ -60,6 +60,8 @@ public class AddRentalAgencyController {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Rental Agency added successfully!");
 
             clearFields();
+            handleCloseForm();
+
 
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Invalid Input", "Rating must be a valid number.");
@@ -88,4 +90,5 @@ public class AddRentalAgencyController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }

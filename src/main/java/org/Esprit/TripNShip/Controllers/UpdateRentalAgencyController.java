@@ -63,6 +63,7 @@ public class UpdateRentalAgencyController {
         agencyToUpdate.setRating(Float.parseFloat(ratingField.getText().trim()));
 
         rentalAgencyService.update(agencyToUpdate);
+        handleCloseForm();
     }
 
     private boolean validateInput() {

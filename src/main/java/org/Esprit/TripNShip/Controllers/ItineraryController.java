@@ -92,7 +92,12 @@ public class ItineraryController {
     }
     public void toAddItinerary(ActionEvent event) throws IOException {
         {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/AddItinerary.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addItinerary.fxml"));
+            Parent root = loader.load();
+
+            AddItineraryController controller = loader.getController();
+
+            controller.setOnItineraryAdded(() -> refreshItineraryTable());
             Stage stage = new Stage();
             stage.setTitle("Add Itinerary");
             stage.setScene(new Scene(root));
@@ -150,5 +155,9 @@ public class ItineraryController {
             addActionsToTable(); // pour remettre les boutons actions en place
         });
     }
-
+    public void refreshItineraryTable() {
+        itineraryList.setAll(is.getAll());
+        itineraryTable.setItems(itineraryList);
+        addActionsToTable(); // Remettre les boutons d'action
+    }
 }

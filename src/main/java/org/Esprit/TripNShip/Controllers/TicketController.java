@@ -156,13 +156,18 @@ public class TicketController {
 
 
     public void toAddTicket(ActionEvent event) throws IOException {
-        {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/addTicket.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Add Ticket");
-            stage.setScene(new Scene(root));
-            stage.show();
-        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addTicket.fxml"));
+        Parent root = loader.load();
+
+        AddTicketController controller = loader.getController();
+
+        // Callback pour rafraîchir la table après ajout
+        controller.setOnTicketAdded(() -> refreshTicketTable());
+
+        Stage stage = new Stage();
+        stage.setTitle("Add Ticket");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
     private void handleDelete(Ticket ticket) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -245,7 +250,11 @@ public class TicketController {
         });
     }
 
-
+    public void refreshTicketTable() {
+        ticketList.setAll(ts.getAll());
+        ticketTable.setItems(ticketList);
+        addActionsToTable(); // Remettre les boutons d'action
+    }
 
 }
 

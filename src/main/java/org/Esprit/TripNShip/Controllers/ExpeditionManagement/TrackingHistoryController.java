@@ -1,14 +1,18 @@
 package org.Esprit.TripNShip.Controllers.ExpeditionManagement;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.Esprit.TripNShip.Entities.Expedition;
@@ -16,12 +20,15 @@ import org.Esprit.TripNShip.Entities.PackageStatus;
 import org.Esprit.TripNShip.Entities.TrackingHistory;
 import org.Esprit.TripNShip.Services.ServiceTrackingHistory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrackingHistoryController implements Initializable {
 
@@ -62,6 +69,9 @@ public class TrackingHistoryController implements Initializable {
     private ServiceTrackingHistory trackingService;
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+    // Regular expression pattern to extract coordinates from location text
+    private static final Pattern COORDINATES_PATTERN = Pattern.compile("\\[([-+]?\\d+\\.\\d+),([-+]?\\d+\\.\\d+)\\]");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -108,6 +118,7 @@ public class TrackingHistoryController implements Initializable {
         // Load tracking data
         loadTrackingData();
     }
+
     private void loadTrackingData() {
         if (expedition != null) {
             List<TrackingHistory> trackingList = trackingService.getTrackingByExpedition(expedition.getExpeditionId());
@@ -170,13 +181,41 @@ public class TrackingHistoryController implements Initializable {
 
                         header.getChildren().addAll(timestampLabel, statusLabel, spacer, updaterLabel);
 
+                        // Extract location text without coordinates for display
+                        String locationText = item.getLocationNote();
+
+                        // Check if we have coordinates in the location
+                        double[] coordinates = extractCoordinates(locationText);
+
+                        // Clean location text for display (remove the coordinates)
+                        String displayLocation = locationText.replaceAll("\\s*\\[[-+]?\\d+\\.\\d+,[-+]?\\d+\\.\\d+\\]\\s*", " ");
+
                         // Location and notes
-                        Label locationLabel = new Label(item.getLocationNote());
+                        Label locationLabel = new Label(displayLocation);
                         locationLabel.getStyleClass().add("tracking-location");
                         locationLabel.setWrapText(true);
 
+                        // Actions row
+                        HBox actionsRow = new HBox();
+                        actionsRow.setAlignment(Pos.CENTER_RIGHT);
+                        actionsRow.setPadding(new Insets(10, 0, 0, 0));
+                        actionsRow.setSpacing(10);
+
+                        // Add "View on Map" button if coordinates are available
+                        if (coordinates != null) {
+                            Button mapButton = new Button("View on Map");
+                            mapButton.getStyleClass().add("secondary-button");
+                            mapButton.setOnAction(event -> showLocationOnMap(displayLocation, coordinates[0], coordinates[1]));
+                            actionsRow.getChildren().add(mapButton);
+                        }
+
                         // Add components to container
                         container.getChildren().addAll(header, locationLabel);
+
+                        // Only add actions row if it has any children
+                        if (!actionsRow.getChildren().isEmpty()) {
+                            container.getChildren().add(actionsRow);
+                        }
 
                         // Set alternating background colors
                         if (getIndex() % 2 == 0) {
@@ -192,6 +231,63 @@ public class TrackingHistoryController implements Initializable {
         };
     }
 
+    /**
+     * Extract latitude and longitude from location text if available
+     * @param locationText The location text potentially containing coordinates
+     * @return double array with [lat, lng] or null if not found
+     */
+    private double[] extractCoordinates(String locationText) {
+        if (locationText == null || locationText.isEmpty()) {
+            return null;
+        }
+
+        Matcher matcher = COORDINATES_PATTERN.matcher(locationText);
+        if (matcher.find()) {
+            try {
+                double lat = Double.parseDouble(matcher.group(1));
+                double lng = Double.parseDouble(matcher.group(2));
+                return new double[] {lat, lng};
+            } catch (NumberFormatException e) {
+                // Log the error and continue
+                System.err.println("Error parsing coordinates: " + e.getMessage());
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Opens a map view showing the specified location
+     */
+    private void showLocationOnMap(String locationName, double latitude, double longitude) {
+        try {
+            // Load the location viewer map
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/LocationViewer.fxml"));
+            Parent root = loader.load();
+
+            // Get controller and set the location
+            LocationViewerController controller = loader.getController();
+            controller.setLocation(locationName, latitude, longitude);
+
+            // Create and show the stage
+            Stage stage = new Stage();
+            stage.setTitle("Location Map - " + locationName);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setMinWidth(800);
+            stage.setMinHeight(600);
+            stage.show();
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not open map view");
+            alert.setContentText("An error occurred: " + e.getMessage());
+            alert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
     private String getStatusStyleClass(PackageStatus status) {
         switch (status) {
             case PENDING:
@@ -204,6 +300,8 @@ public class TrackingHistoryController implements Initializable {
                 return "status-delivered";
             case CANCELLED:
                 return "status-cancelled";
+            case AWAITING_CLIENT_APPROVAL:
+                return "status-awaiting-approval";
             default:
                 return "status-pending";
         }

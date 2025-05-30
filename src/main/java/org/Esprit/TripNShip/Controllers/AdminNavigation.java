@@ -95,6 +95,7 @@ public class AdminNavigation {
     }
 
     public void navigateToExpeditionManagement(ActionEvent actionEvent) {
+        loadView("/fxml/ExpeditionManagement/AgentPendingExpeditions.fxml");
     }
 
     public void navigateToProfile() {

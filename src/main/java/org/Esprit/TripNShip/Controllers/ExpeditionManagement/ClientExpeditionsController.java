@@ -35,7 +35,7 @@ public class ClientExpeditionsController implements Initializable {
     @FXML
     private Button refreshBtn;
 
-    private final int STATIC_CLIENT_ID = 1;
+    private final int STATIC_CLIENT_ID = 67;
     private ServiceExpedition expeditionService;
     private UserService userService;
 
@@ -43,6 +43,12 @@ public class ClientExpeditionsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         expeditionService = new ServiceExpedition();
         userService = new UserService();
+
+        // Configure TilePane with better spacing
+        expeditionTiles.setHgap(20);     // Horizontal gap between cards
+        expeditionTiles.setVgap(30);     // Increased vertical gap between cards
+        expeditionTiles.setPrefColumns(2); // Preferred number of columns
+        expeditionTiles.setPadding(new Insets(15));
 
         // Load expeditions data
         loadExpeditions();
@@ -74,12 +80,13 @@ public class ClientExpeditionsController implements Initializable {
     private VBox createExpeditionCard(Expedition expedition) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        // Create card container
+        // Create card container with sufficient height
         VBox card = new VBox();
         card.getStyleClass().add("expedition-card");
         card.setSpacing(12);
         card.setPadding(new Insets(15));
-        card.setMinHeight(180);
+        card.setMinHeight(220);  // Increased minimum height
+        card.setPrefHeight(250); // Added preferred height
         card.setPrefWidth(450);
 
         // Create card header with ID and status
@@ -118,7 +125,9 @@ public class ClientExpeditionsController implements Initializable {
         Label dateLabel = new Label("Send date: " + dateFormat.format(expedition.getSendDate()));
         Label deliveryLabel = new Label("Est. delivery: " + dateFormat.format(expedition.getEstimatedDeliveryDate()));
 
-        String transporterName =
+        // Safely handle null transporter
+        String transporterName = expedition.getTransporter() != null ?
+                expedition.getTransporter().getFirstName() + " " + expedition.getTransporter().getLastName() :
                 "Not assigned";
         Label transporterLabel = new Label("Transporter: " + transporterName);
 
@@ -132,27 +141,87 @@ public class ClientExpeditionsController implements Initializable {
 
         content.getChildren().add(detailsGrid);
 
-        // Create buttons
-        HBox buttons = new HBox();
-        buttons.setSpacing(10);
+        // Show appropriate status information based on expedition status
+        if (expedition.getPackageStatus() == PackageStatus.PENDING) {
+            // Show "Awaiting transporter assignment" message for pending expeditions
+            Label pendingLabel = new Label("Awaiting transporter assignment...");
+            pendingLabel.getStyleClass().add("pending-text");
+            pendingLabel.setAlignment(Pos.CENTER);
+
+            VBox pendingBox = new VBox(pendingLabel);
+            pendingBox.setAlignment(Pos.CENTER);
+            pendingBox.setPadding(new Insets(10, 0, 5, 0));
+            content.getChildren().add(pendingBox);
+        }
+        // Only show approval options if a transporter is assigned AND status is awaiting approval
+        else if (expedition.getPackageStatus() == PackageStatus.AWAITING_CLIENT_APPROVAL &&
+                expedition.getTransporter() != null) {
+            // Create a highlighted approval section
+            VBox approvalSection = new VBox();
+            approvalSection.getStyleClass().add("approval-section");
+            approvalSection.setPadding(new Insets(10));
+            approvalSection.setSpacing(10);
+
+            // Add notification about transporter assignment
+            Label approvalLabel = new Label("Transporter " +
+                    expedition.getTransporter().getFirstName() + " " +
+                    expedition.getTransporter().getLastName() +
+                    " has been assigned to your expedition.");
+            approvalLabel.setWrapText(true);
+            approvalLabel.getStyleClass().add("approval-text");
+
+            // Create distinctively styled buttons
+            HBox buttonBox = new HBox();
+            buttonBox.setAlignment(Pos.CENTER);
+            buttonBox.setSpacing(20);
+
+            Button acceptBtn = new Button("Accept");
+            acceptBtn.setPrefWidth(120);
+            acceptBtn.setPrefHeight(35);
+            acceptBtn.getStyleClass().add("accept-button");
+            acceptBtn.setOnAction(e -> handleAcceptTransporter(expedition));
+
+            Button rejectBtn = new Button("Reject");
+            rejectBtn.setPrefWidth(120);
+            rejectBtn.setPrefHeight(35);
+            rejectBtn.getStyleClass().add("reject-button");
+            rejectBtn.setOnAction(e -> handleRejectTransporter(expedition));
+
+            // Add buttons to the button box
+            buttonBox.getChildren().addAll(acceptBtn, rejectBtn);
+
+            // Add label and buttons to the approval section
+            approvalSection.getChildren().addAll(approvalLabel, buttonBox);
+
+            // Add approval section to content
+            content.getChildren().add(approvalSection);
+        }
+
+        // Create buttons - FIX: Create a FlowPane instead of HBox to handle button wrapping
+        FlowPane buttons = new FlowPane();
+        buttons.setHgap(8);  // Horizontal gap between buttons
+        buttons.setVgap(8);  // Vertical gap if buttons wrap to next line
         buttons.setAlignment(Pos.CENTER_RIGHT);
         buttons.setPadding(new Insets(12, 0, 0, 0));
 
+        // Reduce button width to fit better
+        double buttonWidth = 80;
+
         // View details button
         Button viewDetailsBtn = new Button("Details");
-        viewDetailsBtn.setPrefWidth(90);
+        viewDetailsBtn.setPrefWidth(buttonWidth);
         viewDetailsBtn.getStyleClass().addAll("primary-button");
         viewDetailsBtn.setOnAction(event -> handleViewExpedition(expedition));
 
         // Track history button
         Button trackHistoryBtn = new Button("Track");
-        trackHistoryBtn.setPrefWidth(90);
+        trackHistoryBtn.setPrefWidth(buttonWidth);
         trackHistoryBtn.getStyleClass().addAll("secondary-button");
         trackHistoryBtn.setOnAction(event -> handleTrackHistory(expedition));
 
         // Edit button (only available for PENDING expeditions)
         Button editBtn = new Button("Edit");
-        editBtn.setPrefWidth(90);
+        editBtn.setPrefWidth(buttonWidth);
         editBtn.getStyleClass().addAll("neutral-button");
         editBtn.setOnAction(event -> handleEditExpedition(expedition));
 
@@ -164,7 +233,7 @@ public class ClientExpeditionsController implements Initializable {
 
         // Delete button
         Button deleteBtn = new Button("Delete");
-        deleteBtn.setPrefWidth(90);
+        deleteBtn.setPrefWidth(buttonWidth);
         deleteBtn.getStyleClass().addAll("danger-button");
         deleteBtn.setOnAction(event -> handleDeleteExpedition(expedition));
 
@@ -185,11 +254,13 @@ public class ClientExpeditionsController implements Initializable {
 
         return card;
     }
-
+    // Update this method to handle AWAITING_CLIENT_APPROVAL status
     private String getStatusStyleClass(PackageStatus status) {
         switch (status) {
             case PENDING:
                 return "status-pending";
+            case AWAITING_CLIENT_APPROVAL:
+                return "status-awaiting-approval";
             case SHIPPED:
                 return "status-shipped";
             case IN_TRANSIT:
@@ -203,6 +274,34 @@ public class ClientExpeditionsController implements Initializable {
         }
     }
 
+    private void handleAcceptTransporter(Expedition expedition) {
+        try {
+            expedition.setPackageStatus(PackageStatus.SHIPPED);
+            expeditionService.update(expedition);
+            showAlert(Alert.AlertType.INFORMATION, "Transporter Accepted",
+                    "You've accepted the transporter for your expedition. Its status is now Shipped.");
+            loadExpeditions();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not accept transporter: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void handleRejectTransporter(Expedition expedition) {
+        try {
+            expedition.setTransporter(null);
+            expedition.setPackageStatus(PackageStatus.PENDING);
+            expeditionService.update(expedition);
+            showAlert(Alert.AlertType.INFORMATION, "Transporter Rejected",
+                    "You've rejected the transporter. Your expedition will be reassigned.");
+            loadExpeditions();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not reject transporter: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
     private void handleNewExpedition() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpeditionManagement/NewExpedition.fxml"));
@@ -211,7 +310,7 @@ public class ClientExpeditionsController implements Initializable {
             NewExpeditionController controller = loader.getController();
 
             // The issue is here - getById() returns a User object that can't be directly cast to Client
-            User user = new User(1);
+            User user = userService.getById(STATIC_CLIENT_ID);
 
             // Fix: Check if the role is CLIENT before casting
             if (user != null && user.getRole() == Role.CLIENT) {

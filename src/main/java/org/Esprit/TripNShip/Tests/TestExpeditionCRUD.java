@@ -3,6 +3,7 @@ package org.Esprit.TripNShip.Tests;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.ServiceExpedition;
 import org.Esprit.TripNShip.Services.ServiceTransporter;
+import org.Esprit.TripNShip.Services.TransportEXType;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -14,35 +15,35 @@ public class TestExpeditionCRUD {
         ServiceTransporter transporterService = new ServiceTransporter();
 
         // 1. Add new transporters
-//        Transporter transporter1 = new Transporter(
-//                "Jean",
-//                "Dupont",
-//                Gender.MALE,
-//                "laposte@example.com",
-//                "1234",
-//                "profile1.png",
-//                LocalDateTime.of(1985, 5, 20, 0, 0),
-//                "0123456789",
-//                ShippingType.LA_POSTE,
-//                "https://www.laposte.fr"
-//        );
+        Transporter transporter1 = new Transporter(
+                "Jean",
+                "Dupont",
+                Gender.MALE,
+                "laposte@example.com",
+                "1234",
+                "profile1.png",
+                LocalDateTime.of(1985, 5, 20, 0, 0),
+                "0123456789",
+                TransportEXType.LA_POSTE
+              //  "https://www.laposte.fr"
+        );
 
-//        transporterService.add(transporter1);
-//
-//        Transporter transporter2 = new Transporter(
-//                "Marie",
-//                "Curie",
-//                Gender.FEMALE,
-//                "dhl@example.com",
-//                "abcd",
-//                "profile2.png",
-//                LocalDateTime.of(1990, 3, 10, 0, 0),
-//                "0987654321",
-//                ShippingType.DHL,
-//                "https://www.dhl.com"
-//        );
+        transporterService.add(transporter1);
 
-//        transporterService.add(transporter2);
+        Transporter transporter2 = new Transporter(
+                "Marie",
+                "Curie",
+                Gender.FEMALE,
+                "dhl@example.com",
+                "abcd",
+                "profile2.png",
+                LocalDateTime.of(1990, 3, 10, 0, 0),
+                "0987654321",
+                TransportEXType.DHL
+               // "https://www.dhl.com"
+        );
+
+        transporterService.add(transporter2);
 
         // 2. Retrieve all transporters to use real IDs
         List<Transporter> allTransporters = transporterService.getAll();
@@ -53,8 +54,8 @@ public class TestExpeditionCRUD {
 
         // 3. Update transporter
         Transporter transporterToModify = allTransporters.get(0);
-//        transporterToModify.setPhoneNumber("0000000000");
-//        transporterToModify.setEmail("updated@laposte.com");
+        transporterToModify.setPhoneNumber("0000000000");
+        transporterToModify.setEmail("updated@laposte.com");
         transporterService.update(transporterToModify);
 
         // 4. Delete a transporter

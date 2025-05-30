@@ -3,7 +3,7 @@ package org.Esprit.TripNShip.Entities;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public sealed class User permits Client,Employee {
+public sealed class User permits Client, Employee, Transporter {
 
     private int idUser;
     private String firstName;

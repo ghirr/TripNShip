@@ -1,8 +1,5 @@
 package org.Esprit.TripNShip.Controllers;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import org.Esprit.TripNShip.Utils.Shared;
 import org.Esprit.TripNShip.Utils.UserSession;
 
@@ -65,7 +61,8 @@ public class AdminNavigation {
             username.setText(currentUser.getUserFirstName()+" "+currentUser.getUserLastName());
             userIcon.setImage(new Image(currentUser.getUserProfilePhotoPath()));
             btnUserManagement.setOnAction(event -> {navigateToUserManagement();});
-            navigateToUserManagement();
+            btnDashboard.setOnMouseClicked(event -> {navigateToDashBoard();});
+            navigateToDashBoard();
             userIcon.setOnMouseClicked(event -> {navigateToProfile();});
             username.setOnMouseClicked(event -> navigateToProfile());
             currentUser.getprofilePhotoUrlProperty().addListener((obs, oldVal, newVal) -> {
@@ -77,7 +74,8 @@ public class AdminNavigation {
     }
 
 
-    public void navigateToDashBoard(ActionEvent actionEvent) {
+    public void navigateToDashBoard() {
+        loadView("/fxml/dashboardAdmin.fxml");
     }
 
     public void navigateToUserManagement() {

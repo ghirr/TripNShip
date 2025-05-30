@@ -16,6 +16,12 @@ import java.nio.charset.StandardCharsets;
 public class GeoUtils {
     public static String getCoordinatesFromCity(String cityName) throws IOException {
 
+            if (cityName.equalsIgnoreCase("Tunis")) {
+                    double lat = 36.8065;
+                    double lon = 10.1815;
+                    return lat + "," + lon;
+            }
+
             String apiKey = "5b3ce3597851110001cf624873f8c6ba0ae84b41b8a1f73413e37053";
             String url = "https://api.openrouteservice.org/geocode/search?api_key=" + apiKey + "&text=" + URLEncoder.encode(cityName, StandardCharsets.UTF_8);
 

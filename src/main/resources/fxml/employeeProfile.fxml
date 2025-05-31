@@ -72,7 +72,7 @@
                                    text="January 1, 1990"/>
                         </HBox>
                     </VBox>
-                    <VBox spacing="20.0" styleClass="info-section" HBox.hgrow="ALWAYS">
+                    <VBox fx:id="employeeInfo" spacing="20.0" styleClass="info-section" HBox.hgrow="ALWAYS">
                         <padding>
                             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
                         </padding>

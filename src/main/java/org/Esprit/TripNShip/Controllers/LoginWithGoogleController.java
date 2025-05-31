@@ -46,7 +46,7 @@ public class LoginWithGoogleController {
                             User user = authService.googleLogin(email);
                             if(user != null) {
                                 UserSession.initSession(user);
-                                Shared.switchScene(webView,getClass().getResource("/fxml/AccommodationManagementFXML/UserBookings.fxml"),"Main");
+                                Shared.switchScene(webView,getClass().getResource("/fxml/Home.fxml"),"Main");
                             }
                             else {
                                 String firstname = userInfo.optString("given_name");

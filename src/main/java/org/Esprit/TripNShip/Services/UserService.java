@@ -4,10 +4,7 @@ import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -206,9 +203,10 @@ public class UserService implements IService<User> {
                             rs.getString("email"),
                             rs.getString("password"),
                             rs.getString("profilePhoto"),
-                            rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                            getLocalDateTimeOrNull(rs, "birthdayDate"),
                             rs.getString("phoneNumber")
                     );
+
                 } else if ("TRANSPORTER".equals(role)) {
                     // Return a Transporter object
                     return new Transporter(
@@ -449,5 +447,10 @@ public class UserService implements IService<User> {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    private LocalDateTime getLocalDateTimeOrNull(ResultSet rs, String columnLabel) throws SQLException {
+        Timestamp timestamp = rs.getTimestamp(columnLabel);
+        return timestamp != null ? timestamp.toLocalDateTime() : null;
     }
 }

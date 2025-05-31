@@ -5,6 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Pos?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
 <BorderPane fx:id="mainBorderPane"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -13,10 +15,11 @@
 
     <!-- NAVBAR -->
     <top>
-        <HBox fx:id="header" spacing="20" alignment="CENTER" styleClass="header">
+        <HBox fx:id="header" spacing="20" alignment="CENTER_LEFT" styleClass="header">
             <!-- Logo à gauche -->
             <ImageView fx:id="logoImage" fitHeight="55" fitWidth="75" styleClass="logo"/>
 
+            <!-- Menu au centre -->
             <HBox spacing="40" alignment="CENTER" styleClass="menu">
                 <Label fx:id="homeLabel" text="Home" styleClass="menu-item"/>
                 <Label fx:id="accommodationLabel" text="Accommodation" styleClass="menu-item"/>
@@ -26,11 +29,24 @@
                 <Label fx:id="vehicleLabel" text="Vehicle" styleClass="menu-item"/>
             </HBox>
 
+            <!-- Region pushes everything that follows to the right -->
+            <Region HBox.hgrow="ALWAYS" />
 
-            <!-- Espace extensible à droite -->
-            <Pane HBox.hgrow="ALWAYS"/>
+            <!-- User info aligned right -->
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <ImageView fx:id="userIcon" fitHeight="25.5" fitWidth="26.5" style="-fx-cursor: hand;">
+                    <Image url="@../images/icon_user_session.png" />
+                </ImageView>
+
+                <Label fx:id="username" prefHeight="25" styleClass="username" text="Islem Ghariani" style="-fx-cursor: hand;"/>
+
+                <ImageView fx:id="logoutIcon" fitHeight="22.5" fitWidth="22.5" onMouseClicked="#logout" pickOnBounds="true" style="-fx-cursor: hand">
+                    <Image url="@../images/logout.png" />
+                </ImageView>
+            </HBox>
         </HBox>
     </top>
+
 
     <!-- CONTENU PRINCIPAL AVEC SCROLL -->
     <center>

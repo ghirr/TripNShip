@@ -130,12 +130,31 @@
                 <Button fx:id="btnCircuitBooking" onAction="#navigateToCircuitBooking" text="Circuit Booking" styleClass="sidebar-sub-button"/>
             </VBox>
 
-            <Button fx:id="btnExpeditionManagement" onAction="#navigateToExpeditionManagement" styleClass="sidebar-button" text=" Expedition Management">
+            <Button fx:id="btnExpeditionManagement" onAction="#toggleSubMenuExpeditionManagement" styleClass="sidebar-button">
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_expedition_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_expedition_management.png"/>
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text=" Expedition Management"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="arrowIconExpeditionManagement" fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@/images/fleche.png"/>
+                        </ImageView>
+                    </HBox>
                 </graphic>
+            </Button>
+            <VBox fx:id="SubMenuExpeditionManagement" visible="false" managed="false">
+                <Button fx:id="btnAssignExpedition" onAction="#navigateToAssignExpedition" text="Assign Expedition" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnExpeditionOverview" onAction="#navigateToExpeditionOverview" text="Expedition Overview" styleClass="sidebar-sub-button"/>
+            </VBox>
+
+            <Button fx:id="btnExpeditionAgent" onAction="#navigateToExpeditionAgent" styleClass="sidebar-button" text=" Expedition Agent" >
+            <graphic>
+                <ImageView fitHeight="30.0" fitWidth="30.0">
+                    <Image url="@../images/icon_expedition_management.png" />
+                </ImageView>
+            </graphic>
             </Button>
         </VBox>
     </ScrollPane>

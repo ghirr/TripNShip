@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Utils.Shared;
 import org.Esprit.TripNShip.Utils.UserSession;
 
@@ -45,9 +46,15 @@ public class AdminNavigation {
     public Button btnVehicleRental;
     public Button btnTourCircuit;
     public Button btnCircuitBooking;
+    public ImageView arrowIconExpeditionManagement;
+    public VBox SubMenuExpeditionManagement;
+    public Button btnAssignExpedition;
+    public Button btnExpeditionOverview;
+    public Button btnExpeditionAgent;
     private boolean isSubMenuTransportManagementVisible = false;
     private boolean isSubMenuAccommodationManagementVisible = false;
     private boolean isSubMenuCircuitManagementVisible = false;
+    private boolean isSubMenuExpeditionManagementVisible = false;
 
     public AdminNavigation() {
         instance = this;
@@ -66,6 +73,33 @@ public class AdminNavigation {
             logout();
         }
         else{
+
+            if (!currentUser.getUserRole().equals(Role.ADMIN)) {
+                btnDashboard.setVisible(false);
+                btnUserManagement.setVisible(false);
+                btnExpeditionOverview.setVisible(false);
+            }
+
+            if (!currentUser.getUserRole().equals(Role.TRAVEL_ORGANIZER) && !currentUser.getUserRole().equals(Role.ADMIN)) {
+                btnTransportManagement.setVisible(false);
+            }
+
+            if (!currentUser.getUserRole().equals(Role.ACCOMMODATION_SPECIALIST) && !currentUser.getUserRole().equals(Role.ADMIN)) {
+                btnAccommodationManagement.setVisible(false);
+            }
+
+            if (!currentUser.getUserRole().equals(Role.TOUR_COORDINATOR) && !currentUser.getUserRole().equals(Role.ADMIN)) {
+                btnCircuitManagement.setVisible(false);
+            }
+
+            if (!currentUser.getUserRole().equals(Role.SHIPPING_COORDINATOR) && !currentUser.getUserRole().equals(Role.ADMIN)) {
+                btnExpeditionManagement.setVisible(false);
+            }
+
+            if (!currentUser.getUserRole().equals(Role.TRANSPORTER)) {
+                btnExpeditionAgent.setVisible(false);
+            }
+
             username.setText(currentUser.getUserFirstName()+" "+currentUser.getUserLastName());
             userIcon.setImage(new Image(currentUser.getUserProfilePhotoPath()));
             btnUserManagement.setOnAction(event -> {navigateToUserManagement();});
@@ -198,5 +232,22 @@ public class AdminNavigation {
 
     public void navigateToCircuitBooking(ActionEvent actionEvent) {
         loadView("/fxml/CircuitManagementFXML/CircuitBookingListView.fxml");
+    }
+
+    public void toggleSubMenuExpeditionManagement(ActionEvent actionEvent) {
+        toggleSubMenu(SubMenuExpeditionManagement, arrowIconExpeditionManagement, isSubMenuExpeditionManagementVisible);
+        isSubMenuExpeditionManagementVisible = !isSubMenuExpeditionManagementVisible;
+    }
+
+    public void navigateToAssignExpedition(ActionEvent actionEvent) {
+        loadView("/fxml/ExpeditionManagement/AgentPendingExpeditions.fxml");
+    }
+
+    public void navigateToExpeditionOverview(ActionEvent actionEvent) {
+        loadView("/fxml/ExpeditionManagement/AdminExpeditionsView.fxml");
+    }
+
+    public void navigateToExpeditionAgent(ActionEvent actionEvent) {
+        loadView("/fxml/ExpeditionManagement/TransporterExpeditions.fxml");
     }
 }

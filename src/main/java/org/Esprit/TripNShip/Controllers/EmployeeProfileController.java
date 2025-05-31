@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
@@ -34,6 +35,7 @@ import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 public class EmployeeProfileController {
 
+    public VBox employeeInfo;
     @FXML
     private Label nameLabel, emailLabel, roleLabel, genderLabel, phoneLabel, birthDateLabel;
     @FXML
@@ -71,6 +73,10 @@ public class EmployeeProfileController {
         profileImageView.setSmooth(true);
         profileImageView.setCache(true);
         editProfileBtn.setOnAction(e -> handleEditProfile(e));
+
+        if (UserSession.getInstance().getUserRole().equals(Role.CLIENT)){
+            employeeInfo.setVisible(false);
+        }
         loadUserData();
 
     }

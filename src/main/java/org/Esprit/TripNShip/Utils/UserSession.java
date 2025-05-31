@@ -28,6 +28,7 @@ public class UserSession {
     }
 
     public static void initSession(User user) {
+        System.out.println(user);
         if (instance == null) {
             instance = new UserSession(user.getIdUser(),user.getFirstName(), user.getLastName(), user.getRole(), user.getEmail(), user.getProfilePhoto());
         }

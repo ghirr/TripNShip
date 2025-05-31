@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Services.ServiceExpedition;
 import org.Esprit.TripNShip.Services.UserService;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +36,7 @@ public class ClientExpeditionsController implements Initializable {
     @FXML
     private Button refreshBtn;
 
-    private final int STATIC_CLIENT_ID = 67;
+    private int STATIC_CLIENT_ID = UserSession.getInstance().getUserId();
     private ServiceExpedition expeditionService;
     private UserService userService;
 
@@ -211,6 +212,7 @@ public class ClientExpeditionsController implements Initializable {
         Button viewDetailsBtn = new Button("Details");
         viewDetailsBtn.setPrefWidth(buttonWidth);
         viewDetailsBtn.getStyleClass().addAll("primary-button");
+        viewDetailsBtn.setStyle("-fx-background-color: #F27438");
         viewDetailsBtn.setOnAction(event -> handleViewExpedition(expedition));
 
         // Track history button
@@ -223,6 +225,7 @@ public class ClientExpeditionsController implements Initializable {
         Button editBtn = new Button("Edit");
         editBtn.setPrefWidth(buttonWidth);
         editBtn.getStyleClass().addAll("neutral-button");
+        viewDetailsBtn.setStyle("-fx-background-color: #4AA3A2");
         editBtn.setOnAction(event -> handleEditExpedition(expedition));
 
         // Disable edit button if expedition is not in PENDING state

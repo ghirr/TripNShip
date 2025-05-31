@@ -30,17 +30,23 @@
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User Email" />
                         <TextField fx:id="userEmailField" maxWidth="Infinity" promptText="e.g TUN DJE" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Location" />
+                        <TextField fx:id="departureLocationField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Location" />
+                        <TextField fx:id="arrivalLocationField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Date" />
                         <DatePicker fx:id="departureDatePicker" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Date" />
-                        <TextField fx:id="arrivalDateField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="arrivalDateField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Time" />
-                        <TextField fx:id="departureTimeField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="departureTimeField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Time" />
-                        <TextField fx:id="arrivalTimeField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <TextField fx:id="arrivalTimeField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Price" />
                     </VBox>
 

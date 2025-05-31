@@ -19,6 +19,8 @@ public class UpdateTicketController implements Initializable {
     @FXML private ComboBox<String> itineraryCodeComboBox;
     @FXML private TextField userEmailField;
     @FXML private DatePicker departureDatePicker;
+    @FXML private TextField departureLocationField;
+    @FXML private TextField arrivalLocationField;
     @FXML private TextField arrivalDateField;
     @FXML private TextField departureTimeField;
     @FXML private TextField arrivalTimeField;
@@ -36,6 +38,8 @@ public class UpdateTicketController implements Initializable {
         }
         itineraryCodeComboBox.setOnAction(event -> onItineraryCodeSelected());
         departureDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> updateArrivalDate());
+        departureLocationField.setEditable(false);
+        arrivalLocationField.setEditable(false);
         departureTimeField.setEditable(false);
         arrivalTimeField.setEditable(false);
         arrivalDateField.setEditable(false);
@@ -115,6 +119,8 @@ public class UpdateTicketController implements Initializable {
             if (itinerary != null) {
                 departureTimeField.setText(itinerary.getDepartureTime().toString());
                 arrivalTimeField.setText(itinerary.getArrivalTime().toString());
+                departureLocationField.setText(itinerary.getDepartureLocation());
+                arrivalLocationField.setText(itinerary.getArrivalLocation());
                 updateArrivalDate();
             }
         }

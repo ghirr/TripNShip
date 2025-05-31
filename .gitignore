@@ -35,3 +35,4 @@ build/
 tokens
 src/main/resources/credentials.json
 .env
+.env

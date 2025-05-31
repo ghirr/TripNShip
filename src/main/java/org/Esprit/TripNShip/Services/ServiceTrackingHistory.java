@@ -19,6 +19,7 @@ public class ServiceTrackingHistory {
     }
 
     public void addTrackingEntry(TrackingHistory tracking) {
+        System.out.println(tracking);
         String query = "INSERT INTO tracking_history (expeditionId, status, locationNote, timestamp, updatedBy) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
@@ -27,7 +28,7 @@ public class ServiceTrackingHistory {
             pst.setString(2, tracking.getStatus().name());
             pst.setString(3, tracking.getLocationNote());
             pst.setTimestamp(4, Timestamp.valueOf(tracking.getTimestamp()));
-            pst.setInt(5, tracking.getUpdatedBy().getIdUser());
+            pst.setInt(5, tracking.getExpedition().getTransporter().getIdUser());
 
             pst.executeUpdate();
             System.out.println("Tracking entry added!");

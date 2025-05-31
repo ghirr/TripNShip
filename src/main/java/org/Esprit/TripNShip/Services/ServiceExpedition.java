@@ -177,6 +177,9 @@ public class ServiceExpedition implements IService<Expedition> {
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
                 // Client
+                Timestamp clientBirthdayTimestamp = rs.getTimestamp("clientBirthdayDate");
+                LocalDateTime clientBirthday = clientBirthdayTimestamp != null ? clientBirthdayTimestamp.toLocalDateTime() : null;
+
                 Client client = new Client(
                         rs.getInt("clientId"),
                         rs.getString("clientFirstName"),
@@ -185,7 +188,7 @@ public class ServiceExpedition implements IService<Expedition> {
                         rs.getString("clientEmail"),
                         rs.getString("clientPassword"),
                         rs.getString("clientProfilePhoto"),
-                        rs.getTimestamp("clientBirthdayDate").toLocalDateTime(),
+                        clientBirthday,
                         rs.getString("clientPhoneNumber")
                 );
 

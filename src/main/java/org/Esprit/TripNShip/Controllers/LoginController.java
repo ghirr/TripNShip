@@ -125,6 +125,11 @@ public class LoginController {
         Shared.switchScene(actionEvent,getClass().getResource("/fxml/signUp.fxml"),"Sign Up");
     }
 
+
+    public void switchToFaceLogin(ActionEvent actionEvent) {
+        Shared.switchScene(actionEvent,getClass().getResource("/fxml/FaceLogin.fxml"),"Face ID");
+    }
+
     public LoginController() {
         instance = this;
     }
@@ -136,4 +141,5 @@ public class LoginController {
     public Button getToggleButton() {
         return toggleButton;
     }
+
 }

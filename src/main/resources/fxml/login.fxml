@@ -15,10 +15,10 @@
 
     <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" spacing="10">
         <StackPane>
-            <VBox alignment="CENTER" maxWidth="402.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="366.0" spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 10); -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+            <VBox alignment="CENTER" maxWidth="402.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0" prefWidth="402.0" spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 10); -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
 
-                <ImageView fitHeight="150" fitWidth="220" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../images/logo.png"/>
+                <ImageView fitHeight="150.0" fitWidth="220" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/logo.png" />
                 </ImageView>
 
                 <Label style="-fx-font-size: 30px;  -fx-text-fill: #222;" text="Login" />
@@ -57,7 +57,7 @@
                 </VBox>
 
                 <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea);                         -fx-text-fill: white; -fx-font-size: 18px;                         -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300;                         -fx-cursor: hand;" text="Login" />
-            <Button fx:id="googleLogin" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Login using Google" onAction="#handleGoogleLogin">
+            <Button fx:id="googleLogin" onAction="#handleGoogleLogin" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Login using Google">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -66,7 +66,8 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Hyperlink fx:id="signUpLink" onAction="#switchToSignUp"  style="-fx-text-fill: #3b82f6; -fx-font-size: 14px;" text="Sign Up" />
+                <Hyperlink fx:id="faceIDLogin" onAction="#switchToFaceLogin" style="-fx-text-fill: #3b82f6; -fx-font-size: 14px;" text="Face ID" />
+                <Hyperlink fx:id="signUpLink" onAction="#switchToSignUp" style="-fx-text-fill: #3b82f6; -fx-font-size: 14px;" text="Sign Up" />
 
                 <Hyperlink fx:id="forgotPasswordLink" onAction="#switchToForgetPassword" style="-fx-text-fill: #3b82f6; -fx-font-size: 14px;" text="Forgot Password?" />
             </VBox>

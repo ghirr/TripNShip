@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.FaceRegistrationController">
+    <VBox alignment="CENTER" spacing="20">
+        <padding>
+            <Insets top="40" right="40" bottom="40" left="40" />
+        </padding>
+        <VBox spacing="20" alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 10); -fx-border-color: #9333ea; -fx-border-width: 5; -fx-border-radius: 10;" maxWidth="700">
+
+            <Label text="Face Detection System"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #222;" />
+
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="startCameraBtn" onAction="#startCamera" text="Start Camera"
+                        style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;" />
+                <Button fx:id="stopCameraBtn" onAction="#stopCamera" text="Stop Camera"
+                        style="-fx-background-color: #e11d48; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;" />
+            </HBox>
+
+            <ImageView fx:id="cameraImageView"
+                       fitHeight="400.0" fitWidth="640.0"
+                       pickOnBounds="true" preserveRatio="true"
+                       style="-fx-border-color: #333; -fx-border-width: 2; -fx-border-radius: 10;" />
+
+            <ProgressBar fx:id="captureProgress" prefWidth="400" style="-fx-accent: #9333ea;" />
+            <Label fx:id="instructionLabel" style="-fx-font-size: 16px; -fx-text-fill: #333;" />
+
+            <Circle fx:id="qualityIndicator" radius="10" fill="GRAY" stroke="BLACK"/>
+
+            <Label fx:id="statusLabel" text="Initializing..."
+                   style="-fx-padding: 10px; -fx-font-size: 14px; -fx-text-fill: #3b82f6;" />
+
+            <Label text="Face data will be displayed in console output"
+                   style="-fx-text-fill: gray; -fx-font-style: italic;" />
+
+        </VBox>
+    </VBox>
+</StackPane>

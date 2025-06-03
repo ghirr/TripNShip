@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane stylesheets="/Styles/dashboard.css" styleClass="stack-pane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.DashboardAdminController">
+    <children>
+        <ScrollPane styleClass="scroll-pane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" pannable="true">
+            <content>
+                <VBox spacing="20.0" style="-fx-padding: 20;">
+                    <children>
+                        <!-- Dashboard Header -->
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label styleClass="dashboard-title" text="TripNShip Analytics Dashboard">
+                                    <font>
+                                        <Font name="System Bold" size="32.0" />
+                                    </font>
+                                </Label>
+                                <Label styleClass="dashboard-subtitle" text="Comprehensive view of your travel and transportation business" />
+                                <Separator styleClass="separator" />
+                            </children>
+                        </VBox>
+
+                        <!-- Key Performance Indicators -->
+                        <VBox spacing="15.0">
+                            <children>
+                                <Label styleClass="section-title" text="Key Performance Indicators" />
+                                <GridPane hgap="15.0" vgap="15.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <!-- Total Users KPI -->
+                                        <VBox alignment="CENTER" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="0">
+                                            <children>
+                                                <Label fx:id="totalUsersLabel" styleClass="kpi-value,blue" text="1,247" />
+                                                <Label styleClass="kpi-label" text="Total Users" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Active Bookings KPI -->
+                                        <VBox alignment="CENTER" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="1">
+                                            <children>
+                                                <Label fx:id="activeBookingsLabel" styleClass="kpi-value,green" text="342" />
+                                                <Label styleClass="kpi-label" text="Active Bookings" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Revenue KPI -->
+                                        <VBox alignment="CENTER" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="2">
+                                            <children>
+                                                <Label fx:id="revenueLabel" styleClass="kpi-value,orange" text="127$" />
+                                                <Label styleClass="kpi-label" text="Monthly Revenue" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Expeditions KPI -->
+                                        <VBox alignment="CENTER" spacing="10.0" styleClass="kpi-card" GridPane.columnIndex="3">
+                                            <children>
+                                                <Label fx:id="expeditionsLabel" styleClass="kpi-value,red" text="89" />
+                                                <Label styleClass="kpi-label" text="Active Expeditions" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+
+                        <!-- First Row of Charts -->
+                        <HBox spacing="20.0">
+                            <children>
+                                <!-- Booking Status Distribution -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Booking Status Distribution" />
+                                        <PieChart fx:id="bookingStatusChart" styleClass="pie-chart" legendSide="RIGHT" prefHeight="300.0" />
+                                    </children>
+                                </VBox>
+
+                                <!-- Transportation Types -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Transportation Types" />
+                                        <PieChart fx:id="transportationTypesChart" styleClass="pie-chart" legendSide="RIGHT" prefHeight="300.0" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Second Row of Charts -->
+                        <HBox spacing="20.0">
+                            <children>
+                                <!-- Monthly Revenue Trend -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Monthly Revenue Trend" />
+                                        <AreaChart fx:id="revenueChart" styleClass="area-chart" prefHeight="300.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </AreaChart>
+                                    </children>
+                                </VBox>
+
+                                <!-- User Growth -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="User Registration Growth" />
+                                        <LineChart fx:id="userGrowthChart" styleClass="line-chart" prefHeight="300.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </LineChart>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Third Row of Charts -->
+                        <HBox spacing="20.0">
+                            <children>
+                                <!-- Vehicle Availability -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Vehicle Types Distribution" />
+                                        <BarChart fx:id="vehicleTypesChart" styleClass="bar-chart" prefHeight="300.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                </VBox>
+
+                                <!-- Accommodation Occupancy -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Accommodation Types" />
+                                        <BarChart fx:id="accommodationTypesChart" styleClass="bar-chart" prefHeight="300.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Fourth Row of Charts -->
+                        <HBox spacing="20.0">
+                            <children>
+                                <!-- Expedition Status -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Expedition Status Overview" />
+                                        <PieChart fx:id="expeditionStatusChart" styleClass="pie-chart" legendSide="RIGHT" prefHeight="300.0" />
+                                    </children>
+                                </VBox>
+
+                                <!-- Tour Circuit Bookings -->
+                                <VBox spacing="10.0" styleClass="chart-container" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Popular Tour Destinations" />
+                                        <BarChart fx:id="tourDestinationsChart" styleClass="bar-chart" prefHeight="300.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Fifth Row - Full Width Charts -->
+                        <VBox spacing="20.0">
+                            <children>
+                                <!-- Daily Bookings Activity -->
+                                <VBox spacing="10.0" styleClass="chart-container">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Daily Booking Activity (Last 30 Days)" />
+                                        <LineChart fx:id="dailyBookingsChart" styleClass="line-chart" prefHeight="250.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </LineChart>
+                                    </children>
+                                </VBox>
+
+                                <!-- Revenue by Service Type -->
+                                <VBox spacing="10.0" styleClass="chart-container">
+                                    <children>
+                                        <Label styleClass="chart-title-label" text="Revenue Distribution by Service Type" />
+                                        <BarChart fx:id="revenueByServiceChart" styleClass="bar-chart" prefHeight="250.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Additional Statistics -->
+                        <VBox spacing="15.0">
+                            <children>
+                                <Label styleClass="section-title" text="Additional Statistics" />
+                                <GridPane hgap="15.0" vgap="15.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <!-- Total Accommodations -->
+                                        <VBox alignment="CENTER" spacing="5.0" styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                            <children>
+                                                <Label fx:id="totalAccommodationsLabel" styleClass="stat-value,purple" text="156" />
+                                                <Label styleClass="stat-label" text="Total Accommodations" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Available Vehicles -->
+                                        <VBox alignment="CENTER" spacing="5.0" styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                            <children>
+                                                <Label fx:id="availableVehiclesLabel" styleClass="stat-value,cyan" text="78" />
+                                                <Label styleClass="stat-label" text="Available Vehicles" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Active Transport Routes -->
+                                        <VBox alignment="CENTER" spacing="5.0" styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                            <children>
+                                                <Label fx:id="activeRoutesLabel" styleClass="stat-value,purple" text="23" />
+                                                <Label styleClass="stat-label" text="Active Routes" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Tour Circuits -->
+                                        <VBox alignment="CENTER" spacing="5.0" styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                            <children>
+                                                <Label fx:id="tourCircuitsLabel" styleClass="stat-value,orange" text="12" />
+                                                <Label styleClass="stat-label" text="Tour Circuits" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Rental Agencies -->
+                                        <VBox alignment="CENTER" spacing="5.0" styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <children>
+                                                <Label fx:id="rentalAgenciesLabel" styleClass="stat-value,green" text="15" />
+                                                <Label styleClass="stat-label" text="Partner Agencies" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Average Rating -->
+                                        <VBox alignment="CENTER" spacing="5.0" styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                            <children>
+                                                <Label fx:id="averageRatingLabel" styleClass="stat-value,orange" text="4.7★" />
+                                                <Label styleClass="stat-label" text="Average Rating" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </GridPane>
+                            </children>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</StackPane>

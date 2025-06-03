@@ -45,6 +45,7 @@ public class VehicleService implements IService<Vehicle> {
 
     @Override
     public void update(Vehicle vehicle) {
+        System.out.println(vehicle);
         String req = "UPDATE vehicle SET brand=?, model=?, licensePlate=?, dailyPrice=?, availability=?, type=?, idAgency=?, imageURL=? WHERE idVehicle=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);

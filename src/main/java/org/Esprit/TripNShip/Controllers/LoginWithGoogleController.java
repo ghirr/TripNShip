@@ -3,6 +3,7 @@ package org.Esprit.TripNShip.Controllers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -10,6 +11,8 @@ import org.Esprit.TripNShip.Entities.Client;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AuthService;
 import org.Esprit.TripNShip.Services.GoogleOAuthService;
+import org.Esprit.TripNShip.Utils.Shared;
+import org.Esprit.TripNShip.Utils.UserSession;
 import org.json.JSONObject;
 
 import static org.Esprit.TripNShip.Utils.Shared.showAlert;
@@ -42,7 +45,8 @@ public class LoginWithGoogleController {
                             String email = userInfo.optString("email");
                             User user = authService.googleLogin(email);
                             if(user != null) {
-                                System.out.println(user.getEmail());
+                                UserSession.initSession(user);
+                                Shared.switchScene(webView,getClass().getResource("/fxml/Home.fxml"),"Main");
                             }
                             else {
                                 String firstname = userInfo.optString("given_name");
@@ -56,8 +60,8 @@ public class LoginWithGoogleController {
                         }
                         // Close the Googlelogin window
                         Platform.runLater(() -> {
-                            Stage stage = (Stage) webView.getScene().getWindow();
-                            stage.close();
+                            Stage stage1 = (Stage) LoginController.getInstance().getToggleButton().getScene().getWindow();
+                            stage1.close();
                         });
                     }).start();
                 }

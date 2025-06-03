@@ -19,6 +19,7 @@ public class RentalAgencyService implements IService<RentalAgency> {
     public void add(RentalAgency rentalAgency) {
         String req = "INSERT INTO rentalagency(nameAgency, addressAgency, contactAgency, rating) VALUES (?, ?, ?, ?)";
         try {
+            System.out.println(rentalAgency);
             PreparedStatement pst = connection.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             pst.setFloat(4, rentalAgency.getRating());
             pst.setString(3, rentalAgency.getContactAgency());
@@ -26,11 +27,11 @@ public class RentalAgencyService implements IService<RentalAgency> {
             pst.setString(1, rentalAgency.getNameAgency());
             pst.executeUpdate();
             // 🔽 Récupération de l’ID généré
-            ResultSet res = pst.getGeneratedKeys();
-            if (res.next()) {
-                int generatedId = res.getInt(1);
-                rentalAgency.setIdAgency(generatedId); // Mise à jour de l'objet Java avec l'ID généré
-            }
+//            ResultSet res = pst.getGeneratedKeys();
+//            if (res.next()) {
+//                int generatedId = res.getInt(1);
+//                rentalAgency.setIdAgency(generatedId); // Mise à jour de l'objet Java avec l'ID généré
+//            }
             System.out.println("Rental Agency added !");
 
         }catch (SQLException e) {

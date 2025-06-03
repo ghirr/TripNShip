@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.TransportController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="900" spacing="10" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+<!--                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                        <Image url="@/images/logo.png" />-->
+<!--                    </ImageView>-->
+
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Transports" />
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+
+                        <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+
+                        <!-- StackPane to contain TextField and Icon inside it -->
+                        <StackPane />
+
+                        <Button fx:id="addTransportButton" onAction="#toAddTransport" prefHeight="28.0" prefWidth="112.0" style="-fx-background-color: linear-gradient(to right, #10b981, #9333ea); -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5 10; -fx-background-radius: 8; -fx-cursor: hand;" text="Add">
+                            <graphic>
+                                <ImageView fitHeight="18" fitWidth="18">
+                                    <Image url="@../../resources/images/icons8-plus-24.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <TextField fx:id="searchField" maxWidth="300.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Company Name.." />
+                        <ComboBox fx:id="transportationFilterComboBox" maxWidth="300.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Filter by Transportation Type..." translateX="226.0" />
+                    </HBox>
+                    <TableView fx:id="transportTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                        <columns>
+                            <TableColumn fx:id="logoColumn" text="Logo">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="logoPath" />
+                                </cellValueFactory>
+                            </TableColumn>
+                     <TableColumn fx:id="transporterReferenceColumn" prefWidth="75.0" text="Transporter Reference">
+                         <cellValueFactory>
+                             <PropertyValueFactory property="transporterReference" />
+                         </cellValueFactory>
+                     </TableColumn>
+                            <TableColumn fx:id="transportationColumn" prefWidth="102.0" text="Transportation">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="transportation" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="companyNameColumn" prefWidth="109.0" text="Company Name">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="companyName" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="companyPhoneColumn" prefWidth="117.0" text="Company Phone">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="companyPhone" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="companyEmailColumn" prefWidth="119.0" text="Company Email">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="companyEmail" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="companyWebsiteColumn" prefWidth="119.0" text="Company Website">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="companyWebsite" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="actionsColumn" maxWidth="109.0" minWidth="100.0" prefWidth="109.0" text="Actions" />
+
+                        </columns>
+                    </TableView>
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

@@ -10,8 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import org.Esprit.TripNShip.Services.AuthService;
 
-import java.sql.SQLException;
-
 import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 import static org.Esprit.TripNShip.Utils.Shared.switchScene;
 
@@ -64,7 +62,7 @@ public class ResetPasswordController {
         }
 
         System.out.println("mriguel");
-        if(authService.updatePassword(phoneNumber, newPassword)) {
+        if(authService.updatePasswordByPhoneNumber(phoneNumber, newPassword)) {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Password successfully reset it");
             switchScene(event,getClass().getResource("/fxml/login.fxml"),"Login");
         }else {

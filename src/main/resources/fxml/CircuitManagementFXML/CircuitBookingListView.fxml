@@ -14,20 +14,20 @@
     <VBox style="-fx-padding: 15;" alignment="CENTER">
         <HBox spacing="0" prefWidth="Infinity" VBox.vgrow="ALWAYS">
             <!-- Sidebar -->
-            <fx:include source="sidebar.fxml"/>
+<!--            <fx:include source="sidebar.fxml"/>-->
 
             <!-- Main Content -->
             <VBox spacing="0" HBox.hgrow="ALWAYS"
                   style="-fx-background-color: white; -fx-background-radius: 0 15 15 0;">
 
-                <!-- Navbar -->
-                <HBox spacing="10" alignment="CENTER_RIGHT"
-                      style="-fx-padding: 10 20 10 20; -fx-background: linear-gradient(to right, #2980B9, #6DD5FA); -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
-                    <Label text="Welcome, Admin" style="-fx-text-fill: #fff; -fx-font-size: 18px; font-weight: bold;" />
-                    <ImageView fitHeight="30" fitWidth="35" style="-fx-border-radius: 100%;">
-                        <Image url="@../../images/user_icon.jpg" />
-                    </ImageView>
-                </HBox>
+<!--                &lt;!&ndash; Navbar &ndash;&gt;-->
+<!--                <HBox spacing="10" alignment="CENTER_RIGHT"-->
+<!--                      style="-fx-padding: 10 20 10 20; -fx-background: linear-gradient(to right, #2980B9, #6DD5FA); -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">-->
+<!--                    <Label text="Welcome, Admin" style="-fx-text-fill: #fff; -fx-font-size: 18px; font-weight: bold;" />-->
+<!--                    <ImageView fitHeight="30" fitWidth="35" style="-fx-border-radius: 100%;">-->
+<!--                        <Image url="@../../images/user_icon.jpg" />-->
+<!--                    </ImageView>-->
+<!--                </HBox>-->
 
                 <!-- Content Area -->
                 <BorderPane maxHeight="800" maxWidth="10000"

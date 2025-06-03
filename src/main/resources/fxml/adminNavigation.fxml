@@ -46,10 +46,11 @@
     </VBox>
 
     <!-- Scrollable Sidebar -->
-    <ScrollPane fitToHeight="true" prefWidth="250" styleClass="sidebar-scrollpane" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="173.0">
+    <ScrollPane fitToHeight="true" prefWidth="250" styleClass="sidebar-scrollpane"
+                AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="173.0">
         <VBox alignment="CENTER" prefWidth="330.0" spacing="25" style="-fx-background-color: #2A1B50; -fx-alignment: TOP_CENTER;">
             <!-- Dashboard -->
-            <Button fx:id="btnDashboard" onAction="#navigateToDashBoard" styleClass="sidebar-button" text="  Dashboard">
+            <Button fx:id="btnDashboard" styleClass="sidebar-button" text="  Dashboard">
                 <graphic>
                     <ImageView fitHeight="30.0" fitWidth="30.0">
                         <Image url="@../images/icon_dashboard.png" />
@@ -66,36 +67,94 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="btnTransportManagement" onAction="#navigateToTransportManagement" styleClass="sidebar-button" text=" Transport Management">
+            <Button fx:id="btnTransportManagement" onAction="#toggleSubMenuTransportManagement" styleClass="sidebar-button" >
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_transport_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_transport_management.png" />
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text="Transport Management" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <ImageView fx:id="arrowIconTransportManagement" fitHeight="20.0" fitWidth="20.0">
+                            <image>
+                                <Image url="@/images/fleche.png" />
+                            </image>
+                        </ImageView>
+                    </HBox>
                 </graphic>
             </Button>
+            <VBox fx:id="subMenuTransportManagement" visible="false" managed="false">
+                <Button fx:id="btnTransports" onAction="#navigateToTransportManagement" text="Transport" styleClass="sidebar-sub-button" />
+                <Button fx:id="btnItinerary" onAction="#navigateToItineraryManagement" text="Itinerary" styleClass="sidebar-sub-button" />
+                <Button fx:id="btnTicket" onAction="#navigateToTicketManagement" text="Ticket" styleClass="sidebar-sub-button" />
+            </VBox>
 
-            <Button fx:id="btnAccommodationManagement" onAction="#navigateToAccommodationManagement" styleClass="sidebar-button" text=" Accommodation Management">
+            <Button fx:id="btnAccommodationManagement" onAction="#toggleSubMenuAccommodationManagement" styleClass="sidebar-button">
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_accommodation_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_accommodation_management.png"/>
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text=" Accommodation Management"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="arrowIconAccommodationManagement" fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@/images/fleche.png"/>
+                        </ImageView>
+                    </HBox>
                 </graphic>
             </Button>
+            <VBox fx:id="subMenuAccommodationManagement" visible="false" managed="false">
+                <Button fx:id="btnAccommodation" onAction="#navigateToAccommodationManagement" text="Accommodation" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnRoom" onAction="#navigateToRoomManagement" text="Room" styleClass="sidebar-sub-button"/>
+            </VBox>
 
-            <Button fx:id="btnCircuitManagement" onAction="#navigateToCircuitManagement" styleClass="sidebar-button" text=" Circuit Management">
+            <Button fx:id="btnCircuitManagement" onAction="#toggleSubMenuCircuitManagement" styleClass="sidebar-button">
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_circuit_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_circuit_management.png"/>
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text=" Circuit Management"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="arrowIconCircuitManagement" fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@/images/fleche.png"/>
+                        </ImageView>
+                    </HBox>
                 </graphic>
             </Button>
+            <VBox fx:id="SubMenuCircuitManagement" visible="false" managed="false">
+                <Button fx:id="btnRentalAgency" onAction="#navigateToRentalAgencyManagement" text="Rental Agency" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnVehicle" onAction="#navigateToVehicle" text="Vehicle" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnVehicleRental" onAction="#navigateToVehicleRental" text="Vehicle Rental" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnTourCircuit" onAction="#navigateToTourCircuit" text="Tour Circuit" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnCircuitBooking" onAction="#navigateToCircuitBooking" text="Circuit Booking" styleClass="sidebar-sub-button"/>
+            </VBox>
 
-            <Button fx:id="btnExpeditionManagement" onAction="#navigateToExpeditionManagement" styleClass="sidebar-button" text=" Expedition Management">
+            <Button fx:id="btnExpeditionManagement" onAction="#toggleSubMenuExpeditionManagement" styleClass="sidebar-button">
                 <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="30.0">
-                        <Image url="@../images/icon_expedition_management.png" />
-                    </ImageView>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="30.0" fitWidth="30.0">
+                            <Image url="@../images/icon_expedition_management.png"/>
+                        </ImageView>
+                        <Label style="-fx-text-fill: white;" text=" Expedition Management"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="arrowIconExpeditionManagement" fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@/images/fleche.png"/>
+                        </ImageView>
+                    </HBox>
                 </graphic>
+            </Button>
+            <VBox fx:id="SubMenuExpeditionManagement" visible="false" managed="false">
+                <Button fx:id="btnAssignExpedition" onAction="#navigateToAssignExpedition" text="Assign Expedition" styleClass="sidebar-sub-button"/>
+                <Button fx:id="btnExpeditionOverview" onAction="#navigateToExpeditionOverview" text="Expedition Overview" styleClass="sidebar-sub-button"/>
+            </VBox>
+
+            <Button fx:id="btnExpeditionAgent" onAction="#navigateToExpeditionAgent" styleClass="sidebar-button" text=" Expedition Agent" >
+            <graphic>
+                <ImageView fitHeight="30.0" fitWidth="30.0">
+                    <Image url="@../images/icon_expedition_management.png" />
+                </ImageView>
+            </graphic>
             </Button>
         </VBox>
     </ScrollPane>

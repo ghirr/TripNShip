@@ -13,6 +13,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import org.Esprit.TripNShip.Entities.VehicleRental;
 import org.Esprit.TripNShip.Services.VehicleRentalService;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ListVehicleBookingController {
     private GridPane gridPane;
 
     private final VehicleRentalService vehicleRentalService = new VehicleRentalService();
-    private final int defaultUserId = 7;
+    private int defaultUserId = UserSession.getInstance().getUserId();
 
     @FXML
     public void initialize() {

@@ -4,10 +4,7 @@ import org.Esprit.TripNShip.Entities.*;
 import org.Esprit.TripNShip.Utils.MyDataBase;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +29,9 @@ public class UserService implements IService<User> {
         else if(user instanceof Client){
             this.addClient((Client) user);
         }
+        else if (user instanceof Transporter) {
+            addTransporter((Transporter) user);
+        }
     }
 
     @Override
@@ -41,6 +41,9 @@ public class UserService implements IService<User> {
         }
         else if(user instanceof Client){
             this.updateClient((Client) user);
+        }
+        else if (user instanceof Transporter) {
+            updateTransporter((Transporter) user);
         }
 
     }
@@ -89,6 +92,7 @@ public class UserService implements IService<User> {
                         rs.getString("profilePhoto"),
                         birthDateTime,
                         rs.getString("phoneNumber")));
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -178,6 +182,68 @@ public class UserService implements IService<User> {
         }
     }
 
+
+    public User getById(int id) {
+        String req = "SELECT * FROM user WHERE id = ?";  // Note: using idUser, not id
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String role = rs.getString("role");
+
+                if ("CLIENT".equals(role)) {
+                    // Return a Client object
+                    return new Client(
+                            rs.getInt("id"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            getEnumOrNull(Gender.class, rs.getString("gender")),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("profilePhoto"),
+                            getLocalDateTimeOrNull(rs, "birthdayDate"),
+                            rs.getString("phoneNumber")
+                    );
+
+                } else if ("TRANSPORTER".equals(role)) {
+                    // Return a Transporter object
+                    return new Transporter(
+                            rs.getInt("id"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            getEnumOrNull(Gender.class, rs.getString("gender")),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("profilePhoto"),
+                            rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                            rs.getString("phoneNumber"),
+                            TransportEXType.valueOf(rs.getString("transportType"))
+                    );
+                } else {
+                    // For any other role, return a base User object
+                    return new User(
+                            rs.getInt("id"),
+                            rs.getString("firstName"),
+                            rs.getString("lastName"),
+                            getEnumOrNull(Gender.class, rs.getString("gender")),
+                            Role.valueOf(rs.getString("role")),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("profilePhoto"),
+                            rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                            rs.getString("phoneNumber")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getById: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void addEmployee(Employee employee) {
         String req = "INSERT INTO User (\n" +
                 "    firstName, lastName, role, email, password" +
@@ -195,6 +261,25 @@ public class UserService implements IService<User> {
             ps.setString(8,employee.getHireDate().toString());
             ps.executeUpdate();
             System.out.println("Employee ajoutée !");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private void addTransporter(Transporter transporter) {
+        String req = "INSERT INTO user (firstName, lastName, gender, role, email, password, profilePhoto, birthdayDate, phoneNumber, transportType, website) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            ps.setString(1, transporter.getFirstName());
+            ps.setString(2, transporter.getLastName());
+            ps.setString(3, transporter.getGender().name());
+            ps.setString(4, transporter.getRole().name());
+            ps.setString(5, transporter.getEmail());
+            ps.setString(6, transporter.getPassword());
+            ps.setString(7, transporter.getProfilePhoto());
+            ps.setString(8, transporter.getBirthdayDate().toString());
+            ps.setString(9, transporter.getPhoneNumber());
+            ps.setString(10, transporter.getTransportType().name());
+            ps.executeUpdate();
+            System.out.println("Transporter added!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -254,11 +339,23 @@ public class UserService implements IService<User> {
             ps.setString(4, employee.getEmail());
             ps.setString(5,employee.getAddress());
             ps.setDouble(6,employee.getSalary());
-            ps.setString(7,employee.getGender().toString());
+            if (employee.getGender() != null) {
+                ps.setString(7, employee.getGender().toString());
+            } else {
+                ps.setNull(7, java.sql.Types.VARCHAR);
+            }
             ps.setString(8,employee.getProfilePhoto());
-            ps.setString(9,employee.getBirthdayDate().toString());
+            if (employee.getBirthdayDate() != null) {
+                ps.setString(9, employee.getBirthdayDate().toString());
+            } else {
+                ps.setNull(9, java.sql.Types.VARCHAR);
+            }
             ps.setString(10,employee.getPhoneNumber());
-            ps.setString(11,employee.getHireDate().toString());
+            if (employee.getHireDate() != null) {
+                ps.setString(11, employee.getHireDate().toString());
+            } else {
+                ps.setNull(11, java.sql.Types.VARCHAR);
+            }
             ps.setInt(12,employee.getIdUser());
             ps.executeUpdate();
             System.out.println("Employee updated !");
@@ -266,6 +363,54 @@ public class UserService implements IService<User> {
             System.out.println(e.getMessage());
         }
     }
+    private void updateTransporter(Transporter transporter) {
+        String req = "UPDATE user SET firstName=?, lastName=?, gender=?, role=?, email=?, password=?, profilePhoto=?, birthdayDate=?, phoneNumber=?, transportType=?, website=? WHERE id=?";
+        try (PreparedStatement ps = connection.prepareStatement(req)) {
+            ps.setString(1, transporter.getFirstName());
+            ps.setString(2, transporter.getLastName());
+            ps.setString(3, transporter.getGender().name());
+            ps.setString(4, transporter.getRole().name());
+            ps.setString(5, transporter.getEmail());
+            ps.setString(6, transporter.getPassword());
+            ps.setString(7, transporter.getProfilePhoto());
+            ps.setString(8, transporter.getBirthdayDate().toString());
+            ps.setString(9, transporter.getPhoneNumber());
+            ps.setString(10, transporter.getTransportType().name());
+            ps.setInt(12, transporter.getIdUser());
+            ps.executeUpdate();
+            System.out.println("Transporter updated!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public List<Transporter> getAllTransporters() {
+        List<Transporter> transporters = new ArrayList<>();
+        String req = "SELECT * FROM user WHERE role = 'TRANSPORTER'";
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Transporter transporter = new Transporter(
+                        rs.getInt("id"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        getEnumOrNull(Gender.class, rs.getString("gender")),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("profilePhoto"),
+                        rs.getTimestamp("birthdayDate").toLocalDateTime(),
+                        rs.getString("phoneNumber"),
+                        TransportEXType.valueOf(rs.getString("transportType"))
+                );
+                transporters.add(transporter);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching transporters: " + e.getMessage());
+        }
+
+        return transporters;
+    }
+
 
     public Employee getEmployeeById(int id) {
         String req = "SELECT * FROM User WHERE id = ?";
@@ -302,5 +447,10 @@ public class UserService implements IService<User> {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    private LocalDateTime getLocalDateTimeOrNull(ResultSet rs, String columnLabel) throws SQLException {
+        Timestamp timestamp = rs.getTimestamp(columnLabel);
+        return timestamp != null ? timestamp.toLocalDateTime() : null;
     }
 }

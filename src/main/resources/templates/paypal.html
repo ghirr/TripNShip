@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Secure Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .booking-info {
+            margin: 1rem 0;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 1rem;
+            background-color: #f8f9fa;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+        .status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1aeb5;
+        }
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 12px;
+            color: #888;
+        }
+        #paypal-button-container {
+            margin-top: 20px;
+            min-height: 50px;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+        .debug-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .retry-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .retry-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Confirm Your Payment</h1>
+
+    <div class="booking-info">
+        <div class="info-row"><strong>Booking ID:</strong><span id="booking-id">--</span></div>
+        <div class="info-row"><strong>Room:</strong><span id="room-name">--</span></div>
+        <div class="info-row"><strong>Check-In:</strong><span id="check-in">--</span></div>
+        <div class="info-row"><strong>Check-Out:</strong><span id="check-out">--</span></div>
+        <div class="info-row"><strong>Total:</strong><span id="total-amount">$0.00</span></div>
+    </div>
+
+    <div id="paypal-button-container">
+        <div class="loading">Loading PayPal buttons...</div>
+    </div>
+
+    <div id="payment-status" class="status-message"></div>
+
+    <div class="footer">
+        🔒 Your transaction is encrypted and secure via PayPal.
+    </div>
+
+    <!-- Debug panel for development -->
+    <div id="debug-panel" class="debug-panel" style="display: none;">
+        <div id="debug-log"></div>
+        <button class="retry-button" onclick="retryPayPalInit()">Retry PayPal Init</button>
+    </div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AfEG0ijXErPd_BPFNwegdkoqpoc1054BSQBetCrZd9hJHMsCbDI_Y5zk-mPrCfvrNyJy-3lWjn2mNqdO&currency=USD"></script>
+<script>
+    // Global booking data - will be updated from Java
+    let bookingData = {
+        id: '12345',
+        roomName: 'Deluxe Suite',
+        checkIn: 'Dec 25, 2024',
+        checkOut: 'Dec 28, 2024',
+        amount: '320.00'
+    };
+
+    let paypalInitialized = false;
+    let debugMode = true; // Set to false in production
+    let paymentInProgress = false;
+    let initializationAttempts = 0;
+    const maxInitAttempts = 3;
+
+    // Debug logging function
+    function debugLog(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const logMessage = `[${timestamp}] ${message}`;
+        console.log(logMessage);
+
+        if (debugMode) {
+            const debugPanel = document.getElementById('debug-panel');
+            const debugLogDiv = document.getElementById('debug-log');
+            if (debugPanel && debugLogDiv) {
+                debugPanel.style.display = 'block';
+                debugLogDiv.innerHTML += '<div>' + logMessage + '</div>';
+                debugLogDiv.scrollTop = debugLogDiv.scrollHeight;
+            }
+        }
+    }
+
+    // Enhanced callback function with better error handling
+    function safeJavaCallback(status, details) {
+        debugLog(`Attempting to call Java callback: ${status}`);
+
+        try {
+            // Multiple checks for JavaFX bridge existence
+            if (typeof window === 'undefined') {
+                debugLog('ERROR: window object not available');
+                return false;
+            }
+
+            if (!window.javafx) {
+                debugLog('ERROR: window.javafx not found');
+                return false;
+            }
+
+            if (typeof window.javafx.paymentCallback !== 'function') {
+                debugLog('ERROR: window.javafx.paymentCallback is not a function');
+                return false;
+            }
+
+            // Ensure details is a proper object
+            const safeDetails = details || {};
+
+            // Add timestamp and additional metadata
+            safeDetails.timestamp = new Date().toISOString();
+            safeDetails.userAgent = navigator.userAgent;
+            safeDetails.bookingId = bookingData.id;
+
+            debugLog(`Calling Java callback with details: ${JSON.stringify(safeDetails)}`);
+
+            // Call the Java callback
+            window.javafx.paymentCallback(status, safeDetails);
+            debugLog('Java callback called successfully');
+            return true;
+
+        } catch (error) {
+            debugLog(`ERROR calling Java callback: ${error.message}`);
+            console.error('Java callback error:', error);
+
+            // Fallback notification
+            if (status === 'SUCCESS') {
+                alert(`Payment successful! Please check your booking status. Error: ${error.message}`);
+            }
+            return false;
+        }
+    }
+
+    function updateBookingDetails(data) {
+        debugLog(`Updating booking details: ${JSON.stringify(data)}`);
+
+        // Validate input data
+        if (!data || typeof data !== 'object') {
+            debugLog('ERROR: Invalid booking data provided');
+            return false;
+        }
+
+        // Merge with existing data
+        bookingData = { ...bookingData, ...data };
+
+        // Update UI elements
+        try {
+            document.getElementById('booking-id').textContent = '#' + data.id;
+            document.getElementById('room-name').textContent = data.roomName || 'N/A';
+            document.getElementById('check-in').textContent = data.checkIn || 'N/A';
+            document.getElementById('check-out').textContent = data.checkOut || 'N/A';
+            document.getElementById('total-amount').textContent = '$' + (data.amount || '0.00');
+
+            // Initialize PayPal after booking data is updated
+            if (!paypalInitialized) {
+                debugLog('Initializing PayPal after booking update');
+                initPayPal();
+            }
+
+            return true;
+        } catch (error) {
+            debugLog(`ERROR updating UI: ${error.message}`);
+            return false;
+        }
+    }
+
+    function showStatus(type, message) {
+        debugLog(`Showing status: ${type} - ${message}`);
+        const statusDiv = document.getElementById('payment-status');
+        if (statusDiv) {
+            statusDiv.className = 'status-message ' + type;
+            statusDiv.textContent = message;
+            statusDiv.style.display = message ? 'block' : 'none';
+        }
+    }
+
+    function initPayPal() {
+        if (paypalInitialized) {
+            debugLog('PayPal already initialized, skipping');
+            return;
+        }
+
+        initializationAttempts++;
+        debugLog(`Initializing PayPal (attempt ${initializationAttempts}/${maxInitAttempts})`);
+        debugLog(`Booking data: ${JSON.stringify(bookingData)}`);
+
+        // Validate booking data before initializing PayPal
+        if (!bookingData.amount || parseFloat(bookingData.amount) <= 0) {
+            debugLog('ERROR: Invalid booking amount');
+            showStatus('error', 'Invalid payment amount');
+            return;
+        }
+
+        paypalInitialized = true;
+
+        // Clear loading message
+        const container = document.getElementById('paypal-button-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+
+        // Check if PayPal SDK is loaded
+        if (typeof paypal === 'undefined') {
+            debugLog('ERROR: PayPal SDK not loaded');
+            showStatus('error', 'PayPal SDK failed to load. Please refresh the page.');
+            paypalInitialized = false;
+            return;
+        }
+
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                debugLog('PayPal createOrder called - User clicked Pay with PayPal');
+                showStatus('pending', 'Creating payment order...');
+
+                const orderData = {
+                    purchase_units: [{
+                        amount: {
+                            value: bookingData.amount,
+                            currency_code: 'USD'
+                        },
+                        description: `Booking #${bookingData.id} - ${bookingData.roomName}`,
+                        custom_id: bookingData.id.toString()
+                    }],
+                    application_context: {
+                        brand_name: 'TripNShip',
+                        landing_page: 'LOGIN',
+                        user_action: 'PAY_NOW'
+                    }
+                };
+
+                debugLog(`Creating order with data: ${JSON.stringify(orderData)}`);
+
+                return actions.order.create(orderData).then(function(orderId) {
+                    debugLog(`Order created with ID: ${orderId} - Now user will authenticate`);
+                    showStatus('pending', 'Please complete authentication in PayPal...');
+                    paymentInProgress = true;
+                    return orderId;
+                }).catch(function(error) {
+                    debugLog(`Error creating order: ${error.message}`);
+                    showStatus('error', 'Failed to create payment order');
+                    paymentInProgress = false;
+
+                    safeJavaCallback('ERROR', {
+                        error: error.message || 'Failed to create order',
+                        phase: 'create_order'
+                    });
+
+                    throw error;
+                });
+            },
+
+            onApprove: function(data, actions) {
+                debugLog(`PayPal onApprove called - User completed authentication`);
+                debugLog(`Order ID: ${data.orderID}, Payer ID: ${data.payerID || 'N/A'}`);
+
+                showStatus('pending', 'Processing payment - Please wait...');
+
+                // Capture the payment
+                return actions.order.capture().then(function(details) {
+                    debugLog('PAYMENT SUCCESSFULLY CAPTURED!');
+                    debugLog(`Payment details: ${JSON.stringify(details, null, 2)}`);
+
+                    paymentInProgress = false;
+
+                    // Prepare comprehensive success data
+                    const successData = {
+                        transactionId: details.id,
+                        orderId: data.orderID,
+                        payerId: details.payer ? details.payer.payer_id : 'unknown',
+                        payerEmail: details.payer && details.payer.email_address ? details.payer.email_address : 'unknown',
+                        payerName: details.payer && details.payer.name ?
+                            `${details.payer.name.given_name || ''} ${details.payer.name.surname || ''}`.trim() : 'unknown',
+                        amount: bookingData.amount,
+                        currency: details.purchase_units && details.purchase_units[0] ?
+                            details.purchase_units[0].amount.currency_code : 'USD',
+                        bookingId: bookingData.id,
+                        status: details.status || 'COMPLETED',
+                        createTime: details.create_time,
+                        updateTime: details.update_time,
+                        paymentMethod: 'PayPal',
+                        captureId: details.purchase_units && details.purchase_units[0] &&
+                        details.purchase_units[0].payments &&
+                        details.purchase_units[0].payments.captures &&
+                        details.purchase_units[0].payments.captures[0] ?
+                            details.purchase_units[0].payments.captures[0].id : 'N/A',
+                        phase: 'completed'
+                    };
+
+                    showStatus('success', `Payment Successful! Transaction ID: ${details.id}`);
+                    debugLog('Calling Java callback with SUCCESS status');
+
+                    // Call JavaFX callback
+                    const callbackSuccess = safeJavaCallback('SUCCESS', successData);
+
+                    if (!callbackSuccess) {
+                        debugLog('Java callback failed, showing alert as fallback');
+                        alert(`Payment successful! Transaction ID: ${details.id}\nPlease note this transaction ID for your records.`);
+                    }
+
+                }).catch(function(error) {
+                    debugLog(`Error capturing payment: ${error.message}`);
+                    console.error('Payment capture error:', error);
+
+                    paymentInProgress = false;
+                    showStatus('error', 'Payment capture failed. Please try again.');
+
+                    safeJavaCallback('ERROR', {
+                        error: error.message || 'Failed to capture payment',
+                        orderId: data.orderID,
+                        phase: 'capture',
+                        details: error.details || null
+                    });
+                });
+            },
+
+            onError: function(err) {
+                debugLog(`PayPal onError called: ${err.message || JSON.stringify(err)}`);
+                console.error('PayPal error:', err);
+
+                paymentInProgress = false;
+                showStatus('error', 'Payment failed. Please try again.');
+
+                safeJavaCallback('ERROR', {
+                    error: err.message || 'Unknown PayPal error',
+                    errorDetails: typeof err === 'object' ? JSON.stringify(err) : String(err),
+                    phase: 'general'
+                });
+            },
+
+            onCancel: function(data) {
+                debugLog(`PayPal onCancel called - User cancelled during authentication`);
+                debugLog(`Cancelled order ID: ${data.orderID || 'unknown'}`);
+
+                paymentInProgress = false;
+                showStatus('error', 'Payment was cancelled.');
+
+                safeJavaCallback('CANCELLED', {
+                    orderId: data.orderID || 'unknown',
+                    reason: 'User cancelled during PayPal authentication',
+                    phase: 'authentication'
+                });
+            }
+        }).render('#paypal-button-container').then(function() {
+            debugLog('PayPal buttons rendered successfully');
+            showStatus('', ''); // Clear any previous status
+        }).catch(function(error) {
+            debugLog(`Error rendering PayPal buttons: ${error.message}`);
+            paypalInitialized = false; // Reset flag so we can retry
+
+            if (initializationAttempts < maxInitAttempts) {
+                showStatus('pending', `Retrying PayPal initialization... (${initializationAttempts}/${maxInitAttempts})`);
+                setTimeout(() => initPayPal(), 2000); // Retry after 2 seconds
+            } else {
+                showStatus('error', 'Failed to load PayPal buttons after multiple attempts. Please refresh the page.');
+
+                safeJavaCallback('ERROR', {
+                    error: `Failed to render PayPal buttons: ${error.message}`,
+                    phase: 'initialization',
+                    attempts: initializationAttempts
+                });
+            }
+        });
+    }
+
+    // Test function for JavaFX bridge
+    function testJavaFXBridge() {
+        debugLog('Testing JavaFX bridge...');
+        return safeJavaCallback('TEST', {
+            message: 'Bridge test successful',
+            timestamp: new Date().toISOString(),
+            bookingData: bookingData,
+            paypalInitialized: paypalInitialized,
+            paymentInProgress: paymentInProgress
+        });
+    }
+
+    // Retry function for debugging
+    function retryPayPalInit() {
+        debugLog('Manual retry of PayPal initialization');
+        paypalInitialized = false;
+        initializationAttempts = 0;
+        initPayPal();
+    }
+
+    // Enhanced page load handler
+    document.addEventListener('DOMContentLoaded', () => {
+        debugLog('DOM loaded, initializing page');
+
+        // Initialize with default data
+        updateBookingDetails(bookingData);
+
+        // Test the bridge after a short delay
+        setTimeout(() => {
+            const bridgeWorking = testJavaFXBridge();
+            debugLog(`Initial bridge test result: ${bridgeWorking}`);
+
+            if (!bridgeWorking) {
+                showStatus('error', 'JavaFX bridge not ready. Please refresh the page.');
+            }
+        }, 1000);
+    });
+
+    // Handle page visibility changes (useful for detecting when user returns from PayPal)
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            debugLog('Page became visible - user may have returned from PayPal');
+        }
+    });
+
+    // Expose functions globally for JavaFX calls
+    window.updateBookingDetails = updateBookingDetails;
+    window.testJavaFXBridge = testJavaFXBridge;
+    window.debugLog = debugLog;
+    window.retryPayPalInit = retryPayPalInit;
+
+    // Additional utility functions for debugging
+    window.getBookingData = function() {
+        return bookingData;
+    };
+
+    window.isPayPalInitialized = function() {
+        return paypalInitialized;
+    };
+
+    window.forceInitPayPal = function() {
+        paypalInitialized = false;
+        initializationAttempts = 0;
+        initPayPal();
+    };
+
+    window.isPaymentInProgress = function() {
+        return paymentInProgress;
+    };
+
+    window.getDebugInfo = function() {
+        return {
+            bookingData,
+            paypalInitialized,
+            paymentInProgress,
+            initializationAttempts,
+            bridgeAvailable: !!(window.javafx && window.javafx.paymentCallback)
+        };
+    };
+</script>
+</body>
+</html>

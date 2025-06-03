@@ -1,5 +1,6 @@
 package org.Esprit.TripNShip.Utils;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,11 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
-
-import static com.google.common.io.Files.getFileExtension;
 
 public class Shared {
 
@@ -36,6 +34,8 @@ public class Shared {
     public static final String UPLOAD_DIR = "C:/xampp/htdocs/tripNship/";
     private static final String BASE_URL = "http://localhost/tripNship/";
     public static final String USERS_PATH = "Users/";
+    public static final String ROOMS_PATH = "Rooms/";
+    public static final String ACCOMMODATION_PATH = "Accommodation/";
 
     public static void switchScene(Event event, URL fxmlFile , String title) {
         try {
@@ -82,6 +82,27 @@ public class Shared {
         }
     }
 
+    public static void switchScene(Node node, URL fxmlFile , String title) {
+        Platform.runLater(() -> {
+            try {
+                Stage primaryStage = (Stage) node.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(fxmlFile);
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                primaryStage.setMaximized(false);
+                primaryStage.setScene(scene);
+                primaryStage.setMaximized(true);
+                primaryStage.setTitle(title);
+                Image icon = new Image(Shared.class.getResourceAsStream("/images/logo.png"));
+                primaryStage.getIcons().clear();
+                primaryStage.getIcons().add(icon);
+                primaryStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     public static void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -118,11 +139,11 @@ public class Shared {
         }
     }
 
-    public static String generateRandomPassword() {
+    public static String generateRandomCode(int length) {
 
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < length; i++) {
             password.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
         return password.toString();
@@ -143,7 +164,7 @@ public class Shared {
         }
 
         // Create filename using first and last name
-        String fileName = currentUser.getUserFirstName() + currentUser.getUserLastName() +"_"+ System.currentTimeMillis()+extension;
+        String fileName =  System.currentTimeMillis()+extension;
 
         File directory = new File(uploadDir);
         if (!directory.exists()) {

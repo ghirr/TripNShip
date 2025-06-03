@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Esprit.TripNShip.Controllers.EditAccommodationBookingController">
+
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="400" spacing="10" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
+                    <!-- Logo -->
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../images/logo.png" />
+                    </ImageView>
+
+                    <!-- Title -->
+                    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Edit Accommodation Booking" />
+
+                    <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+
+                        <!-- Start Date -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Start Date" />
+                        <DatePicker fx:id="startDatePicker" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+
+                        <!-- End Date -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="End Date" />
+                        <DatePicker fx:id="endDatePicker" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+
+                        <!-- Username -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Email" />
+                        <TextField fx:id="emailField" promptText="Enter email" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+
+                        <!-- Type Room (ComboBox) -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Type Room" />
+                        <ComboBox fx:id="typeRoomComboBox" promptText="Select Room Type" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+
+                        <!-- Room Name (ComboBox) -->
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Room Name" />
+                        <ComboBox fx:id="comboRoom" promptText="Select Room Name" style="-fx-font-size: 14px; -fx-pref-width: 300;" />
+
+                    </VBox>
+
+                    <!-- Submit Button -->
+                    <Button fx:id="EditAccommodationBooking" onAction="#updateBooking"
+                            style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;"
+                            text="Edit AccommodationBooking"/>
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</AnchorPane>
+

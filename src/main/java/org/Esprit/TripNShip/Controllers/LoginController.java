@@ -42,6 +42,10 @@ public class LoginController {
     private final AuthService utilisateurService = new AuthService();
     private boolean isPasswordVisible ;
 
+    private static LoginController instance;
+
+
+
     @FXML
     private void togglePasswordVisibility() {
         if (!isPasswordVisible) {
@@ -81,15 +85,14 @@ public class LoginController {
         try {
             User user = utilisateurService.login(email,password);
             if (user != null) {
-                if(!user.getRole().equals(Role.CLIENT)){
+                if(user.getRole().equals(Role.CLIENT)){
+                    UserSession.initSession(user);
+                    Shared.switchScene(event,getClass().getResource("/fxml/Home.fxml"),"Main");
+                }
+                else{
                     UserSession.initSession(user);
                     Shared.switchScene(event,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
                 }
-                else{
-                    Shared.switchScene(event,getClass().getResource("/fxml/Home.fxml"),"Main");
-                    showAlert(Alert.AlertType.CONFIRMATION,"Sucess","login correct");
-                }
-
             } else {
                 // Password is incorrect
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Invalid credentials");
@@ -120,5 +123,17 @@ public class LoginController {
 
     public void switchToSignUp(ActionEvent actionEvent) {
         Shared.switchScene(actionEvent,getClass().getResource("/fxml/signUp.fxml"),"Sign Up");
+    }
+
+    public LoginController() {
+        instance = this;
+    }
+
+    public static LoginController getInstance(){
+        return instance;
+    }
+
+    public Button getToggleButton() {
+        return toggleButton;
     }
 }

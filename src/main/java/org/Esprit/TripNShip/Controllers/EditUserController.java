@@ -7,14 +7,9 @@ import org.Esprit.TripNShip.Entities.Employee;
 import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.UserService;
-import org.Esprit.TripNShip.Utils.EmailSender;
-import org.Esprit.TripNShip.Utils.Shared;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.Esprit.TripNShip.Utils.Shared.generateRandomPassword;
-import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 public class EditUserController {
 
@@ -101,7 +96,7 @@ public class EditUserController {
         String address = addressField.getText().trim();
         double salary = Double.parseDouble(salaryField.getText().trim());
 
-        User newUser = new Employee(this.currentUser.getIdUser(),firstName,lastName,role,this.currentUser.getEmail(),address,salary);
+        User newUser = new Employee(this.currentUser.getIdUser(),firstName,lastName,currentUser.getGender(),role,this.currentUser.getEmail(),this.currentUser.getProfilePhoto(),currentUser.getBirthdayDate(), currentUser.getPhoneNumber(),address,salary,currentUser.getHireDate());
         userService.update(newUser);
            ListUsersController.getInstance().reloadUserList();
         ((Stage) submitButton.getScene().getWindow()).close();

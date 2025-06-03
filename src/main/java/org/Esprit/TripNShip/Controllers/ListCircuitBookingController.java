@@ -13,6 +13,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import org.Esprit.TripNShip.Entities.CircuitBooking;
 import org.Esprit.TripNShip.Services.CircuitBookingService;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,15 +25,16 @@ public class ListCircuitBookingController {
 
     private final CircuitBookingService circuitBookingService = new CircuitBookingService();
 
-    private final int defaultUserId = 7;
+    private int currentUserId = UserSession.getInstance().getUserId();
 
     @FXML
     public void initialize() {
-        List<CircuitBooking> bookings = circuitBookingService.getCircuitBookingByUserId(defaultUserId);
+        List<CircuitBooking> bookings = circuitBookingService.getCircuitBookingByUserId(currentUserId);
         cardsContainer.getChildren().clear();
 
+
         if (bookings.isEmpty()) {
-            Label noData = new Label("No circuit bookings found for user ID " + defaultUserId);
+            Label noData = new Label("No circuit bookings found for user ID " + currentUserId);
             noData.setFont(Font.font("Segoe UI", 16));
             noData.setStyle("-fx-text-fill: #555; -fx-font-style: italic;");
             cardsContainer.setAlignment(Pos.CENTER);

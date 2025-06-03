@@ -24,20 +24,15 @@ public class EditEmployeeProfileController {
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
     @FXML private TextField emailField;
-    @FXML private TextField roleField;
-    @FXML private TextField joiningDateField;
     @FXML private ComboBox<Gender> genderComboBox;
     @FXML private TextField phoneNumberField;
     @FXML private DatePicker birthdayDatePicker;
-    @FXML private Button saveButton;
     @FXML private Button cancelButton;
     @FXML private Button choosePhotoButton;
 
     private UserService userService;
     private Employee employee;
     private File selectedProfilePhoto;
-    private boolean birthdayEditable;
-    private Runnable onSaveCallback;
 
 
 
@@ -50,8 +45,8 @@ public class EditEmployeeProfileController {
         firstNameField.setEditable(false);
         lastNameField.setEditable(false);
         emailField.setEditable(false);
-        roleField.setEditable(false);
-        joiningDateField.setEditable(false);
+//        roleField.setEditable(false);
+//        joiningDateField.setEditable(false);
     }
 
     public void setUser(Employee user) {
@@ -61,11 +56,11 @@ public class EditEmployeeProfileController {
         firstNameField.setText(user.getFirstName());
         lastNameField.setText(user.getLastName());
         emailField.setText(user.getEmail());
-        roleField.setText(user.getRole() != null ? user.getRole().toString() : "");
-
-        if (user.getHireDate() != null) {
-            joiningDateField.setText(user.getHireDate().toString());
-        }
+//        roleField.setText(user.getRole() != null ? user.getRole().toString() : "");
+//
+//        if (user.getHireDate() != null) {
+//            joiningDateField.setText(user.getHireDate().toString());
+//        }
 
         genderComboBox.setValue(user.getGender() != null ? user.getGender() : null);
         phoneNumberField.setText(user.getPhoneNumber());
@@ -94,11 +89,6 @@ public class EditEmployeeProfileController {
                 e.printStackTrace();
             }
         }
-    }
-
-    // Method to set callback for refreshing main view
-    public void setOnSaveCallback(Runnable callback) {
-        this.onSaveCallback = callback;
     }
 
     @FXML
@@ -138,8 +128,7 @@ public class EditEmployeeProfileController {
             employee.setBirthdayDate( birthdayDatePicker.getValue().atStartOfDay());
             
             userService.update(employee);
-            UserSession.clearSession();
-            UserSession.initSession(employee);
+            UserSession.getInstance().setProfilePhotoUrl(employee.getProfilePhoto());
             EmployeeProfileController.getInstance().initialize();
 
             Shared.showAlert(Alert.AlertType.INFORMATION, "Success", "Successfully updated the profile");

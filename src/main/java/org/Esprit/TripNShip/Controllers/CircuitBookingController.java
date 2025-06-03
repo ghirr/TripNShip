@@ -10,6 +10,7 @@ import org.Esprit.TripNShip.Entities.StatusBooking;
 import org.Esprit.TripNShip.Entities.TourCircuit;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.CircuitBookingService;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.time.LocalDate;
 
@@ -25,6 +26,8 @@ public class CircuitBookingController {
     private Button submitBookingButton;
 
     private TourCircuit selectedCircuit;
+
+    UserSession currentUser = UserSession.getInstance();
 
     public void initialize() {
         submitBookingButton.setOnAction(e -> {
@@ -48,9 +51,8 @@ public class CircuitBookingController {
             // Statut à null (sera géré dans le service)
             booking.setStatusBooking(null);
 
-            // Utilisateur hardcodé idUser=7
             User user = new User();
-            user.setIdUser(7);
+            user.setIdUser(currentUser.getUserId());
             booking.setUser(user);
 
             // Circuit sélectionné

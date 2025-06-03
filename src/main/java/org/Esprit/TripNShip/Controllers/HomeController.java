@@ -6,8 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import org.Esprit.TripNShip.Entities.Role;
+import org.Esprit.TripNShip.Utils.Shared;
+import org.Esprit.TripNShip.Utils.UserSession;
 import org.Esprit.TripNShip.Utils.WeatherAPI;
 import org.Esprit.TripNShip.Utils.WeatherResult;
 
@@ -15,6 +19,9 @@ import java.io.IOException;
 
 public class HomeController {
 
+    public ImageView userIcon;
+    public Label username;
+    public ImageView logoutIcon;
     @FXML private BorderPane mainBorderPane;
     @FXML private VBox defaultContent;
 
@@ -45,6 +52,22 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+
+        UserSession currentUser = UserSession.getInstance();
+        if(currentUser==null){
+            logout();
+        }
+        else{
+            username.setText(currentUser.getUserFirstName()+" "+currentUser.getUserLastName());
+            userIcon.setImage(new Image(currentUser.getUserProfilePhotoPath()));
+            userIcon.setOnMouseClicked(event -> {navigateToProfile();});
+            username.setOnMouseClicked(event -> navigateToProfile());
+            currentUser.getprofilePhotoUrlProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null && !newVal.isEmpty()) {
+                    userIcon.setImage(new Image(newVal));
+                }
+            });
+        }
         // Dès le lancement, récupérer la ville actuelle par IP
         new Thread(() -> {
             String city = WeatherAPI.getCurrentCityFromIP();
@@ -70,8 +93,8 @@ public class HomeController {
 
 
         setupDropdownMenu(accommodationLabel,
-                createMenuItem("Hotels", "#"),
-                createMenuItem("Resorts", "#")
+                createMenuItem("Book Room", "/fxml/AccommodationManagementFXML/RoomListView.fxml"),
+                createMenuItem("My Booking", "/fxml/AccommodationManagementFXML/UserBookings.fxml")
         );
 
         setupDropdownMenu(transportLabel,
@@ -79,10 +102,9 @@ public class HomeController {
                 createMenuItem("Train", "#")
         );
 
-        setupDropdownMenu(expeditionLabel,
-                createMenuItem("Adventure", "#"),
-                createMenuItem("Safari", "#")
-        );
+        expeditionLabel.setOnMouseClicked(event -> {
+            navigateTo("/fxml/ExpeditionManagement/ClientExpeditions.fxml");
+        });
 
         setupDropdownMenu(circuitLabel,
                 createMenuItem("Circuits List", "/fxml/CircuitManagementFXML/CircuitView.fxml"),
@@ -157,5 +179,14 @@ public class HomeController {
                 });
             }
         }).start();
+    }
+
+    public void logout() {
+        UserSession.clearSession();
+        Shared.switchScene(logoutIcon,getClass().getResource("/fxml/login.fxml"),"Login");
+    }
+
+    public void navigateToProfile() {
+        navigateTo("/fxml/employeeProfile.fxml");
     }
 }

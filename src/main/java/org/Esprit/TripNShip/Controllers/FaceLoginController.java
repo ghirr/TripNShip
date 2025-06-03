@@ -84,7 +84,7 @@ public class FaceLoginController implements Initializable {
 
         try {
             // Initialize face detector
-            URL resource = getClass().getResource("/haarcascade_frontalface_alt.xml");
+            URL resource = getClass().getResource("/haarcascade_frontalface_default.xml");
             String classifierPath = new File(resource.toURI()).getAbsolutePath();
             faceDetector = new CascadeClassifier(classifierPath);
 

@@ -41,38 +41,49 @@ public class FaceRegistrationController implements Initializable {
     }
 
     // FXML Components
-    @FXML private ImageView cameraImageView;
-    @FXML private Button startCameraBtn;
-    @FXML private Button stopCameraBtn;
-    @FXML private Label statusLabel;
-    @FXML private ProgressBar captureProgress;
-    @FXML private Label instructionLabel;
-    @FXML private Circle qualityIndicator; // Visual quality indicator
+    @FXML
+    private ImageView cameraImageView;
+    @FXML
+    private Button startCameraBtn;
+    @FXML
+    private Button stopCameraBtn;
+    @FXML
+    private Label statusLabel;
+    @FXML
+    private ProgressBar captureProgress;
+    @FXML
+    private Label instructionLabel;
+    @FXML
+    private Circle qualityIndicator;
 
     // OpenCV Components
     private VideoCapture camera;
     private CascadeClassifier faceDetector;
+    private CascadeClassifier eyeDetector;
+    private CascadeClassifier mouthDetector;
     private ScheduledExecutorService cameraTimer;
     private volatile boolean cameraActive = false;
 
     // Face Capture Progress System
-    private static final int REQUIRED_SAMPLES = 5; // Number of good quality samples needed
-    private static final double MIN_FACE_SIZE = 80.0; // Minimum face size in pixels
-    private static final double MAX_FACE_SIZE = 300.0; // Maximum face size in pixels
-    private static final double MIN_QUALITY_SCORE = 0.7; // Minimum quality threshold
+    private static final int REQUIRED_SAMPLES = 5;
+    private static final double MIN_FACE_SIZE = 80.0;
+    private static final double MAX_FACE_SIZE = 300.0;
+    private static final double MIN_QUALITY_SCORE = 0.75;
 
-    private List<String> capturedFaces = new ArrayList<>(); // Store good quality faces
+    private List<String> capturedFaces = new ArrayList<>();
     private int consecutiveGoodFrames = 0;
     private long lastQualityCheck = 0;
-    private static final long QUALITY_CHECK_INTERVAL = 500; // Check quality every 500ms
+    private static final long QUALITY_CHECK_INTERVAL = 500;
 
     // Quality metrics
     private double currentFaceSize = 0;
     private double currentSharpness = 0;
     private boolean isFaceCentered = false;
     private boolean hasGoodLighting = false;
+    private boolean eyesDetected = false;
+    private boolean mouthDetected = false;
 
-    private int currentUserId = 75;
+    private int currentUserId = 54;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,16 +101,37 @@ public class FaceRegistrationController implements Initializable {
     private void initializeOpenCV() {
         camera = new VideoCapture();
         faceDetector = new CascadeClassifier();
+        eyeDetector = new CascadeClassifier();
+        mouthDetector = new CascadeClassifier();
 
         try {
-            URL resource = getClass().getResource("/haarcascade_frontalface_alt.xml");
-            String classifierPath = new File(resource.toURI()).getAbsolutePath();
+            // Load face detector
+            URL faceResource = getClass().getResource("/haarcascade_frontalface_default.xml");
+            String faceClassifierPath = new File(faceResource.toURI()).getAbsolutePath();
 
-            if (!faceDetector.load(classifierPath)) {
+            // Load eye detector
+            URL eyeResource = getClass().getResource("/haarcascade_eye.xml");
+            String eyeClassifierPath = new File(eyeResource.toURI()).getAbsolutePath();
+
+            // Load mouth detector
+            URL mouthResource = getClass().getResource("/haarcascade_mcs_mouth.xml");
+            String mouthClassifierPath = new File(mouthResource.toURI()).getAbsolutePath();
+
+            if (!faceDetector.load(faceClassifierPath)) {
                 updateStatus("Error: Could not load face detection classifier");
-            } else {
-                updateStatus("Face detection system initialized");
+                return;
             }
+
+            if (!eyeDetector.load(eyeClassifierPath)) {
+                updateStatus("Warning: Could not load eye detection classifier");
+            }
+
+            if (!mouthDetector.load(mouthClassifierPath)) {
+                updateStatus("Warning: Could not load mouth detection classifier");
+            }
+
+            updateStatus("Face detection system initialized");
+
         } catch (Exception e) {
             System.err.println("Error initializing OpenCV: " + e.getMessage());
         }
@@ -114,7 +146,6 @@ public class FaceRegistrationController implements Initializable {
                 startCameraBtn.setDisable(true);
                 stopCameraBtn.setDisable(false);
 
-                // Reset capture progress
                 capturedFaces.clear();
                 consecutiveGoodFrames = 0;
                 updateProgress();
@@ -172,7 +203,7 @@ public class FaceRegistrationController implements Initializable {
                         }
                     }
 
-                    // Analyze face quality
+                    // Analyze face quality including eyes and mouth
                     FaceQuality quality = analyzeFaceQuality(frame, grayFrame, largestFace);
 
                     // Draw face rectangle with quality-based color
@@ -190,12 +221,12 @@ public class FaceRegistrationController implements Initializable {
                     if (currentTime - lastQualityCheck > QUALITY_CHECK_INTERVAL) {
                         if (quality.overallScore >= MIN_QUALITY_SCORE) {
                             consecutiveGoodFrames++;
-                            if (consecutiveGoodFrames >= 3) { // Need 3 consecutive good frames
+                            if (consecutiveGoodFrames >= 3) {
                                 captureFaceData(frame, largestFace, quality);
-                                consecutiveGoodFrames = 0; // Reset for next capture
+                                consecutiveGoodFrames = 0;
                             }
                         } else {
-                            consecutiveGoodFrames = 0; // Reset if quality drops
+                            consecutiveGoodFrames = 0;
                         }
                         lastQualityCheck = currentTime;
                     }
@@ -226,16 +257,15 @@ public class FaceRegistrationController implements Initializable {
         currentFaceSize = Math.sqrt(faceArea);
 
         if (currentFaceSize < MIN_FACE_SIZE) {
-            quality.sizeScore = 0.3; // Too small
+            quality.sizeScore = 0.3;
         } else if (currentFaceSize > MAX_FACE_SIZE) {
-            quality.sizeScore = 0.4; // Too large
+            quality.sizeScore = 0.4;
         } else {
-            // Optimal size range
             double optimalSize = (MIN_FACE_SIZE + MAX_FACE_SIZE) / 2;
             quality.sizeScore = 1.0 - Math.abs(currentFaceSize - optimalSize) / optimalSize;
         }
 
-        // 2. Face Position Analysis (centered?)
+        // 2. Face Position Analysis
         int frameWidth = colorFrame.width();
         int frameHeight = colorFrame.height();
         int faceCenterX = faceRect.x + faceRect.width / 2;
@@ -247,33 +277,26 @@ public class FaceRegistrationController implements Initializable {
                 Math.pow(faceCenterX - frameCenterX, 2) +
                         Math.pow(faceCenterY - frameCenterY, 2)
         );
-        double maxDistance = Math.sqrt(Math.pow(frameWidth/2, 2) + Math.pow(frameHeight/2, 2));
+        double maxDistance = Math.sqrt(Math.pow(frameWidth / 2, 2) + Math.pow(frameHeight / 2, 2));
         quality.positionScore = 1.0 - (distanceFromCenter / maxDistance);
         isFaceCentered = quality.positionScore > 0.7;
 
-        // 3. Sharpness Analysis (using Laplacian variance)
+        // 3. Sharpness Analysis
         Mat faceGray = new Mat(grayFrame, faceRect);
         Mat laplacian = new Mat();
         Imgproc.Laplacian(faceGray, laplacian, CvType.CV_64F);
-
-//        Scalar mean = new Scalar(0);
-//        Scalar stddev = new Scalar(0);
-//        Core.meanStdDev(laplacian, mean, stddev);
-//        currentSharpness = stddev.val[0] * stddev.val[0]; // Variance
 
         MatOfDouble mean = new MatOfDouble();
         MatOfDouble stddev = new MatOfDouble();
         Core.meanStdDev(laplacian, mean, stddev);
         currentSharpness = Math.pow(stddev.get(0, 0)[0], 2);
 
-        // Normalize sharpness score (typical good values are > 100)
         quality.sharpnessScore = Math.min(currentSharpness / 200.0, 1.0);
 
         // 4. Lighting Analysis
         Scalar meanBrightness = Core.mean(faceGray);
         double brightness = meanBrightness.val[0];
 
-        // Good lighting is between 50-200 (0-255 scale)
         if (brightness < 50 || brightness > 200) {
             quality.lightingScore = 0.3;
             hasGoodLighting = false;
@@ -282,18 +305,93 @@ public class FaceRegistrationController implements Initializable {
             hasGoodLighting = quality.lightingScore > 0.6;
         }
 
-        // 5. Calculate Overall Score
-        quality.overallScore = (quality.sizeScore * 0.3 +
-                quality.positionScore * 0.25 +
-                quality.sharpnessScore * 0.25 +
-                quality.lightingScore * 0.2);
+        // 5. Eye Detection Analysis
+        quality.eyeScore = detectEyes(grayFrame, faceRect);
+        eyesDetected = quality.eyeScore > 0.5;
+
+        // 6. Mouth Detection Analysis
+        quality.mouthScore = detectMouth(grayFrame, faceRect);
+        mouthDetected = quality.mouthScore > 0.3;
+
+        // 7. Calculate Overall Score with weighted features
+        quality.overallScore = (quality.sizeScore * 0.2 +
+                quality.positionScore * 0.2 +
+                quality.sharpnessScore * 0.2 +
+                quality.lightingScore * 0.15 +
+                quality.eyeScore * 0.15 +
+                quality.mouthScore * 0.1);
 
         return quality;
     }
 
+    private double detectEyes(Mat grayFrame, Rect faceRect) {
+        try {
+            // Define eye region (upper half of face)
+            Rect eyeRegion = new Rect(
+                    faceRect.x,
+                    faceRect.y,
+                    faceRect.width,
+                    faceRect.height / 2
+            );
+
+            Mat eyeROI = new Mat(grayFrame, eyeRegion);
+            MatOfRect eyeDetections = new MatOfRect();
+
+            eyeDetector.detectMultiScale(eyeROI, eyeDetections, 1.1, 3,
+                    0, new Size(10, 10), new Size());
+
+            Rect[] eyes = eyeDetections.toArray();
+
+            // Score based on number of eyes detected (ideally 2)
+            if (eyes.length >= 2) {
+                return 1.0; // Perfect - both eyes detected
+            } else if (eyes.length == 1) {
+                return 0.6; // Acceptable - one eye detected
+            } else {
+                return 0.0; // Poor - no eyes detected
+            }
+
+        } catch (Exception e) {
+            return 0.0; // Error in detection
+        }
+    }
+
+    private double detectMouth(Mat grayFrame, Rect faceRect) {
+        try {
+            // Define mouth region (lower third of face)
+            int mouthY = faceRect.y + (int) (faceRect.height * 0.6);
+            int mouthHeight = (int) (faceRect.height * 0.4);
+
+            Rect mouthRegion = new Rect(
+                    faceRect.x,
+                    mouthY,
+                    faceRect.width,
+                    mouthHeight
+            );
+
+            Mat mouthROI = new Mat(grayFrame, mouthRegion);
+            MatOfRect mouthDetections = new MatOfRect();
+
+            mouthDetector.detectMultiScale(mouthROI, mouthDetections, 1.1, 3,
+                    0, new Size(15, 15), new Size());
+
+            Rect[] mouths = mouthDetections.toArray();
+
+            // Score based on mouth detection
+            if (mouths.length >= 1) {
+                return 1.0; // Good - mouth detected
+            } else {
+                return 0.0; // Poor - no mouth detected
+            }
+
+        } catch (Exception e) {
+            return 0.0; // Error in detection
+        }
+    }
+
     private void captureFaceData(Mat frame, Rect faceRect, FaceQuality quality) {
         if (capturedFaces.size() >= REQUIRED_SAMPLES) {
-            return; // Already captured enough samples
+            return;
         }
 
         try {
@@ -312,11 +410,6 @@ public class FaceRegistrationController implements Initializable {
                 }
             });
 
-            System.out.println("=== FACE SAMPLE CAPTURED ===");
-            System.out.println("Sample: " + capturedFaces.size() + "/" + REQUIRED_SAMPLES);
-            System.out.println("Quality Score: " + String.format("%.2f", quality.overallScore));
-            System.out.println("Face Data: " + faceDataString.substring(0, Math.min(50, faceDataString.length())) + "...");
-
         } catch (Exception e) {
             System.err.println("Error capturing face data: " + e.getMessage());
         }
@@ -325,31 +418,21 @@ public class FaceRegistrationController implements Initializable {
     private void completeFaceRegistration() {
         stopCamera();
 
-        // Here you would save all captured faces to database
-        // You can use the best quality samples or create an average template
-
         updateStatus("✓ Face registration completed successfully!");
         instructionLabel.setText("Registration complete! You can now use face login.");
         qualityIndicator.setFill(Color.GREEN);
 
-        System.out.println("=== FACE REGISTRATION COMPLETE ===");
-        System.out.println("Total samples captured: " + capturedFaces.size());
-        System.out.println("Ready for face recognition login!");
-        System.out.println(capturedFaces);
-
-        // TODO: Save capturedFaces list to database
-         saveFaceDataToDatabase(capturedFaces);
+        saveFaceDataToDatabase(capturedFaces);
     }
 
     private void saveFaceDataToDatabase(List<String> capturedFaces) {
         AuthService authService = new AuthService();
-        authService.addFaceRecognitionForUser(currentUserId,capturedFaces);
+        authService.addFaceRecognitionForUser(currentUserId, capturedFaces);
         Stage stage = (Stage) startCameraBtn.getScene().getWindow();
         stage.close();
     }
 
     private void updateQualityFeedback(FaceQuality quality) {
-        // Update quality indicator color
         if (quality.overallScore >= 0.8) {
             qualityIndicator.setFill(Color.GREEN);
         } else if (quality.overallScore >= 0.6) {
@@ -358,7 +441,6 @@ public class FaceRegistrationController implements Initializable {
             qualityIndicator.setFill(Color.RED);
         }
 
-        // Update instruction text based on quality issues
         String instruction = getQualityInstruction(quality);
         instructionLabel.setText(instruction);
 
@@ -372,6 +454,12 @@ public class FaceRegistrationController implements Initializable {
         }
         if (quality.positionScore < 0.6) {
             return "Center your face in the frame";
+        }
+        if (quality.eyeScore < 0.5) {
+            return "Look directly at the camera - eyes not detected";
+        }
+        if (quality.mouthScore < 0.3) {
+            return "Position face properly - mouth not visible";
         }
         if (quality.sharpnessScore < 0.5) {
             return "Hold still - image is blurry";
@@ -392,14 +480,28 @@ public class FaceRegistrationController implements Initializable {
     }
 
     private void addQualityIndicators(Mat frame, Rect faceRect, FaceQuality quality) {
-        // Add quality score text
         String qualityText = String.format("Quality: %.0f%%", quality.overallScore * 100);
         Imgproc.putText(frame, qualityText,
                 new Point(faceRect.x, faceRect.y - 10),
                 Imgproc.FONT_HERSHEY_SIMPLEX, 0.7,
                 getQualityColor(quality.overallScore), 2);
 
-        // Add center guide (crosshair)
+        // Add feature detection indicators
+        if (eyesDetected) {
+            Imgproc.putText(frame, "Eyes: OK",
+                    new Point(faceRect.x, faceRect.y + faceRect.height + 25),
+                    Imgproc.FONT_HERSHEY_SIMPLEX, 0.5,
+                    new Scalar(0, 255, 0), 1);
+        }
+
+        if (mouthDetected) {
+            Imgproc.putText(frame, "Mouth: OK",
+                    new Point(faceRect.x + 80, faceRect.y + faceRect.height + 25),
+                    Imgproc.FONT_HERSHEY_SIMPLEX, 0.5,
+                    new Scalar(0, 255, 0), 1);
+        }
+
+        // Add center guide
         int centerX = frame.width() / 2;
         int centerY = frame.height() / 2;
         Imgproc.line(frame, new Point(centerX - 20, centerY), new Point(centerX + 20, centerY),
@@ -413,26 +515,25 @@ public class FaceRegistrationController implements Initializable {
         captureProgress.setProgress(progress);
     }
 
-    // Helper classes and methods
     private static class FaceQuality {
         double sizeScore = 0.0;
         double positionScore = 0.0;
         double sharpnessScore = 0.0;
         double lightingScore = 0.0;
+        double eyeScore = 0.0;
+        double mouthScore = 0.0;
         double overallScore = 0.0;
     }
 
     private String convertFaceToBase64String(Mat faceMat) {
         Mat resizedFace = new Mat();
-        Size faceSize = new Size(100, 100); // Standard size for all faces
+        Size faceSize = new Size(100, 100);
         Imgproc.resize(faceMat, resizedFace, faceSize);
 
-        // Convert to bytes
         MatOfByte matOfByte = new MatOfByte();
         Imgcodecs.imencode(".png", resizedFace, matOfByte);
         byte[] byteArray = matOfByte.toArray();
 
-        // Convert to Base64 string
         return Base64.getEncoder().encodeToString(byteArray);
     }
 
@@ -450,4 +551,5 @@ public class FaceRegistrationController implements Initializable {
     public void cleanup() {
         stopCamera();
     }
+
 }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -240,26 +241,6 @@ public class AuthService {
         return null; // No matching face found
     }
 
-    public List<String> getFaceSamplesForUser(int userId) {
-        String query = "SELECT face_sample FROM user WHERE id = ?";
-
-        try (PreparedStatement ps = cnx.prepareStatement(query)) {
-            ps.setInt(1, userId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String faceSamplesJson = rs.getString("face_sample");
-                    return parseFaceSamplesFromJson(faceSamplesJson);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error retrieving face samples: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     private List<String> parseFaceSamplesFromJson(String json) {
         if (json == null || json.trim().isEmpty()) {
@@ -359,21 +340,6 @@ public class AuthService {
 
         } catch (Exception e) {
             System.err.println("Error calculating face similarity: " + e.getMessage());
-            return 0.0;
-        }
-    }
-
-    // Alternative method using template matching
-    private double calculateFaceSimilarityTemplate(Mat face1, Mat face2) {
-        try {
-            Mat result = new Mat();
-            Imgproc.matchTemplate(face1, face2, result, Imgproc.TM_CCOEFF_NORMED);
-
-            Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-            return mmr.maxVal;
-
-        } catch (Exception e) {
-            System.err.println("Error in template matching: " + e.getMessage());
             return 0.0;
         }
     }

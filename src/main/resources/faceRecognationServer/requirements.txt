@@ -1,0 +1,7 @@
+deepface
+opencv-python
+mysql-connector-python
+flask
+numpy
+pillow
+tensorflow

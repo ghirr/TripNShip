@@ -15,9 +15,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.Role;
 import org.Esprit.TripNShip.Entities.User;
 import org.Esprit.TripNShip.Services.AuthService;
+import org.Esprit.TripNShip.Services.FaceAuthService;
 import org.Esprit.TripNShip.Utils.Shared;
+import org.Esprit.TripNShip.Utils.UserSession;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -66,12 +69,12 @@ public class FaceLoginController implements Initializable {
     private ScheduledExecutorService captureTimer;
     private ScheduledFuture<?> timeoutTask;
     private CascadeClassifier faceDetector;
-    private AuthService userService;
+    private FaceAuthService faceAuthService;
     private boolean cameraActive = false;
     private boolean autoCapturing = false;
     private long captureStartTime;
     private static final long CAPTURE_TIMEOUT = 60000; // 1 minute in milliseconds
-    private static final long CAPTURE_INTERVAL = 2000; // Attempt capture every 2 seconds
+    private static final long CAPTURE_INTERVAL = 5000; // Attempt capture every 2 seconds
 
     static {
         // Load OpenCV native library
@@ -80,7 +83,7 @@ public class FaceLoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userService = new AuthService();
+        faceAuthService = new FaceAuthService();
 
         try {
             // Initialize face detector
@@ -176,7 +179,7 @@ public class FaceLoginController implements Initializable {
             protected User call() throws Exception {
                 Mat faceROI = new Mat(frame, faceRect);
                 String capturedFaceData = matToBase64(faceROI);
-                return userService.authenticateWithFace(capturedFaceData);
+                return faceAuthService.authenticateWithFace(capturedFaceData);
             }
         };
 
@@ -194,9 +197,14 @@ public class FaceLoginController implements Initializable {
                 stopCamera();
                 Platform.runLater(() -> {
                     try {
-                        // Store user session or pass user data as needed
-                        // UserSession.setCurrentUser(authenticatedUser);
-                        // navigateToMainApp();
+                        if(authenticatedUser.getRole().equals(Role.CLIENT)){
+                            UserSession.initSession(authenticatedUser);
+                            Shared.switchScene(startCameraButton,getClass().getResource("/fxml/Home.fxml"),"Main");
+                        }
+                        else{
+                            UserSession.initSession(authenticatedUser);
+                            Shared.switchScene(startCameraButton,getClass().getResource("/fxml/adminNavigation.fxml"),"Main");
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -329,18 +337,6 @@ public class FaceLoginController implements Initializable {
     @FXML
     private void switchToRegularLogin(ActionEvent actionEvent) {
         Shared.switchScene(actionEvent,getClass().getResource("/fxml/login.fxml"),"Login");
-    }
-
-    private void navigateToMainApp() {
-        try {
-            Stage stage = (Stage) cameraPreview.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainApp.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void cleanup() {

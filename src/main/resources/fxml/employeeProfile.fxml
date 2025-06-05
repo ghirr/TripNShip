@@ -45,6 +45,8 @@
                                     styleClass="action-button" text="Edit Profile"/>
                             <Button  mnemonicParsing="false" onAction="#handleChangePwd"
                                     styleClass="action-button" text="Change Password"/>
+                            <Button  mnemonicParsing="false" onAction="#handleFaceID"
+                                     styleClass="action-button" text="Face ID"/>
                         </HBox>
                     </VBox>
                 </HBox>

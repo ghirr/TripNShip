@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.Esprit.TripNShip.Services.AuthService;
+import org.Esprit.TripNShip.Services.FaceAuthService;
 import org.Esprit.TripNShip.Utils.UserSession;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -83,7 +83,7 @@ public class FaceRegistrationController implements Initializable {
     private boolean eyesDetected = false;
     private boolean mouthDetected = false;
 
-    private int currentUserId = 54;
+    private int currentUserId = UserSession.getInstance().getUserId();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -422,12 +422,12 @@ public class FaceRegistrationController implements Initializable {
         instructionLabel.setText("Registration complete! You can now use face login.");
         qualityIndicator.setFill(Color.GREEN);
 
-        saveFaceDataToDatabase(capturedFaces);
+       saveFaceDataToDatabase(capturedFaces);
     }
 
     private void saveFaceDataToDatabase(List<String> capturedFaces) {
-        AuthService authService = new AuthService();
-        authService.addFaceRecognitionForUser(currentUserId, capturedFaces);
+        FaceAuthService faceAuthService = new FaceAuthService();
+        faceAuthService.addFaceRecognitionForUser(currentUserId, capturedFaces);
         Stage stage = (Stage) startCameraBtn.getScene().getWindow();
         stage.close();
     }

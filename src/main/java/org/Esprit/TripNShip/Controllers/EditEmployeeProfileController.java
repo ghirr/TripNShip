@@ -125,8 +125,10 @@ public class EditEmployeeProfileController {
             // Update user object with editable field values
             employee.setGender(genderComboBox.getValue());
             employee.setPhoneNumber(phoneNumberField.getText());
-            employee.setBirthdayDate( birthdayDatePicker.getValue().atStartOfDay());
-            
+            if (birthdayDatePicker.getValue() != null) {
+                employee.setBirthdayDate(birthdayDatePicker.getValue().atStartOfDay());
+            }
+
             userService.update(employee);
             UserSession.getInstance().setProfilePhotoUrl(employee.getProfilePhoto());
             EmployeeProfileController.getInstance().initialize();

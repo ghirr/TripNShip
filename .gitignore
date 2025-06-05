@@ -35,3 +35,6 @@ build/
 tokens
 src/main/resources/credentials.json
 .env
+
+src_backup
+src/main/resources/faceRecognationServer/venv

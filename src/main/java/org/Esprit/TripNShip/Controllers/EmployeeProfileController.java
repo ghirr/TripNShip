@@ -140,6 +140,33 @@ public class EmployeeProfileController {
         }
     }
 
+    @FXML
+    private void handleFaceID(ActionEvent event) {
+        try {
+            if (employee == null) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not retrieve user profile.");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FaceRegistration.fxml"));
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Face ID");
+            dialogStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/iconLogo.png")));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            dialogStage.setResizable(false);
+            dialogStage.setScene(new Scene(root));
+
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open Change Password dialog: " + e.getMessage());
+        }
+    }
+
 
     private void loadUserData() {
         UserSession currentUser = UserSession.getInstance();

@@ -192,155 +192,159 @@ public class AuthService {
     }
 
     public void addFaceRecognitionForUser(int userId, List<String> capturedFaces) {
-        String req = "UPDATE user set face_sample=? where id=?";
-        try (PreparedStatement ps = cnx.prepareStatement(req)) {
-            String jsonFaces = new Gson().toJson(capturedFaces); // Convert List to JSON
-            ps.setString(1, jsonFaces);
-            ps.setInt(2, userId);
-            ps.executeUpdate();
-            System.out.println("Transporter updated!");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        String jsonFaces = new Gson().toJson(capturedFaces); // Convert List to JSON
+        System.out.println(jsonFaces);
+//        String req = "UPDATE user set face_sample=? where id=?";
+//        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+//            String jsonFaces = new Gson().toJson(capturedFaces); // Convert List to JSON
+//            ps.setString(1, jsonFaces);
+//            ps.setInt(2, userId);
+//            ps.executeUpdate();
+//            System.out.println("Transporter updated!");
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
     public User authenticateWithFace(String capturedFaceData) {
-        String query = "SELECT id, firstName, lastName, email, face_sample FROM user WHERE face_sample IS NOT NULL AND face_sample != ''";
+//        String query = "SELECT id, firstName, lastName, email, face_sample FROM user WHERE face_sample IS NOT NULL AND face_sample != ''";
+//
+//        try (PreparedStatement ps = cnx.prepareStatement(query);
+//             ResultSet rs = ps.executeQuery()) {
+//
+//            while (rs.next()) {
+//                int userId = rs.getInt("id");
+//                String nom = rs.getString("firstName");
+//                String prenom = rs.getString("lastName");
+//                String email = rs.getString("email");
+//                String storedFacesJson = rs.getString("face_sample");
+//
+//                // Parse stored faces from JSON
+//                List<String> storedFaces = parseFaceSamplesFromJson(storedFacesJson);
+//
+//                // Compare captured face with stored faces
+//                if (compareFaces(capturedFaceData, storedFaces)) {
+//                    // Create and return user object
+//                    User user = new User();
+//                    user.setIdUser(userId);
+//                    user.setFirstName(nom);
+//                    user.setLastName(prenom);
+//                    user.setEmail(email);
+//                    System.out.println(user);
+//                    return user;
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            System.err.println("Error during face authentication: " + e.getMessage());
+//            e.printStackTrace();
+//        }
 
-        try (PreparedStatement ps = cnx.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                int userId = rs.getInt("id");
-                String nom = rs.getString("firstName");
-                String prenom = rs.getString("lastName");
-                String email = rs.getString("email");
-                String storedFacesJson = rs.getString("face_sample");
-
-                // Parse stored faces from JSON
-                List<String> storedFaces = parseFaceSamplesFromJson(storedFacesJson);
-
-                // Compare captured face with stored faces
-                if (compareFaces(capturedFaceData, storedFaces)) {
-                    // Create and return user object
-                    User user = new User();
-                    user.setIdUser(userId);
-                    user.setFirstName(nom);
-                    user.setLastName(prenom);
-                    user.setEmail(email);
-                    System.out.println(user);
-                    return user;
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error during face authentication: " + e.getMessage());
-            e.printStackTrace();
-        }
+        System.out.println(capturedFaceData);
 
         return null; // No matching face found
     }
 
 
-    private List<String> parseFaceSamplesFromJson(String json) {
-        if (json == null || json.trim().isEmpty()) {
-            return null;
-        }
-
-        try {
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<String>>(){}.getType();
-            return gson.fromJson(json, listType);
-        } catch (Exception e) {
-            System.err.println("Error parsing face samples JSON: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private boolean compareFaces(String capturedFace, List<String> storedFaces) {
-        if (storedFaces == null || storedFaces.isEmpty()) {
-            return false;
-        }
-
-        try {
-            // Convert captured face from base64 to Mat
-            Mat capturedMat = base64ToMat(capturedFace);
-            if (capturedMat.empty()) {
-                return false;
-            }
-
-            // Resize captured face for comparison
-            Mat capturedResized = new Mat();
-            Imgproc.resize(capturedMat, capturedResized, new Size(100, 100));
-
-            // Compare with each stored face
-            for (String storedFace : storedFaces) {
-                Mat storedMat = base64ToMat(storedFace);
-                if (!storedMat.empty()) {
-                    // Resize stored face
-                    Mat storedResized = new Mat();
-                    Imgproc.resize(storedMat, storedResized, new Size(100, 100));
-
-                    // Calculate similarity using template matching
-                    double similarity = calculateFaceSimilarity(capturedResized, storedResized);
-
-                    // If similarity is above threshold, consider it a match
-                    if (similarity > 0.7) { // Adjust threshold as needed
-                        return true;
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            System.err.println("Error comparing faces: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    private Mat base64ToMat(String base64) {
-        try {
-            byte[] decodedBytes = Base64.getDecoder().decode(base64);
-            Mat mat = Imgcodecs.imdecode(new MatOfByte(decodedBytes), Imgcodecs.IMREAD_COLOR);
-            return mat;
-        } catch (Exception e) {
-            System.err.println("Error converting base64 to Mat: " + e.getMessage());
-            return new Mat();
-        }
-    }
-
-    private double calculateFaceSimilarity(Mat face1, Mat face2) {
-        try {
-            // Convert to grayscale for comparison
-            Mat gray1 = new Mat();
-            Mat gray2 = new Mat();
-            Imgproc.cvtColor(face1, gray1, Imgproc.COLOR_BGR2GRAY);
-            Imgproc.cvtColor(face2, gray2, Imgproc.COLOR_BGR2GRAY);
-
-            // Calculate histogram correlation
-            Mat hist1 = new Mat();
-            Mat hist2 = new Mat();
-
-            MatOfFloat ranges = new MatOfFloat(0f, 256f);
-            MatOfInt histSize = new MatOfInt(256);
-            MatOfInt channels = new MatOfInt(0);
-
-            Imgproc.calcHist(List.of(gray1), channels, new Mat(), hist1, histSize, ranges);
-            Imgproc.calcHist(List.of(gray2), channels, new Mat(), hist2, histSize, ranges);
-
-            // Normalize histograms
-            Core.normalize(hist1, hist1, 0, 1, Core.NORM_MINMAX);
-            Core.normalize(hist2, hist2, 0, 1, Core.NORM_MINMAX);
-
-            // Calculate correlation
-            double correlation = Imgproc.compareHist(hist1, hist2, Imgproc.HISTCMP_CORREL);
-
-            return correlation;
-
-        } catch (Exception e) {
-            System.err.println("Error calculating face similarity: " + e.getMessage());
-            return 0.0;
-        }
-    }
+//    private List<String> parseFaceSamplesFromJson(String json) {
+//        if (json == null || json.trim().isEmpty()) {
+//            return null;
+//        }
+//
+//        try {
+//            Gson gson = new Gson();
+//            Type listType = new TypeToken<List<String>>(){}.getType();
+//            return gson.fromJson(json, listType);
+//        } catch (Exception e) {
+//            System.err.println("Error parsing face samples JSON: " + e.getMessage());
+//            return null;
+//        }
+//    }
+//
+//    private boolean compareFaces(String capturedFace, List<String> storedFaces) {
+//        if (storedFaces == null || storedFaces.isEmpty()) {
+//            return false;
+//        }
+//
+//        try {
+//            // Convert captured face from base64 to Mat
+//            Mat capturedMat = base64ToMat(capturedFace);
+//            if (capturedMat.empty()) {
+//                return false;
+//            }
+//
+//            // Resize captured face for comparison
+//            Mat capturedResized = new Mat();
+//            Imgproc.resize(capturedMat, capturedResized, new Size(100, 100));
+//
+//            // Compare with each stored face
+//            for (String storedFace : storedFaces) {
+//                Mat storedMat = base64ToMat(storedFace);
+//                if (!storedMat.empty()) {
+//                    // Resize stored face
+//                    Mat storedResized = new Mat();
+//                    Imgproc.resize(storedMat, storedResized, new Size(100, 100));
+//
+//                    // Calculate similarity using template matching
+//                    double similarity = calculateFaceSimilarity(capturedResized, storedResized);
+//
+//                    // If similarity is above threshold, consider it a match
+//                    if (similarity > 0.7) { // Adjust threshold as needed
+//                        return true;
+//                    }
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            System.err.println("Error comparing faces: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//
+//        return false;
+//    }
+//
+//    private Mat base64ToMat(String base64) {
+//        try {
+//            byte[] decodedBytes = Base64.getDecoder().decode(base64);
+//            Mat mat = Imgcodecs.imdecode(new MatOfByte(decodedBytes), Imgcodecs.IMREAD_COLOR);
+//            return mat;
+//        } catch (Exception e) {
+//            System.err.println("Error converting base64 to Mat: " + e.getMessage());
+//            return new Mat();
+//        }
+//    }
+//
+//    private double calculateFaceSimilarity(Mat face1, Mat face2) {
+//        try {
+//            // Convert to grayscale for comparison
+//            Mat gray1 = new Mat();
+//            Mat gray2 = new Mat();
+//            Imgproc.cvtColor(face1, gray1, Imgproc.COLOR_BGR2GRAY);
+//            Imgproc.cvtColor(face2, gray2, Imgproc.COLOR_BGR2GRAY);
+//
+//            // Calculate histogram correlation
+//            Mat hist1 = new Mat();
+//            Mat hist2 = new Mat();
+//
+//            MatOfFloat ranges = new MatOfFloat(0f, 256f);
+//            MatOfInt histSize = new MatOfInt(256);
+//            MatOfInt channels = new MatOfInt(0);
+//
+//            Imgproc.calcHist(List.of(gray1), channels, new Mat(), hist1, histSize, ranges);
+//            Imgproc.calcHist(List.of(gray2), channels, new Mat(), hist2, histSize, ranges);
+//
+//            // Normalize histograms
+//            Core.normalize(hist1, hist1, 0, 1, Core.NORM_MINMAX);
+//            Core.normalize(hist2, hist2, 0, 1, Core.NORM_MINMAX);
+//
+//            // Calculate correlation
+//            double correlation = Imgproc.compareHist(hist1, hist2, Imgproc.HISTCMP_CORREL);
+//
+//            return correlation;
+//
+//        } catch (Exception e) {
+//            System.err.println("Error calculating face similarity: " + e.getMessage());
+//            return 0.0;
+//        }
+//    }
 }

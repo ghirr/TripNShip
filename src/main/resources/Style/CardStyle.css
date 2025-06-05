@@ -1,0 +1,15 @@
+.itinerary-card {
+    -fx-background-color: #e0e5ec;
+    -fx-background-radius: 20;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.8), 10, 0, -5, -5),
+                dropshadow(three-pass-box, rgba(174, 174, 192, 0.6), 10, 0, 5, 5);
+    -fx-text-fill: #333;
+}
+
+.itinerary-card:hover {
+    -fx-background-color: #d1d9e6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.9), 15, 0, -6, -6),
+                dropshadow(three-pass-box, rgba(174, 174, 192, 0.8), 15, 0, 6, 6);
+}

@@ -15,11 +15,14 @@ public class MainTransportGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainTransport.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/itineraryContainer.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("HELLO");
         primaryStage.show();
+
+        primaryStage.setX(0);
+        primaryStage.setY(0);
     }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
+<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.BookTicketController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+        <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="400" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/logo.png" />
+                    </ImageView>
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Book Your Ticket" />
+
+                    <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary Code" />
+                        <ComboBox fx:id="itineraryCodeComboBox" maxWidth="Infinity" promptText="Select Itinerary Code" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User Email" />
+                        <TextField fx:id="userEmailField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Location" />
+                        <TextField fx:id="departureLocationField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Location" />
+                        <TextField fx:id="arrivalLocationField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Date" />
+                        <DatePicker fx:id="departureDatePicker" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Departure Time" />
+                        <TextField fx:id="departureTimeField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Date" />
+                        <TextField fx:id="arrivalDateField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+
+                        <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Arrival Time" />
+                        <TextField fx:id="arrivalTimeField" maxWidth="Infinity" style="-fx-font-size: 14px;-fx-text-fill: #888; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+
+                    </VBox>
+
+                    <Button fx:id="addTicketButton" onAction="#addTicket" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Add Ticket" />
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

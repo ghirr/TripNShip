@@ -4,9 +4,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Pos?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
+
 <BorderPane fx:id="mainBorderPane"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -17,11 +18,11 @@
     <top>
         <HBox fx:id="header" spacing="20" alignment="CENTER_LEFT" styleClass="header">
             <!-- Logo à gauche -->
-            <ImageView fx:id="logoImage" fitHeight="55" fitWidth="75" styleClass="logo"/>
+            <ImageView fx:id="logoImage" fitHeight="70" fitWidth="95" styleClass="logo"/>
 
             <!-- Menu au centre -->
             <HBox spacing="40" alignment="CENTER" styleClass="menu">
-                <Label fx:id="homeLabel" text="Home" styleClass="menu-item"/>
+                <Label fx:id="homeLabel" text="Home" styleClass="menu-item active"/>
                 <Label fx:id="accommodationLabel" text="Accommodation" styleClass="menu-item"/>
                 <Label fx:id="transportLabel" text="Transport" styleClass="menu-item"/>
                 <Label fx:id="expeditionLabel" text="Expedition" styleClass="menu-item"/>
@@ -33,109 +34,147 @@
             <Region HBox.hgrow="ALWAYS" />
 
             <!-- User info aligned right -->
-            <HBox spacing="10" alignment="CENTER_RIGHT">
-                <ImageView fx:id="userIcon" fitHeight="25.5" fitWidth="26.5" style="-fx-cursor: hand;">
+            <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="user-section">
+                <Circle fx:id="userAvatarBorder" radius="20" styleClass="avatar-border"/>
+                <ImageView fx:id="userIcon" fitHeight="35" fitWidth="35" styleClass="user-avatar">
                     <Image url="@../images/icon_user_session.png" />
                 </ImageView>
 
-                <Label fx:id="username" prefHeight="25" styleClass="username" text="Islem Ghariani" style="-fx-cursor: hand;"/>
+                <VBox spacing="2" alignment="CENTER_LEFT">
+                    <Label fx:id="welcomeText" text="Welcome back," styleClass="welcome-text"/>
+                    <Label fx:id="username" text="Islem Ghariani" styleClass="username"/>
+                </VBox>
 
-                <ImageView fx:id="logoutIcon" fitHeight="22.5" fitWidth="22.5" onMouseClicked="#logout" pickOnBounds="true" style="-fx-cursor: hand">
-                    <Image url="@../images/logout.png" />
+                <ImageView fx:id="logoutIcon" fitHeight="28" fitWidth="28" onMouseClicked="#logout"
+                           pickOnBounds="true" styleClass="logout-icon">
+                    <Image url="@../images/icons8-fermer-64.png" />
                 </ImageView>
             </HBox>
         </HBox>
     </top>
 
-
     <!-- CONTENU PRINCIPAL AVEC SCROLL -->
     <center>
         <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
-            <VBox fx:id="defaultContent" spacing="40" alignment="CENTER" styleClass="content">
-                <!-- Texte -->
-                <VBox spacing="15" alignment="CENTER">
-                    <Label text="Go beyond your imagination" styleClass="title"/>
-                    <Label text="Discover your ideal experience with us" styleClass="subtitle"/>
+            <VBox fx:id="defaultContent" spacing="50" alignment="TOP_CENTER" styleClass="main-content">
+
+                <!-- Hero Section -->
+                <VBox spacing="25" alignment="CENTER" styleClass="hero-section">
+                    <VBox spacing="12" alignment="CENTER">
+                        <Label text="Go Beyond Your Imagination" styleClass="hero-title"/>
+                        <Label text="Discover extraordinary experiences tailored just for you" styleClass="hero-subtitle"/>
+                    </VBox>
+
+                    <!-- Call to Action Button -->
+                    <Button text="Start Your Journey" styleClass="cta-button"/>
                 </VBox>
 
-                <!-- Cartes -->
-                <HBox spacing="30" alignment="CENTER">
-                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                        <ImageView fx:id="card1" fitWidth="230" fitHeight="200"/>
-                        <Label text="7% Discount for all Airlines" styleClass="card-text"/>
+                <!-- Services Cards Section -->
+                <VBox spacing="35" alignment="CENTER" styleClass="services-section">
+                    <VBox spacing="8" alignment="CENTER">
+                        <Label text="Our Premium Services" styleClass="section-title"/>
+                        <Label text="Everything you need for the perfect trip" styleClass="section-subtitle"/>
                     </VBox>
 
-                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                        <ImageView fx:id="card2" fitWidth="230" fitHeight="200"/>
-                        <Label text="Travel around the world" styleClass="card-text"/>
+                    <!-- Services Grid -->
+                    <GridPane hgap="25" vgap="25" alignment="CENTER" styleClass="services-grid">
+                        <!-- Row 1 -->
+                        <VBox styleClass="service-card" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <ImageView fx:id="card1" fitWidth="280" fitHeight="220" styleClass="service-image"/>
+                            <VBox spacing="8" alignment="CENTER" styleClass="service-info">
+                                <Label text="Flight Deals" styleClass="service-title"/>
+                                <Label text="7% Discount on all Airlines" styleClass="service-description"/>
+                                <Label text="✈️ Premium Airlines" styleClass="service-feature"/>
+                            </VBox>
+                        </VBox>
+
+                        <VBox styleClass="service-card" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <ImageView fx:id="card2" fitWidth="280" fitHeight="220" styleClass="service-image"/>
+                            <VBox spacing="8" alignment="CENTER" styleClass="service-info">
+                                <Label text="World Tours" styleClass="service-title"/>
+                                <Label text="Travel around the world" styleClass="service-description"/>
+                                <Label text="🌍 Global Destinations" styleClass="service-feature"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Row 2 -->
+                        <VBox styleClass="service-card" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <ImageView fx:id="card3" fitWidth="280" fitHeight="220" styleClass="service-image"/>
+                            <VBox spacing="8" alignment="CENTER" styleClass="service-info">
+                                <Label text="Luxury Hotels" styleClass="service-title"/>
+                                <Label text="Premium resorts and exclusive deals" styleClass="service-description"/>
+                                <Label text="🏨 5-Star Experience" styleClass="service-feature"/>
+                            </VBox>
+                        </VBox>
+
+                        <VBox styleClass="service-card" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <ImageView fx:id="card4" fitWidth="280" fitHeight="220" styleClass="service-image"/>
+                            <VBox spacing="8" alignment="CENTER" styleClass="service-info">
+                                <Label text="Adventure Tours" styleClass="service-title"/>
+                                <Label text="Thrilling expeditions and adventures" styleClass="service-description"/>
+                                <Label text="🏔️ Epic Adventures" styleClass="service-feature"/>
+                            </VBox>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- Weather Widget Section -->
+                <VBox spacing="20" alignment="CENTER" styleClass="weather-section">
+                    <VBox spacing="8" alignment="CENTER">
+                        <Label text="Weather Information" styleClass="section-title"/>
+                        <Label text="Plan your trip with current weather conditions" styleClass="section-subtitle"/>
                     </VBox>
 
-                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                        <ImageView fx:id="card3" fitWidth="230" fitHeight="200"/>
-                        <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
-                    </VBox>
+                    <!-- Weather Widget -->
+                    <VBox spacing="15" alignment="CENTER" styleClass="weather-widget">
+                        <Label text="🌤️ Current Weather" styleClass="weather-title"/>
 
-                    <VBox styleClass="card" alignment="BOTTOM_CENTER">
-                        <ImageView fx:id="card4" fitWidth="230" fitHeight="200"/>
-                        <Label text="Luxury resorts et top deals" wrapText="true" styleClass="card-text"/>
+                        <!-- Weather Display -->
+                        <HBox spacing="25" alignment="CENTER" styleClass="weather-display">
+                            <ImageView fx:id="weatherIcon" fitWidth="90" fitHeight="90" styleClass="weather-icon"/>
+                            <VBox spacing="5" alignment="CENTER_LEFT">
+                                <Label fx:id="weatherLabel" text="Loading weather..." styleClass="weather-info"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- City Search -->
+                        <HBox spacing="15" alignment="CENTER" styleClass="weather-search">
+                            <TextField fx:id="cityTextField" promptText="Enter city name..." styleClass="city-input"/>
+                            <Button fx:id="fetchButton" text="Get Weather" onAction="#fetchWeatherByCity" styleClass="weather-button"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Statistics Section -->
+                <HBox spacing="40" alignment="CENTER" styleClass="stats-section">
+                    <VBox spacing="8" alignment="CENTER" styleClass="stat-item">
+                        <Label text="10K+" styleClass="stat-number"/>
+                        <Label text="Happy Customers" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox spacing="8" alignment="CENTER" styleClass="stat-item">
+                        <Label text="50+" styleClass="stat-number"/>
+                        <Label text="Destinations" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox spacing="8" alignment="CENTER" styleClass="stat-item">
+                        <Label text="24/7" styleClass="stat-number"/>
+                        <Label text="Support" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox spacing="8" alignment="CENTER" styleClass="stat-item">
+                        <Label text="5★" styleClass="stat-number"/>
+                        <Label text="Rating" styleClass="stat-label"/>
                     </VBox>
                 </HBox>
 
-                <!-- Bloc météo amélioré -->
-                <VBox spacing="10" alignment="CENTER"
-                      style="-fx-background-color: linear-gradient(to bottom, #90caf9, #e3f2fd);
-                             -fx-padding: 25 30;
-                             -fx-background-radius: 15;
-                             -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 15, 0, 0, 5);
-                             -fx-border-radius: 15;
-                             -fx-border-color: #42a5f5;
-                             -fx-border-width: 2;">
-
-                    <Label text="🌤️ Current Weather"
-                           style="-fx-font-size: 22px;
-                                  -fx-text-fill: #0d47a1;
-                                  -fx-font-weight: 700;
-                                  -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.15) , 2, 0, 1, 1);" />
-
-                    <!-- Affichage météo auto via IP/localisation -->
-                    <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
-                        <ImageView fx:id="weatherIcon" fitWidth="80" fitHeight="80"
-                                   style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 2);" />
-                        <Label fx:id="weatherLabel" wrapText="true"
-                               style="-fx-font-size: 18px;
-                                      -fx-text-fill: #1e272e;
-                                      -fx-font-weight: 600;" />
-                    </HBox>
-
-                    <!-- Barre de recherche par ville -->
-                    <HBox spacing="12" alignment="CENTER" style="-fx-padding: 8 0;">
-                        <TextField fx:id="cityTextField" promptText="Entrez une ville"
-                                   style="-fx-background-radius: 15;
-                                          -fx-background-color: white;
-                                          -fx-border-radius: 15;
-                                          -fx-border-color: #90caf9;
-                                          -fx-border-width: 1.5;
-                                          -fx-padding: 8 15;
-                                          -fx-font-size: 16px;" />
-                        <Button fx:id="fetchButton" text="Search" onAction="#fetchWeatherByCity"
-                                style="-fx-background-color: linear-gradient(to right, #8e44ad, #2980b9);
-                                       -fx-text-fill: white;
-                                       -fx-font-weight: 700;
-                                       -fx-background-radius: 15;
-                                       -fx-padding: 8 20;
-                                       -fx-cursor: hand;
-                                       -fx-effect: dropshadow(gaussian, rgba(30,136,229,0.6), 8, 0, 0, 3);" />
-                    </HBox>
-
-                </VBox>
             </VBox>
         </ScrollPane>
     </center>
 
     <!-- FOOTER -->
     <bottom>
-        <HBox alignment="CENTER" styleClass="footer">
-            <Label text="© 2025 TripNShip. All rights reserved." styleClass="footer-text"/>
-        </HBox>
+        <VBox styleClass="footer" alignment="CENTER">
+            <Label text="© 2025 TripNShip. All rights reserved. | Privacy Policy | Terms of Service"
+                   styleClass="footer-copyright"/>
+        </VBox>
+
     </bottom>
 </BorderPane>

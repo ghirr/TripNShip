@@ -1,23 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<ScrollPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.Esprit.TripNShip.Controllers.VehicleViewController"
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.VehicleViewController"
             fitToWidth="true"
-            style="-fx-background-color: #f0f2f5;">
+            fitToHeight="true"
+            style="-fx-background-color: transparent; -fx-background: transparent;"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
+
     <content>
-        <FlowPane fx:id="vehicleContainer"
-                  hgap="30"
-                  vgap="30"
-                  prefWidth="Infinity"
-                  alignment="CENTER">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-        </FlowPane>
+        <VBox spacing="0" style="-fx-background-color: transparent;">
+
+            <!-- Hero Header Section avec Gradient Violet -->
+            <VBox style="-fx-background-color: linear-gradient(135deg, #792d99 0%, #a052c4 50%, #5e1a70 100%); -fx-min-height: 350;">
+                <padding>
+                    <Insets top="50" right="60" bottom="50" left="60" />
+                </padding>
+
+                <!-- Hero Title Section -->
+                <VBox spacing="15" alignment="CENTER">
+                    <Label text="✨ Premium Vehicle Rental Experience"
+                           style="-fx-font-size: 38px;
+                             -fx-font-weight: bold;
+                             -fx-text-fill: #ffffff;
+                             -fx-effect: dropshadow(gaussian, rgba(46, 15, 56, 0.6), 8, 0.6, 0, 3);">
+                        <font>
+                            <Font name="System Bold" size="38.0" />
+                        </font>
+                    </Label>
+
+                    <Label text="🚗 Discover luxury vehicles for your perfect journey • Premium service • 24/7 Support"
+                           style="-fx-font-size: 18px;
+                          -fx-text-fill: #3e164f;
+
+
+                             -fx-text-alignment: center;
+                             -fx-padding: 0 0 25 0;" />
+                </VBox>
+
+                <!-- Premium Search Section -->
+                <VBox spacing="30" alignment="CENTER">
+
+                    <!-- Enhanced Search Bar -->
+                    <HBox spacing="0" alignment="CENTER"
+                          style="-fx-background-color: rgba(255,255,255,0.98);
+                            -fx-background-radius: 30;
+                            -fx-border-radius: 30;
+                            -fx-border-color: rgba(160, 82, 196, 0.3);
+                            -fx-border-width: 2;
+                            -fx-effect: dropshadow(gaussian, rgba(121, 45, 153, 0.3), 20, 0.4, 0, 5);
+                            -fx-padding: 8 25;"
+                          prefWidth="500">
+
+                        <Label text="🔍" style="-fx-font-size: 20px; -fx-text-fill: #792d99; -fx-padding: 0 15 0 0;" />
+
+                        <TextField promptText="Search your dream car (BMW, Mercedes, Audi...)"
+                                   style="-fx-background-color: transparent;
+                                  -fx-border-width: 0;
+                                  -fx-font-size: 16px;
+                                  -fx-text-fill: #333333;
+                                  -fx-prompt-text-fill: #792d99;"
+                                   prefWidth="350" />
+
+                        <Button text="🚀 Search"
+                                style="-fx-background-color: linear-gradient(45deg, #792d99, #a052c4);
+                                 -fx-text-fill: white;
+                                 -fx-font-weight: bold;
+                                 -fx-background-radius: 25;
+                                 -fx-border-radius: 25;
+                                 -fx-padding: 12 25;
+                                 -fx-font-size: 14px;
+                                 -fx-effect: dropshadow(gaussian, rgba(121, 45, 153, 0.4), 10, 0.4, 0, 3);" />
+                    </HBox>
+
+                    <!-- Glassmorphism Filter Section -->
+                    <HBox spacing="25" alignment="CENTER">
+
+                        <!-- Sort Filter -->
+                        <VBox spacing="8" alignment="CENTER">
+                            <Label text="📊" style="-fx-font-size: 24px; -fx-text-fill: #f0e6f7;" />
+                            <MenuButton text="Sort by Price ▼"
+                                        style="-fx-background-color: rgba(160, 82, 196, 0.3);
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 14px;
+                                       -fx-font-weight: bold;
+                                       -fx-background-radius: 18;
+                                       -fx-border-radius: 18;
+                                       -fx-border-color: rgba(240, 230, 247, 0.5);
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 25;
+                                       -fx-effect: dropshadow(gaussian, rgba(121, 45, 153, 0.2), 12, 0.3, 0, 3);">
+                                <items>
+                                    <MenuItem text="💰 Price: Low to High" />
+                                    <MenuItem text="💎 Price: High to Low" />
+                                    <MenuItem text="⭐ Most Popular" />
+                                    <MenuItem text="🆕 Newest First" />
+                                    <MenuItem text="🔥 Best Rated" />
+                                </items>
+                            </MenuButton>
+                        </VBox>
+
+                        <!-- Brand Filter -->
+                        <VBox spacing="8" alignment="CENTER">
+                            <Label text="🏷️" style="-fx-font-size: 24px; -fx-text-fill: #f0e6f7;" />
+                            <MenuButton text="All Brands ▼"
+                                        style="-fx-background-color: rgba(94, 26, 112, 0.4);
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 14px;
+                                       -fx-font-weight: bold;
+                                       -fx-background-radius: 18;
+                                       -fx-border-radius: 18;
+                                       -fx-border-color: rgba(240, 230, 247, 0.5);
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 25;
+                                       -fx-effect: dropshadow(gaussian, rgba(121, 45, 153, 0.2), 12, 0.3, 0, 3);">
+                                <items>
+                                    <MenuItem text="🚗 Toyota" />
+                                    <MenuItem text="🏎️ BMW" />
+                                    <MenuItem text="🚙 Volkswagen" />
+                                    <MenuItem text="⭐ Mercedes-Benz" />
+                                    <MenuItem text="🔥 Audi" />
+                                    <MenuItem text="🎯 Porsche" />
+                                    <MenuItem text="✨ All Brands" />
+                                </items>
+                            </MenuButton>
+                        </VBox>
+
+                        <!-- Type Filter -->
+                        <VBox spacing="8" alignment="CENTER">
+                            <Label text="🚘" style="-fx-font-size: 24px; -fx-text-fill: #f0e6f7;" />
+                            <MenuButton text="Vehicle Type ▼"
+                                        style="-fx-background-color: rgba(192, 131, 214, 0.35);
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 14px;
+                                       -fx-font-weight: bold;
+                                       -fx-background-radius: 18;
+                                       -fx-border-radius: 18;
+                                       -fx-border-color: rgba(240, 230, 247, 0.5);
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 25;
+                                       -fx-effect: dropshadow(gaussian, rgba(121, 45, 153, 0.2), 12, 0.3, 0, 3);">
+                                <items>
+                                    <MenuItem text="🏎️ Sports Car" />
+                                    <MenuItem text="🚙 SUV" />
+                                    <MenuItem text="🚗 Sedan" />
+                                    <MenuItem text="🚐 Van" />
+                                    <MenuItem text="🏍️ Luxury" />
+                                    <MenuItem text="🚚 Truck" />
+                                </items>
+                            </MenuButton>
+                        </VBox>
+
+                    </HBox>
+
+                </VBox>
+
+            </VBox>
+
+
+
+            <!-- Main Vehicle Section -->
+            <VBox style="-fx-background-color: linear-gradient(to bottom, #f5f0ff 0%, #e8dcf0 50%, #f0e6f7 100%); -fx-padding: 50 40;">
+
+                <!-- Section Title avec accent violet -->
+                <HBox alignment="CENTER" style="-fx-padding: 0 0 30 0;">
+                    <Label text="🏆 Featured Premium Vehicles"
+                           style="-fx-font-size: 28px;
+                             -fx-font-weight: bold;
+                             -fx-text-fill: #792d99;
+                             -fx-effect: dropshadow(gaussian, rgba(121, 45, 153, 0.3), 5, 0.3, 0, 2);">
+                        <font>
+                            <Font name="System Bold" size="28.0" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <!-- Enhanced Vehicle Cards Container -->
+                <FlowPane fx:id="vehicleContainer"
+                          hgap="35"
+                          vgap="35"
+                          alignment="CENTER"
+                          style="-fx-background-color: transparent;">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20" />
+                    </padding>
+                </FlowPane>
+
+
+
+            </VBox>
+
+
+        </VBox>
     </content>
+
 </ScrollPane>

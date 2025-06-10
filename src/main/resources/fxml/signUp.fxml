@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.SignUpController">
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.SignUpController">
    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
       <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
          <StackPane style="-fx-padding: 20;">
@@ -25,11 +25,11 @@
                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Sign Up" />
                <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
                   <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="FirstName" />
-                  <TextField promptText="FirstName" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                  <TextField fx:id="firstNameField" promptText="FirstName" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                   <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="LastName" />
-                  <TextField promptText="LastName" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                  <TextField fx:id="lastNameField" promptText="LastName" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                   <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Email" />
-                  <TextField promptText="Email" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                  <TextField fx:id="emailField" promptText="Email" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
                   <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Password" />
                   <StackPane>
                      <TextField fx:id="passwordText"  style="-fx-font-size: 14; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-pref-width: 300; -fx-border-radius: 8;">
@@ -59,13 +59,11 @@
                      <Label fx:id="strengthLabel" style="-fx-font-size: 12px; -fx-text-fill: #666;" text="" />
                   </HBox>
                </VBox>
-               <Button fx:id="signUpButton" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign Up" />
-               <Button fx:id="googleSignUpButton" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign up using Google">
+               <Button fx:id="signUpButton" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign Up" onAction="#signUp" />
+               <Button fx:id="googleSignUpButton" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign up using Google" onAction="#handleGoogleSignUp">
                   <graphic>
                      <ImageView fitHeight="20.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../images/GoogleLogo.png" />
-                        </image>
+                        <Image url="@../images/GoogleLogo.png"/>
                      </ImageView>
                   </graphic>
                </Button>

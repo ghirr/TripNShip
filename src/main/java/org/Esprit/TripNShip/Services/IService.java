@@ -1,5 +1,7 @@
 package org.Esprit.TripNShip.Services;
 
+import org.Esprit.TripNShip.Entities.User;
+
 import java.util.List;
 
 public interface IService<T> {

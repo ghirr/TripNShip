@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.Esprit.TripNShip.Controllers.ListVehicleBookingController"
+           style="-fx-background-color: linear-gradient(to bottom, #e0e7ff, #f8fafc);">
+
+    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+        <content>
+            <VBox alignment="TOP_CENTER" spacing="20" fillWidth="false" style="-fx-padding: 30;">
+                <GridPane fx:id="gridPane"
+                          hgap="30"
+                          vgap="30"
+                          alignment="TOP_CENTER"
+                          style="-fx-background-color: transparent;" />
+            </VBox>
+        </content>
+    </ScrollPane>
+</StackPane>

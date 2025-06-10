@@ -1,0 +1,293 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 532676608 bytes. Error detail: G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   This process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3830), pid=88728, tid=88788
+#
+# JRE version:  (17.0.14+1) (build )
+# Java VM: OpenJDK 64-Bit Server VM (17.0.14+1-b1367.22, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: --module-path=C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-base\17.0.6\javafx-base-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-base\17.0.6\javafx-base-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-controls\17.0.6\javafx-controls-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-controls\17.0.6\javafx-controls-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-fxml\17.0.6\javafx-fxml-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-fxml\17.0.6\javafx-fxml-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-graphics\17.0.6\javafx-graphics-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-graphics\17.0.6\javafx-graphics-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-media\17.0.6\javafx-media-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-media\17.0.6\javafx-media-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-web\17.0.6\javafx-web-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-web\17.0.6\javafx-web-17.0.6.jar --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.web org.Esprit.TripNShip.Tests.MainFXLogin
+
+Host: 12th Gen Intel(R) Core(TM) i7-12700H, 20 cores, 31G,  Windows 11 , 64 bit Build 26100 (10.0.26100.3912)
+Time: Fri May 30 16:16:28 2025 Afr. centrale Ouest elapsed time: 0.029227 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000250130dcf60):  JavaThread "Unknown thread" [_thread_in_vm, id=88788, stack(0x00000087b9000000,0x00000087b9100000)]
+
+Stack: [0x00000087b9000000,0x00000087b9100000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x68b969]  os::platform_print_native_stack+0xd9  (os_windows_x86.cpp:235)
+V  [jvm.dll+0x84572a]  VMError::report+0xc6a  (vmError.cpp:868)
+V  [jvm.dll+0x8473ae]  VMError::report_and_die+0x78e  (vmError.cpp:1766)
+V  [jvm.dll+0x847a13]  VMError::report_and_die+0x43  (vmError.cpp:1552)
+V  [jvm.dll+0x24a83f]  report_vm_out_of_memory+0x8f  (debug.cpp:321)
+V  [jvm.dll+0x688629]  os::pd_commit_memory_or_exit+0xc9  (os_windows.cpp:3838)
+V  [jvm.dll+0x67cf3a]  os::commit_memory_or_exit+0x2a  (os.cpp:1768)
+V  [jvm.dll+0x30b83b]  G1PageBasedVirtualSpace::commit+0x19b  (g1PageBasedVirtualSpace.cpp:204)
+V  [jvm.dll+0x312d26]  G1RegionsLargerThanCommitSizeMapper::commit_regions+0x96  (g1RegionToSpaceMapper.cpp:100)
+V  [jvm.dll+0x3630fe]  HeapRegionManager::expand_any+0xee  (heapRegionManager.cpp:363)
+V  [jvm.dll+0x36333f]  HeapRegionManager::expand_by+0x7f  (heapRegionManager.cpp:380)
+V  [jvm.dll+0x2e18cc]  G1CollectedHeap::expand+0xbc  (g1CollectedHeap.cpp:1292)
+V  [jvm.dll+0x2e2824]  G1CollectedHeap::initialize+0x664  (g1CollectedHeap.cpp:1713)
+V  [jvm.dll+0x815ffb]  universe_init+0xbb  (universe.cpp:737)
+V  [jvm.dll+0x370e88]  init_globals+0x48  (init.cpp:131)
+V  [jvm.dll+0x7f4875]  Threads::create_vm+0x5e5  (thread.cpp:2909)
+V  [jvm.dll+0x3f54ef]  JNI_CreateJavaVM_inner+0x8f  (jni.cpp:3654)
+V  [jvm.dll+0x3f70c1]  JNI_CreateJavaVM+0x11  (jni.cpp:3746)
+C  [jli.dll+0x52ab]  JavaMain+0x113  (java.c:413)
+C  [ucrtbase.dll+0x37b0]
+C  [KERNEL32.DLL+0x2e8d7]
+C  [ntdll.dll+0x9c5dc]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ff9887a9018, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000002501318e8d0 GCTaskThread "GC Thread#0" [stack: 0x00000087b9100000,0x00000087b9200000] [id=88792]
+  0x0000025039961120 ConcurrentGCThread "G1 Main Marker" [stack: 0x00000087b9200000,0x00000087b9300000] [id=88796]
+  0x0000025039963470 ConcurrentGCThread "G1 Conc#0" [stack: 0x00000087b9300000,0x00000087b9400000] [id=88800]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff987f52197]
+
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00000250130d8580] Heap_lock - owner thread: 0x00000250130dcf60
+
+Heap address: 0x0000000605000000, size: 8112 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+<Empty>
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000605000000, 0x0000000800000000)
+  region size 4096K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 0K, committed 0K, reserved 0K
+  class space    used 0K, committed 0K, reserved 0K
+
+Heap Regions: E=young(eden), S=young(survivor), O=old, HS=humongous(starts), HC=humongous(continues), CS=collection set, F=free, OA=open archive, CA=closed archive, TAMS=top-at-mark-start (previous, next)
+
+Card table byte_map: [0x0000025027b00000,0x0000025028ae0000] _byte_map_base: 0x0000025024ad8000
+
+Marking Bits (Prev, Next): (CMBitMap*) 0x0000025039950910, (CMBitMap*) 0x0000025039950950
+ Prev Bits: [0x0000025029ac0000, 0x0000025031980000)
+ Next Bits: [0x0000025031980000, 0x0000025039840000)
+
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.008 Loaded shared library C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\java.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Memory protections (0 events):
+No events
+
+Nmethod flushes (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff62e8b0000 - 0x00007ff62e8ba000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\java.exe
+0x00007ffa55700000 - 0x00007ffa55966000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffa54330000 - 0x00007ffa543f9000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffa52940000 - 0x00007ffa52d0c000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffa53040000 - 0x00007ffa5318b000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffa4ee50000 - 0x00007ffa4ee67000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\jli.dll
+0x00007ffa497b0000 - 0x00007ffa497cb000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\VCRUNTIME140.dll
+0x00007ffa54160000 - 0x00007ffa5432a000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffa53310000 - 0x00007ffa53337000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffa54aa0000 - 0x00007ffa54acb000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffa33650000 - 0x00007ffa338ea000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.3912_none_3e07963ce335137e\COMCTL32.dll
+0x00007ffa52e40000 - 0x00007ffa52f72000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffa55510000 - 0x00007ffa555b9000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffa52890000 - 0x00007ffa52933000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffa54560000 - 0x00007ffa54590000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ffa4ef10000 - 0x00007ffa4ef1c000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\vcruntime140_1.dll
+0x00007ffa43ec0000 - 0x00007ffa43f4d000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\msvcp140.dll
+0x00007ff987c60000 - 0x00007ff9888ee000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\server\jvm.dll
+0x00007ffa552c0000 - 0x00007ffa55372000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffa534c0000 - 0x00007ffa53566000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffa553f0000 - 0x00007ffa55506000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffa545a0000 - 0x00007ffa54614000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffa51490000 - 0x00007ffa514ee000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
+0x00007ffa461e0000 - 0x00007ffa46216000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffa47d20000 - 0x00007ffa47d2b000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffa51470000 - 0x00007ffa51484000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
+0x00007ffa51740000 - 0x00007ffa5175a000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ffa49b80000 - 0x00007ffa49b8a000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\jimage.dll
+0x00007ffa4fee0000 - 0x00007ffa50121000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ffa54bc0000 - 0x00007ffa54f44000 	C:\WINDOWS\System32\combase.dll
+0x00007ffa54ad0000 - 0x00007ffa54bb0000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ffa260f0000 - 0x00007ffa26129000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ffa52da0000 - 0x00007ffa52e39000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffa47840000 - 0x00007ffa47865000 	C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\java.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\HP Victus\.jdks\jbr-17.0.14\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.3912_none_3e07963ce335137e;C:\Users\HP Victus\.jdks\jbr-17.0.14\bin\server
+
+VM Arguments:
+jvm_args: --module-path=C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-base\17.0.6\javafx-base-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-base\17.0.6\javafx-base-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-controls\17.0.6\javafx-controls-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-controls\17.0.6\javafx-controls-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-fxml\17.0.6\javafx-fxml-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-fxml\17.0.6\javafx-fxml-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-graphics\17.0.6\javafx-graphics-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-graphics\17.0.6\javafx-graphics-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-media\17.0.6\javafx-media-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-media\17.0.6\javafx-media-17.0.6.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-web\17.0.6\javafx-web-17.0.6-win.jar;C:\Users\HP Victus\.m2\repository\org\openjfx\javafx-web\17.0.6\javafx-web-17.0.6.jar --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.web 
+java_command: org.Esprit.TripNShip.Tests.MainFXLogin
+java_class_path (initial): C:\Users\HP Victus\IdeaProjects\TripNShip\target\classes;C:\Users\HP Victus\.m2\repository\com\google\api-client\google-api-client\2.0.0\google-api-client-2.0.0.jar;C:\Users\HP Victus\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\HP Victus\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\HP Victus\.m2\repository\com\google\errorprone\error_prone_annotations\2.18.0\error_prone_annotations-2.18.0.jar;C:\Users\HP Victus\.m2\repository\com\google\guava\failureaccess\1.0.1\failureaccess-1.0.1.jar;C:\Users\HP Victus\.m2\repository\com\google\guava\guava\31.1-android\guava-31.1-android.jar;C:\Users\HP Victus\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\HP Victus\.m2\repository\com\google\http-client\google-http-client\1.43.3\google-http-client-1.43.3.jar;C:\Users\HP Victus\.m2\repository\com\google\http-client\google-http-client-apache-v2\1.42.1\google-http-client-apache-v2-1.42.1.jar;C:\Users\HP Victus\.m2\repository\com\google\http-client\google-http-client-gson\1.43.3\google-http-client-gson-1.43.3.jar;C:\Users\HP Victus\.m2\repository\com\google\j2objc\j2objc-annotations\2.8\j2objc-annotations-2.8.jar;C:\Users\HP Victus\.m2\repository\com\google\oauth-client\google-oauth-client\1.39.0\google-oauth-client-1.39.0.jar;C:\Users\HP Victus\.m2\repository\com\google\oauth-client\google-oauth-client-java6\1.34.1\google-oauth-client-java6-1.34.1.jar;C:\Users\HP Victus\.m2\repository\com\google\oauth-client\google-oauth-client-jetty\1.34.1\google-oauth-client-jetty-1.34.1.jar;C:\Users\HP Victus\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar;C:\Users\HP Victus\.m2\repository\com\itextpdf\commons\7.2.5\commons-7.2.5.jar;C:\Users\HP Victus\.m2\repository\com\itextpdf\io\7.2.5\io-7.2.5.jar;C:\Users\HP Victus\.m2\repository\com\itextpdf\kernel\7.2.5\
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 12                                        {product} {ergonomic}
+     uint ConcGCThreads                            = 4                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 15                                        {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 4194304                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 532676608                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 8506048512                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 4194304                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 7602480                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122027880                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122027880                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 8506048512                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                           {product lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+PATH=C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\oraclexe\app\oracle\product\11.2.0\server\bin;C:\xampp\php;C:\Program Files\Python311\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Docker\Docker\resources\bin;C:\composer;C:\mingw32\bin;C:\Program Files(x86)\CodeBlocks\MinGw;C:\Program Files (x86)\CodeBlocks\MinGW;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\HP Victus\scoop\shims;C:\Users\HP Victus\AppData\Local\Microsoft\WindowsApps;C:\Users\HP Victus\AppData\Roaming\Composer\vendor\bin;C:\Users\HP Victus\AppData\Local\Programs\Microsoft VS Code\bin;
+USERNAME=HP Victus
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 154 Stepping 3, GenuineIntel
+TMP=C:\Users\HPVICT~1\AppData\Local\Temp
+TEMP=C:\Users\HPVICT~1\AppData\Local\Temp
+
+
+
+Periodic native trim disabled
+
+JNI global refs:
+JNI global refs: 0, weak refs: 0
+
+JNI global refs memory usage: 0, weak refs: 0
+
+Process memory usage:
+Resident Set Size: 52020K (0% of 33214296K total physical memory with 6740100K free physical memory)
+
+OOME stack traces (most recent first):
+Classloader memory used:
+
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 26100 (10.0.26100.3912)
+OS uptime: 25 days 10:07 hours
+Hyper-V role detected
+
+CPU: total 20 (initial active 20) (10 cores per cpu, 2 threads per core) family 6 model 154 stepping 3 microcode 0x434, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, sha, fma, vzeroupper, clflush, clflushopt, clwb, hv
+Processor Information for processor 0
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 1
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 2
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 3
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 4
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 5
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 6
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 7
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 8
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 9
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 10
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 11
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 12
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 13
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 14
+  Max Mhz: 2300, Current Mhz: 2300, Mhz Limit: 2300
+Processor Information for processor 15
+  Max Mhz: 2300, Current Mhz: 1488, Mhz Limit: 2300
+Processor Information for processor 16
+  Max Mhz: 2300, Current Mhz: 1488, Mhz Limit: 2300
+Processor Information for processor 17
+  Max Mhz: 2300, Current Mhz: 1488, Mhz Limit: 2300
+Processor Information for processor 18
+  Max Mhz: 2300, Current Mhz: 1488, Mhz Limit: 2300
+Processor Information for processor 19
+  Max Mhz: 2300, Current Mhz: 1488, Mhz Limit: 2300
+
+Memory: 4k page, system-wide physical 32435M (6582M free)
+TotalPageFile size 45650M (AvailPageFile size 457M)
+current process WorkingSet (physical memory assigned to process): 50M, peak: 50M
+current process commit charge ("private bytes"): 113M, peak: 583M
+
+vm_info: OpenJDK 64-Bit Server VM (17.0.14+1-b1367.22) for windows-amd64 JRE (17.0.14+1-b1367.22), built on 2025-01-30 by "builduser" with MS VC++ 16.10 / 16.11 (VS2019)
+
+END.

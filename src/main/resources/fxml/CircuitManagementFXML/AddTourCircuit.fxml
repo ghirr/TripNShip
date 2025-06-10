@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.Esprit.TripNShip.Controllers.AddTourCircuitController"
+           style="-fx-background-color: #111827;">
+
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true"
+                style="-fx-background-color: transparent;">
+
+        <VBox alignment="CENTER" spacing="10">
+
+            <StackPane style="-fx-padding: 20;">
+
+                <VBox alignment="CENTER" maxWidth="700" spacing="10.0"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;
+                             -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+
+                    <!-- Barre du haut avec bouton fermer -->
+                    <HBox alignment="TOP_RIGHT" prefWidth="Infinity">
+                        <ImageView fx:id="closeIcon"
+                                   fitHeight="24" fitWidth="24"
+                                   pickOnBounds="true" preserveRatio="true"
+                                   onMouseClicked="#handleCloseForm"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@/images/icons8-close-30 (1).png" />
+                        </ImageView>
+                    </HBox>
+                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../../images/logo.png"/>
+                    </ImageView>
+
+                    <Label text="Add Tour Circuit"
+                           style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" />
+
+                    <VBox alignment="CENTER_LEFT" maxWidth="600" spacing="12">
+
+                        <!-- Ligne 1: Name + Description -->
+                        <HBox spacing="20">
+                            <VBox spacing="5">
+                                <Label text="Name" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <TextField fx:id="nameField" promptText="Enter circuit name"
+                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
+                                                  -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+
+                            <VBox spacing="5">
+                                <Label text="Description" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <TextArea fx:id="descriptionArea" promptText="Enter description" wrapText="true"
+                                          style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
+                                                 -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Ligne 2: Price + Duration -->
+                        <HBox spacing="20">
+                            <VBox spacing="5">
+                                <Label text="Price" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <TextField fx:id="priceField" promptText="Enter price"
+                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
+                                                  -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+
+                            <VBox spacing="5">
+                                <Label text="Duration" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <TextField fx:id="durationField" promptText="e.g. 3 days"
+                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
+                                                  -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Ligne 3: Destination + Guide -->
+                        <HBox spacing="20">
+                            <VBox spacing="5">
+                                <Label text="Destination" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <TextField fx:id="destinationField" promptText="Enter destination"
+                                           style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8;
+                                                  -fx-pref-width: 280; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                            </VBox>
+
+                            <VBox spacing="5">
+                                <Label text="Guide Included?" style="-fx-font-size: 14px; -fx-text-fill: #333;" />
+                                <CheckBox fx:id="guideCheckBox" text="Yes"
+                                          style="-fx-font-size: 14px; -fx-padding: 5; -fx-background-radius: 8;" />
+                            </VBox>
+                        </HBox>
+
+                    </VBox>
+
+                    <Button fx:id="addCircuitButton" text="Add Circuit"
+                            style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea);
+                                   -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12;
+                                   -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" />
+                </VBox>
+            </StackPane>
+
+            <padding>
+                <Insets top="20" bottom="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

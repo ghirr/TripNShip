@@ -1,0 +1,59 @@
+/* Add these styles to your existing CSS file (styles.css) */
+
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+}
+
+.profile-image {
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 60px;
+    -fx-background-radius: 60px;
+    -fx-border-width: 2px;
+}
+
+.non-editable-field {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #666666;
+}
+
+Button {
+    -fx-background-color: #4285f4;
+    -fx-text-fill: white;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+Button:hover {
+    -fx-background-color: #3275e4;
+}
+
+#cancelButton {
+    -fx-background-color: #f1f1f1;
+    -fx-text-fill: #333333;
+}
+
+#cancelButton:hover {
+    -fx-background-color: #e1e1e1;
+}
+
+#choosePhotoButton {
+    -fx-background-color: #4CAF50;
+}
+
+#choosePhotoButton:hover {
+    -fx-background-color: #45a049;
+}
+
+.date-picker:disabled {
+    -fx-opacity: 0.7;
+}
+
+.text-field:disabled {
+    -fx-opacity: 0.7;
+}
+
+.combo-box:disabled {
+    -fx-opacity: 0.7;
+}

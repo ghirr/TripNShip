@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.Esprit.TripNShip.Controllers.VehicleViewController"
+            fitToWidth="true"
+            style="-fx-background-color: #f0f2f5;">
+    <content>
+        <FlowPane fx:id="vehicleContainer"
+                  hgap="30"
+                  vgap="30"
+                  prefWidth="Infinity"
+                  alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </FlowPane>
+    </content>
+</ScrollPane>

@@ -118,7 +118,7 @@ public class UpdateTransportController implements Initializable {
                 String filename = file.getName();
                 selectedLogoPath = file.getAbsolutePath();
                 companyLogoPathLabel.setText(file.getName());
-                String destDir="C:\\xampp\\htdocs\\tripnship\\images\\transporterslogos";// chemin actuel ou nouveau
+                String destDir="C:\\xampp\\htdocs\\tripnship\\transport";// chemin actuel ou nouveau
                 Files.copy(Path.of(selectedLogoPath), Path.of(destDir,filename), StandardCopyOption.REPLACE_EXISTING);
             }
             catch (IOException e){

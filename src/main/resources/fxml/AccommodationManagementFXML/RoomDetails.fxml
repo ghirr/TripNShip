@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import com.gluonhq.maps.MapView?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Esprit.TripNShip.Controllers.RoomDetailsController"
+            fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+            style="-fx-background-color: #f8f9fa;">
+
+    <content>
+        <VBox spacing="0" style="-fx-background-color: #f8f9fa;">
+
+            <!-- Header Section with Image -->
+            <StackPane style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                <VBox alignment="CENTER" spacing="0">
+                    <ImageView fx:id="accommodationImage" fitWidth="500" fitHeight="300"
+                               preserveRatio="true"
+                               style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);">
+                        <VBox.margin>
+                            <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
+                        </VBox.margin>
+                    </ImageView>
+                </VBox>
+            </StackPane>
+
+            <!-- Accommodation Information Card -->
+            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2);">
+                <VBox.margin>
+                    <Insets top="15.0" left="15.0" right="15.0" />
+                </VBox.margin>
+
+                <!-- Accommodation Header -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="🏨" style="-fx-font-size: 24px;" />
+                    <Label text="Accommodation Details"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                </HBox>
+
+                <Separator style="-fx-background-color: #ecf0f1;" />
+
+                <!-- Accommodation Info Grid -->
+                <GridPane hgap="15" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="120" prefWidth="120" />
+                        <ColumnConstraints />
+                    </columnConstraints>
+
+                    <Label text="Name:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="accommodationNameLabel"
+                           style="-fx-font-size: 16px; -fx-text-fill: #2c3e50;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label text="Type:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="accommodationTypeLabel"
+                           style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label text="Address:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="accommodationAddressLabel"
+                           style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+            </VBox>
+
+            <!-- Map Section -->
+            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2);">
+                <VBox.margin>
+                    <Insets top="15.0" left="15.0" right="15.0" />
+                </VBox.margin>
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="🗺️" style="-fx-font-size: 24px;" />
+                    <Label text="Location"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                </HBox>
+
+                <Separator style="-fx-background-color: #ecf0f1;" />
+
+                <StackPane style="-fx-background-color: #ecf0f1; -fx-background-radius: 8; -fx-effect: innershadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);">
+                    <MapView fx:id="mapView" prefWidth="450" prefHeight="300"
+                             style="-fx-background-radius: 8;" />
+                    <StackPane.margin>
+                        <Insets top="5.0" bottom="5.0" left="5.0" right="5.0" />
+                    </StackPane.margin>
+                </StackPane>
+            </VBox>
+
+            <!-- Room Information Card -->
+            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2);">
+                <VBox.margin>
+                    <Insets top="15.0" left="15.0" right="15.0" bottom="20.0" />
+                </VBox.margin>
+
+                <!-- Room Header -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="🛏️" style="-fx-font-size: 24px;" />
+                    <Label text="Room Details"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                </HBox>
+
+                <Separator style="-fx-background-color: #ecf0f1;" />
+
+                <!-- Room Info Grid -->
+                <GridPane hgap="15" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="120" prefWidth="120" />
+                        <ColumnConstraints />
+                    </columnConstraints>
+
+                    <Label text="Room Name:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="roomNameLabel"
+                           style="-fx-font-size: 16px; -fx-text-fill: #2c3e50;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label text="Type:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="roomTypeLabel"
+                           style="-fx-font-size: 14px; -fx-text-fill: #7f8c8d;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label text="Availability:" style="-fx-font-weight: bold; -fx-text-fill: #34495e;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="availabilityLabel"
+                           style="-fx-font-size: 14px; -fx-text-fill: #27ae60;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+            </VBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

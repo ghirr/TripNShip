@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.Esprit.TripNShip.Controllers.ListCircuitBookingController"
+           style="-fx-background-color: linear-gradient(to bottom, #e0e7ff, #f8fafc);">
+
+    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+        <content>
+
+            <FlowPane
+                    hgap="20"
+                    vgap="20"
+                    alignment="TOP_CENTER"
+                    prefWrapLength="1200"
+                    fx:id="cardsContainer"
+            >
+
+                <padding>
+                    <Insets top="20" right="10" bottom="15" left="5"/>
+                </padding>
+
+            </FlowPane>
+
+        </content>
+    </ScrollPane>
+</StackPane>

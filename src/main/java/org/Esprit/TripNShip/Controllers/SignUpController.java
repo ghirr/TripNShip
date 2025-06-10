@@ -2,20 +2,27 @@ package org.Esprit.TripNShip.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
+import org.Esprit.TripNShip.Entities.Client;
+import org.Esprit.TripNShip.Entities.User;
+import org.Esprit.TripNShip.Services.AuthService;
 import org.Esprit.TripNShip.Utils.Shared;
+
+import java.io.IOException;
+
+import static org.Esprit.TripNShip.Utils.Shared.showAlert;
 
 public class SignUpController {
 
-    @FXML
-    private Button togglePasswordButton;
+    public TextField firstNameField,lastNameField,emailField;
 
     @FXML
     private ImageView eyeIcon;
@@ -31,6 +38,8 @@ public class SignUpController {
     private Label strengthLabel;
 
     private boolean isPasswordVisible ;
+
+    private int strength;
 
 
     public void switchToLogin(ActionEvent actionEvent) {
@@ -64,7 +73,7 @@ public class SignUpController {
     private void updatePasswordStrength(KeyEvent keyEvent) {
 
         String text = isPasswordVisible? passwordText.getText() : passwordField.getText();
-        int strength = calculatePasswordStrength(text);
+        strength = calculatePasswordStrength(text);
 
         // Reset all to default with finer height
         strengthSection1.setStyle("-fx-background-color: #ddd; -fx-pref-height: 3; -fx-pref-width: 50;");
@@ -110,7 +119,7 @@ public class SignUpController {
             return 0;
         }
 
-        int strength = 0;
+        strength = 0;
 
         // Length check
         if (password.length() >= 8) {
@@ -136,5 +145,43 @@ public class SignUpController {
         }
 
         return Math.min(5, strength);
+    }
+
+    public void handleGoogleSignUp(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login_with_google.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/GoogleLogo.png")));
+            stage.setTitle("SignUp with Google");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void signUp(ActionEvent actionEvent) {
+        String email = emailField.getText().trim();
+        String password = passwordField.isVisible() ? passwordField.getText() : passwordText.getText();
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+
+        if(email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() ) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please fill all fields !");
+            return;
+        }
+
+        if (strength <=3){
+            showAlert(Alert.AlertType.ERROR, "PasswordStrength", "Kindly use stronger password");
+            return;
+        }
+
+        AuthService authService = new AuthService();
+        authService.signUp(new Client(firstName, lastName,email , password));
+        User user = authService.login(email,password);
+        System.out.println(user.getEmail());
+        showAlert(Alert.AlertType.CONFIRMATION,"Success","Sign Up correct");
+
     }
 }

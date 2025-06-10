@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.SignUpController">
+   <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background: #111827; -fx-background-color: transparent;">
+      <VBox alignment="CENTER" minHeight="-Infinity" spacing="10">
+         <StackPane style="-fx-padding: 20;">
+            <VBox alignment="CENTER" maxWidth="400" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10; -fx-alignment: center;">
+               <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../images/logo.png" />
+               </ImageView>
+               <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Sign Up" />
+               <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
+                  <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="FirstName" />
+                  <TextField promptText="FirstName" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                  <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="LastName" />
+                  <TextField promptText="LastName" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                  <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Email" />
+                  <TextField promptText="Email" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                  <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Password" />
+                  <StackPane>
+                     <TextField fx:id="passwordText"  style="-fx-font-size: 14; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-pref-width: 300; -fx-border-radius: 8;">
+                        <padding>
+                           <Insets bottom="12.0" left="12.0" right="40.0" top="12.0" />
+                        </padding>
+                     </TextField>
+                     <PasswordField fx:id="passwordField"  onKeyTyped="#updatePasswordStrength" promptText="Password" style="-fx-font-size: 14px; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8; -fx-pref-width: 300;">
+                        <padding>
+                           <Insets bottom="12.0" left="12.0" right="40.0" top="12.0" />
+                        </padding>
+                     </PasswordField>
+                     <Button fx:id="togglePasswordButton" onAction="#togglePasswordVisibility" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="icon-button" StackPane.alignment="CENTER_RIGHT">
+                        <graphic>
+                           <ImageView fx:id="eyeIcon" fitHeight="20" fitWidth="20">
+                              <Image url="@../images/eye_closed.png" />
+                           </ImageView>
+                        </graphic>
+                     </Button>
+                  </StackPane>
+                  <HBox fx:id="strengthMeterContainer" alignment="CENTER_LEFT" maxWidth="300" spacing="5">
+                     <Region fx:id="strengthSection1" style="-fx-background-color: #ddd; -fx-pref-height: 5; -fx-pref-width: 60;" />
+                     <Region fx:id="strengthSection2" style="-fx-background-color: #ddd; -fx-pref-height: 5; -fx-pref-width: 60;" />
+                     <Region fx:id="strengthSection3" style="-fx-background-color: #ddd; -fx-pref-height: 5; -fx-pref-width: 60;" />
+                     <Region fx:id="strengthSection4" style="-fx-background-color: #ddd; -fx-pref-height: 5; -fx-pref-width: 60;" />
+                     <Region fx:id="strengthSection5" style="-fx-background-color: #ddd; -fx-pref-height: 5; -fx-pref-width: 60;" />
+                     <Label fx:id="strengthLabel" style="-fx-font-size: 12px; -fx-text-fill: #666;" text="" />
+                  </HBox>
+               </VBox>
+               <Button fx:id="signUpButton" style="-fx-background-color: linear-gradient(to right, #3b82f6, #9333ea); -fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign Up" />
+               <Button fx:id="googleSignUpButton" style="-fx-background-color: FBFBFB; -fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 12; -fx-background-radius: 8; -fx-pref-width: 300; -fx-cursor: hand;" text="Sign up using Google" onAction="#handleGoogleSignUp">
+                  <graphic>
+                     <ImageView fitHeight="20.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../images/GoogleLogo.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
+               <Hyperlink fx:id="loginLink" onAction="#switchToLogin" style="-fx-text-fill: #3b82f6; -fx-font-size: 14px;" text="Login" />
+            </VBox>
+         </StackPane>
+         <padding>
+            <Insets bottom="20" top="20" />
+         </padding>
+      </VBox>
+   </ScrollPane>
+</StackPane>

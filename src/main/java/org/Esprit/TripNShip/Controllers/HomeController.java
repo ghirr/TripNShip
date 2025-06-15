@@ -97,10 +97,9 @@ public class HomeController {
                 createMenuItem("My Booking", "/fxml/AccommodationManagementFXML/UserBookings.fxml")
         );
 
-        setupDropdownMenu(transportLabel,
-                createMenuItem("Bus", "#"),
-                createMenuItem("Train", "#")
-        );
+        transportLabel.setOnMouseClicked(event -> {
+            navigateTo("/fxml/itineraryContainer.fxml"); // Chemin à adapter selon ton projet
+        });
 
         expeditionLabel.setOnMouseClicked(event -> {
             navigateTo("/fxml/ExpeditionManagement/ClientExpeditions.fxml");

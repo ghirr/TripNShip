@@ -166,10 +166,10 @@ public class ItineraryContainerController {
             BookTicketController controller = loader.getController();
             controller.setItinerary(itinerary);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Booking Page");
-            stage.show();
+            Stage bookingStage = new Stage();
+            bookingStage.setTitle("Book Your Ticket");
+            bookingStage.setScene(new Scene(root));
+            bookingStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

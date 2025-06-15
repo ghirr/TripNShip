@@ -8,6 +8,7 @@ import org.Esprit.TripNShip.Entities.Itinerary;
 import org.Esprit.TripNShip.Entities.Ticket;
 import org.Esprit.TripNShip.Services.ItineraryService;
 import org.Esprit.TripNShip.Services.TicketService;
+import org.Esprit.TripNShip.Utils.UserSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -55,12 +56,23 @@ public class BookTicketController {
         itineraryCodeComboBox.setOnAction(event -> onItineraryCodeSelected());
         departureDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> updateArrivalDate());
 
+        UserSession currentUser = UserSession.getInstance();
+        if (currentUser != null) {
+            userEmailField.setText(currentUser.getUserEmail());
+            userEmailField.setEditable(false); // facultatif : rendre le champ non modifiable
+        }
+
+
         // Make fields non-editable
+        itineraryCodeComboBox.setDisable(true);
         departureLocationField.setEditable(false);
         arrivalLocationField.setEditable(false);
         departureTimeField.setEditable(false);
         arrivalTimeField.setEditable(false);
         arrivalDateField.setEditable(false);
+
+
+
     }
 
     public void addTicket(ActionEvent event) throws IOException {

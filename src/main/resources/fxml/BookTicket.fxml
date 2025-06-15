@@ -25,7 +25,7 @@
                     <VBox alignment="CENTER_LEFT" maxWidth="300" spacing="12">
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Itinerary Code" />
-                        <ComboBox fx:id="itineraryCodeComboBox" maxWidth="Infinity" promptText="Select Itinerary Code" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
+                        <ComboBox fx:id="itineraryCodeComboBox" editable="false" maxWidth="Infinity" promptText="Select Itinerary Code" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />
 
                         <Label prefWidth="300" style="-fx-font-size: 14px; -fx-text-fill: #333;" text="User Email" />
                         <TextField fx:id="userEmailField" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #ccc; -fx-border-radius: 8;" />

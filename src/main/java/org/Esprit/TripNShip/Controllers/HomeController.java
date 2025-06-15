@@ -89,7 +89,7 @@ public class HomeController {
         loadImage(card4, "/images/expedition.jpg");
 
 
-        homeLabel.setOnMouseClicked(event -> navigateTo("/fxml/Home.fxml"));
+        homeLabel.setOnMouseClicked(event -> showDefaultHomeContent());
 
 
         setupDropdownMenu(accommodationLabel,
@@ -97,9 +97,11 @@ public class HomeController {
                 createMenuItem("My Booking", "/fxml/AccommodationManagementFXML/UserBookings.fxml")
         );
 
-        transportLabel.setOnMouseClicked(event -> {
-            navigateTo("/fxml/itineraryContainer.fxml"); // Chemin à adapter selon ton projet
-        });
+
+        setupDropdownMenu(transportLabel,
+                createMenuItem("Book A Ticket", "/fxml/itineraryContainer.fxml"),
+                createMenuItem("My Tickets", "/fxml/userTicket.fxml")
+        );
 
         expeditionLabel.setOnMouseClicked(event -> {
             navigateTo("/fxml/ExpeditionManagement/ClientExpeditions.fxml");
@@ -187,5 +189,9 @@ public class HomeController {
 
     public void navigateToProfile() {
         navigateTo("/fxml/employeeProfile.fxml");
+    }
+
+    private void showDefaultHomeContent() {
+        mainBorderPane.setCenter(defaultContent);
     }
 }

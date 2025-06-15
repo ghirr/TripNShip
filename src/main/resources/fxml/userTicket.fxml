@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+
+<StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.UserTicketController">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane style="-fx-padding: 20;">
+                <VBox alignment="CENTER" maxWidth="900" spacing="10" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20; -fx-border-color: #9333ea; -fx-border-width: 7; -fx-border-radius: 10;">
+                    <!--                    <ImageView fitHeight="128.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">-->
+                    <!--                        <Image url="@/images/logo.png" />-->
+                    <!--                    </ImageView>-->
+
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="My Tickets" />
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+
+                        <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+
+                        <StackPane />
+
+                    </HBox>
+                    <TextField fx:id="searchField" maxWidth="300.0" minWidth="300.0" prefHeight="25.0" prefWidth="300.0" promptText="Search by Departure Date" translateX="-272.0" />
+
+
+                    <TableView fx:id="ticketTable" prefWidth="850" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+                        <columns>
+                            <TableColumn fx:id="itineraryCodeColumn" prefWidth="120.0" text="Itinerary Code">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="itineraryCode" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="userEmailColumn" prefWidth="198.0" text="User Email">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="userEmail" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="departureDateColumn" prefWidth="108.0" text="Departure Date">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="departureDate" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn fx:id="arrivalDateColumn" prefWidth="122.0" text="Arrival Date" />
+
+
+                            <TableColumn fx:id="actionsColumn" maxWidth="391.0" minWidth="79.0" prefWidth="223.0" text="Actions" />
+
+                        </columns>
+                    </TableView>
+                    <WebView fx:id="mapWebView" prefHeight="400.0" prefWidth="850.0" />
+
+                </VBox>
+            </StackPane>
+            <padding>
+                <Insets bottom="20" top="20" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</StackPane>

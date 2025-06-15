@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
 
 <StackPane style="-fx-background-color: #111827;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ItineraryContainerController">
     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" style="-fx-background-color: transparent;">
@@ -26,18 +25,11 @@
                     </ImageView>
 
                     <!-- Title -->
-                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Itineraries" />
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #222;" text="Available Itineraries" />
 
                     <!-- Header with Button -->
                     <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
                         <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="myTicketsButton" text=" My Tickets" style="-fx-background-color: transparent; -fx-text-fill: #9333ea; -fx-font-weight: bold;">
-                            <graphic>
-                                <ImageView fitHeight="16" fitWidth="16">
-                                    <Image url="@/images/flight_takeoff_41dp_264E5B.png" />
-                                </ImageView>
-                            </graphic>
-                        </Button>
                     </HBox>
 
                     <!-- Filters -->

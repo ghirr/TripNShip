@@ -126,10 +126,13 @@ public class ItineraryContainerController {
         Label price = new Label(priceText);
 
         Button bookButton = new Button("Book");
+        bookButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6;");
+
         bookButton.setOnAction(event -> openBookingPage(itinerary, event));
 
-        HBox actions = new HBox(10, bookButton);
-        card.setMaxWidth(250); // ou 300 selon ton espace
+        HBox actions = new HBox(bookButton);
+        actions.setAlignment(Pos.CENTER);
+        card.setMaxWidth(250);
 
         card.getChildren().addAll(code, transporter, departure, arrival, duration, price, actions);
 

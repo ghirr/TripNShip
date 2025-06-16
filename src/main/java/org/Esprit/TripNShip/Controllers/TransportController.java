@@ -60,7 +60,8 @@ public class TransportController {
                 }
                 else{
                     try{
-                        imageView.setImage(new Image("file:" + path));
+                        String fullPath = "C:/xampp/htdocs/tripnship" + path;
+                        imageView.setImage(new Image("file:" + fullPath));
                         setGraphic(imageView);
                     } catch (Exception e) {
                         setGraphic(null);

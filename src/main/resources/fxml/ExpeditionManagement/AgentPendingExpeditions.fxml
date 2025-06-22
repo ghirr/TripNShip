@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="650.0" prefWidth="900.0" styleClass="login-container" stylesheets="@../ExpeditionManagement/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.ExpeditionManagement.AgentPendingController">
-    <top>
+    <!--<top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="header-container" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-container">
@@ -29,7 +29,7 @@
                 <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
             </padding>
         </HBox>
-    </top>
+    </top>-->
     <center>
         <VBox spacing="15.0" styleClass="dashboard-container" BorderPane.alignment="CENTER">
             <children>

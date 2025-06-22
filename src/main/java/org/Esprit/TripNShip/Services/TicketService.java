@@ -5,6 +5,7 @@ import org.Esprit.TripNShip.Utils.MyDataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TicketService implements IService<Ticket>{
     private final Connection connection;
@@ -73,6 +74,12 @@ public class TicketService implements IService<Ticket>{
             System.out.println(e.getMessage());
         }
         return tickets;
+    }
+
+    public List<Ticket> getByUserEmail(String email) {
+        return getAll().stream()
+                .filter(ticket -> ticket.getUserEmail().equalsIgnoreCase(email))
+                .collect(Collectors.toList());
     }
 }
 

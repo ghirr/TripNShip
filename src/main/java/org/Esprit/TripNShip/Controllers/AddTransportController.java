@@ -96,20 +96,26 @@ public class AddTransportController implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
         );
+
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             try {
                 String filename = file.getName();
-                selectedLogoPath = file.getAbsolutePath();
-                companyLogoPathLabel.setText(file.getName());
-                String destDir="C:\\xampp\\htdocs\\tripnship\\images\\transporterslogos";// chemin actuel ou nouveau
-                Files.copy(Path.of(selectedLogoPath), Path.of(destDir,filename), StandardCopyOption.REPLACE_EXISTING);
-            }
-            catch (IOException e){
+                String destDir = "C:\\xampp\\htdocs\\tripnship\\images\\transporterslogos";
+
+                // Copie physique de l'image
+                Files.copy(Path.of(file.getAbsolutePath()), Path.of(destDir, filename), StandardCopyOption.REPLACE_EXISTING);
+
+                // Affecter le chemin relatif utilisable dans une page web
+                selectedLogoPath = "/images/transporterslogos/" + filename;
+
+                // Affichage dans l'interface
+                companyLogoPathLabel.setText(filename);
+            } catch (IOException e) {
                 e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "File Error", "Could not copy the logo file.");
             }
         }
-
     }
 
 }

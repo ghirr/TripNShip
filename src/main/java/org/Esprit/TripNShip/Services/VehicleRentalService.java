@@ -94,29 +94,71 @@ public class VehicleRentalService implements IService<VehicleRental> {
     @Override
     public List<VehicleRental> getAll() {
         List<VehicleRental> vehicleRentals = new ArrayList<>();
-        String req = "SELECT * FROM vehiclerental";
+        String req = "SELECT vr.idRental, vr.startDate, vr.endDate, vr.totalPrice, vr.statusCircuit, " +
+                "v.idVehicle AS vehicleId, v.brand, v.model, " +
+                "u.id AS userId, u.firstName, u.lastName, u.gender, u.role, u.email, " +
+                "u.password, u.profilePhoto, u.birthdayDate, u.phoneNumber " +
+                "FROM vehiclerental vr " +
+                "JOIN vehicle v ON vr.idVehicle = v.idVehicle " +
+                "JOIN user u ON vr.idUser = u.id";
+
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
+
             while (rs.next()) {
+                // Créer User
+                User user = new User();
+                user.setIdUser(rs.getInt("userId"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
 
-                VehicleRental vehicleRental = new VehicleRental(
-                        rs.getInt("idRental"),
-                        rs.getTimestamp("startDate").toLocalDateTime(),
-                        rs.getTimestamp("endDate").toLocalDateTime(),
-                        rs.getFloat("totalPrice"),
-                        StautCircuit.values()[rs.getInt("statusCircuit")],
-                        new Vehicle(rs.getInt("idVehicle")),
-                        new User(rs.getInt("idUser"))
+                String genderStr = rs.getString("gender");
+                if (genderStr != null) {
+                    user.setGender(Gender.valueOf(genderStr));
+                }
 
-                );
+                String roleStr = rs.getString("role");
+                if (roleStr != null) {
+                    user.setRole(Role.valueOf(roleStr));
+                }
+
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setProfilePhoto(rs.getString("profilePhoto"));
+
+                Timestamp birthdayTs = rs.getTimestamp("birthdayDate");
+                if (birthdayTs != null) {
+                    user.setBirthdayDate(birthdayTs.toLocalDateTime());
+                }
+
+                user.setPhoneNumber(rs.getString("phoneNumber"));
+
+                // Créer Vehicle
+                Vehicle vehicle = new Vehicle();
+                vehicle.setIdVehicle(rs.getInt("vehicleId"));
+                vehicle.setBrand(rs.getString("brand"));
+                vehicle.setModel(rs.getString("model"));
+
+                // Créer VehicleRental
+                VehicleRental vehicleRental = new VehicleRental();
+                vehicleRental.setIdRental(rs.getInt("idRental"));
+                vehicleRental.setStartDate(rs.getTimestamp("startDate").toLocalDateTime());
+                vehicleRental.setEndDate(rs.getTimestamp("endDate").toLocalDateTime());
+                vehicleRental.setTotalPrice(rs.getFloat("totalPrice"));
+                vehicleRental.setStatusCircuit(StautCircuit.values()[rs.getInt("statusCircuit")]);
+                vehicleRental.setVehicle(vehicle);
+                vehicleRental.setUser(user);
+
                 vehicleRentals.add(vehicleRental);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL Error in getAll: " + e.getMessage());
         }
+
         return vehicleRentals;
     }
+
 
     public List<VehicleRental> getVehicleRentalsByUserId(int userId) {
         List<VehicleRental> vehicleRentals = new ArrayList<>();

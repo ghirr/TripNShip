@@ -132,6 +132,9 @@ public sealed class User permits Client, Employee, Transporter {
     public User(int idUser) {
     }
 
+    public User(int idUser, String firstName, String lastName, String email) {
+    }
+
     public int getIdUser() {
         return idUser;
     }

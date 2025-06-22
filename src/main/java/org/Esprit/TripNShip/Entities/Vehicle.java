@@ -50,6 +50,9 @@ public class Vehicle {
     public Vehicle(int idVehicle, String brand) {
     }
 
+    public Vehicle(int idVehicle, String brand, String model) {
+    }
+
 
     public int getIdVehicle() {
         return idVehicle;

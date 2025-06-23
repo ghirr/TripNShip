@@ -1,12 +1,29 @@
-/* === NAVBAR HEADER === */
+/* ===== VARIABLES CSS ===== */
+.root {
+    -fx-font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+/* ===== HEADER / NAVBAR ===== */
 .header {
-    -fx-background-color: linear-gradient(to right, #7b1fa2, #512da8);
-    -fx-padding: 20;
-    -fx-pref-height: 100px;
+    -fx-background-color: linear-gradient(to right, #6b57ef, #5a47d6);
+    -fx-padding: 15 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);
+    -fx-border-color: transparent transparent #bdc3c7 transparent;
+    -fx-border-width: 0 0 1 0;
 }
 
 .logo {
-    -fx-translate-y: 3;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-cursor: hand;
+    -fx-fit-width: 95;
+    -fx-fit-height: 70;
+}
+
+.logo:hover {
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.5), 8, 0, 0, 3);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 .menu {
@@ -14,71 +31,376 @@
 }
 
 .menu-item {
-    -fx-text-fill: white;
+    -fx-text-fill: #ecf0f1;
     -fx-font-size: 16px;
-    -fx-font-weight: bold;
+    -fx-font-weight: 500;
+    -fx-padding: 10 16;
+    -fx-background-radius: 8px;
     -fx-cursor: hand;
-    -fx-opacity: 0.85;
-    -fx-transition: all 0.3s ease;
 }
 
 .menu-item:hover {
-    -fx-opacity: 1;
-    -fx-underline: true;
+    -fx-text-fill: #9c88ff;
+    -fx-background-color: rgba(107, 87, 239, 0.15);
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.4), 5, 0, 0, 1);
 }
 
-/* === CONTENU CENTRAL === */
-.content {
-    -fx-padding: 70 50 50 50;
-    -fx-background-color: #fafafa;
+.menu-item.active {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #9c88ff;
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.5), 6, 0, 0, 2);
 }
 
-.title {
-    -fx-font-size: 34px;
-    -fx-text-fill: #2e2e2e;
-    -fx-font-weight: bold;
+/* ===== USER SECTION ===== */
+.user-section {
+    -fx-padding: 8 15;
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 25px;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 25px;
 }
 
-.subtitle {
-    -fx-font-size: 18px;
-    -fx-text-fill: #555;
+.user-section:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* === CARTES === */
-.card {
-    -fx-background-radius: 20;
-    -fx-background-color: white;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 4);
-    -fx-padding: 10;
-    -fx-pref-width: 230;
-    -fx-pref-height: 270;
-    -fx-alignment: bottom-center;
-    -fx-spacing: 8;
+.avatar-border {
+    -fx-fill: transparent;
+    -fx-stroke: #9c88ff;
+    -fx-stroke-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.4), 5, 0, 0, 1);
 }
 
-.card:hover {
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.03;
+.user-avatar {
     -fx-cursor: hand;
-    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 1);
 }
 
-.card-text {
-    -fx-text-fill: #333;
+.welcome-text {
+    -fx-text-fill: #bdc3c7;
+    -fx-font-size: 12px;
+    -fx-font-weight: 400;
+}
+
+.username {
+    -fx-text-fill: #ffffff;
     -fx-font-size: 14px;
-    -fx-text-alignment: center;
-    -fx-font-family: "Segoe UI", sans-serif;
-    -fx-padding: 6 0 0 0;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
 }
 
-/* === FOOTER === */
-.footer {
-    -fx-background-color: #eeeeee;
+.username:hover {
+    -fx-text-fill: #9c88ff;
+}
+
+.logout-icon {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+    -fx-fit-width: 28;
+    -fx-fit-height: 28;
+}
+
+.logout-icon:hover {
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.4), 5, 0, 0, 2);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* ===== SCROLL PANE ===== */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #bdc3c7;
+    -fx-background-radius: 10px;
+}
+
+.scroll-pane .scroll-bar .thumb:hover {
+    -fx-background-color: #95a5a6;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    -fx-padding: 40 30;
+    -fx-background-color: transparent;
+}
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+    -fx-padding: 60 40;
+    -fx-background-color: linear-gradient(135deg, rgba(107, 87, 239, 0.1) 0%, rgba(156, 136, 255, 0.1) 100%);
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(107, 87, 239, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);
+}
+
+.hero-title {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 42px;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.hero-subtitle {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-wrap-text: true;
+}
+
+.cta-button {
+    -fx-background-color: linear-gradient(135deg, #6b57ef, #5a47d6);
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-padding: 15 40;
+    -fx-background-radius: 25px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.4), 10, 0, 0, 4);
+}
+
+.cta-button:hover {
+    -fx-background-color: linear-gradient(135deg, #5a47d6, #4a39b8);
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.6), 15, 0, 0, 6);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* ===== SECTIONS ===== */
+.services-section {
+    -fx-padding: 40 20;
+}
+
+.section-title {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 32px;
+    -fx-font-weight: 700;
+}
+
+.section-subtitle {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+}
+
+/* ===== SERVICE CARDS ===== */
+.services-grid {
     -fx-padding: 20;
-    -fx-pref-height: 60;
 }
 
-.footer-text {
-    -fx-text-fill: #777;
-    -fx-font-size: 13px;
+.service-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 25;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+    -fx-border-color: rgba(107, 87, 239, 0.1);
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-cursor: hand;
+}
+
+.service-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.3), 20, 0, 0, 8);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.service-image {
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.service-info {
+    -fx-padding: 15 0;
+}
+
+.service-title {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+}
+
+.service-description {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+    -fx-wrap-text: true;
+}
+
+.service-feature {
+    -fx-text-fill: #6b57ef;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+}
+
+/* ===== WEATHER SECTION ===== */
+.weather-section {
+    -fx-padding: 40 20;
+}
+
+.weather-widget {
+    -fx-background-color: linear-gradient(to bottom, #90caf9, #e3f2fd);
+    -fx-padding: 30;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 15, 0, 0, 5);
+    -fx-border-radius: 20px;
+    -fx-border-color: #42a5f5;
+    -fx-border-width: 2;
+}
+
+.weather-title {
+    -fx-font-size: 24px;
+    -fx-text-fill: #0d47a1;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 1, 1);
+}
+
+.weather-display {
+    -fx-padding: 15;
+}
+
+.weather-icon {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 2);
+}
+
+.weather-info {
+    -fx-font-size: 18px;
+    -fx-text-fill: #1e272e;
+    -fx-font-weight: 600;
+    -fx-wrap-text: true;
+}
+
+.weather-search {
+    -fx-padding: 10 0;
+}
+
+.city-input {
+    -fx-background-radius: 15px;
+    -fx-background-color: white;
+    -fx-border-radius: 15px;
+    -fx-border-color: #90caf9;
+    -fx-border-width: 1.5px;
+    -fx-padding: 10 15;
+    -fx-font-size: 16px;
+    -fx-pref-width: 200px;
+}
+
+.weather-button {
+    -fx-background-color: linear-gradient(to right, #6b57ef, #5a47d6);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-background-radius: 15px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(107, 87, 239, 0.6), 8, 0, 0, 3);
+}
+
+.weather-button:hover {
+    -fx-background-color: linear-gradient(to right, #5a47d6, #4a39b8);
+}
+
+/* ===== STATISTICS SECTION ===== */
+.stats-section {
+    -fx-padding: 40 20;
+    -fx-background-color: rgba(107, 87, 239, 0.05);
+    -fx-background-radius: 15px;
+}
+
+.stat-item {
+    -fx-padding: 20;
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+.stat-number {
+    -fx-text-fill: #6b57ef;
+    -fx-font-size: 36px;
+    -fx-font-weight: 700;
+}
+
+.stat-label {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+    -fx-font-weight: 500;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    -fx-background-color: linear-gradient(to right, #6b57ef, #5a47d6);
+    -fx-padding: 30 25 20 25;
+    -fx-spacing: 15;
+}
+
+.footer-content {
+    -fx-padding: 20 0;
+}
+
+.footer-brand {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+}
+
+.footer-tagline {
+    -fx-text-fill: #bdc3c7;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+}
+
+.footer-section-title {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+}
+
+.footer-links, .footer-social {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+}
+
+.footer-separator {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-pref-height: 1px;
+}
+
+.footer-copyright {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: 400;
+    -fx-padding: 10 0;
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 1200px) {
+    .services-grid {
+        -fx-hgap: 15px;
+        -fx-vgap: 15px;
+    }
+
+    .service-card {
+        -fx-padding: 20;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+.service-card, .cta-button, .menu-item, .weather-button {
+    -fx-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

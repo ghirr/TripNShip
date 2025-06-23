@@ -1,23 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<ScrollPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.Esprit.TripNShip.Controllers.VehicleViewController"
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Esprit.TripNShip.Controllers.VehicleViewController"
             fitToWidth="true"
-            style="-fx-background-color: #f0f2f5;">
+            fitToHeight="true"
+            style="-fx-background-color: transparent; -fx-background: transparent;"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
+
     <content>
-        <FlowPane fx:id="vehicleContainer"
-                  hgap="30"
-                  vgap="30"
-                  prefWidth="Infinity"
-                  alignment="CENTER">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-        </FlowPane>
+        <VBox spacing="0" style="-fx-background-color: transparent;">
+
+            <!-- Hero Header Section avec Gradient Violet -->
+            <VBox style="-fx-background-color: linear-gradient(135deg, #792d99 0%, #a052c4 50%, #5e1a70 100%); -fx-min-height: 350;">
+                <padding>
+                    <Insets top="50" right="60" bottom="20" left="60" />
+                </padding>
+
+                <!-- Hero Title Section -->
+                <VBox spacing="15" alignment="CENTER">
+                    <Label text="✨ Premium Vehicle Rental Experience"
+                           style="-fx-font-size: 38px;
+                             -fx-font-weight: bold;
+                             -fx-text-fill: #ffffff;
+                             -fx-effect: dropshadow(gaussian, rgba(46, 15, 56, 0.6), 8, 0.6, 0, 3);">
+                        <font>
+                            <Font name="System Bold" size="38.0" />
+                        </font>
+                    </Label>
+
+                    <Label text="🚗 Discover luxury vehicles for your perfect journey • Premium service • 24/7 Support"
+                           style="-fx-font-size: 18px;
+                          -fx-text-fill: #3e164f;
+
+
+                             -fx-text-alignment: center;
+                             -fx-padding: 0 0 25 0;" />
+                </VBox>
+
+
+
+            </VBox>
+
+
+
+            <!-- Main Vehicle Section -->
+            <VBox style="-fx-background-color: linear-gradient(to bottom, #f5f0ff 0%, #e8dcf0 50%, #f0e6f7 100%); ">
+
+
+                <!-- Enhanced Vehicle Cards Container -->
+                <FlowPane fx:id="vehicleContainer"
+                          hgap="35"
+                          vgap="35"
+                          alignment="CENTER"
+                          style="-fx-background-color: transparent;">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20" />
+                    </padding>
+                </FlowPane>
+
+
+
+            </VBox>
+
+
+        </VBox>
     </content>
+
 </ScrollPane>

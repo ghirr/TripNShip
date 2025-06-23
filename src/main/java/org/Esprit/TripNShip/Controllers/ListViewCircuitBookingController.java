@@ -266,18 +266,180 @@ public class ListViewCircuitBookingController {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            document.add(new Paragraph("Circuit Booking ID: " + booking.getIdBooking()));
-            document.add(new Paragraph("Customer: " + booking.getUser().getFirstName() + " " + booking.getUser().getLastName()));
-            document.add(new Paragraph("Tour: " + booking.getTourCircuit().getNameCircuit()));
-            document.add(new Paragraph("Booking Date: " + booking.getBookingDate()));
-            document.add(new Paragraph("Status: " + booking.getStatusBooking()));
+            // Colors
+            com.itextpdf.kernel.colors.Color primaryColor = com.itextpdf.kernel.colors.ColorConstants.BLUE;
+            com.itextpdf.kernel.colors.Color accentColor = com.itextpdf.kernel.colors.ColorConstants.DARK_GRAY;
+            com.itextpdf.kernel.colors.Color lightGray = com.itextpdf.kernel.colors.ColorConstants.LIGHT_GRAY;
+
+            // Fonts
+            com.itextpdf.kernel.font.PdfFont boldFont = com.itextpdf.kernel.font.PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA_BOLD);
+            com.itextpdf.kernel.font.PdfFont regularFont = com.itextpdf.kernel.font.PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA);
+
+            // Header Section
+            com.itextpdf.layout.element.Table headerTable = new com.itextpdf.layout.element.Table(2);
+            headerTable.setWidth(com.itextpdf.layout.properties.UnitValue.createPercentValue(100));
+
+            // Company Logo/Name
+            Paragraph companyName = new Paragraph("TripNShip")
+                    .setFont(boldFont)
+                    .setFontSize(24)
+                    .setFontColor(primaryColor)
+                    .setMarginBottom(5);
+
+            Paragraph companyTagline = new Paragraph("Premium Travel Experience")
+                    .setFont(regularFont)
+                    .setFontSize(12)
+                    .setFontColor(accentColor);
+
+            com.itextpdf.layout.element.Cell leftCell = new com.itextpdf.layout.element.Cell()
+                    .add(companyName)
+                    .add(companyTagline)
+                    .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER);
+
+            // Booking ID and Date
+            Paragraph bookingTitle = new Paragraph("CIRCUIT BOOKING")
+                    .setFont(boldFont)
+                    .setFontSize(16)
+                    .setFontColor(primaryColor)
+                    .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT);
+
+            Paragraph bookingId = new Paragraph("Booking #" + booking.getIdBooking())
+                    .setFont(regularFont)
+                    .setFontSize(12)
+                    .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT);
+
+            Paragraph generatedDate = new Paragraph("Generated: " + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+                    .setFont(regularFont)
+                    .setFontSize(10)
+                    .setFontColor(accentColor)
+                    .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT);
+
+            com.itextpdf.layout.element.Cell rightCell = new com.itextpdf.layout.element.Cell()
+                    .add(bookingTitle)
+                    .add(bookingId)
+                    .add(generatedDate)
+                    .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER);
+
+            headerTable.addCell(leftCell);
+            headerTable.addCell(rightCell);
+            document.add(headerTable);
+
+            // Separator Line
+            document.add(new Paragraph("\n"));
+            com.itextpdf.layout.element.LineSeparator separator = new com.itextpdf.layout.element.LineSeparator(new com.itextpdf.kernel.pdf.canvas.draw.SolidLine(2f));
+            separator.setStrokeColor(primaryColor);
+            document.add(separator);
+            document.add(new Paragraph("\n"));
+
+            // Status Badge
+            String statusText = "● " + booking.getStatusBooking().toString();
+            com.itextpdf.kernel.colors.Color statusColor;
+            switch (booking.getStatusBooking()) {
+                case Confirmed:
+                    statusColor = com.itextpdf.kernel.colors.ColorConstants.GREEN;
+                    break;
+                case Cancelled:
+                    statusColor = com.itextpdf.kernel.colors.ColorConstants.RED;
+                    break;
+                default:
+                    statusColor = accentColor;
+            }
+
+            Paragraph statusParagraph = new Paragraph(statusText)
+                    .setFont(boldFont)
+                    .setFontSize(14)
+                    .setFontColor(statusColor)
+                    .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT)
+                    .setMarginBottom(20);
+            document.add(statusParagraph);
+
+            // Customer Information Section
+            Paragraph customerSection = new Paragraph("👤 CUSTOMER INFORMATION")
+                    .setFont(boldFont)
+                    .setFontSize(14)
+                    .setFontColor(primaryColor)
+                    .setMarginBottom(10);
+            document.add(customerSection);
+
+            com.itextpdf.layout.element.Table customerTable = new com.itextpdf.layout.element.Table(2);
+            customerTable.setWidth(com.itextpdf.layout.properties.UnitValue.createPercentValue(100));
+            customerTable.setMarginBottom(20);
+
+            // Customer Details
+            String fullName = booking.getUser().getFirstName() + " " + booking.getUser().getLastName();
+            addInfoRow(customerTable, "Full Name:", fullName, regularFont, boldFont);
+            addInfoRow(customerTable, "Email:", booking.getUser().getEmail(), regularFont, boldFont);
+            addInfoRow(customerTable, "Phone:", booking.getUser().getPhoneNumber(), regularFont, boldFont);
+
+            document.add(customerTable);
+
+            // Circuit Information Section
+            Paragraph circuitSection = new Paragraph("🗺️ CIRCUIT INFORMATION")
+                    .setFont(boldFont)
+                    .setFontSize(14)
+                    .setFontColor(primaryColor)
+                    .setMarginBottom(10);
+            document.add(circuitSection);
+
+            com.itextpdf.layout.element.Table circuitTable = new com.itextpdf.layout.element.Table(2);
+            circuitTable.setWidth(com.itextpdf.layout.properties.UnitValue.createPercentValue(100));
+            circuitTable.setMarginBottom(20);
+
+            // Circuit Details
+            TourCircuit circuit = booking.getTourCircuit();
+            addInfoRow(circuitTable, "Circuit Name:", circuit.getNameCircuit(), regularFont, boldFont);
+            addInfoRow(circuitTable, "Price:", "$" + String.format("%.2f", circuit.getPriceCircuit()), regularFont, boldFont);
+            addInfoRow(circuitTable, "Destination:", circuit.getDestination(), regularFont, boldFont);
+
+            document.add(circuitTable);
+
+            // Booking Details Section
+            Paragraph bookingSection = new Paragraph("📅 BOOKING DETAILS")
+                    .setFont(boldFont)
+                    .setFontSize(14)
+                    .setFontColor(primaryColor)
+                    .setMarginBottom(10);
+            document.add(bookingSection);
+
+            com.itextpdf.layout.element.Table bookingTable = new com.itextpdf.layout.element.Table(2);
+            bookingTable.setWidth(com.itextpdf.layout.properties.UnitValue.createPercentValue(100));
+            bookingTable.setMarginBottom(30);
+
+            // Booking Details
+            addInfoRow(bookingTable, "Booking Date:", booking.getBookingDate().toString(), regularFont, boldFont);
+            addInfoRow(bookingTable, "Total Amount:", "$" + String.format("%.2f", circuit.getPriceCircuit()), regularFont, boldFont);
+
+            document.add(bookingTable);
+
+            // Footer Section
+            document.add(new Paragraph("\n"));
+            com.itextpdf.layout.element.LineSeparator footerSeparator = new com.itextpdf.layout.element.LineSeparator(new com.itextpdf.kernel.pdf.canvas.draw.SolidLine(1f));
+            footerSeparator.setStrokeColor(lightGray);
+            document.add(footerSeparator);
+
+            Paragraph footerText = new Paragraph("Thank you for choosing TripNShip! For any questions, contact us at support@tripnship.com")
+                    .setFont(regularFont)
+                    .setFontSize(10)
+                    .setFontColor(accentColor)
+                    .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.CENTER)
+                    .setMarginTop(15);
+            document.add(footerText);
+
+            Paragraph disclaimer = new Paragraph("This document is electronically generated and does not require a signature.")
+                    .setFont(regularFont)
+                    .setFontSize(8)
+                    .setFontColor(lightGray)
+                    .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.CENTER)
+                    .setMarginTop(5);
+            document.add(disclaimer);
+
             document.close();
 
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("PDF généré");
-                alert.setHeaderText(null);
-                alert.setContentText("Le PDF a été généré dans le dossier Téléchargements.");
+                alert.setTitle("PDF Generated Successfully");
+                alert.setHeaderText("Circuit Booking PDF");
+                alert.setContentText("Your booking confirmation has been saved to Downloads folder.");
                 alert.showAndWait();
             });
 
@@ -286,7 +448,37 @@ public class ListViewCircuitBookingController {
             }
 
         } catch (Exception e) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("PDF Generation Error");
+                alert.setHeaderText("Failed to generate PDF");
+                alert.setContentText("An error occurred while generating the PDF: " + e.getMessage());
+                alert.showAndWait();
+            });
             e.printStackTrace();
         }
+    }
+
+    // Helper method to add information rows to tables
+    private void addInfoRow(com.itextpdf.layout.element.Table table, String label, String value,
+                            com.itextpdf.kernel.font.PdfFont regularFont, com.itextpdf.kernel.font.PdfFont boldFont) {
+
+        com.itextpdf.layout.element.Cell labelCell = new com.itextpdf.layout.element.Cell()
+                .add(new Paragraph(label))
+                .setFont(boldFont)
+                .setFontSize(11)
+                .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+                .setBackgroundColor(com.itextpdf.kernel.colors.ColorConstants.LIGHT_GRAY, 0.3f)
+                .setPadding(8);
+
+        com.itextpdf.layout.element.Cell valueCell = new com.itextpdf.layout.element.Cell()
+                .add(new Paragraph(value != null ? value : "N/A"))
+                .setFont(regularFont)
+                .setFontSize(11)
+                .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+                .setPadding(8);
+
+        table.addCell(labelCell);
+        table.addCell(valueCell);
     }
 }

@@ -38,6 +38,7 @@ public class AddUserController {
         roleMap.put("Shipping Coordinator", Role.SHIPPING_COORDINATOR);
         roleMap.put("Tour Coordinator", Role.TOUR_COORDINATOR);
         roleMap.put("Travel Organizer", Role.TRAVEL_ORGANIZER);
+        roleMap.put("Transporter", Role.TRANSPORTER);
         roleComboBox.getItems().addAll(roleMap.keySet());
         roleComboBox.setValue("Accommodation Specialist");
 

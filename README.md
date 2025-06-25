@@ -30,7 +30,7 @@ TripNShip/
 │   │   │   ├── models/          # Data models
 │   │   │   ├── views/           # JavaFX views
 │   │   │   └── utils/           # Shared utilities
-│   │   └── resources/           # FXML, CSS, assets
+│   │   └── resources/           # FXML, CSS, assets , FaceRecognationServer
 ├── modules/
 │   ├── user-management/         # Authentication & user handling
 │   ├── circuit-management/      # Travel circuits

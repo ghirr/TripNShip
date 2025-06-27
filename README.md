@@ -11,6 +11,67 @@ An all-in-one JavaFX application for comprehensive travel and shipment managemen
 - **Shipment Tracking**: Real-time tracking for national and international shipments
 - **Advanced Authentication**: Multi-factor authentication with Face ID support
 
+## 📸 Screenshots
+
+<!-- Login view -->
+![TripNShip Login](src/main/resources/Screenshots/login.png)
+
+<!-- Face-ID login -->
+![TripNShip Face ID Authentication](src/main/resources/Screenshots/FaceLogin.png)
+
+<!-- Forget PWD view -->
+![TripNShip ForgetPWD](src/main/resources/Screenshots/forgetPWD.png)
+
+<!-- SMS Verification -->
+![TripNShip SMS Verification](src/main/resources/Screenshots/SMS_Verification.png)
+
+<!-- Reset PWD -->
+![TripNShip Reset PWD](src/main/resources/Screenshots/restePWD.png)
+
+<!-- User Profile view -->
+![TripNShip User Profile](src/main/resources/Screenshots/Profile.png)
+
+<!-- Main Dashboard -->
+![TripNShip Main Dashboard](src/main/resources/Screenshots/AdminDashboard.png)
+
+<!-- UserManagement Dashboard -->
+![TripNShip UserManagement Dashboard](src/main/resources/Screenshots/UserManagement.png)
+
+<!-- Itinerary Dashboard -->
+![TripNShip Itinerary Dashboard](src/main/resources/Screenshots/itineraryDash.png)
+
+<!-- Accommodation Dashboard -->
+![TripNShip Accommodation Dashboard](src/main/resources/Screenshots/accomodationDash.png)
+
+<!-- Vehicule Dashboard -->
+![TripNShip Vehicule Dashboard](src/main/resources/Screenshots/VehiculeDash.png)
+
+<!-- Expedition Dashboard -->
+![TripNShip Expedition Dashboard](src/main/resources/Screenshots/ExpedtionDash.png)
+
+<!-- Home -->
+![TripNShip Home](src/main/resources/Screenshots/Home.png)
+
+<!-- Booking Room -->
+![TripNShip Booking Room](src/main/resources/Screenshots/RoomBoking.png)
+
+<!-- Room Details -->
+![TripNShip Room Details](src/main/resources/Screenshots/RommDetails.png)
+
+<!-- Payment -->
+![TripNShip Payment](src/main/resources/Screenshots/Payement.png)
+
+<!-- Booking Trip -->
+![TripNShip Booking Trip](src/main/resources/Screenshots/BookTrip.png)
+
+<!-- Expedition List Details Track -->
+![TripNShip Expedition List Details Track](src/main/resources/Screenshots/ExpeditionList_Details_Track.png)
+
+<!-- Booking Car -->
+![TripNShip Booking Car](src/main/resources/Screenshots/CarBooking.png)
+
+<!-- Booking Circuit -->
+![TripNShip Booking Circuit](src/main/resources/Screenshots/CircuitBook.png)
 ## 🏗️ Architecture
 
 ### Technology Stack
